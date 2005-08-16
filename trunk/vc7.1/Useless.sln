@@ -1,0 +1,92 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Useless", "Useless\Useless.vcproj", "{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "koolib", "koolib\koolib.vcproj", "{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "strmbase", "strmbase\strmbase.vcproj", "{4EC8CB95-3447-4F50-8FB1-464BAD919B70}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "koolibind", "koolibind\koolibind.vcproj", "{C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KooLiXP", "KooLiXP\KooLiXP.vcproj", "{79336AED-098F-4380-8DCE-BAFA1B0D0BB2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E} = {72EA4F08-0CAC-41D6-A761-E2612B65893E}
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056} = {7FEDF915-5D1E-45A2-AC6E-C38425833056}
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695} = {4AC5D735-5CC7-4E9B-8332-5E4E629F3695}
+		{C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637} = {C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637}
+		{30E10563-960A-11D7-9FE9-525400E2CF85} = {30E10563-960A-11D7-9FE9-525400E2CF85}
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70} = {4EC8CB95-3447-4F50-8FB1-464BAD919B70}
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1} = {1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libboost_wserialization", "..\..\boost_1_32_0\libs\serialization\vc7ide\LibraryW.vcproj", "{30E10563-960A-11D7-9FE9-525400E2CF85}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cryptlib", "..\..\cryptopp_5_21\cryptlib.vcproj", "{7FEDF915-5D1E-45A2-AC6E-C38425833056}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamo", "Dynamo\Dynamo.vcproj", "{72EA4F08-0CAC-41D6-A761-E2612B65893E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fizykaKulek1", "..\..\LixpExamples\fizykaKulek1\fizykaKulek1.vcproj", "{ED1985CB-2BD8-486A-AFF3-F1A4648B7717}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Debug.ActiveCfg = Debug|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Debug.Build.0 = Debug|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Release.ActiveCfg = Release|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Release.Build.0 = Release|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Debug.ActiveCfg = Debug|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Debug.Build.0 = Debug|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Release.ActiveCfg = Release|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Release.Build.0 = Release|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Debug.ActiveCfg = Debug|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Debug.Build.0 = Debug|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Release.ActiveCfg = Release|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Release.Build.0 = Release|Win32
+		{C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637}.Debug.ActiveCfg = Debug|Win32
+		{C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637}.Debug.Build.0 = Debug|Win32
+		{C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637}.Release.ActiveCfg = Release|Win32
+		{C1CB613A-3EB8-4D9D-AFC1-8A39E81AA637}.Release.Build.0 = Release|Win32
+		{79336AED-098F-4380-8DCE-BAFA1B0D0BB2}.Debug.ActiveCfg = Debug|Win32
+		{79336AED-098F-4380-8DCE-BAFA1B0D0BB2}.Debug.Build.0 = Debug|Win32
+		{79336AED-098F-4380-8DCE-BAFA1B0D0BB2}.Release.ActiveCfg = Release|Win32
+		{79336AED-098F-4380-8DCE-BAFA1B0D0BB2}.Release.Build.0 = Release|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug.ActiveCfg = Debug runtime-dynamic|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Debug.Build.0 = Debug runtime-dynamic|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release.ActiveCfg = Release runtime-dynamic|Win32
+		{30E10563-960A-11D7-9FE9-525400E2CF85}.Release.Build.0 = Release runtime-dynamic|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Debug.ActiveCfg = Debug|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Debug.Build.0 = Debug|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Release.ActiveCfg = Release|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Release.Build.0 = Release|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Debug.ActiveCfg = Debug|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Debug.Build.0 = Debug|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Release.ActiveCfg = Release|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Release.Build.0 = Release|Win32
+		{ED1985CB-2BD8-486A-AFF3-F1A4648B7717}.Debug.ActiveCfg = Debug|Win32
+		{ED1985CB-2BD8-486A-AFF3-F1A4648B7717}.Debug.Build.0 = Debug|Win32
+		{ED1985CB-2BD8-486A-AFF3-F1A4648B7717}.Release.ActiveCfg = Release|Win32
+		{ED1985CB-2BD8-486A-AFF3-F1A4648B7717}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

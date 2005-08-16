@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="utgs.xsl" type="text/xsl" version="1.0"?>
+
+<document>
+    <title>Compiled KooLiXP Instructions</title>
+    <sub-title>Reference Manual.</sub-title>
+
+    <links>
+        <link name="Lookup">#Lookup</link>
+        <link name="Scope">#Scope</link>
+        <link name="Simplified Syntax">#Simplified Syntax</link>
+    </links>
+    
+    <chapters>
+        <toc>
+            <link>
+                <title><i>KooLiXP</i> Overview</title>
+                <href>KooLiXPOverview.xml</href>
+            </link>
+            <link>
+                <title><i>KooLiXP</i> Complex Example</title>
+                <href>KooLiXPComplexExample.xml</href>
+            </link>
+            <link>
+                <title><i>UTGS</i> Overview</title>
+                <href>utgs.xml</href>
+            </link>
+        </toc>
+        <chapter>
+            <title><i>Lookup</i> for a symbol</title>
+            <name>Lookup</name>
+            <body>
+                <p>Lookup is done via searching for given symbol name in all scopes, starting from current <i>Scope</i>, and moving thru previous scopes.
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title><i>Scope</i> for a symbol</title>
+            <name>Scope</name>
+            <body>
+                <p>Scope is an object containing information about:
+                    <ll>
+                        <li>instructions allowed in current context,</li>
+                        <li>current <b>symbol dictionary</b>,</li>
+                        <li><b>last result</b>,</li>
+                        <li>a reference to previous scope.</li>
+                    </ll>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title><i>Simplified Syntax</i> for defining <b>new</b> symbol.</title>
+            <name>Simplified Syntax</name>
+            <body>
+                <p>
+                    Most of KooLiXP instructions support <q>id</q> attribute.
+                    When you set this attribute, result of instruction is automatically assigned to new symbol name in current <i>Scope</i>.
+                </p>
+                <p>
+                    <b>Note:</b> It is easy to make mistake, when you errorneously given <q>id</q> attribute. <b>last result won't be set</b>.
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>let</i>&gt;</title>
+            <name>let</name>
+            <body>
+                <p>Define new symbol in current <i>Scope</i>. If that symbol name is already defined an error occures.
+                </p>
+                <tip>
+                    Get object returned as <b>last result</b> of inner code and assign it a name <q>VariableName</q> in <b>current scope</b>.<br/>
+                    Any symbol definitions inside of the inner code are done in <b>separate scope</b>.
+                    <p>
+                        <code lang="xml">
+                            <let id="VariableName">
+                                <comment>Code returning some object.</comment>
+                            </let>
+                        </code>
+                    </p>
+                </tip>
+                <tip>
+                    <i>Lookup</i> for <q>ObjectName</q> in <b>all scopes</b>.
+                    The new name <q>VariableName</q> in <b>current scope</b> is then assigned for that object.<br/>
+                    <p>
+                        <code lang="xml">
+                            <let id="VariableName" select="ObjectName"/>
+                        </code>
+                    </p>
+                </tip>
+                <tip>
+                    <i>Lookup</i> for <q>FunctionObjectName</q> in <b>all scopes</b>.
+                    The new name <q>VariableName</q> in <b>current scope</b> is then assigned for object that was the result of execution of found object.<br/>
+                    <p>
+                        <code lang="xml">
+                            <let id="VariableName" force="FunctionObjectName"/>
+                        </code>
+                    </p>
+                </tip>
+                <p><b>Note:</b> You shouldn't use &lt;<i>let</i>&gt; to define new symbol. Instead use the <i>Simplified Syntax</i>.
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>set</i>&gt;</title>
+            <name>set</name>
+            <body>
+                <p>Find existing symbol, and assign new object to it
+                </p>
+                <tip>
+                    <i>Lookup</i> for <q>VariableName</q> in <b>all scopes</b>.
+                    Get object returned as <b>last result</b> of inner code.
+                    This new object replaces old object in dictionary where symbol were found.<br/>
+                    Any symbol definitions inside of the inner code are done in <b>separate scope</b>.
+                    <p>
+                        <code lang="xml">
+                            <set id="VariableName">
+                                <comment>Code returning some object.</comment>
+                            </set>
+                        </code>
+                    </p>
+                </tip>
+                <tip>
+                    <i>Lookup</i> for <q>VariableName</q> in <b>all scopes</b>.
+                    <i>Lookup</i> for <q>ObjectName</q> in <b>all scopes</b>.
+                    Object found as <q>ObjectName</q> replaces old object in dictionary where <q>VariableName</q> symbol were found.<br/>
+                    The new name <q>VariableName</q> in <b>current scope</b> is then assigned for that object.<br/>
+                    <p>
+                        <code lang="xml">
+                            <set id="VariableName" select="ObjectName"/>
+                        </code>
+                    </p>
+                </tip>
+                <tip>
+                    <i>Lookup</i> for <q>VariableName</q> in <b>all scopes</b>.
+                    <i>Lookup</i> for <q>FunctionObjectName</q> in <b>all scopes</b>.
+                    Object being the result of execution of function found as <q>ObjectName</q> replaces old object
+                    in dictionary where <q>VariableName</q> symbol were found.<br/>
+                    <p>
+                        <code lang="xml">
+                            <set id="VariableName" force="FunctionObjectName"/>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>get</i>&gt;</title>
+            <name>get</name>
+            <body>
+                <p>Find existing symbol.
+                </p>
+                <tip>
+                    <i>Lookup</i> for <q>ObjectName</q> in <b>all scopes</b>.
+                    Found object is assigned to <b>last result</b> of <b>current scope</b>.<br/>
+                    <p>
+                        <code lang="xml">
+                            <get id="ObjectName"/>
+                        </code>
+                    </p>
+                </tip>
+                <p><b>Note:</b> Instruction &lt;<i>get</i>&gt; cannot use <i>Simplified Syntax</i>, since an <q>id</q> attribute would be in conflict.
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>lookup</i>&gt;</title>
+            <name>lookup</name>
+            <body>
+                <p>Find symbol in object. Symbol name is <b>run-time</b>.
+                </p>
+                <tip>
+                    <i>Lookup</i> for <q>MemberName</q> in <b>symbol dictionary</b> named <q>ObjectName</q>.
+                    Found object is assigned to <b>last result</b> of <b>current scope</b>.<br/>
+                    <p>
+                        <code lang="xml">
+                            <lookup>
+                                <let id="dict" select="ObjectName"/>
+                                <let id="name" select="MemberName"/>
+                            </lookup>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>register</i>&gt;</title>
+            <name>register</name>
+            <body>
+                <p>Define new symbol in object. Symbol name is <b>run-time</b>.
+                </p>
+                <tip>
+                    Add new item to symbol dictionary.
+                    <p>
+                        <code lang="xml">
+                            <register>
+                                <let id="dict" select="ObjectName"/>
+                                <let id="name" select="MemberName"/>
+                                <let id="value" select="ValueName"/>
+                            </register>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>is-not-empty</i>&gt;</title>
+            <name>is-not-empty</name>
+            <body>
+                <p>Test if object assigned to symbol name is not empty.
+                </p>
+                <tip>
+                    <p>
+                        <code lang="xml">
+                            <is-not-empty id="SymbolName"/>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>is-defined</i>&gt;</title>
+            <name>is-defined</name>
+            <body>
+                <p>Test if symbol name is defined.
+                </p>
+                <tip>
+                    <p>
+                        <code lang="xml">
+                            <is-defined id="SymbolName"/>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>error</i>&gt;</title>
+            <name>error</name>
+            <body>
+                <p>Throw error message.
+                </p>
+                <tip>
+                    <p>
+                        <code lang="xml">
+                            <error>This text will appear in error information dialog and application log.</error>
+                        </code>
+                    </p>
+                </tip>
+                <tip>
+                    <p>
+                        <code lang="xml">
+                            <error>
+                                <comment>Code returning some object, which will be converted to string and displayed as error message.</comment>
+                            </error>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+    </chapters>
+</document>

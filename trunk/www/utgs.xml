@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="utgs.xsl" type="text/xsl" version="1.0"?>
+
+<document>
+    <title>Useless Temporary Game Solutions</title>
+    <sub-title>The Real Boost for making Multimedia &amp; Games.</sub-title>
+
+    <chapters>
+        <toc>
+            <link>
+                <title>Compiled <i>KooLiXP</i> Instructions (Overview)</title>
+                <href>KooLiXPOverview.xml#Overview</href>
+            </link>
+            <link>
+                <title>Compiled <i>KooLiXP</i> Instructions (Reference Manual)</title>
+                <href>KooLiXPCompiler.xml</href>
+            </link>
+            <link>
+                <title>Useless Multimedia &amp; Games Library (Overview)</title>
+                <href>UselessOverview.xml</href>
+            </link>
+        </toc>
+        <chapter>
+            <title>Preface</title>
+            <name>Preface</name>
+            <body>
+                <p>
+                    Hi. I am Radoslaw Kolasinski, M.Sc. of Computer Science.
+                    I've been Lead Programer involved in sevral commercial game projects, for 5 years.
+                    The work presented here is derived from these projects.
+                    The components of this library were used commercialy in a wide variety of game types,
+                    such as: tycoon management, 3rd person advanture, or pack of mini-games for kids.
+                </p>
+                <p>
+                    <b>On 11-th May 2005</b>, I got the <b>clerical permission</b>, signed by my boss, to place these components into <b>public domain</b>.
+                    After then, I was looking for free <i>Subversion</i> host server.
+                    If you have access to this project, it means I have found one <code lang="text">;-)</code>
+                </p>
+                <p>
+                    Project Components:
+                    <ul>
+                        <li><n>Useless</n><d>utility &amp; multimedia library.</d></li>
+                        <li><n>KooLib</n><d>utility &amp; KooLiXP library.</d></li>
+                        <li><n>Dynamo</n><d>dynamic module loading w/ KooLiXP bound.</d></li>
+                        <li><n>strmbase</n><d>public Microsoft Direct Show base classes.</d></li>
+                        <li><n>KooLiXP</n><d>executable program linked against all libraries.</d></li>
+                        <li><n>vc7.0</n><d>Microsoft Visual C++ 7.0 projects.</d></li>
+                        <li><n>vc7.1</n><d>Microsoft Visual C++ 7.1 projects.</d></li>
+                        <li><n>gcc</n><d>gcc build &amp; clean scripts.</d></li>
+                        <li><n>examples</n><d>examples of usage.</d></li>
+                        <li><n>www</n><d>This documentation.</d></li>
+                    </ul>
+                </p>
+                <p>
+                    Virtues:
+                    <ll>
+                        <li> BSD License,</li>
+                        <li> X-platform project via multiple layers of abstraction,</li>
+                        <li> Scripting language, easy to learn, with many bindings to components of the library,</li>
+                        <li> Extensible thru external modules loaded at run-time,</li>
+                        <li> Tested against comercial game projects,</li>
+                    </ll>
+                </p>
+                <p>
+                    Features:
+                    <ll>
+                        <li> Encryption Capable Virtual Filesystem,</li>
+                        <li> GUI User Interface Library,</li>
+                        <li> XML Resource Library,</li>
+                        <li> C++ Utility Templates such as functors, signals, associative containers,</li>
+                        <li> DirectShow streaming thru OpenGL textures synchronized with GUI rendering,</li>
+                    </ll>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>What is <i>KooLiXP</i> ? - An introduction to scripts.</title>
+            <name>AbountKooLiXP</name>
+            <body>
+                <p>
+                    KooLiXP is LISP like functional, and Python like objective language.
+                    XML was choosen as its form, so it may look similar to XSLT language.
+                    The language is realy easy to learn and use.
+                </p>
+                <p>
+                    What's cooking in <i>KooLiXP</i>:
+                    <ll>
+                        <li>built-in, just-in-time compiler, which provides ability to create compiled functions from selected parts of code,</li>
+                        <li>function curring, which provides ability to in-place creation of function objects with bound selected function and given parameters,</li>
+                        <li>infinite streams, when you create listnode providing a function as a <q>tail</q>,</li>
+                        <li>built-in operations such as: map, fold, zip, range, seek, head, providing easy and fast iteration algorithms,</li>
+                        <li>runtime in-place objects, which means you are able to create object with members without having defined any class,</li>
+                        <li>runtime object templates, actually there are no classes, so you need to create just constructor function,</li>
+                        <li>import built-in library bindings,</li>
+                        <li>dynamic library linking (win32 DLL or linux SO). </li>
+                    </ll>
+                </p>
+                <p>
+                    <link>
+                        <title>See KooLiXP Overview...</title>
+                        <href>KooLiXPOverview.xml</href>
+                    </link>
+                </p>
+                <p>
+                    <link>
+                        <title>See KooLiXP complex example ...</title>
+                        <href>KooLiXPComplexExample.xml</href>
+                    </link>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>What is <i>Useless</i> ? - An introduction to C++ modules.</title>
+            <name>AboutUseless</name>
+            <body>
+                <p>
+                    Useless is Multimedia &amp; Games library.
+                </p>
+                <p>
+                    Layers in <i>Useless</i> module:
+                    <ll>
+                        <li>static layer of system interfaces, which provides system windows and events translation to window-level signals,</li>
+                        <li>abstract layer of system interfaces, which provides hardware acceleration for graphics, sound and other multimedia,</li>
+                        <li>abstract layer of images, which provides mechanisms to load pixmaps from files onto hardware surfaces,</li>
+                        <li>abstract layer of sounds, which provides mechanisms to load samples from files into hardware buffers,</li>
+                        <li>layer of graphical user interface (GUI), which provides widgets, skins and fonts,</li>
+                        <li>layer of xml resources, which provides creation of items from other layers, based on scipts.</li>
+                    </ll>
+                </p>
+                <p>
+                    <link>
+                        <title>See Useless overview...</title>
+                        <href>UselessOverview.xml</href>
+                    </link>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Thanx</title>
+            <name>Thanx</name>
+            <body>
+                <p>
+                    I'd like to send big thanx to my boss, who gave me a legal right to place all this stuff into a public domain.
+                </p>
+                <p>
+                    I'd also like to thank my good colegue from company, with whom I've discussed several library topics.
+                </p>
+                <p>
+                    Big thanx for all those people who have beta-tested this software in many projects.
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Finale</title>
+            <name>Finale</name>
+            <body>
+                <p>
+                    Use this library for whatever you want.
+                </p>
+                <p>
+                    I would be pleased if you don't forget to tell me about it.
+                    Just send me some e-mail note at <mailto>koolas@gmail.com</mailto>.
+                </p>
+            </body>
+        </chapter>
+    </chapters>
+
+</document>

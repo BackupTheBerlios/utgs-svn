@@ -1,0 +1,106 @@
+<xml>
+    <!--
+    This file is part of UTGS library, which is distributed under BSD License.
+    Further information may be found on UTGS homepage: http://www.utgs.berlios.de
+    -->
+    <do in="__globals__">
+        <compile run="1">
+            <function id="Serialize" parameters="object">
+                <choose>
+                    <when test="$(object:type-name) unicode-string =">
+                        <block>
+                            <string id="name" value="string"/>
+                            <string id="value" select="object"/>
+                        </block>
+                    </when>
+                    <when test="$(object:type-name) float =">
+                        <block>
+                            <string id="name" value="float"/>
+                            <string id="value" select="object"/>
+                        </block>
+                    </when>
+                    <when test="$(object:type-name) int =">
+                        <block>
+                            <string id="name" value="integer"/>
+                            <string id="value" select="object"/>
+                        </block>
+                    </when>
+                    <when test="$(object:type-name) list =">
+                        <block>
+                            <string id="name" value="list"/>
+                            <map id="children" iterator="object">
+                                <let id="list" select="object"/>
+                                <let id="func" select="Serialize"/>
+                            </map>
+                        </block>
+                    </when>
+                    <when test="$(object:type-name) xml-block =">
+                        <block>
+                            <string id="name" value="block"/>
+                            <map id="children" iterator="pair">
+                                <let id="list" select="object:__symbols__"/>
+                                <function id="func">
+                                    <apply id="serial" select="Serialize">
+                                        <let id="object" select="pair:2-nd"/>
+                                    </apply>
+                                    <block>
+                                        <extract select="serial"/>
+                                        <block id="attributes">
+                                            <string id="id" select="pair:1-st"/>
+                                        </block>
+                                    </block>
+                                </function>
+                            </map>
+                        </block>
+                    </when>
+                    <otherwise>
+                        <empty/>
+                    </otherwise>
+                </choose>
+            </function>
+        </compile>
+
+        <compile run="1">
+            <function id="WriteObject" parameters="object file encrypted">
+                <apply select="Toolkit:WriteFile">
+                    <string id="file" select="file"/>
+                    <apply id="data" select="Toolkit:ToXMLString">
+                        <doin id="root">
+                            <copy><xml encoding="utf-8"><compile run="1"><block/></compile></xml></copy>
+                            <set id="children:head:children:head:children">
+                                <list>
+                                    <do>
+                                        <apply id="serial" select="Serialize">
+                                            <let id="object" select="object"/>
+                                        </apply>
+                                        <block>
+                                            <extract select="serial"/>
+                                            <block id="attributes">
+                                                <string id="id" value="Root"/>
+                                            </block>
+                                        </block>
+                                    </do>
+                                </list>
+                            </set>
+                            <get id="children:head"/>
+                        </doin>
+                    </apply>
+                </apply>
+            </function>
+        </compile>
+
+        <function id="ReadObject" parameters="file">
+            <run file="$(file)" object="__ObjectReader__"/>
+            <let id="readResult">
+                <send to="__ObjectReader__">
+                    <compile run="1">
+                        <get id="Root"/>
+                    </compile>
+                </send>
+            </let>
+            <kill object="__ObjectReader__"/>
+            <get id="readResult"/>
+        </function>
+    </do>
+
+</xml>

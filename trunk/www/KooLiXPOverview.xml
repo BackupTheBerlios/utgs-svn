@@ -1,0 +1,495 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="utgs.xsl" type="text/xsl" version="1.0"?>
+
+<document>
+    <title>KooLiXP - Overview</title>
+    <sub-title>Fun with Multimedia &amp; Games.</sub-title>
+    
+    <links>
+        <link name="let">KooLiXPCompiler.xml#let</link>
+        <link name="set">KooLiXPCompiler.xml#set</link>
+        <link name="get">KooLiXPCompiler.xml#get</link>
+        <link name="lookup">KooLiXPCompiler.xml#lookup</link>
+        <link name="register">KooLiXPCompiler.xml#register</link>
+        <link name="is-not-empty">KooLiXPCompiler.xml#is-not-empty</link>
+        <link name="is-defined">KooLiXPCompiler.xml#is-defined</link>
+        <link name="error">KooLiXPCompiler.xml#error</link>
+    </links>
+
+    <chapters>
+        <toc>
+            <link>
+                <title>Compiled <i>KooLiXP</i> Instructions (Reference Manual)</title>
+                <href>KooLiXPCompiler.xml</href>
+            </link>
+            <link>
+                <title><i>KooLiXP</i> Complex Example</title>
+                <href>KooLiXPComplexExample.xml</href>
+            </link>
+            <link>
+                <title><i>UTGS</i> Overview</title>
+                <href>utgs.xml</href>
+            </link>
+        </toc>
+        <chapter>
+            <title>What's cooking in <i>KooLiXP</i> ? Features, Tips &amp; Tricks...</title>
+            <name>Features</name>
+            <body>
+                <p>
+                    In this chapter you will learn how <i>KooLiXP</i> might be used.
+                    For reference on <i>KooLiXP</i> instructions used in these tips see
+                    <link>
+                        <title>Compiled <i>KooLiXP</i> Instructions (Overview)</title>
+                        <href>#Overview</href>
+                    </link>.
+                </p>
+                <p>
+                    KooLiXP is LISP like functional, and Python like objective language.
+                    XML was choosen as its form, so it may look similar to XSLT language.
+                    The language is realy easy to learn and use.
+                </p>
+                <p>
+                    What's cooking in <i>KooLiXP</i>:
+                    <ll>
+                        <li>built-in, just-in-time compiler,
+                            <tip>
+                                To compile some part of a source use:
+                                <p>
+                                    <code lang="xml">
+                                        <compile run="1">
+                                            <comment>Here comes code to be compiled...</comment>
+                                        </compile>
+                                    </code>
+                                </p>
+                                It creates precompiled function, and if <q>run</q> flag is <q>1</q> function is executed just after compilation.
+                            </tip>
+                        </li>
+                        <li>a little bit simplified syntax,
+                            <tip>
+                                When doing something like this:
+                                <p>
+                                    <code lang="cpp">
+                                        <s>myVariable</s> <o>=</o> <s>myFunction</s><o>(</o> <s>parameterName</s> <o>=</o> <v>10</v> <o>)</o>;
+                                    </code>
+                                </p>
+                                instead of:
+                                <p>
+                                    <code lang="xml">
+                                        <let id="myVariable">
+                                            <apply select="myFunction">
+                                                <let id="parameterName">
+                                                    <integer value="10"/>
+                                                </let>
+                                            </apply>
+                                        </let>
+                                    </code>
+                                </p>
+                                one may write:
+                                <p>
+                                    <code lang="xml">
+                                        <apply id="myVariable" select="myFunction">
+                                            <integer id="parameterName" value="10"/>
+                                        </apply>
+                                    </code>
+                                </p>
+                                Simpler, isn't it?
+                            </tip>
+                        </li>
+                        <li>functions allowed everywhere,
+                            <tip>
+                                Let's define some recursive function inside of a function:
+                                <p>
+                                    <code lang="xml">
+                                        <function id="Power" parameters="x n">
+                                            <function id="Worker" parameters="a n">
+                                                <choose>
+                                                    <when>
+                                                        <equal>
+                                                            <compare>
+                                                                <get id="n"/>
+                                                                <integer value="0"/>
+                                                            </compare>
+                                                        </equal>
+                                                        <integer value="1"/>
+                                                    </when>
+                                                    <otherwise>
+                                                        <apply select="Worker">
+                                                            <mul id="a">
+                                                                <get id="x"/>
+                                                                <get id="a"/>
+                                                            </mul>
+                                                            <add id="n">
+                                                                <get id="n"/>
+                                                                <integer value="-1"/>
+                                                            </add>
+                                                        </apply>
+                                                    </otherwise>
+                                                </choose>
+                                            </function>
+                                            <apply select="Worker">
+                                                <integer id="a" value="1"/>
+                                            </apply>
+                                        </function>
+                                    </code>
+                                </p>
+                            </tip>
+                        </li>
+                        <li>function curring,
+                            <tip>
+                                To do something like following code in <i>ocaml</i>:
+                                <p>
+                                    <code lang="cpp">
+                                        <s>let f x y</s> <o>=</o> <s>x</s> <o>*</o> <s>y</s>
+                                        <br/>
+                                        <s>g</s> <o>=</o> <s>f</s><o>(</o> <s>x</s> <o>=</o> <v>10</v> <o>)</o>
+                                        <br/>
+                                        <br/>
+                                        <s>g</s><o>(</o> <s>y</s> <o>=</o> <v>5</v> <o>)</o> is <v>10</v> <o>*</o> <v>5</v> <o>=</o> <v>50</v>
+                                    </code>
+                                </p>
+                                one may write:
+                                <p>
+                                    <code lang="xml">
+                                        <function id="f" parameters="x y">
+                                            <fmul>
+                                                <get id="x"/>
+                                                <get id="y"/>
+                                            </fmul>
+                                        </function>
+                                    </code>
+                                </p>
+                                <p>
+                                    <code lang="xml">
+                                        <curry id="g" select="f">
+                                            <integer id="x" value="10"/>
+                                        </curry>
+                                    </code>
+                                </p>
+                            </tip>
+                        </li>
+                        <li>infinite streams,
+                            <tip>
+                                Using curry you may define infinite stream:
+                                <p>
+                                    <code lang="xml">
+                                        <function id="IntegerGenerator" parameters="n">
+                                            <listnode>
+                                                <add id="head">
+                                                    <get id="n"/><integer value="1"/>
+                                                </add>
+                                                <curry id="tail" select="IntegerGenerator">
+                                                    <let id="n" select="head"/>
+                                                </curry>
+                                            </listnode>
+                                        </function>
+                                    </code>
+                                </p>
+                            </tip>
+                        </li>
+                        <li>built-in operations such as: map, fold, zip, range, seek, head,
+                            <tip>
+                                Let's say, we've got such list of instruments:
+                                <p>
+                                    <code lang="xml">
+                                        <list id="Instruments">
+                                            <block>
+                                                <string id="name" value="piano"/>
+                                                <string id="color" value="black"/>
+                                            </block>
+                                            <block>
+                                                <string id="name" value="flute"/>
+                                                <string id="color" value="silver"/>
+                                            </block>
+                                            <block>
+                                                <string id="name" value="violin"/>
+                                                <string id="color" value="brown"/>
+                                            </block>
+                                        </list>
+                                    </code>
+                                </p>
+                                Let's map it to list of instrument names:
+                                <p>
+                                    <code lang="xml">
+                                        <map id="InstrumentNames" iterator="item">
+                                            <let id="list" select="Instruments"/>
+                                            <function id="func" parameters="item">
+                                                <get id="item:name"/>
+                                            </function>
+                                        </map>
+                                    </code>
+                                </p>
+                                Fold all instrument names to comma separated strings:
+                                <p>
+                                    <code lang="xml">
+                                        <fold id="AvailableInstruments" iterator="item" accumulator="accum">
+                                            <empty id="accum"/>
+                                            <let id="list" select="Instruments"/>
+                                            <function id="func" parameters="item accum">
+                                                <cat>
+                                                    <if>
+                                                        <is-not-empty id="accum"/>
+                                                        <cat>
+                                                            <get id="accum"/>
+                                                            <string value=","/>
+                                                        </cat>
+                                                    </if>
+                                                    <get id="item:name"/>
+                                                </cat>
+                                            </function>
+                                        </fold>
+                                    </code>
+                                </p>
+                            </tip>
+                        </li>
+                        <li>runtime in-place objects,
+                            <tip>
+                                <p>
+                                    <code lang="xml">
+                                        <block id="myElephant">
+                                            <string id="name" value="elephant"/>
+                                            <integer id="weight" value="5000"/>
+                                            <function id="MakeSound">
+                                                <apply select="Toolkit:CreateChannel">
+                                                    <apply id="sample" select="Toolkit:CreateSample">
+                                                        <string id="file" value="elephant.wav"/>
+                                                    </apply>
+                                                </apply>
+                                            </function>
+                                        </block>
+                                    </code>
+                                </p>
+                            </tip>
+                        </li>
+                        <li>runtime object templates,
+                            <tip>
+                                There is no <q>class</q> or <q>struct</q> keyword.
+                                Just simple technique:
+                                <p>
+                                    <code lang="xml">
+                                        <function id="CreateGenericInstrument" parameters="name">
+                                            <block>
+                                                <string id="name" select="name"/>
+                                            </block>
+                                        </function>
+                                    </code>
+                                </p>
+                                <p>
+                                    <code lang="xml">
+                                        <function id="CreatePiano">
+                                            <doin blockResult="1">
+                                                <apply select="CreateGenericInstrument">
+                                                    <string id="name" value="piano"/>
+                                                </apply>
+                                                <function id="MakeSound">
+                                                    <apply select="Toolkit:CreateChannel">
+                                                        <apply id="sample" select="Toolkit:CreateSample">
+                                                            <string id="file" value="piano.wav"/>
+                                                        </apply>
+                                                    </apply>
+                                                </function>
+                                            </doin>
+                                        </function>
+                                    </code>
+                                </p>
+                                It will create constructor <q>CreatePiano</q> derived from <q>CreateGenericInstrument</q>.
+                                It is equivalent to code in <i>python</i>:
+                                <pre>
+    class GenericInstrument:
+        def __init__( self, name ):
+            self.name = name
+
+    class Piano( GenericInstrument ):
+        def __init__( self ):
+            GenericInstrument.__init__( self, 'piano')
+        
+        def MakeSound()
+            Toolkit.CreateChannel( Toolkit.CreateSample( "piano.wav" ))
+                                </pre>
+                            </tip>
+                        </li>
+                        <li>import built-in library bindings,
+                            <tip>
+                                To use widgets, images, sounds, audio and video:
+                                <p>
+                                    <code lang="xml">
+                                        <let id="Toolkit">
+                                            <import id="Toolkit"/>
+                                        </let>
+                                    </code>
+                                </p>
+                                for XML resources:
+                                <p>
+                                    <code lang="xml">
+                                        <let id="Resources">
+                                            <import id="Resources"/>
+                                        </let>
+                                    </code>
+                                </p>
+                                etc.
+                            </tip>
+                        </li>
+                        <li>dynamic library linking (win32 DLL or linux SO),
+                            <tip>
+                                To use this dynamic linking:
+                                <p>
+                                    <code lang="xml">
+                                        <let id="Dynamo">
+                                            <import id="Dynamo"/>
+                                        </let>
+                                    </code>
+                                </p>
+                                and use:
+                                <p>
+                                    <code lang="xml">
+                                        <apply id="myModule" select="Dynamo:LoadModule">
+                                            <string id="name" value="myModule.dll"/>
+                                        </apply>
+                                    </code>
+                                </p>
+                                Module is unloaded when all references to it are dropped.
+                                <br/>
+                                User may use in C++ DLL code KooLiXP objects as well, as export some C++ routines to KooLiXP:
+                                <pre>
+    #include "Dynamo/classes/CInterface.h"
+    #include "Dynamo/hook_utils.h"
+    using namespace Dynamo;
+    
+    struct MyModule : CInterface
+    {
+        Hand&lt; IInterfaceProvider &gt;  m_provider;
+
+        MyModule( IInterfaceProvider *provider, IXmlProgram *prog, IXmlScope *scope )
+        {
+            m_provider = provider;
+            scope->AddMethod("Tick", make_hook_mp&lt; IXmlHook, IXmlScope * &gt;( this, Tick ));
+        };
+            
+        void Tick( IXmlScope *scope )
+        {
+            int miliseconds;
+            scope->GetChunk("timeDelta")->GetAttr("value", &amp;miliseconds);
+        }
+    };
+        
+    Dynamo_DEFINE_CREATE_INSTANCE( MyModule );
+                                </pre>
+                                <p>
+                                    <code lang="xml">
+                                        <apply select="myModule:Tick">
+                                            <float id="timeDelta" value="0.1"/>
+                                        </apply>
+                                    </code>
+                                </p>
+                            </tip>
+                        </li>
+                    </ll>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Compiled <i>KooLiXP</i> Instructions (Overview)</title>
+            <name>Overview</name>
+            <body>
+                <p>
+                    In this chapter you will learn the meaning of each <i>KooliXP</i> instructtion.
+                    You may see also
+                    <link>
+                        <title>Compiled <i>KooLiXP</i> Instructions (Reference Manual)</title>
+                        <href>KooLiXPCompiler.xml</href>
+                    </link>.
+                </p>
+                <p>
+                    Unfortunatelly compiled code is a little bit different from non-compiled.
+                </p>
+                <p>
+                    Here is a quick list of operations allowed inside of <code lang="xml"><compile/></code> instruction:
+                    <p>Basic:
+                        <ul>
+                            <li><n>let</n><d>define new symbol in current scope.</d></li>
+                            <li><n>set</n><d>find existing symbol, and assign new object to it.</d></li>
+                            <li><n>get</n><d>find existing symbol.</d></li>
+                            <li><n>lookup</n><d>find symbol in object. Symbol name is <b>run-time</b>.</d></li>
+                            <li><n>register</n><d>define new symbol in object. Symbol name is <b>run-time</b>.</d></li>
+                            <li><n>is-not-empty</n><d>test if object assigned to symbol name is not empty.</d></li>
+                            <li><n>is-defined</n><d>test if symbol name is defined.</d></li>
+                            <li><n>error</n><d>throw error message.</d></li>
+                        </ul>
+                    </p>
+                    <p>Functions:
+                        <ul>
+                            <li><n>function</n><d>define new symbol as a function.</d></li>
+                            <li><n>apply</n><d>apply symbol as if it were function.</d></li>
+                            <li><n>curry</n><d>postpone <i>apply</i> with some parameters.</d></li>
+                        </ul>
+                    </p>
+                    <p>Blocks:
+                        <ul>
+                            <li><n>block</n><d>create new block and execute code inside of it. Returns <b>block</b>.</d></li>
+                            <li><n>extract</n><d>extract all symbols from block, to current scope.</d></li>
+                            <li><n>doin</n><d>execute code inside given block. Attribute <b>blockResult</b> controls whether to return block or last instruction result.</d></li>
+                            <li><n>do</n><d>create new scope and execute code inside it. Returns <b>last instruction result</b>.</d></li>
+                        </ul>
+                    </p>
+                    <p>Lists
+                        <ul>
+                            <li><n>empty</n><d>empty object. Final <i>listnode</i> on any list has <q>tail</q> set to <i>empty</i>.</d></li>
+                            <li><n>listnode</n><d>standard node of any list. It has <q>head</q> and <q>tail</q>.</d></li>
+                            <li><n>list</n><d>create whole list from several objects.</d></li>
+                            <li><n>map</n><d>create list from results of application of the user function to <q>head</q> of each <i>listnode</i> in a list.</d></li>
+                            <li><n>fold</n><d>apply user function with accumulator to <q>head</q> of each <i>listnode</i> in a list.</d></li>
+                            <li><n>seek</n><d>return n-th <i>listnode</i> in a list.</d></li>
+                            <li><n>head</n><d>create lazy list getting <q>head</q> of first n- <i>listnode</i>-s in a list.</d></li>
+                            <li><n>range</n><d>create lazy list generating subsequent numbers.</d></li>
+                            <li><n>zip</n><d>create parallel multi-list iterator. Usefull to iterate simultanously over several lists.</d></li>
+                        </ul>
+                    </p>
+                    <p>Accumulation:
+                        <ul>
+                            <li><n>add</n><d>add several objects converted to <b>integers</b>.</d></li>
+                            <li><n>mul</n><d>multiply several objects converted to <b>integers</b>.</d></li>
+                            <li><n>fadd</n><d>add several objects converted to <b>real</b> numbers.</d></li>
+                            <li><n>fmul</n><d>multiply several objects converted to <b>real</b> numbers.</d></li>
+                            <li><n>and</n><d>logic and several objects converted to integers.</d></li>
+                            <li><n>or</n><d>logic or several objects converted to integers.</d></li>
+                            <li><n>cat</n><d>concatenate several objects converted to strings.</d></li>
+                        </ul>
+                    </p>
+                    <p>Comparison:
+                        <ul>
+                            <li><n>compare</n><d>compare two objects converted to <b>integers</b>.</d></li>
+                            <li><n>fcompare</n><d>compare two objects converted to <b>real</b> numbers.</d></li>
+                            <li><n>strcmp</n><d>compare two objects converted to strings.</d></li>
+                            <li><n>ptrcmp</n><d>compare two objects by raw value of C++ <i>IChunk *</i>.</d></li>
+                            <li><n>less</n><d>test if inner element returned <q>-1</q>.</d></li>
+                            <li><n>equal</n><d>test if inner element returned <q>0</q>.</d></li>
+                            <li><n>greater</n><d>test if inner element returned <q>1</q>.</d></li>
+                        </ul>
+                    </p>
+                    <p>Conditional:
+                        <ul>
+                            <li><n>if</n><d>execute inner elements when condition is met, otherwise return <i>empty</i>.</d></li>
+                            <li><n>choose</n><d>like <i>if</i>, but here we may have several conditions in <i>when</i> clauses, and default behavior in <i>otherwise</i> caluse .</d></li>
+                        </ul>
+                    </p>
+                    <p>Unary operators:
+                        <ul>
+                            <li><n>not</n><d>convert object to integer, and apply logical not.</d></li>
+                            <li><n>minus</n><d>convert object to integer, and get <q>-x</q>.</d></li>
+                            <li><n>fminus</n><d>convert object to real number, and get <q>-x</q>.</d></li>
+                            <li><n>reciprocal</n><d>convert object to real number, and get <q>1/x</q>.</d></li>
+                        </ul>
+                    </p>
+                    <p>Data:
+                        <ul>
+                            <li><n>boolean</n><d>create boolean from value or convert existing object to boolean.</d></li>
+                            <li><n>integer</n><d>create integer from value or convert existing object to integer.</d></li>
+                            <li><n>float</n><d>create real number from value or convert existing object to real number.</d></li>
+                            <li><n>sting</n><d>create string from value or convert existing object to string.</d></li>
+                            <li><n>copy</n><d>convert inner xml, to <i>block</i> with <q>name</q>, <q>attributes</q>, and <q>children</q> or <q>value</q> symbols defined.</d></li>
+                        </ul>
+                    </p>
+                </p>
+            </body>
+        </chapter>
+    </chapters>
+</document>
