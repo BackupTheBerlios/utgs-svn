@@ -306,6 +306,15 @@
                                         <xsl:text> --&gt;</xsl:text>
                                     </font>
                                 </xsl:when>
+                                <xsl:when test="name() = 'fixed-comment'">
+                                    <font color="blue">
+                                        <xsl:text>&lt;!-- </xsl:text>
+                                        <pre>
+                                            <xsl:value-of select="."/>
+                                        </pre>
+                                        <xsl:text> --&gt;</xsl:text>
+                                    </font>
+                                </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:call-template name="codePartXML"/>
                                 </xsl:otherwise>
