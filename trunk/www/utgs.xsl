@@ -299,19 +299,19 @@
                     <xsl:for-each select="./*">
                         <blockquote>
                             <xsl:choose>
+                                <xsl:when test="name() = 'fixed-comment'">
+                                    <font color="blue">
+                                        <xsl:text>&lt;!-- </xsl:text>
+                                        <xmp>
+                                            <xsl:value-of select="."/>
+                                        </xmp>
+                                        <xsl:text> --&gt;</xsl:text>
+                                    </font>
+                                </xsl:when>
                                 <xsl:when test="name() = 'comment'">
                                     <font color="blue">
                                         <xsl:text>&lt;!-- </xsl:text>
                                         <xsl:value-of select="."/>
-                                        <xsl:text> --&gt;</xsl:text>
-                                    </font>
-                                </xsl:when>
-                                <xsl:when test="name() = 'fixed-comment'">
-                                    <font color="blue">
-                                        <xsl:text>&lt;!-- </xsl:text>
-                                        <pre>
-                                            <xsl:value-of select="."/>
-                                        </pre>
                                         <xsl:text> --&gt;</xsl:text>
                                     </font>
                                 </xsl:when>
