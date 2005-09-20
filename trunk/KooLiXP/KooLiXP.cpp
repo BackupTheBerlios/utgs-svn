@@ -215,7 +215,7 @@ struct KooLiXP
 
     void PutInfo( std::ostream &out )
     {
-        out << "KooLiXP (copyright koolas@sus.univ.szczecin.pl 2005)" << std::endl;
+        out << "KooLAS XML Instruction Processor - copyright 2005 (c), Radoslaw Kolasinski (koolas@gmail.com)" << std::endl;
         out << std::endl;
     }
 

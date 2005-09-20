@@ -9,7 +9,7 @@ namespace Useless {
 class FillRelation : public Relation
 {
 public:
-    FillRelation( Widget &widget);
+    FillRelation( Widget &widget, const Rect &padding = Rect(0,0,0,0));
     virtual ~FillRelation();
 
 private:

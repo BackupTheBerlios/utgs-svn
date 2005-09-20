@@ -91,7 +91,16 @@ public:
 typedef LayoutBase::X_<int,0> Weight_;
 typedef LayoutBase::X_<int,1> MaxSize_;
 typedef LayoutBase::X_<int,2> MinSize_;
-typedef LayoutBase::X_<int,3> Overlap_;
+typedef LayoutBase::X_<int,3> AlignSize_;
+typedef LayoutBase::X_<int,4> AlignSizePad_;
+typedef LayoutBase::X_<int,5> Overlap_;
+typedef LayoutBase::X_<int,20> OrthoPlacement_;
+typedef LayoutBase::X_<int,21> OrthoMaxSize_;
+typedef LayoutBase::X_<int,22> OrthoMinSize_;
+typedef LayoutBase::X_<int,23> OrthoAlignSize_;
+typedef LayoutBase::X_<int,24> OrthoAlignSizePad_;
+typedef LayoutBase::X_<int,31> PadStart_;
+typedef LayoutBase::X_<int,32> PadEnd_;
 
 //USES
     class HubWidget;
@@ -118,10 +127,25 @@ public:
             HubWidget* Get() const { return _p_root; }
             HubWidget* Release() { _root_owner=false; return _p_root; }
 
-    class Attrib_ : public Weight_, public MaxSize_, public MinSize_, public Overlap_
+    class Attrib_
+        : public Weight_
+        , public MaxSize_
+        , public MinSize_
+        , public AlignSize_
+        , public AlignSizePad_
+        , public Overlap_
+        , public OrthoMaxSize_
+        , public OrthoMinSize_
+        , public OrthoAlignSize_
+        , public OrthoAlignSizePad_
+        , public OrthoPlacement_
+        , public PadStart_
+        , public PadEnd_
     {
     public:
-        Attrib_(): Weight_(0), MaxSize_(0), MinSize_(0), Overlap_(0) {}
+        Attrib_()
+            : Weight_(0), MaxSize_(0), MinSize_(0), AlignSize_(0), AlignSizePad_(0), Overlap_(0)
+            , OrthoMaxSize_(0), OrthoMinSize_(0), OrthoAlignSize_(0), OrthoAlignSizePad_(0), OrthoPlacement_(0) {}
         virtual ~Attrib_() {}
 
         virtual void Accept( Attrib &visitor ) const
@@ -129,7 +153,16 @@ public:
             Weight_ ::Accept(visitor);
             MaxSize_::Accept(visitor);
             MinSize_::Accept(visitor);
+            AlignSize_::Accept(visitor);
+            AlignSizePad_::Accept(visitor);
             Overlap_::Accept(visitor);
+            OrthoMaxSize_::Accept(visitor);
+            OrthoMinSize_::Accept(visitor);
+            OrthoAlignSize_::Accept(visitor);
+            OrthoAlignSizePad_::Accept(visitor);
+            OrthoPlacement_::Accept(visitor);
+            PadStart_::Accept(visitor);
+            PadEnd_::Accept(visitor);
         }
     };
 
@@ -148,6 +181,15 @@ private:
     HubWidget      *_p_root;
     Signal::FuncID  _on_resize_root;
     bool            _root_owner;
+    
+    int             _fill_requests;
+    friend struct FillLock;
+    struct FillLock
+    {
+        Layout *_p_layout;
+        FillLock( Layout *p_layout): _p_layout( p_layout ) { ++p_layout->_fill_requests; }
+        ~FillLock() { --_p_layout->_fill_requests; }
+    };
 
     StupidVector< SPointer<LayoutBase> > _children_layouts;
     StupidVector< Signal::FuncID > _on_child_resize;

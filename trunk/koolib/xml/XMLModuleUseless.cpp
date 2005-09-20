@@ -69,6 +69,8 @@ namespace XMLProgram {
                 .def("CreateVideo", CreateVideo, "file")
                 .def("CreateMovie", CreateMovie, "file")
                 .def("CreateMovie2", CreateMovie2, "file", "audio")
+                .def("IsDir", IsDir, "path")
+                .def("FileExists", FileExists, "path")
                 .def("ListFiles", ListFiles, "path")
                 .def("ReadFile", ReadFile )
                 .def("WriteFile", WriteFile )
@@ -305,6 +307,16 @@ namespace XMLProgram {
             }
         };
 
+        int USELESS_TK::IsDir( std::string path )
+        {
+            return IFS::Instance().IsDir( path );
+        }
+
+        int USELESS_TK::FileExists( std::string path )
+        {
+            return IFS::Instance().Exists( path );
+        }
+
         IChunkPtr USELESS_TK::ListFiles( std::string path )
         {
             scan_dir_function::FileList files;
@@ -337,7 +349,7 @@ namespace XMLProgram {
                     int toAlign = HatcheryCipher::BLOCKSIZE - remainAlgn;
                     while ( 0 < toAlign-- )
                     {
-                        s += (char)0x0;
+                        s += '\n';
                     }
                 }
                 encFile.Write( s.c_str(), s.length() );

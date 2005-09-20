@@ -133,13 +133,15 @@ public:
     //! Place and resize widget relatively in parent-client area.
     void Place          ( const Rect &rect, const Pos &base);
     //! Make self fit whole parent-client area.
-    void Fill           ( const Rect& rect=Rect() );
+    void Fill           ( const Rect &area=Rect(), const Rect &padding=Rect() );
     //! Relatively move self.
     void Move           ( const Pos &dpos );
     //! Relatively resize self.
     void Enlarge        ( const Pos &dsize );
     //! Relatively adjust z-index.
     void Dive           ( int dz );
+    //! Resize widget to fit alignment constrains.
+    void AlignSize      ( const Rect &offsetAndSize, const Pos &placement = Pos(0,0));
     //@}
 
     ////////////////////////////////////////////////////////////////////

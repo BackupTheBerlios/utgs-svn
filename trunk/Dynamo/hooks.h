@@ -26,6 +26,11 @@ namespace Dynamo {
         virtual void Apply() = 0; 
     };
 
+    struct IHook_Number : virtual IInterface 
+    {
+        virtual void Apply( int no ) = 0; 
+    };
+
     struct IHook_Key : virtual IInterface 
     {
         virtual void Apply( int key ) = 0; 

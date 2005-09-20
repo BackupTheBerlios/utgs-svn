@@ -8,6 +8,8 @@ namespace Dynamo {
 
     struct CInterfaceProvider : CInterface, virtual IInterfaceProvider
     {
+        IGraphix * ProvideIGraphix();
+
         IAudio * ProvideIAudio();
 
         IGui * ProvideIGui();
@@ -25,8 +27,6 @@ namespace Dynamo {
         IModule *ProvideIModule( std::string xmlId, IXmlProgram *prog, IXmlScope *pScope );
     
         IXmlProgram *ProvideIXmlProgram( XMLProgram::IFiniteStateMachine *pFSM );
-
-        IMemoryManager *ProvideIMemoryManager();
     };
 
 };//Dynamo

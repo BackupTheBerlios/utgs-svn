@@ -4,11 +4,11 @@
 
 namespace Useless {
 
-FillRelation::FillRelation( Widget &widget )
+FillRelation::FillRelation( Widget &widget, const Rect &padding )
 {   
     assert( widget.GetParent() && "FillRelation::FillRelation(): Not in group");
-    widget.Fill();
-    _on_client_area_resize = widget.GetParent()->OnResize.TieUnary( &widget, &Widget::Fill, Rect() );
+    widget.Fill( Rect(), padding );
+    _on_client_area_resize = widget.GetParent()->OnResize.TieBinary( &widget, &Widget::Fill, Rect(), padding );
 }
 
 FillRelation::~FillRelation()

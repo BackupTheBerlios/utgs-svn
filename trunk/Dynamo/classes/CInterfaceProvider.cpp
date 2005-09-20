@@ -2,6 +2,12 @@
 
 namespace Dynamo {
 
+    //IGraphix * CInterfaceProvider::ProvideIGraphix()
+    //{
+    //    assert(0);
+    //    return 0;
+    //}
+
     IAudio * CInterfaceProvider::ProvideIAudio()
     {
         assert(0);
@@ -68,22 +74,4 @@ namespace Dynamo {
     //    return 0;
     //}
     
-    struct CMemoryManager : IMemoryManager, CInterface
-    {
-        void * Allocate( size_t size )
-        {
-            return new char[size];
-        }
-
-        void Deallocate( void *ptr )
-        {
-            delete ptr;
-        }
-    };
-
-    IMemoryManager *CInterfaceProvider::ProvideIMemoryManager()
-    {
-        return new CMemoryManager();
-    }
-
 };//Dynamo

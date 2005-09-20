@@ -105,6 +105,9 @@
 			Name="classes"
 			Filter="">
 			<File
+				RelativePath="..\..\Dynamo\classes\CGraphix.cpp">
+			</File>
+			<File
 				RelativePath="..\..\Dynamo\classes\CGui.cpp">
 			</File>
 			<File

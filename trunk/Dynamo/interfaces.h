@@ -4,6 +4,62 @@
 #include "Dynamo/hooks.h"
 
 namespace Dynamo {
+    
+    // Constants used to select proper pixel format
+    struct ColorMode
+    {
+        enum Constant { GREY=0, ALPHA=1, RGB=2, RGBA=3 };
+    };
+
+    // Pixel transfer interface - READ
+    struct IPixelReader : virtual IInterface
+    {
+        virtual void SetupOutput( ColorMode::Constant mode, size_t pitch ) = 0;
+        virtual void ReadPixels ( void *pointer, Rect4i area ) = 0;
+    };
+
+    // Pixel transfer interface - WRITE
+    struct IPixelWriter : virtual IInterface
+    {
+        virtual void SetupInput ( ColorMode::Constant mode, size_t pitch ) = 0;
+        virtual void WritePixels( void *pointer, Rect4i area ) = 0;
+    };
+
+    // An information attached to graphic data
+    struct IGraphicPlane : virtual IInterface
+    {
+        // Create new IGraphicPlane structure describing some part of existing image
+        virtual IGraphicPlane * Copy( Rect4i area ) = 0;
+        virtual IGraphicPlane * Copy( Rect4i area, size_t width, size_t height ) = 0;
+        // Get dimensions properties
+        virtual size_t GetWidth()  = 0;
+        virtual size_t GetHeight() = 0;
+        virtual size_t GetDestWidth()  = 0;
+        virtual size_t GetDestHeight() = 0;
+        // Get number of FPS for animated images
+        virtual float  GetFrameRate() = 0;
+        // Get image channel format
+        virtual ColorMode::Constant GetColorMode() = 0;
+        // Obtain pixel writter
+        virtual IPixelWriter * ProvideIPixelWriter() = 0;
+        // Obtain pixel reader
+        virtual IPixelReader * ProvideIPixelReader() = 0;
+    };
+
+    // Graphic factory
+    struct IGraphix : virtual IInterface
+    {
+        // Find image resource
+        virtual IGraphicPlane * GetImage( std::string imageId ) = 0;
+        // Find screen resource
+        virtual IGraphicPlane * GetScreen( std::string screenId ) = 0;
+        // Create new image
+        virtual IGraphicPlane * CreateImage( std::string fileName ) = 0;
+        // Create new image with alpha channel
+        virtual IGraphicPlane * CreateTransparentImage( std::string fileName, std::string maskName ) = 0;
+        // Transfer pixels from file to user-supplied writter
+        virtual void LoadPixels( std::string fileName, IPixelWriter *writer, ColorMode::Constant mode ) = 0;
+    };
 
     // Sounds & Music
     struct IAudio : virtual IInterface
@@ -152,6 +208,15 @@ namespace Dynamo {
         virtual void SetHook_Key( IHook_Key * ) = 0;
     };
 
+    // Handle OnChange
+    struct IEnumWidget : virtual IWidget
+    {
+        virtual void SetSelected( int item ) = 0;
+        virtual int  GetSelected() = 0;
+
+        virtual void SetHook_Select( IHook_Number * ) = 0;
+    };
+
     // Access Widget which paints Text
     struct ITextWidget : virtual IWidget
     {
@@ -241,6 +306,9 @@ namespace Dynamo {
         virtual IActiveWidget *
             GetActiveWidget( std::string widgetId ) = 0;
 
+        virtual IEnumWidget *
+            GetEnumWidget( std::string widgetId ) = 0;
+
         virtual ITextWidget *
             GetTextWidget( std::string widgetId ) = 0;
 
@@ -328,58 +396,6 @@ namespace Dynamo {
         virtual void WriteData() = 0;
     };
 
-    // Allocate memory blocks
-    struct IMemoryManager : virtual IInterface
-    {
-        virtual void * Allocate( size_t size ) = 0;
-        virtual void Deallocate( void *ptr ) = 0;
-
-        template< class _Type >
-            _Type * New()
-            {
-                void *ptr = Allocate( sizeof( _Type ));
-                _Type *p = new (ptr)_Type();
-                p->SetMemory( ptr, this );
-                return p;
-            }
-        
-        template< class _Type, class _A1 >
-            _Type * New( const _A1 & a1 )
-            {
-                void *ptr = Allocate( sizeof( _Type ));
-                _Type *p = new (ptr)_Type(a1);
-                p->SetMemory( ptr, this );
-                return p;
-            }
-        
-        template< class _Type, class _A1, class _A2 >
-            _Type * New( const _A1 & a1, const _A2 &a2 )
-            {
-                void *ptr = Allocate( sizeof( _Type ));
-                _Type *p = new (ptr)_Type(a1,a2);
-                p->SetMemory( ptr, this );
-                return p;
-            }
-        
-        template< class _Type, class _A1, class _A2, class _A3 >
-            _Type * New( const _A1 & a1, const _A2 &a2, const _A3 &a3 )
-            {
-                void *ptr = Allocate( sizeof( _Type ));
-                _Type *p = new (ptr)_Type(a1,a2,a3);
-                p->SetMemory( ptr, this );
-                return p;
-            }
-        
-        template< class _Type, class _A1, class _A2, class _A3, class _A4 >
-            _Type * New( const _A1 & a1, const _A2 &a2, const _A3 &a3, const _A4 &a4 )
-            {
-                void *ptr = Allocate( sizeof( _Type ));
-                _Type *p = new (ptr)_Type(a1,a2,a3,a4);
-                p->SetMemory( ptr, this );
-                return p;
-            }
-    };
-
     // KooLiXP Access Interfaces 
     /*@{*/
     struct IXmlScope;
@@ -444,6 +460,9 @@ namespace Dynamo {
     // Dynamo Factory Inerface
     struct IInterfaceProvider : virtual IInterface
     {
+        virtual IGraphix *
+            ProvideIGraphix() = 0;
+
         virtual IAudio *
             ProvideIAudio() = 0;
 
@@ -470,9 +489,6 @@ namespace Dynamo {
 
         virtual IXmlProgram *
             ProvideIXmlProgram( XMLProgram::IFiniteStateMachine *pFSM ) = 0;
-
-        virtual IMemoryManager *
-            ProvideIMemoryManager() = 0;
     };
 
 #define Dynamo_DEFINE_CREATE_INSTANCE( _Name ) \

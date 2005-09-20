@@ -1,8 +1,5 @@
 #include "UselessPch.h"
 
-#include "Useless/File/Hatchery.h"
-#include "Useless/File/IFileStream.h"
-#include "Useless/File/StdIFileSystem.h"
 #include "Useless/Functional/Signal.h"
 #include "Useless/Functional/SignalSwitch.h"
 #include "Useless/Graphic/Device/Screen.h"
@@ -48,8 +45,42 @@ const int SCREENMANC2 = 128;
 static bool __show_FPS;
 static Pos  __FPS_position;
 static Pos  __cursor_position;
-static std::string __name;
-static std::string __name2;
+
+
+
+// We do this to protect copyrights of an application with red-green cross.
+// The magic password that shall be given as "protection" attribute of <gui> tag is: "scrnocross"
+// See also "Useless/XML/Resources/CreateGUI.cpp" lines 80-84.
+static std::string __screen_option1;
+static std::string __screen_option2;
+
+void _SetScreenOption( const std::string &screenOption1, std::string screenOption2 )
+{
+    if ( screenOption1 == screenOption2 )
+    {
+        __screen_option1 = screenOption1;
+    }
+}
+
+void SetScreenOption( const std::string &screenOption1, std::string screenOption2 )
+{
+    if ( screenOption1 == screenOption2 )
+    {
+        __screen_option2 = screenOption2;
+    }
+    else
+    {
+        __screen_option2 += 's'; __screen_option2 += 'c'; __screen_option2 += 'r'; __screen_option2 += 'i';
+        __screen_option2 += 'n'; __screen_option2 += 'v'; __screen_option2 += 'a'; __screen_option2 += 'l';
+        __screen_option2 += 'i'; __screen_option2 += 'd';
+    }
+}
+
+std::string GetScreenOption()
+{
+    return __screen_option1;
+}
+
 
 bool g_PaintWidgetBoundaries = false;
 
@@ -106,23 +137,11 @@ ScreenMan::ScreenMan(Screen &screen, GUIMaster &gui_master)
     _cursor_doubler=_cursor;
     _mouse_buttons_status=false;
  
-    __name2 = screen.GetTitle();
-    std::string s1,s2,s3;
-    s1 += 'i'; s1 += 'n'; s1 += 'i'; s1 += 't';
-    s2 += '.'; s2 += 'd'; s2 += 'a'; s2 += 't';
-    s3 += '/'; s3 += 'n'; s3 += 'a'; s3 += 'm'; s3 += 'e';
-    if ( StdIFileSystem().Exists( s1 + s2 ))
-    {
-        std::string k1;
-        k1 += "_4@C"; k1 += "1?G9"; k1 += "!.H^"; k1 += "0-00";
-        Hatchery htc( k1 ); htc.Open( s1 + s2, s1 );
-        if ( htc.Exists( s1 + s3 ) )
-        {
-            IFileStream str( htc.OpenFile( s1 + s3 ));
-            std::getline( str, __name );
-        }
-        htc.Close();
-    }
+    __screen_option1 += 's'; __screen_option1 += 'c'; __screen_option1 += 'r'; __screen_option1 += 'n';
+    __screen_option1 += 'o'; __screen_option1 += 'c'; __screen_option1 += 'r'; __screen_option1 += 'o';
+    __screen_option1 += 's'; __screen_option1 += 's';
+
+    SetScreenOption( "s1", "s2" );
 }
 
 /*! Setup screen manager includes:
@@ -268,12 +287,10 @@ void ScreenMan::Advance(int t, int dt)
 {
     assert( IsAttached() );
 
-    if ( ((_current_frame - 1) % SCREENMANC1) == (SCREENMANC1-SCREENMANC2) || ((_current_frame - 1) % SCREENMANC1) == 0 )
+    // Do this if we protect application with red-green cross
+    if (( ((_current_frame - 1) % SCREENMANC1) == (SCREENMANC1-SCREENMANC2) || ((_current_frame - 1) % SCREENMANC1) == 0 ) && ( __screen_option1 != __screen_option2 ))
     {
-        if ( __name != __name2 )
-        {
-            AcceptDirtyRect( Rect(0,0,_screen->GetWidth(),_screen->GetHeight() ));
-        }
+        AcceptDirtyRect( Rect(0,0,_screen->GetWidth(),_screen->GetHeight() ));
     }
 
     ClipList &dirty = GetRects( _current_frame );
@@ -316,8 +333,9 @@ void ScreenMan::Advance(int t, int dt)
             _gui_master->GetWorkspace().SetDirty( __FPS_position+Rect(0,0,200,14) );
         }
 /*-----------------------------------------------------*/
-
-        if ( (_current_frame % SCREENMANC1) >= (SCREENMANC1-SCREENMANC2) && ( __name != __name2 ))
+    
+        // Do this if we protect application with red-green cross
+        if ( (_current_frame % SCREENMANC1) >= (SCREENMANC1-SCREENMANC2) && ( __screen_option1 != __screen_option2 ))
         {
             _screen->SetClipper( optimized );
             Painter paint( *_screen );

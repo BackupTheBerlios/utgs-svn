@@ -7,6 +7,10 @@
 
 namespace Useless {
 
+// Do this if we protect application with red-green cross
+void SetScreenOption( const std::string &screenOption1, std::string screenOption2 );
+std::string GetScreenOption();
+
 Resource* CreateGUI( XMLIterator i, XMLCreatorEnv *env )
 {
     SPointer<GUIMaster> sp_gui;
@@ -72,6 +76,17 @@ Resource* CreateGUI( XMLIterator i, XMLCreatorEnv *env )
             SPointer<Hints> *sp_hints;
             Resources::Instance().Query("system", hints, sp_hints);            
             sp_gui->SetHintMan(*sp_hints);
+        }
+
+        // Do this if we protect application with red-green cross
+        std::string protection;
+        if ( try_attribute((*i)._attributes, "protection", &protection ))
+        {
+            SetScreenOption( protection, protection );
+        }
+        else
+        {
+            SetScreenOption( GetScreenOption(), GetScreenOption() );
         }
     }
 

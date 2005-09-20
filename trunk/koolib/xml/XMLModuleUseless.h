@@ -63,6 +63,8 @@ namespace XMLProgram {
             IChunkPtr   CreateMovie     ( std::string fileName );
             IChunkPtr   CreateMovie2    ( std::string fileName, TextUtf8 audioName );
 
+            int       IsDir( std::string path );
+            int       FileExists( std::string path );
             IChunkPtr ListFiles( std::string path );
 
             void WriteFile  ( Node node, ExecutionState &state );

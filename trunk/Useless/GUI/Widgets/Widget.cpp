@@ -20,6 +20,12 @@
     #include "Useless/GUI/Widgets/SmallHint.h"
 #endif
 
+#include <cmath>
+
+namespace {
+    double as_double( int value ) { return (double)(value); }
+};
+
 namespace Useless {
 
 int    Widget::_widget_last_id;
@@ -224,14 +230,18 @@ void Widget::Enlarge(const Pos &dsize)
 }
 
 // Fills parent client-area with self
-void Widget::Fill(const Rect& rect)
+void Widget::Fill( const Rect& area, const Rect &padding )
 {   
-    Rect cr = rect;
+    Rect cr = area;
     if (!cr)
     {
         assert( _parent && "Widget::Fill(): Impossibile due no parent");
         cr = _parent->GetClientRect(this);
     }
+    cr.x += padding.x;
+    cr.y += padding.y;
+    cr.w -= padding.w + padding.x;
+    cr.h -= padding.h + padding.y;
     SetPosition( cr.GetPos() );
     Resize( cr.GetW(), cr.GetH() );
 }
@@ -288,9 +298,9 @@ void Widget::Place ( const Pos &pos, const Pos &base)
     Pos p = GetPosition();
     double x = p.x;
     double y = p.y;
-    if( base.x > 0 ) { x = ((double)(client_area.GetW() * pos.x))/(double)base.x; }
-    if( base.y > 0 ) { y = ((double)(client_area.GetH() * pos.y))/(double)base.y; }
-    SetPosition( Pos( x, y ));
+    if( base.x > 0 ) { x = as_double( client_area.GetW() * pos.x ) / as_double( base.x ); }
+    if( base.y > 0 ) { y = as_double( client_area.GetH() * pos.y ) / as_double( base.y ); }
+    SetPosition( client_area.GetPos() + Pos( std::floor(x), std::floor(y) ));
 }
 
 /*! Place self inside parents-client area.
@@ -305,12 +315,40 @@ void Widget::Place ( const Rect &rect, const Pos &base)
     double y = my_rect.GetY();
     double w = my_rect.GetW();
     double h = my_rect.GetH();
-    if ( base.x > 0) { x = ((double)(client_area.GetW() * rect.GetX()))/(double)base.x;}
-    if ( base.y > 0) { y = ((double)(client_area.GetH() * rect.GetY()))/(double)base.y;}
-    if ( base.x > 0) { w = ((double)(client_area.GetW() * rect.GetW()))/(double)(base.x-1) + 0.5;}
-    if ( base.y > 0) { h = ((double)(client_area.GetH() * rect.GetH()))/(double)(base.y-1) + 0.5;}
-    SetPosition( Pos ( x, y ));
-    Resize( w, h);
+    if ( base.x > 0) { x = as_double( client_area.GetW() * rect.GetX() ) / as_double( base.x ); }
+    if ( base.y > 0) { y = as_double( client_area.GetH() * rect.GetY() ) / as_double( base.y ); }
+    if ( base.x > 0) { w = as_double( client_area.GetW() * rect.GetW() ) / as_double( base.x ); }
+    if ( base.y > 0) { h = as_double( client_area.GetH() * rect.GetH() ) / as_double( base.y ); }
+    SetPosition( client_area.GetPos() + Pos( std::floor(x), std::floor(y) ));
+    Resize( std::ceil(w), std::ceil(h) );
+}
+
+void Widget::AlignSize ( const Rect &offsetAndSize, const Pos &placement )
+{
+    Rect my_rect = GetBoundingRect() + GetPosition();
+    Rect rect = my_rect;
+    // align width
+    if ( offsetAndSize.w > 0 )
+    {
+        rect.w -= offsetAndSize.x;
+        rect.w /= offsetAndSize.w;
+        rect.w *= offsetAndSize.w;
+        rect.w += offsetAndSize.x;
+    }
+    // align height
+    if ( offsetAndSize.h > 0 )
+    {
+        rect.h -= offsetAndSize.y;
+        rect.h /= offsetAndSize.h;
+        rect.h *= offsetAndSize.h;
+        rect.h += offsetAndSize.y;
+    }
+    rect.x = my_rect.x + ((my_rect.w - rect.w) * placement.x / 100);
+    rect.y = my_rect.y + ((my_rect.h - rect.h) * placement.y / 100);
+    // apply new size
+    Resize( rect.w, rect.h );
+    // apply new position
+    SetPosition( rect.GetPos() );
 }
 
 // Methos allocates space for widget

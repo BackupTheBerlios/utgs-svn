@@ -157,16 +157,7 @@ void CaptionWidget::UpdateCaption( int width, int height, bool update_dimentions
     };
 
     _fn_painter.SetWidth( text_width );
-
-    if ( skin_width != _skins.GetWidth() )
-    { 
-        if ( _skins.Get().GetDirection( _skins.GetSkinID() ).x && 
-             _skins.Get().GetDirMask( _skins.GetSkinID() ).x 
-           )
-        {
-            _skins.SetSize( Dim2i( skin_width, height)  ); 
-        }
-    }
+    _skins.SetSize( Dim2i( skin_width, height)  ); 
     SetDimensions( width, height );
 }
 

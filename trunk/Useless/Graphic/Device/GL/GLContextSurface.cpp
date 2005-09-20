@@ -475,8 +475,9 @@ bool GLContextSurface::operator != ( const Surface& s )
 
 void GLContextSurface::SetSize( int w, int h )
 {
-    _w = w;
-    _h = h;
+    // align size to 2 pixels
+    _w = (w / 2 + w % 2) * 2;
+    _h = (h / 2 + h % 2) * 2;
     if ( G_nVidiaViewport )
     {   // nVidia
         if (_w > _h )

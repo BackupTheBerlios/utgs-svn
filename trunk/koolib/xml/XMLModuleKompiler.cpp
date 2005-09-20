@@ -54,8 +54,8 @@ namespace XMLProgram {
             void RunString( Node __unused__, ExecutionState &state )
             {
                 CompileString( __unused__, state );
-                IChunk *pResult = state.GetResult();
-                state.GetResult()->Execute( __unused__, state );
+                IChunkPtr pResult = state.GetResult();
+                pResult->Execute( __unused__, state );
             }
 
             void CompileFile( Node __unused__, ExecutionState &state )
@@ -79,8 +79,8 @@ namespace XMLProgram {
             void RunFile( Node __unused__, ExecutionState &state )
             {
                 CompileFile( __unused__, state );
-                IChunk *pResult = state.GetResult();
-                state.GetResult()->Execute( __unused__, state );
+                IChunkPtr pResult = state.GetResult();
+                pResult->Execute( __unused__, state );
             }
         };
     };// namespace XML_IMPORT

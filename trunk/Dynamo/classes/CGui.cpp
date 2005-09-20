@@ -443,6 +443,44 @@ namespace Dynamo {
         }
     };
     
+    struct CEnumWidget : virtual CWidget, virtual IEnumWidget
+    {
+        Useless::EnumWidget *_prEnum;
+        Useless::Signal::FuncID _sidChange;
+        Hand< IHook_Number > _phSelect;
+        
+        CEnumWidget(): _prEnum(0)
+        {
+        }
+
+        CEnumWidget( Useless::EnumWidget *prWidget, const std::string &rName ): CWidget( prWidget, rName ), _prEnum( prWidget )
+        {
+        }
+        
+        void SetSelected( int item )
+        {
+            assert( 0 != _prEnum );
+            _prEnum->SetSelected( item );
+        }
+
+        int  GetSelected()
+        {
+            assert( 0 != _prEnum );
+            return _prEnum->GetSelected();
+        }
+
+        void SetHook_Select( IHook_Number *hook )
+        {
+            assert( 0 != _prEnum );
+            if ( _phSelect.get() )
+            {
+                _sidChange.Untie();
+            }
+            _sidChange = Useless::Tie2Signal( _prEnum->OnChange, hook, &IHook_Number::Apply );
+            _phSelect = hook;
+        }
+    };
+    
     struct CTextWidget : virtual CWidget, virtual ITextWidget
     {
         Useless::BaseTextWidget *_prTextWidget;
@@ -668,6 +706,11 @@ namespace Dynamo {
         IActiveWidget * GetActiveWidget( std::string widgetId )
         {
             return new CActiveWidget( Useless::WidgetResource< Useless::ActiveWidget >::Query( widgetId ), widgetId );
+        }
+        
+        IEnumWidget * GetEnumWidget( std::string widgetId )
+        {
+            return new CEnumWidget( Useless::WidgetResource< Useless::EnumWidget >::Query( widgetId ), widgetId );
         }
 
         ITextWidget * GetTextWidget( std::string widgetId )

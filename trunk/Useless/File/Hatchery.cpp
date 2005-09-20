@@ -58,7 +58,11 @@ void Hatchery::DumpHeader( std::ostream &out, const std::string &in_name )
     hatch.Read( cipherType, HatcheryCipher::BLOCKSIZE );
     if ( std::string( cipherType ) != std::string( __cipherType ))
     {
-        throw Error("Incompatibile cipher code expected:%s, code found:%s.", __cipherType, cipherType );
+        throw Error("Bad file signature (%c%c%c%c)."
+                , tolower(__cipherType[0])
+                , tolower(__cipherType[1])
+                , tolower(__cipherType[2])
+                , tolower(__cipherType[3]) );
     }
 
     for ( ; position + HatcheryCipher::BLOCKSIZE < baseoffset; )
@@ -92,7 +96,11 @@ void Hatchery::Open( const std::string &in_name, const std::string &base )
     hatch.Read( cipherType, HatcheryCipher::BLOCKSIZE );
     if ( std::string( cipherType ) != std::string( __cipherType ))
     {
-        throw Error("Incompatibile cipher code expected:%s, code found:%s.", __cipherType, cipherType );
+        throw Error("Bad file signature (%c%c%c%c)."
+                , tolower(__cipherType[0])
+                , tolower(__cipherType[1])
+                , tolower(__cipherType[2])
+                , tolower(__cipherType[3]) );
     }
 
     for ( ; position + HatcheryCipher::BLOCKSIZE < baseoffset; )
@@ -125,7 +133,7 @@ void Hatchery::AddNode( const std::string &name, const FileNode &node )
     FileName fileName( name );
     pair< Iterator, bool > result = _nodes.insert( make_pair( fileName, node ));
     bool inserted = result.second;    
-    if (! inserted) { throw Error("Name conflict."); }    
+    if (! inserted) { throw Error("Filename conflict for: '%s'.", name.c_str() ); }
     Iterator prev = result.first;
     if ( prev != _nodes.begin())
     {

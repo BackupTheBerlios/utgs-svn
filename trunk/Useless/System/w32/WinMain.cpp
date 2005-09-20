@@ -41,7 +41,7 @@ int ErrorBox( const std::exception &e )
 {
     MessageBox( NULL
             , Useless::ToTCHAR( e.what() ).c_str()
-            , Useless::ToTCHAR( std::string("Message [") + Useless::Application::GetTitle() + std::string("]")).c_str()
+            , Useless::ToTCHAR( Useless::Application::GetTitle() + std::string(" - Exception")).c_str()
             , MB_OK | MB_ICONINFORMATION );
     return 0;
 }

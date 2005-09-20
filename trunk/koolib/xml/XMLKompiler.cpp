@@ -596,7 +596,21 @@ namespace XMLFactory {
     CXML_ACCUM_HANDLER( CXML::STRCMP, CXML::OpCOMPARE< TextUtf8 > );
 
     // <cat><!-- string --></cat>
-    CXML_ACCUM_HANDLER( CXML::CAT, CXML::OpCAT );
+    LOCAL_TAG_HANDLER( CXML::CAT ) 
+    { 
+        Attr< TextUtf8, false, wchar_t > _separator(L"separator");
+        GetAttr( _separator, _node, _state );
+        IChunkPtr pChunk = Compile( _node, _state ); 
+        boost::intrusive_ptr< CXML::ValueAccumulator< CXML::OpCAT > > 
+            adder = new CXML::ValueAccumulator< CXML::OpCAT >( _separator.str() ); 
+        while ( !IsEmpty( pChunk.get())) 
+        { 
+            adder->Add( pChunk->GetChunk( FOURCC_LIST_HEAD ) ); 
+            pChunk = pChunk->GetChunk( FOURCC_LIST_TAIL ); 
+        } 
+        _state.SetResult( HookErrors( _node, adder.get() )); 
+        HookDefinition( _node, _state ); 
+    }
 
     // <ptrcmp><!-- pointer --></ptrcmp>
     LOCAL_TAG_HANDLER( CXML::PTRCMP )

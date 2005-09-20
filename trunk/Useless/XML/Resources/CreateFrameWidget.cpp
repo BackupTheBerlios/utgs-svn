@@ -118,6 +118,29 @@ void InsertChildWidget( Widget *ptr, const XMLAttributes &attributes, XMLCreator
         {
             Weight_ w(x); (*p_parent_layout) << w;
         }
+
+        if ( try_attribute_i( attributes, "overlap", &x) )
+        {
+            Overlap_ w(x); (*p_parent_layout) << w;
+        }
+
+        if ( try_attribute_i( attributes, "padstart", &x) )
+        {
+            PadStart_ w(x); (*p_parent_layout) << w;
+        }
+        if ( try_attribute_i( attributes, "padend", &x) )
+        {
+            PadEnd_ w(x); (*p_parent_layout) << w;
+        }
+        
+        if ( try_attribute_i( attributes, "alignsize", &x) )
+        {
+            AlignSize_ a(x); (*p_parent_layout) << a;
+        }
+        if ( try_attribute_i( attributes, "alignsizepad", &x) )
+        {
+            AlignSizePad_ a(x); (*p_parent_layout) << a;
+        }
         
         if ( try_attribute_i( attributes, "fixedsize", &x) )
         {
@@ -134,6 +157,35 @@ void InsertChildWidget( Widget *ptr, const XMLAttributes &attributes, XMLCreator
             {
                 MaxSize_ w(x); (*p_parent_layout) << w;
             }
+        }
+
+        if ( try_attribute_i( attributes, "orthofixedsize", &x) )
+        {
+            OrthoMinSize_ a1(x); (*p_parent_layout) << a1;
+            OrthoMaxSize_ a2(x); (*p_parent_layout) << a2;
+        }
+        else
+        {
+            if ( try_attribute_i( attributes, "orthominsize", &x) )
+            {
+                OrthoMinSize_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "orthomaxsize", &x) )
+            {
+                OrthoMaxSize_ a(x); (*p_parent_layout) << a;
+            }
+        }
+        if ( try_attribute_i( attributes, "orthoalignsize", &x) )
+        {
+            OrthoAlignSize_ a(x); (*p_parent_layout) << a;
+        }
+        if ( try_attribute_i( attributes, "orthoalignsizepad", &x) )
+        {
+            OrthoAlignSizePad_ a(x); (*p_parent_layout) << a;
+        }
+        if ( try_attribute_i( attributes, "orthoplacement", &x) )
+        {
+            OrthoPlacement_ a(x); (*p_parent_layout) << a;
         }
         
         if ( horizontal_layout )
@@ -153,6 +205,51 @@ void InsertChildWidget( Widget *ptr, const XMLAttributes &attributes, XMLCreator
                 {
                     MaxSize_ w(x); (*p_parent_layout) << w;
                 }
+            }
+            if ( try_attribute_i( attributes, "alignwidth", &x) )
+            {
+                AlignSize_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "alignwidthpad", &x) )
+            {
+                AlignSizePad_ a(x); (*p_parent_layout) << a;
+            }
+
+            if ( try_attribute_i( attributes, "fixedheight", &x) )
+            {
+                OrthoMinSize_ a1(x); (*p_parent_layout) << a1;
+                OrthoMaxSize_ a2(x); (*p_parent_layout) << a2;
+            }
+            else
+            {
+                if ( try_attribute_i( attributes, "minheight", &x) )
+                {
+                    OrthoMinSize_ a(x); (*p_parent_layout) << a;
+                }
+                if ( try_attribute_i( attributes, "maxheight", &x) )
+                {
+                    OrthoMaxSize_ a(x); (*p_parent_layout) << a;
+                }
+            }
+            if ( try_attribute_i( attributes, "alignheight", &x) )
+            {
+                OrthoAlignSize_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "alignheightpad", &x) )
+            {
+                OrthoAlignSizePad_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "vplacement", &x) )
+            {
+                OrthoPlacement_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "vpadstart", &x) )
+            {
+                PadStart_ w(x); (*p_parent_layout) << w;
+            }
+            if ( try_attribute_i( attributes, "vpadend", &x) )
+            {
+                PadEnd_ w(x); (*p_parent_layout) << w;
             }
         }
         
@@ -174,11 +271,52 @@ void InsertChildWidget( Widget *ptr, const XMLAttributes &attributes, XMLCreator
                     MaxSize_ w(x); (*p_parent_layout) << w;
                 }
             }
-        }
+            if ( try_attribute_i( attributes, "alignheight", &x) )
+            {
+                AlignSize_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "alignheightpad", &x) )
+            {
+                AlignSizePad_ a(x); (*p_parent_layout) << a;
+            }
 
-        if ( try_attribute_i( attributes, "overlap", &x) )
-        {
-            Overlap_ w(x); (*p_parent_layout) << w;
+
+            if ( try_attribute_i( attributes, "fixedwidth", &x) )
+            {
+                OrthoMinSize_ a1(x); (*p_parent_layout) << a1;
+                OrthoMaxSize_ a2(x); (*p_parent_layout) << a2;
+            }
+            else
+            {
+                if ( try_attribute_i( attributes, "minwidth", &x) )
+                {
+                    OrthoMinSize_ a(x); (*p_parent_layout) << a;
+                }
+                if ( try_attribute_i( attributes, "maxwidth", &x) )
+                {
+                    OrthoMaxSize_ a(x); (*p_parent_layout) << a;
+                }
+            }
+            if ( try_attribute_i( attributes, "alignwidth", &x) )
+            {
+                OrthoAlignSize_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "alignwidthpad", &x) )
+            {
+                OrthoAlignSizePad_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "hplacement", &x) )
+            {
+                OrthoPlacement_ a(x); (*p_parent_layout) << a;
+            }
+            if ( try_attribute_i( attributes, "hpadstart", &x) )
+            {
+                PadStart_ w(x); (*p_parent_layout) << w;
+            }
+            if ( try_attribute_i( attributes, "hpadend", &x) )
+            {
+                PadEnd_ w(x); (*p_parent_layout) << w;
+            }
         }
     }
     else if ( (*env).Query("parent_hub", p_parent_hub) )
@@ -392,7 +530,12 @@ void ApplyWidgetSize( Widget *ptr, const XMLAttributes &attributes )
     try_attribute_i( attributes, "autofill", &auto_fill );
     if (auto_fill)
     {
-        ptr->Posses( new FillRelation(*ptr) );
+        Rect padding;
+        try_attribute_i( attributes, "hpadstart", &padding.x );
+        try_attribute_i( attributes, "vpadstart", &padding.y );
+        try_attribute_i( attributes, "hpadend", &padding.w );
+        try_attribute_i( attributes, "vpadend", &padding.h );
+        ptr->Posses( new FillRelation(*ptr, padding) );
     }
     else if ( try_attribute( attributes, "place", &temp_string))
     {
@@ -405,16 +548,24 @@ void ApplyWidgetSize( Widget *ptr, const XMLAttributes &attributes )
         base.push_back(100);
         base.push_back(100);
         Pos b( base[0], base[1]);
+        Rect alignSize;
+        Pos  alignPlace;
+        try_attribute_i( attributes, "alignwidthpad", &alignSize.x );
+        try_attribute_i( attributes, "alignheightpad", &alignSize.y );
+        try_attribute_i( attributes, "alignwidth", &alignSize.w );
+        try_attribute_i( attributes, "alignheight", &alignSize.h );
+        try_attribute_i( attributes, "hplacement", &alignPlace.x );
+        try_attribute_i( attributes, "vplacement", &alignPlace.y );
         
         if ( place.size() == 2)
         {
             Pos p( place[0], place[1]);
-            ptr->Posses( new PlaceRelation(*ptr, p, b));
+            ptr->Posses( new PlaceRelation(*ptr, p, b, alignSize, alignPlace ));
         }
         else {
             C_assert( place.size() == 4);
             Rect r( place[0], place[1], place[2], place[3]);
-            ptr->Posses( new PlaceRelation(*ptr, r, b));
+            ptr->Posses( new PlaceRelation(*ptr, r, b, alignSize, alignPlace ));
         }
     }
     else

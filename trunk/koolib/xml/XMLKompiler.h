@@ -1349,7 +1349,7 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 _value->Execute( __unused__, state );
-                state.SetResult( CreateValue( -1 == value_of< int >( state.GetResult() ) ));
+                state.SetResult( CreateValue( 0 > value_of< int >( state.GetResult() ) ));
                 return true;
             }
         };
@@ -1365,7 +1365,7 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 _value->Execute( __unused__, state );
-                state.SetResult( CreateValue( 1 == value_of< int >( state.GetResult() ) ));
+                state.SetResult( CreateValue( 0 <  value_of< int >( state.GetResult() ) ));
                 return true;
             }
         };
@@ -1510,15 +1510,24 @@ namespace XMLProgram {
             }
         };
 
+        template < class _Op > struct OpParamSetupNone
+        {
+            static void Setup( _Op &op ) {}
+        };
+
         template< class _Op >
             struct ValueAccumulator : IChunk, CXmlErrors
             {
                 typedef typename _Op::Type Type;
+                typedef typename _Op::CType CType;
                 std::vector< IChunkPtr > _input;
+                CType _params;
 
                 ValueAccumulator()
-                {
-                }
+                {}
+
+                ValueAccumulator( const CType &params ): _params( params )
+                {}
 
                 void Add( IChunk *pChunk )
                 {
@@ -1529,7 +1538,7 @@ namespace XMLProgram {
                 {
                     try {
                         SubScope newState( state );
-                        _Op op;
+                        _Op op( _params );
                         for ( std::vector< IChunkPtr >::iterator it = _input.begin();
                                 it != _input.end(); ++it )
                         {
@@ -1554,7 +1563,8 @@ namespace XMLProgram {
         template< class _Type > struct OpADD
         {
             typedef _Type Type;
-            Type _acc; OpADD(): _acc(0) {}
+            typedef int CType;
+            Type _acc; OpADD( int  =  0): _acc(0) {}
             void apply( const Type &in ) { _acc += in; }
             const Type & get() { return _acc; }
             bool is_result() { return false; }
@@ -1563,7 +1573,8 @@ namespace XMLProgram {
         template< class _Type > struct OpMUL
         {
             typedef _Type Type;
-            Type _acc; OpMUL(): _acc(1) {}
+            typedef int CType;
+            Type _acc; OpMUL( int = 0 ): _acc(1) {}
             void apply( const Type &in ) { _acc *= in; }
             const Type & get() { return _acc; }
             bool is_result() { return false; }
@@ -1572,7 +1583,8 @@ namespace XMLProgram {
         struct OpOR
         {
             typedef bool Type;
-            Type _acc; OpOR(): _acc(0) {}
+            typedef int CType;
+            Type _acc; OpOR( int = 0 ): _acc(0) {}
             void apply( Type in ) { _acc |= in; }
             const Type & get() { return _acc; }
             bool is_result() { return (1==_acc); }
@@ -1581,7 +1593,8 @@ namespace XMLProgram {
         struct OpAND
         {
             typedef bool Type;
-            Type _acc; OpAND(): _acc(1) {}
+            typedef int CType;
+            Type _acc; OpAND( int = 0 ): _acc(1) {}
             void apply( Type in ) { _acc &= in; }
             const Type & get() { return _acc; }
             bool is_result() { return (0==_acc); }
@@ -1591,12 +1604,21 @@ namespace XMLProgram {
             struct OpCOMPARE
             {
                 typedef _Type Type;
+                typedef int CType;
                 Type _x[2]; int _n;
-                OpCOMPARE(): _n(0) {}
-                void apply( const Type &in ) { _x[_n++] = in; }
+                OpCOMPARE( int = 0 ): _n(0) {}
+                void apply( const Type &in ) { if ( 2 > _n )
+                    { _x[_n++] = in; } }
                 int get()
                 {
-                    return (_x[0] < _x[1] ? -1 : (_x[1] < _x[0] ? 1 : 0));
+                    if ( 2 <= _n )
+                    {
+                        return (_x[0] < _x[1] ? -1 : (_x[1] < _x[0] ? 1 : 0));
+                    }
+                    else
+                    {
+                        throw Useless::Error("<compare> at least two arguments expected (1-st and 2-nd are compared).");
+                    }
                 }
                 bool is_result() { return (2==_n); }
             };
@@ -1604,16 +1626,17 @@ namespace XMLProgram {
         struct OpCAT
         {
             typedef TextUtf8 Type;
+            typedef TextUtf8 CType;
             Type _acc;
-            //Type _separator;
-            //OpCAT( const TextUtf8 &separator = L"" ): _separator( separator )
-            //{}
+            Type _separator;
+            OpCAT( const TextUtf8 &separator = L"" ): _separator( separator )
+            {}
             void apply( const Type &in )
             {
-                /*if ( !_acc.empty() )
+                if ( !_acc.empty() )
                 {
                     _acc += _separator;
-                }*/
+                }
                 _acc += in;
             }
             const Type & get() { return _acc; }

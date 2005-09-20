@@ -9,8 +9,8 @@ namespace Useless {
 class PlaceRelation : public Relation
 {
 public:
-    PlaceRelation( Widget &widget, const Pos &pos, const Pos &base);
-    PlaceRelation( Widget &widget, const Rect &rect, const Pos &base);
+    PlaceRelation( Widget &widget, const Pos &pos, const Pos &base, const Rect &alignSize = Rect(), const Pos &alignPlace = Pos());
+    PlaceRelation( Widget &widget, const Rect &rect, const Pos &base, const Rect &alignSize = Rect(), const Pos &alignPlace = Pos());
     virtual ~PlaceRelation();
 
 private:
