@@ -20,7 +20,7 @@
             <title>Fill with fixed size margins.</title>
             <name>Example3a</name>
             <body>
-                <image src="lesson003_1.png"/>
+                <image src="http://utgs.berlios.de/www/tutorial/lesson003_1.png"/>
                 <p>
                     Placing a widget, that covers some part of its parent's area using <b>left</b>/<b>top</b>/<b>right</b>/<b>bottom</b> margins.
                 </p>
@@ -40,7 +40,7 @@
             <title>Proportional placement.</title>
             <name>Example3b</name>
             <body>
-                <image src="lesson003_2.png"/>
+                <image src="http://utgs.berlios.de/www/tutorial/lesson003_2.png"/>
                 <p>
                     Placing a widget, that covers some part of its parent's area using proportions.
                 </p>
@@ -60,7 +60,7 @@
             <title>Layout placement.</title>
             <name>Example3c</name>
             <body>
-                <image src="lesson003_3.png"/>
+                <image src="http://utgs.berlios.de/www/tutorial/lesson003_3.png"/>
                 <p>
                     Placing a set of widgets, using proportions and constrains.
                 </p>
