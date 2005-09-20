@@ -221,6 +221,16 @@
         <hr/>
     </xsl:template>
 
+    <xsl:template match="image">
+        <center>
+            <xsl:element name="img">
+                <xsl:attribute name="src">
+                    <xsl:value-of select="@src"/>
+                </xsl:attribute>
+            </xsl:element>
+        </center>
+    </xsl:template>
+
     <xsl:template match="tip">
         <center>
             <br/>
