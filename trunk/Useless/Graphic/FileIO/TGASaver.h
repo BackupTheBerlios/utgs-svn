@@ -33,7 +33,7 @@ public:
 };
 
 // Register TGA loader
-static ImageSaverRegistrator _tga_saver_registrator( ImageTypes::TGA, &TGASaver::Create );
+static ImageSaverRegistrator _TGA_saver_registrator( ImageTypes::TGA, &TGASaver::Create );
 
 }; // namespace Useless ends
 

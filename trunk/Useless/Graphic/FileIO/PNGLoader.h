@@ -1,14 +1,14 @@
-#ifndef __INCLUDED_USELESS_TGA_LOADER___
-#define __INCLUDED_USELESS_TGA_LOADER___
+#ifndef __INCLUDED_USELESS_PNG_LOADER___
+#define __INCLUDED_USELESS_PNG_LOADER___
 
 /*
-**  $Id: TGALoader.h,v 1.5 2002/09/12 14:27:37 koolas Exp $
+**  $Id: PNGLoader.h,v 1.5 2002/09/12 14:27:37 koolas Exp $
 **
 **  NAME
-**      TGALoader
+**      PNGLoader
 **
 **  PURPOSE
-**      Load TGA images
+**      Load PNG images
 **
 **  AUTHOR(S)
 **      KooLAS (koolas@iavision.com)
@@ -20,22 +20,22 @@
 namespace Useless {
 
 /*! \ingroup ImgIO
- *  Loads TGA files.
+ *  Loads PNG files.
  */
-class TGALoader : public ImageLoader
+class PNGLoader : public ImageLoader
 {
 public:
     virtual void Load ( IFile &ifile, OGfxFilter &filter );
     virtual void Load( IFile &ifile, PixelTransfer &transfer );
-    virtual ~TGALoader() {}
+    virtual ~PNGLoader() {}
 
     static bool Recognize( IFile &ifile, int *w,int *h,int *bpp );
     static ImageLoader * Create();
 };
 
 
-static ImageLoaderRegistrator _TGA_registrator( ImageTypes::TGA, &TGALoader::Create, &TGALoader::Recognize );
+static ImageLoaderRegistrator _PNG_registrator( ImageTypes::PNG, &PNGLoader::Create, &PNGLoader::Recognize );
 
 }; // namespace Useless ends
 
-#endif __INCLUDED_USELESS_TGA_LOADER___
+#endif __INCLUDED_USELESS_PNG_LOADER___

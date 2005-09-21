@@ -34,7 +34,7 @@ public:
     static ImageLoader * Create();
 };
 
-static ImageLoaderRegistrator _bmp_registrator( ImageTypes::BMP, &BMPLoader::Create, &BMPLoader::Recognize );
+static ImageLoaderRegistrator _BMP_registrator( ImageTypes::BMP, &BMPLoader::Create, &BMPLoader::Recognize );
 
 }; // namespace Useless ends
 

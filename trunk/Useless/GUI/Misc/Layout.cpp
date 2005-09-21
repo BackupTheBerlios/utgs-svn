@@ -179,8 +179,7 @@ void Layout::Fill()
 
                 float fx = float( (h-fixed) * wg.x * c )/float(ws * C);
                 int x = fx;
-                if ( alignsize > 0 ) { x -= alignsizepad; x /= alignsize; x *= alignsize; x += alignsizepad; }
-                //if ( x > alignsizepad && alignsize > 0 ) { x -= alignsizepad; x = (int)std::floor( (double)x / (double)alignsize + 0.0) * alignsize; x += alignsizepad; }
+                if ( alignsize.x > 0 ) { x -= alignsizepad.x; x /= alignsize.x; x *= alignsize.x; x += alignsizepad.x; }
 
                 if ( _large.find(i)!=_large.end() ) 
                 {
@@ -284,15 +283,15 @@ void HLayout::SetupWidgets( const StupidVector<int> &sizes )
             PadStart_ padstart = il.Value().second;
             PadEnd_   padend = il.Value().second;
 
-            int fullh = h - (padstart + padend);
+            int fullh = h - (padstart.x + padend.x);
             int neww = *is + overlap.x;
             int newh = h;
-            if ( omax > 0 ) { newh = std::min( newh, omax.x ); }
-            if ( omin > 0 ) { newh = std::max( newh, omin.x ); }
-            if ( oals > 0 ) { newh -= oalsp; newh /= oals.x; newh *= oals.x; newh += oalsp; fullh /= oals.x; fullh *= oals.x; }
+            if ( omax.x > 0 ) { newh = std::min( newh, omax.x ); }
+            if ( omin.x > 0 ) { newh = std::max( newh, omin.x ); }
+            if ( oals.x > 0 ) { newh -= oalsp.x; newh /= oals.x; newh *= oals.x; newh += oalsp.x; fullh /= oals.x; fullh *= oals.x; }
 
             int dx= ( *is+overlap.x - it.Key()->GetWidth() )/2 - overlap.x;
-            int dy= padstart + (( fullh - newh ) * oplace.x) / 100;
+            int dy= padstart.x + (( fullh - newh ) * oplace.x) / 100;
 
             it.Key()->Resize( neww, newh );
             it.Key()->SetPosition( p+Pos(dx,dy) );
@@ -327,14 +326,14 @@ void VLayout::SetupWidgets( const StupidVector<int> &sizes )
             PadStart_ padstart = il.Value().second;
             PadEnd_   padend = il.Value().second;
 
-            int fullw = w - (padstart + padend);
+            int fullw = w - (padstart.x + padend.x);
             int neww = fullw;
             int newh = *is + overlap.x;
-            if ( omax > 0 ) { neww = std::min( neww, omax.x ); }
-            if ( omin > 0 ) { neww = std::max( neww, omin.x ); }
-            if ( oals > 0 ) { neww -= oalsp; neww /= oals.x; neww *= oals.x; neww += oalsp; fullw /= oals.x; fullw *= oals.x; }
+            if ( omax.x > 0 ) { neww = std::min( neww, omax.x ); }
+            if ( omin.x > 0 ) { neww = std::max( neww, omin.x ); }
+            if ( oals.x > 0 ) { neww -= oalsp.x; neww /= oals.x; neww *= oals.x; neww += oalsp.x; fullw /= oals.x; fullw *= oals.x; }
 
-            int dx= padstart + (( fullw - neww ) * oplace.x ) / 100;
+            int dx= padstart.x + (( fullw - neww ) * oplace.x ) / 100;
             int dy= ( *is+overlap.x -it.Key()->GetHeight() )/2 - overlap.x;
             
             it.Key()->Resize( neww, newh );

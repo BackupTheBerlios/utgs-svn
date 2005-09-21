@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(DXSDK)/include/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -69,7 +69,7 @@
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(DXSDK)/include/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="TRUE"
@@ -686,6 +686,24 @@
 					</File>
 					<File
 						RelativePath="..\..\Useless\Graphic\FileIO\ImageSaver.h">
+					</File>
+					<File
+						RelativePath="..\..\Useless\Graphic\FileIO\PNGLoader.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories="$(LIBPNG_ROOT)/include"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AdditionalIncludeDirectories="$(LIBPNG_ROOT)/include"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\..\Useless\Graphic\FileIO\PNGLoader.h">
 					</File>
 					<File
 						RelativePath="..\..\Useless\Graphic\FileIO\TGALoader.cpp">

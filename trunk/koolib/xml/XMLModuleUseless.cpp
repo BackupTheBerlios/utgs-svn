@@ -2,9 +2,25 @@
 #include "Useless/HatcheryConfig.h"
 #undef GetFirstChild
 
+/* Include media I/Os
+
+*/
+
+// BMP is included in Uselsss.Graphic.FileIO
 #include "Useless/Graphic/FileIO/BMPLoader.h"
+
+// TGA is included in Useless.Graphic.FileIO
 #include "Useless/Graphic/FileIO/TGALoader.h"
+
+// PNG requires extrernal libPNG
+#ifdef USELESS_HAS_LIBPNG
+#   include "Useless/Graphic/FileIO/PNGLoader.h"
+#endif
+
+// WAV is included in Useless.Sound
 #include "Useless/Sound/FileIO/WaveLoader.h"
+
+
 
 #include "Useless/Graphic/Planes/TransparentImage.h"
 #include "Useless/Sound/SampleFile.h"

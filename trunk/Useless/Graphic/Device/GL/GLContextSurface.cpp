@@ -127,6 +127,12 @@ GLContextSurface::Blit( int x, int y,
         const Surf::BlitFX & fx
         )
 {
+    if ( !src_rect )
+    {
+        // ignore: blitting empty region.
+        return;
+    }
+
     const GLTextureSurface &glSrc = static_cast< const GLTextureSurface & >( src );
 
     ValidateTesselator( &glSrc );

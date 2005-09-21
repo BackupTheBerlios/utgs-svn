@@ -11,7 +11,7 @@ class ImageTypes
 public:
     enum
     { 
-        BMP,TGA 
+        BMP,TGA,PNG
     };
 };
 

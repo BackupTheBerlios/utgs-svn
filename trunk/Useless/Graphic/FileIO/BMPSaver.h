@@ -32,7 +32,7 @@ public:
 };
 
 // Register BMP loader
-static ImageSaverRegistrator _bmp_saver_registrator( ImageTypes::BMP, &BMPSaver::Create );
+static ImageSaverRegistrator _BMP_saver_registrator( ImageTypes::BMP, &BMPSaver::Create );
 
 }; // namespace Useless ends
 

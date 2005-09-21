@@ -203,7 +203,7 @@ void GenericTransfer::Fetch( const void *source, const Rect &area )
     char *d_ptr = (char*)_input_dest + offset; // input buffer
 
     int h = area.GetH();
-    while (h--)
+    while ( 0 < h-- )
     {
         memcpy( d_ptr, s_ptr, line_s);
         s_ptr += _s_pitch;
@@ -231,7 +231,7 @@ void GenericTransfer::Store( void *destination, const Rect &area )
     char *d_ptr = (char*)destination; // output destination
 
     int h = area.GetH();
-    while (h--)
+    while ( 0 < h-- )
     {
         memcpy( d_ptr, s_ptr, line_s);
         s_ptr += s_pitch;

@@ -1,5 +1,9 @@
 #include "UselessPch.h"
 
+#ifndef USELESS_HAS_DSHOW
+#   error  "USELESS_HAS_DSHOW is not defined. Please, exclude appropriate files from build."
+#endif
+
 #include "DSMedia.h"
 
 #include "Useless/ErrorConfig.h"

@@ -119,10 +119,10 @@ struct PixelType8888
 #ifdef BGR_COLOR_32
         p.u = pixel;
 #else
-        p.c.a = (unsigned char)((pixel&0xFF0000)>>24);
-        p.c.r = (unsigned char)((pixel&0xFF0000)>>16);
-        p.c.g = (unsigned char)((pixel&0x00FF00)>>8);
-        p.c.b = (unsigned char) (pixel&0x0000FF);
+        p.c.a = (unsigned char)((pixel&0xFF000000)>>24);
+        p.c.b = (unsigned char)((pixel&0x00FF0000)>>16);
+        p.c.g = (unsigned char)((pixel&0x0000FF00)>>8);
+        p.c.r = (unsigned char) (pixel&0x000000FF);
 #endif
         return p;
     }
@@ -189,9 +189,9 @@ struct PixelType888
         p.u = (*(unsigned long*)bytes)&0x00ffffff | 0xff000000;
 #else
         p.c.a = 0xff;
-        p.c.r = bytes[2];
+        p.c.b = bytes[2];
         p.c.g = bytes[1];
-        p.c.b = bytes[0];
+        p.c.r = bytes[0];
 #endif
         return p;
     }
@@ -203,6 +203,39 @@ struct PixelType888
 
     unsigned char bytes[3];
 };
+
+/*! Red:8 Green:8 Blue:8 (swapped R<=>B)
+-----------------------------------------*/
+struct PixelType888s
+{ 
+    PixelType888s() { bytes[0]=0; bytes[1]=0; bytes[2]=0; }
+    PixelType888s( unsigned long pixel) { ( (*(unsigned long*)bytes) &= 0xff000000 )|= (pixel&0x00ffffff); }
+    PixelType888s( unsigned char r, unsigned char g, unsigned char b )  { bytes[2]=b; bytes[1]=g; bytes[0]=r; }
+    PixelType888s( NormalRGB p ) { bytes[2]=p.b; bytes[1]=p.g; bytes[0]=p.r; }
+
+    NormalPixel Get() 
+    {   
+        NormalPixel p;
+
+#ifndef BGR_COLOR_32
+        p.u = (*(unsigned long*)bytes)&0x00ffffff | 0xff000000;
+#else
+        p.c.a = 0xff;
+        p.c.b = bytes[2];
+        p.c.g = bytes[1];
+        p.c.r = bytes[0];
+#endif
+        return p;
+    }
+    bool operator ==( const PixelType888s p) { return ( bytes[0]==p.bytes[0] )&&( bytes[1]==p.bytes[1] )&&( bytes[2]==p.bytes[2] ); }
+    operator unsigned long() { return *(unsigned long*)bytes; }
+    static ImageFormat::Format Fmt() { return ImageFormat::R8G8B8; }
+
+    enum { MASK1=0xFEFEFE, MASK2=0xFCFCFC, MASK3=0xF8F8F8 }; 
+
+    unsigned char bytes[3];
+};
+
 
 /*! Alpha:8 Red:8 Green:8 Blue:8
 -----------------------------------------*/
@@ -222,10 +255,10 @@ struct PixelType8888s
 #ifndef BGR_COLOR_32
         p.u = pixel;
 #else
-        p.c.a = (unsigned char)((pixel&0xFF0000)>>24);
-        p.c.b = (unsigned char)((pixel&0xFF0000)>>16);
-        p.c.g = (unsigned char)((pixel&0x00FF00)>>8);
-        p.c.r = (unsigned char) (pixel&0x0000FF);
+        p.c.a = (unsigned char)((pixel&0xFF000000)>>24);
+        p.c.b = (unsigned char)((pixel&0x00FF0000)>>16);
+        p.c.g = (unsigned char)((pixel&0x0000FF00)>>8);
+        p.c.r = (unsigned char) (pixel&0x000000FF);
 #endif
         return p;
     }
@@ -378,9 +411,9 @@ struct PixelType8XXX
     PixelType8XXX& operator=( const PixelType8XXX &p )
     {
         int alpha= (p.pixel & 0xFF000000)>>24;
-        int ch_0 = (pixel & 0xFF0000)>>16;
-        int ch_1 = (pixel & 0x00FF00)>>8;
-        int ch_2 = (pixel & 0x0000FF);
+        int ch_0 = (pixel   & 0x00FF0000)>>16;
+        int ch_1 = (pixel   & 0x0000FF00)>>8;
+        int ch_2 = (pixel   & 0x000000FF);
         (ch_0 *= alpha) /= 255;
         (ch_1 *= alpha) /= 255;
         (ch_2 *= alpha) /= 255;
@@ -447,6 +480,12 @@ struct PixelTraits< ImageFormat::R8G8B8A8 >
 };
 
 template<>
+struct PixelTraits< ImageFormat::R8G8B8 >
+{
+    typedef PixelType888s PixelType;
+};
+
+template<>
 struct PixelTraits< ImageFormat::A4R4G4B4 >
 {
     typedef PixelType4444 PixelType;
@@ -503,6 +542,7 @@ struct PixelTraits< ImageFormat::ALPHA8PM >
         __PIXEL_SWITCH_CASE(ImageFormat::R5G6B5  ,command,name)\
         __PIXEL_SWITCH_CASE(ImageFormat::A1R5G5B5,command,name)\
         __PIXEL_SWITCH_CASE(ImageFormat::R8G8B8A8,command,name)\
+        __PIXEL_SWITCH_CASE(ImageFormat::R8G8B8  ,command,name)\
         __PIXEL_SWITCH_CASE(ImageFormat::A4R4G4B4,command,name)\
         __PIXEL_SWITCH_CASE(ImageFormat::A4B4G4R4,command,name)\
         __PIXEL_SWITCH_CASE(ImageFormat::ALPHA8  ,command,name)\
