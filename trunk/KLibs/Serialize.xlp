@@ -43,20 +43,50 @@
                                     <apply id="serial" select="Serialize">
                                         <let id="object" select="pair:2-nd"/>
                                     </apply>
-                                    <block>
-                                        <extract select="serial"/>
-                                        <block id="attributes">
-                                            <string id="id" select="pair:1-st"/>
-                                        </block>
-                                    </block>
+                                    <choose>
+                                        <when>
+                                            <is-defined id="serial:attributes"/>
+                                            <set id="serial:attributes">
+                                                <block>
+                                                    <extract select="serial:attributes"/>
+                                                    <string id="id" select="pair:1-st"/>
+                                                </block>
+                                            </set>
+                                            <get id="serial"/>
+                                        </when>
+                                        <otherwise>
+                                            <block>
+                                                <extract select="serial"/>
+                                                <block id="attributes">
+                                                    <string id="id" select="pair:1-st"/>
+                                                </block>
+                                            </block>
+                                        </otherwise>
+                                    </choose>
                                 </function>
                             </map>
                         </block>
                     </when>
+                    <when test="$(object:type-name) empty =">
+                        <block>
+                            <string id="name" value="empty"/>
+                        </block>
+                    </when>
                     <otherwise>
-                        <empty/>
+                        <block>
+                            <string id="name" value="empty"/>
+                            <block id="attributes">
+                                <string id="type-name">$(object:type-name)</string>
+                                <string id="defined-symbols">$(object:defined-symbols)</string>
+                            </block>
+                        </block>
                     </otherwise>
                 </choose>
+            </function>
+            <function id="SerializeToXMLString">
+                <apply select="Toolkit:ToXMLString">
+                    <apply id="root" select="Serialize"/>
+                </apply>
             </function>
         </compile>
 
@@ -66,8 +96,12 @@
                     <string id="file" select="file"/>
                     <apply id="data" select="Toolkit:ToXMLString">
                         <doin id="root">
-                            <copy><xml encoding="utf-8"><compile run="1"><block/></compile></xml></copy>
-                            <set id="children:head:children:head:children">
+                            <copy>
+                                <xml encoding="utf-8">
+                                    <block/>
+                                </xml>
+                            </copy>
+                            <set id="children:head:children">
                                 <list>
                                     <do>
                                         <apply id="serial" select="Serialize">
@@ -75,9 +109,6 @@
                                         </apply>
                                         <block>
                                             <extract select="serial"/>
-                                            <block id="attributes">
-                                                <string id="id" value="Root"/>
-                                            </block>
                                         </block>
                                     </do>
                                 </list>
@@ -90,16 +121,28 @@
         </compile>
 
         <function id="ReadObject" parameters="file">
-            <run file="$(file)" object="__ObjectReader__"/>
-            <let id="readResult">
-                <send to="__ObjectReader__">
-                    <compile run="1">
-                        <get id="Root"/>
-                    </compile>
-                </send>
-            </let>
-            <kill object="__ObjectReader__"/>
-            <get id="readResult"/>
+            <call>
+                <compile>
+                    <choose>
+                        <when>
+                            <apply select="Toolkit:FileExists">
+                                <let id="path" select="file"/>
+                            </apply>
+                            <apply id="Kompiled" select="Kompiler:CompileString">
+                                <apply id="code" select="Toolkit:ReadFile"/>
+                            </apply>
+                            <apply select="Kompiled"/>
+                        </when>
+                        <when>
+                            <is-defined id="initialObject"/>
+                            <get id="initialObject"/>
+                        </when>
+                        <otherwise>
+                            <error>Cannot find file: '$(file)'.</error>
+                        </otherwise>
+                    </choose>
+                </compile>
+            </call>
         </function>
     </do>
 
