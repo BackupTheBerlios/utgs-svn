@@ -8,12 +8,13 @@ namespace Dynamo {
     // Constants used to select proper pixel format
     struct ColorMode
     {
-        enum Constant { GREY=0, ALPHA=1, RGB=2, RGBA=3 };
+        enum Constant { GREY=0, ALPHA=1, RGB=2, RGBA=3, BGR=4, BGRA=5 };
     };
 
     // Pixel transfer interface - READ
     struct IPixelReader : virtual IInterface
     {
+        virtual void GetInput   ( size_t *width, size_t *height, ColorMode::Constant *mode ) = 0;
         virtual void SetupOutput( ColorMode::Constant mode, size_t pitch ) = 0;
         virtual void ReadPixels ( void *pointer, Rect4i area ) = 0;
     };
@@ -21,8 +22,8 @@ namespace Dynamo {
     // Pixel transfer interface - WRITE
     struct IPixelWriter : virtual IInterface
     {
-        virtual void SetupInput ( ColorMode::Constant mode, size_t pitch ) = 0;
-        virtual void WritePixels( void *pointer, Rect4i area ) = 0;
+        virtual void SetupInput ( size_t width, size_t height, ColorMode::Constant mode, size_t pitch ) = 0;
+        virtual void WritePixels( const void *pointer, Rect4i area ) = 0;
     };
 
     // An information attached to graphic data
@@ -58,7 +59,7 @@ namespace Dynamo {
         // Create new image with alpha channel
         virtual IGraphicPlane * CreateTransparentImage( std::string fileName, std::string maskName ) = 0;
         // Transfer pixels from file to user-supplied writter
-        virtual void LoadPixels( std::string fileName, IPixelWriter *writer, ColorMode::Constant mode ) = 0;
+        virtual void LoadPixels( std::string fileName, IPixelWriter *writer ) = 0;
     };
 
     // Sounds & Music
