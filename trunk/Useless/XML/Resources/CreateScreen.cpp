@@ -26,7 +26,11 @@ Resource* CreateScreen( XMLIterator i, XMLCreatorEnv *env )
     try_attribute_i( (*i)._attributes, "windowed", &windowed );
     try_attribute_i( (*i)._attributes, "sys_cursor", &sys_cursor );
     try_attribute( (*i)._attributes, "title", &title );
-    try_attribute_i( (*i)._attributes, "decorations", &decorations );
+    if ( !try_attribute_i( (*i)._attributes, "decorations", &decorations ))
+    {
+        // fullscreen apps have no window-decorations.
+        decorations = windowed;
+    }
     reposition = try_attribute_i( (*i)._attributes, "x", &x );
     reposition |= try_attribute_i( (*i)._attributes, "y", &y );
 
@@ -56,12 +60,12 @@ Resource* CreateScreen( XMLIterator i, XMLCreatorEnv *env )
     if ( reposition )
         p_screen->Reposition( x, y );
 
-    p_screen->Clear( 0L );
-    p_screen->PrintText( (width - 300)/2, height/2, "Initializing ...");
+    p_screen->Clear( 0L, Rect( width, height ));
+    p_screen->PrintText( 20, 20, "Setting up display. Please, wait...");
     p_screen->Swap();
-	p_screen->Clear( 0L );
-	p_screen->PrintText( (width - 300)/2, height/2, "Initializing ...");
-	p_screen->Swap();
+    p_screen->Clear( 0L, Rect( width, height ));
+    p_screen->PrintText( 20, 20, "Setting up display. Please, wait...");
+    p_screen->Swap();
     
 
     return new AnyResource< SPointer<Screen> >( p_screen );

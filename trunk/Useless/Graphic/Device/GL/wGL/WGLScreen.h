@@ -60,7 +60,17 @@ namespace Useless {
         private:
             SPointer< WGLSurface > _glContextSurface;
 
+            void InitDevMode( int width, int height, int bpp, float refresh );
+            void InitDDraw( int width, int height, int bpp, float refresh );
             void InitOpenGL();
+
+            void SlotFullscreenActive();
+            void SlotFullscreenInactive();
+
+            bool    m_windowed;
+            bool    m_active;
+            DEVMODE m_devmode;
+            Surf::Properties m_prop;
     };
 
 
