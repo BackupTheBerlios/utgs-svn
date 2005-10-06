@@ -92,6 +92,7 @@
 				OutputFile="$(OutDir)/KooLiXP.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(OGGVORBIS_ROOT)/lib&quot;;&quot;$(CRYPTOPP_ROOT)/Release&quot;;&quot;$(LIBPNG_ROOT)/lib&quot;"
+				DelayLoadDLLs="vorbis.dll;ogg.dll;dsound.dll;ddraw.dll;zlib1.dll;ws2_32.dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

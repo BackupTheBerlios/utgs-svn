@@ -43,6 +43,10 @@ PFNWGLGETPBUFFERDCARBPROC           wglGetPbufferDCARB           = NULL;
 PFNWGLRELEASEPBUFFERDCARBPROC       wglReleasePbufferDCARB       = NULL;
 PFNWGLDESTROYPBUFFERARBPROC         wglDestroyPbufferARB         = NULL;
 PFNWGLQUERYPBUFFERARBPROC           wglQueryPbufferARB           = NULL;
+
+// WGL_ARB_make_current_read functions (added by koolas)
+PFNWGLMAKECONTEXTCURRENTARBPROC wglMakeContextCurrentARB = NULL;
+PFNWGLGETCURRENTREADDCARBPROC   wglGetCurrentReadDCARB   = NULL;
 };
 
 
@@ -102,49 +106,34 @@ int FindFormatFloat(HDC hDC)
 
 // Called when dummy window is opened. Its only job is to get hold
 // of wgl extensions.
-static void WGLCallback(HWND wnd)
+void InitWGLExtensionsHWND( HWND wnd )
 {
     if (wnd == NULL)
         return;
     
     HDC hdc = GetDC(wnd);
+    
+    PIXELFORMATDESCRIPTOR pfd;
+    ZeroMemory( &pfd, sizeof(pfd));
+    pfd.nSize = sizeof(pfd);
+    pfd.nVersion = 1;
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    pfd.iPixelType = PFD_TYPE_RGBA;
+    pfd.cColorBits = 24;
+    pfd.cDepthBits = 16;
+    pfd.iLayerType = PFD_MAIN_PLANE;
+    int iFormat = ChoosePixelFormat( hdc, &pfd);
+    SetPixelFormat( hdc, iFormat, &pfd);
+    HGLRC context = wglCreateContext( hdc );
+    wglMakeCurrent( hdc, context );
+    InitWGLExtensionsHDC( hdc );
+    wglMakeCurrent( 0, 0 );
+    wglDeleteContext( context );
+    ReleaseDC( wnd, hdc );
+}
 
-    if (hdc == NULL)
-        return;
-
-    PIXELFORMATDESCRIPTOR pfd = { 
-        sizeof(PIXELFORMATDESCRIPTOR),  //  size of this pfd 
-        1,                              // version number 
-        PFD_DRAW_TO_WINDOW |            // support window 
-        PFD_SUPPORT_OPENGL |            // support OpenGL 
-        PFD_DOUBLEBUFFER,               // double buffered 
-        PFD_TYPE_RGBA,                  // RGBA type 
-        24,                             // 24-bit color depth 
-        0, 0, 0, 0, 0, 0,               // color bits ignored 
-        0,                              // no alpha buffer 
-        0,                              // shift bit ignored 
-        0,                              // no accumulation buffer 
-        0, 0, 0, 0,                     // accum bits ignored 
-        24,                             // 24-bit z-buffer     
-        0,                              // no stencil buffer 
-        0,                              // no auxiliary buffer 
-        PFD_MAIN_PLANE,                 // main layer 
-        0,                              // reserved 
-        0, 0, 0                         // layer masks ignored 
-    }; 
-
-    unsigned int        pixelFormat = ChoosePixelFormat(hdc, &pfd);
-
-    DescribePixelFormat(hdc, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
-    if (!SetPixelFormat(hdc, pixelFormat, &pfd))
-        return;
-
-    HGLRC context = wglCreateContext(hdc);
-    if (context == NULL)
-        return;
-
-    wglMakeCurrent(hdc, context);
-
+void InitWGLExtensionsHDC( HDC hdc )
+{
     wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC) wglGetProcAddress("wglGetExtensionsStringARB");
     if (wglGetExtensionsStringARB == NULL)
         return;
@@ -203,14 +192,20 @@ static void WGLCallback(HWND wnd)
         else if (strcmp(buff, "WGL_ARB_render_texture") == 0)
         {
         }
+        // added by koolas
+        else if (strcmp(buff, "WGL_ARB_make_current_read") == 0)
+        {
+            wglMakeContextCurrentARB = (PFNWGLMAKECONTEXTCURRENTARBPROC)wglGetProcAddress("wglMakeContextCurrentARB");
+            wglGetCurrentReadDCARB   = (PFNWGLGETCURRENTREADDCARBPROC)wglGetProcAddress("wglGetCurrentReadDCARB");
+            if ( wglMakeContextCurrentARB != NULL &&
+                 wglGetCurrentReadDCARB != NULL )
+            {
+                supportedExtensions.push_back(buff);
+            }
+        }
 
         ext += strlen(buff) + 1;                                        
     }
-    
-    // Close down this context
-    wglMakeCurrent(NULL, NULL);
-    wglDeleteContext(context);
-    ReleaseDC(wnd, hdc);
 }
 
 
@@ -222,7 +217,7 @@ static LRESULT CALLBACK WGLWindProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
     case WM_CREATE:
         {
             CREATESTRUCT *cs = (CREATESTRUCT *) lParam;
-            WGLCallback(hwnd);
+            InitWGLExtensionsHWND(hwnd);
             return -1; 
         }
  

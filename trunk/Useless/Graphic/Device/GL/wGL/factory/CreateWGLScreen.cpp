@@ -16,8 +16,10 @@ namespace Useless {
 
     Surface* CreateWGLSurfaceProp( const Surf::Properties &p )
     {
-        Surf::Properties pp(p);
-        return new WGLSurface( pp );
+        //Surf::Properties pp(p);
+        //return new WGLSurface( pp );
+        throw Error("WGL: CreateWGLSurfaceProp - Not implemented!");
+        return 0;
     }
 
 };//namespace Useless

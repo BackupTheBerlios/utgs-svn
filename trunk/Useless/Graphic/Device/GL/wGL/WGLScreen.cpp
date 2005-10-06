@@ -9,15 +9,20 @@ namespace Useless {
 
     extern bool G_EnableDDrawScr;
 
+    // Used to start fullscreen via DDraw.
     IDirectDraw7 *G_pDDraw = 0;
-
-    void GLUpdateMovieSamples( GLTextureSurfaceAllocator *pTexAlloc );
-
 
     WGLScreen::WGLScreen( const char *title): Window( title ), m_active( false )
     {
+
         // aviod refreshing with windows background color
         AllowClear(0);
+        
+        // Screen surface has these attributes:
+        m_prop.primary = true;
+        m_prop.renderable = true;
+        m_prop.color = true;
+        m_prop.zbuffer = true;
     }
 
     WGLScreen::~WGLScreen()
@@ -32,63 +37,53 @@ namespace Useless {
         m_windowed = false;
         m_prop.width = width;
         m_prop.height = height;
+        m_prop.pixelformat = ImageFormat::R8G8B8;
 
         HWND hwnd = Window::GetHandle();
         HDC hdc = GetDC( hwnd );
 
         SetWindowLong( hwnd, GWL_STYLE, WS_POPUP);
-        Window::Resize( width, height);
 
         if ( !G_EnableDDrawScr )
         {
             InitDevMode( width, height, bpp, refresh );
-            // test
-            _glContextSurface.Reset( new WGLSurface( m_prop ) );    
-            _glContextSurface->_devContext = hdc;
-            _glContextSurface->SetClipper( Rect(0, 0, m_prop.width, m_prop.height ));
-            InitOpenGL();
-            // OnActivate will continue fullscreen setup.
-            // Note: in DDraw OnActivate IS NOT available.
+            _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );
+            
+            // Signals below are used only in GDI fullscreen.
+            // They are not available under DDraw fullscreen.
             Tie2Signal( OnActivate, this, &WGLScreen::SlotFullscreenActive );
             Tie2Signal( OnDeactivate, this, &WGLScreen::SlotFullscreenInactive );
         }
         else
         {
             InitDDraw( width, height, bpp, refresh );
-            // Done once in DDraw
-            _glContextSurface.Reset( new WGLSurface( m_prop ) );    
-            _glContextSurface->_devContext = hdc;
-            _glContextSurface->SetClipper( Rect(0, 0, m_prop.width, m_prop.height ));
-            InitOpenGL();
-            // In DDraw we have no feedback about window being focussed.
-            // To avoid further complications we assume window is active all the time.
-            m_active = true;
+            _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );    
         }
+        
+        _glContextSurface->GetProperties( &m_prop );
+
+        Tie2Signal( OnResize, this, SlotResize );
         Window::Show();
     }
 
     void WGLScreen::OpenWindowed( int width, int height)
     {
         Close();
+        
+        m_windowed  = true;
+        m_prop.width = width;
+        m_prop.height = height;
+        m_prop.pixelformat = ImageFormat::R8G8B8;
+        
+        Rect dr = GetWindowRect() - GetClientRect();
+        Window::Resize( width + dr.GetW(), height + dr.GetH() );
 
         HWND hwnd = Window::GetHandle();
         HDC hdc = GetDC( hwnd );
-
-        m_windowed = true;
         
-        Rect dr = GetWindowRect() - GetClientRect();
-
-        hdc = GetDC( hwnd);
-        Window::Resize( width + dr.GetW(), height + dr.GetH() );
-
-        m_prop.width = width;
-        m_prop.height = height;
-        _glContextSurface.Reset( new WGLSurface( m_prop ) );    
-        _glContextSurface->_devContext = hdc;
-        _glContextSurface->SetClipper( Rect(0, 0, width, height ));
-
-        InitOpenGL();
-
+        _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );
+        
+        Tie2Signal( OnResize, this, SlotResize );
         Window::Show();
     }
 
@@ -139,25 +134,6 @@ namespace Useless {
         G_pDDraw->SetDisplayMode( width, height, bpp, refresh, 0);
     }
 
-    void WGLScreen::InitOpenGL()
-    {
-        // Initialize OpenGL
-        PIXELFORMATDESCRIPTOR pfd;
-        ZeroMemory( &pfd, sizeof(pfd));
-        pfd.nSize = sizeof(pfd);
-        pfd.nVersion = 1;
-        pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-        pfd.iPixelType = PFD_TYPE_RGBA;
-        pfd.cColorBits = 24;
-        pfd.cDepthBits = 16;
-        pfd.iLayerType = PFD_MAIN_PLANE;
-        int iFormat = ChoosePixelFormat( _glContextSurface->_devContext, &pfd);
-        SetPixelFormat( _glContextSurface->_devContext, iFormat, &pfd);
-        _glContextSurface->_glContext = wglCreateContext( _glContextSurface->_devContext );
-        _glContextSurface->MakeCurrent();
-        Tie2Signal( OnResize, _glContextSurface.get(), &GLContextSurface::SetSize );
-    }
-    
     void WGLScreen::SlotFullscreenActive()
     {
         if ( m_active )
@@ -168,8 +144,8 @@ namespace Useless {
         if ( !m_windowed && !G_EnableDDrawScr )
         {
             Window::Resize( m_prop.width, m_prop.height );
+            Window::Reposition( 0, 0);
 
-            //_glContextSurface.Release();
             long res = ChangeDisplaySettingsEx( 0, &m_devmode, 0, CDS_FULLSCREEN, 0);
             switch(res)
             {
@@ -197,10 +173,24 @@ namespace Useless {
             ::ChangeDisplaySettingsEx( NULL, NULL, NULL, 0, NULL );
         }
     }
+            
+    void WGLScreen::SlotResize( int w, int h )
+    {
+        if ( w > 0 && h > 0 )
+        {
+            _glContextSurface->SetSize( w, h );
+            _glContextSurface->GetProperties( &m_prop );
+        }
+    }
 
     void WGLScreen::Close()
     {
-        _glContextSurface.Reset();
+        if ( !!_glContextSurface )
+        {
+            HDC hdc = _glContextSurface->_devContext;
+            _glContextSurface.Reset();
+            ::ReleaseDC( GetHandle(), hdc );
+        }
 
         if ( 0 != G_pDDraw )
         {

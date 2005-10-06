@@ -365,6 +365,8 @@ extern "C" {
 #endif /* WGL_WGLEXT_PROTOTYPES */
     typedef BOOL (WINAPI * PFNWGLMAKECONTEXTCURRENTARBPROC) (HDC hDrawDC, HDC hReadDC, HGLRC hglrc);
     typedef HDC (WINAPI * PFNWGLGETCURRENTREADDCARBPROC) (void);
+    extern PFNWGLMAKECONTEXTCURRENTARBPROC wglMakeContextCurrentARB;
+    extern PFNWGLGETCURRENTREADDCARBPROC wglGetCurrentReadDCARB;
 #endif
 
 #ifndef WGL_ARB_pbuffer
@@ -515,6 +517,8 @@ extern "C" {
 #include <string>
 
 void InitWGLExtensions( HINSTANCE );
+void InitWGLExtensionsHWND( HWND );
+void InitWGLExtensionsHDC( HDC );
 bool WGLExtensionSupported(const std::string& extName);
 
 #endif

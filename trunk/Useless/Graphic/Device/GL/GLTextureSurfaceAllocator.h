@@ -39,6 +39,7 @@ namespace Useless {
     };
 
     void GLFreeSurfaceGarbage( GLTextureSurface *s );
+    void GLUpdateMovieSamples( GLTextureSurfaceAllocator *pTexAlloc );
 
 
 };//Useless

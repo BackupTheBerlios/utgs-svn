@@ -62,10 +62,10 @@ namespace Useless {
 
             void InitDevMode( int width, int height, int bpp, float refresh );
             void InitDDraw( int width, int height, int bpp, float refresh );
-            void InitOpenGL();
 
             void SlotFullscreenActive();
             void SlotFullscreenInactive();
+            void SlotResize( int w, int h );
 
             bool    m_windowed;
             bool    m_active;
