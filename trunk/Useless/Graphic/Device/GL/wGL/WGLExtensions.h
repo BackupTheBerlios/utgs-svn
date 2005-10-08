@@ -519,6 +519,7 @@ extern "C" {
 void InitWGLExtensions( HINSTANCE );
 void InitWGLExtensionsHWND( HWND );
 void InitWGLExtensionsHDC( HDC );
+void InitWGLExtensionsHGLRC( HDC, HGLRC );
 bool WGLExtensionSupported(const std::string& extName);
 
 #endif

@@ -69,8 +69,7 @@ namespace Useless {
         bool    _useColorKey;
         bool    _useAlpha;
 
-        PixelBuffer _pixelBuffer;
-        mutable SPointer< ImageTesselator > _tesselator;
+        PixelBuffer  _pixelBuffer;
         mutable bool _dirty;
     };
 

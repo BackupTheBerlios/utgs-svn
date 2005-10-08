@@ -26,9 +26,7 @@ GLTextureSurface::GLTextureSurface( Surf::Properties &properties )
             properties.width,
             properties.height,
             ( _useAlpha || _useColorKey ) ? ImageFormat::B8G8R8A8 : ImageFormat::B8G8R8, 
-            //properties.pixelformat,
-            64, 64
-            );
+            1, 1, 2, 2 );
 
     properties = Surf::Properties();
     properties.width = _pixelBuffer.GetWidth();

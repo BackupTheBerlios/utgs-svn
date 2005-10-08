@@ -135,13 +135,13 @@ GLContextSurface::Blit( int x, int y,
 
     const GLTextureSurface &glSrc = static_cast< const GLTextureSurface & >( src );
 
-    ValidateTesselator( &glSrc );
-
     Prepare2D();
+
+    ImageTesselator &tesselator = GetTesselator( &glSrc );
 
     glEnable( GL_TEXTURE_2D );
 
-    glSrc._tesselator->Clip(
+    tesselator.Clip(
             src_rect.GetX1(),
             src_rect.GetY1(),
             src_rect.GetX2(),
@@ -192,7 +192,7 @@ GLContextSurface::Blit( int x, int y,
         double stretch_h = ((double)dstR.GetH()) / (double)src_rect.GetH();
         
         ImageTesselator::RenderTransform renderTransform;
-        glSrc._tesselator->SetRenderTransform( &renderTransform, stretch_w, stretch_h );
+        tesselator.SetRenderTransform( &renderTransform, stretch_w, stretch_h );
 
         dstP.x = x - ( src_rect.GetX() * dstR.GetW()) / src_rect.GetW();
         dstP.y = y - ( src_rect.GetY() * dstR.GetH()) / src_rect.GetH();
@@ -204,10 +204,10 @@ GLContextSurface::Blit( int x, int y,
             if ( !!r )
             {
                 glScissor( r.GetX(), _h - r.GetY() - r.GetH(), r.GetW(), r.GetH() );
-                //glSrc._tesselator->Render( dstP.x, dstP.y, stretchW, stretchH, false );
+                //tesselator->Render( dstP.x, dstP.y, stretchW, stretchH, false );
                 glPushMatrix();
-                glSrc._tesselator->UseRenderTransform( &renderTransform, dstP.x, dstP.y );
-                glSrc._tesselator->Render();
+                tesselator.UseRenderTransform( &renderTransform, dstP.x, dstP.y );
+                tesselator.Render();
                 glPopMatrix();
             }
         }
@@ -215,7 +215,7 @@ GLContextSurface::Blit( int x, int y,
     else
     {
         ImageTesselator::RenderTransform renderTransform;
-        glSrc._tesselator->SetRenderTransform( &renderTransform, 1.0, 1.0 );
+        tesselator.SetRenderTransform( &renderTransform, 1.0, 1.0 );
 
         dstP = Pos(x, y) - src_rect.GetPos();
         dstR = Rect(x, y, src_rect.GetW(), src_rect.GetH() );
@@ -227,16 +227,16 @@ GLContextSurface::Blit( int x, int y,
             if ( !!r )
             {
                 glScissor( r.GetX(), _h - r.GetY() - r.GetH(), r.GetW(), r.GetH() );
-                //glSrc._tesselator->Render( dstP.x, dstP.y, false );
+                //tesselator.Render( dstP.x, dstP.y, false );
                 glPushMatrix();
-                glSrc._tesselator->UseRenderTransform( &renderTransform, dstP.x, dstP.y );
-                glSrc._tesselator->Render();
+                tesselator.UseRenderTransform( &renderTransform, dstP.x, dstP.y );
+                tesselator.Render();
                 glPopMatrix();
             }
         }
     }
 
-    FinishTesselator( &glSrc );
+    ReleaseTesselator( &glSrc, tesselator );
 }
 
 void GLContextSurface::MultiBlit( const Surface &src,
@@ -246,9 +246,9 @@ void GLContextSurface::MultiBlit( const Surface &src,
 {
     const GLTextureSurface &glSrc = static_cast< const GLTextureSurface & >( src );
 
-    ValidateTesselator( &glSrc );
-
     Prepare2D();
+
+    ImageTesselator &tesselator = GetTesselator( &glSrc );
 
     glEnable( GL_TEXTURE_2D );
 
@@ -286,7 +286,7 @@ void GLContextSurface::MultiBlit( const Surface &src,
 
     glLoadIdentity();
     ImageTesselator::RenderTransform renderTransform;
-    glSrc._tesselator->SetRenderTransform( &renderTransform, 1.0, 1.0 );
+    tesselator.SetRenderTransform( &renderTransform, 1.0, 1.0 );
     
     
     std::multimap< int, int > rectsPerTile;
@@ -294,16 +294,16 @@ void GLContextSurface::MultiBlit( const Surface &src,
     {
         Rect src_rect = rects[i];
 
-        glSrc._tesselator->Clip(
+        tesselator.Clip(
                 src_rect.GetX1(),
                 src_rect.GetY1(),
                 src_rect.GetX2(),
                 src_rect.GetY2()
                 );
 
-        for ( int j=0, J=glSrc._tesselator->_tesselRender.size(); j<J; ++j )
+        for ( int j=0, J=tesselator._tesselRender.size(); j<J; ++j )
         {
-            rectsPerTile.insert( std::pair< int, int >( glSrc._tesselator->_tesselRender[j], i ));
+            rectsPerTile.insert( std::pair< int, int >( tesselator._tesselRender[j], i ));
         }
     }
 
@@ -317,8 +317,8 @@ void GLContextSurface::MultiBlit( const Surface &src,
         int y = points[ rectNo ].y;
         Rect src_rect = rects[ rectNo ];
 
-        glSrc._tesselator->_tesselRender.resize(1);
-        glSrc._tesselator->_tesselRender[0] = tileNo;
+        tesselator._tesselRender.resize(1);
+        tesselator._tesselRender[0] = tileNo;
 
         Pos  dstP;
         Rect dstR;
@@ -339,7 +339,7 @@ void GLContextSurface::MultiBlit( const Surface &src,
                 if ( !!r )
                 {
                     glScissor( r.GetX(), _h - r.GetY() - r.GetH(), r.GetW(), r.GetH() );
-                    glSrc._tesselator->Render( dstP.x, dstP.y, stretchW, stretchH, false );
+                    tesselator.Render( dstP.x, dstP.y, stretchW, stretchH, false );
                 }
             }
         }
@@ -355,17 +355,17 @@ void GLContextSurface::MultiBlit( const Surface &src,
                 if ( !!r )
                 {
                     glScissor( r.GetX(), _h - r.GetY() - r.GetH(), r.GetW(), r.GetH() );
-                    //glSrc._tesselator->Render( dstP.x, dstP.y, false );
+                    //tesselator.Render( dstP.x, dstP.y, false );
                     glPushMatrix();
-                    glSrc._tesselator->UseRenderTransform( &renderTransform, dstP.x, dstP.y );
-                    glSrc._tesselator->Render();
+                    tesselator.UseRenderTransform( &renderTransform, dstP.x, dstP.y );
+                    tesselator.Render();
                     glPopMatrix();
                 }
             }
         }
     }
 
-    FinishTesselator( &glSrc );
+    ReleaseTesselator( &glSrc, tesselator );
 }
 
 

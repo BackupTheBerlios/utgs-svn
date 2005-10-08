@@ -56,6 +56,7 @@ namespace XMLProgram {
             void        CreateRectList  ( Node node, ExecutionState &state );
             void        CreateScreen    ( Node node, ExecutionState &state );
             void        CreateImage     ( Node node, ExecutionState &state );
+            IChunkPtr   CreateImageBuffer( int width, int height );
             IChunkPtr   CreateSample    ( std::string fileName );
             void        CreateChannel   ( Node __unused__, ExecutionState &state );
             IChunkPtr   CreateOggVorbis ( std::string fileName );

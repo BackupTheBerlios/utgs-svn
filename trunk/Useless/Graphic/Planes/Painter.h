@@ -49,6 +49,8 @@ public:
 
     void * GetExtFun( const std::string &fun );
 
+    OGraphics * GetPlane() { return _plane; }
+
 private:
     OGraphics         *_plane;          //!< Destination for paint operations
     Pos                _offset;         //!< Destination position offset

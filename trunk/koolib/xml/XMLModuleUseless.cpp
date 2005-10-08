@@ -78,6 +78,7 @@ namespace XMLProgram {
                 .def("CreatePointList", CreatePointList )
                 .def("CreateRectList", CreateRectList )
                 .def("CreateScreen", CreateScreen )
+                .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
                 .def("CreateImage", CreateImage )
                 .def("CreateSample", CreateSample, "file" )
                 .def("CreateChannel", CreateChannel )
@@ -236,6 +237,14 @@ namespace XMLProgram {
             {
                 throw Error("GetImage requires 'color' or 'color+alpha' defined.");
             }
+        }
+        
+        IChunkPtr USELESS_TK::CreateImageBuffer( int width, int height )
+        {
+            Useless::ImageBuffer *pBuf = new Useless::ImageBuffer( width, height );
+            IChunkPtr proxy = new ImageProxy( pBuf );
+            pBuf->Cooperate( *_screen->GetSurface() );
+            return proxy;
         }
 
         IChunkPtr USELESS_TK::CreateSample( std::string fileName )

@@ -25,9 +25,8 @@ void PixelBuffer::FreePixels()
     _buffer_size = 0;
 }
 
-void PixelBuffer::AllocatePixels( int w, int h, int fmt, int alignment_x, int alignment_y )
+void PixelBuffer::AllocatePixels( int w, int h, int fmt, int alignment_x, int alignment_y, int border_w, int border_h )
 {
-    // Reserve border pixels to avoid bad filtering (Radeon W/A). The border is: 2 columns and 2 rows.
     FreePixels();
     _w = w;
     _h = h;
@@ -36,8 +35,8 @@ void PixelBuffer::AllocatePixels( int w, int h, int fmt, int alignment_x, int al
     int rw = (_w % alignment_x);
     int rh = (_h % alignment_y);
     
-    w = ( 0 != rw ? (_w + alignment_x - rw) : _w ) + alignment_x;
-    h = ( 0 != rh ? (_h + alignment_y - rh) : _h ) + alignment_y;
+    w = ( 0 != rw ? (_w + alignment_x - rw) : _w ) + border_w;
+    h = ( 0 != rh ? (_h + alignment_y - rh) : _h ) + border_h;
 
     _bytes_pp=ImageFormat::GetBpp( ImageFormat::Format(_fmt));
     _pitch = w * _bytes_pp;

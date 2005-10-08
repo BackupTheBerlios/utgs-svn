@@ -23,6 +23,8 @@ namespace Useless {
     extern bool G_EnableDebugF11;
     extern bool G_EnablePrintScr;
     extern bool G_nVidiaViewport;
+    extern double G_GLTesselatorStartingTexelOffset;
+    extern double G_GLTesselatorEndingTexelOffset;
 };
 
 int get_argc()
@@ -93,6 +95,11 @@ struct KooLiXP
                 else if ( get_argv(i) == "--idle-time-delta" )
                 {
                     Useless::Application::SetIdleDT( Useless::to_integer( get_argv(++i)));
+                }
+                else if ( get_argv(i) == "--texel-offsets" )
+                {
+                    G_GLTesselatorStartingTexelOffset = Useless::to_real( get_argv(++i));
+                    G_GLTesselatorEndingTexelOffset = Useless::to_real( get_argv(++i));
                 }
                 else if ( get_argv(i) == "--help" )
                 {
@@ -244,6 +251,11 @@ struct KooLiXP
         out << "\t" << "--no-debug-keys" << "\n\t\t\t" << "disable debug F11 key" << std::endl;
         out << std::endl;
         out << "\t" << "--viewport-fix" << "\n\t\t\t" << "fixes problem with Matrox" << std::endl;
+        out << std::endl;
+        out << "\t" << "--idle-time-delta n" << "\n\t\t\t" << "minimum miliseconds between subsequent updates" << std::endl;
+        out << std::endl;
+        out << "\t" << "--texel-offsets n m" << "\n\t\t\t" << "n,m are real numbers. " << "\n\t\t\t"
+            << "try 'n m' = '0.5 0.5' to fix image on Radeon cards." << std::endl;
         out << std::endl;
     }
 };

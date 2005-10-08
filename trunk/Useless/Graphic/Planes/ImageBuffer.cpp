@@ -18,6 +18,7 @@ ImageBuffer::ImageBuffer()
 {
     _properties.width  = _width = 0;
     _properties.height = _height = 0;
+    _properties.renderable = true;
 }
 
 //-- Initialize ImageBuffer structure ( Surface will not initialize )
@@ -25,6 +26,7 @@ ImageBuffer::ImageBuffer(int w, int h)
 {
     _properties.width  = w;
     _properties.height = h;
+    _properties.renderable = true;
     _rectangle = Rect(0, 0, _properties.width, _properties.height);
     _width = _rectangle.GetW(); _height = _rectangle.GetH();
 }

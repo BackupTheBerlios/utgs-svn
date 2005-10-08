@@ -63,6 +63,8 @@ namespace XMLProgram {
 
         ScreenProxy( Useless::SPointer< Useless::Screen > );
         ~ScreenProxy();
+
+        IChunkPtr CreateImageBuffer( int width, int height );
     };
 
     struct ImageProxy : XMLCodeBlock
@@ -73,6 +75,8 @@ namespace XMLProgram {
         ~ImageProxy();
 
         IChunkPtr QueryPixelColor( int x, int y );
+
+        IChunkPtr CreatePainter();
     };
 
     struct SampleProxy : XMLCodeBlock
@@ -129,8 +133,8 @@ namespace XMLProgram {
 
     struct AdvancedPaint
     {
-        AdvancedPaint( Useless::Widget *widget ) {
-            _pScreenSurface = widget->GetEnvironment()->GetScreen().GetSurface();
+        AdvancedPaint( Useless::Painter &painter ) {
+            _pScreenSurface = painter.GetPlane()->GetSurface();
             _BlendFun = (Useless::SurfExt::PfBlendFun)(_pScreenSurface->GetExtFun("BlendFun"));
             _ConstColor = (Useless::SurfExt::PfConstColor)(_pScreenSurface->GetExtFun("ConstColor"));
             _ConstMatrix = (Useless::SurfExt::PfConstMatrix)(_pScreenSurface->GetExtFun("ConstMatrix"));
@@ -158,12 +162,11 @@ namespace XMLProgram {
 
     struct PainterProxy : XMLCodeBlock
     {
-        Useless::WidgetPainter   _painter;
+        Useless::Painter   _painter;
 
-        PainterProxy( const Useless::WidgetPainter & );
+        PainterProxy( const Useless::Painter & );
         ~PainterProxy();
 
-        void RepaintWidget  ();
         void FastBlit       ( Node, ExecutionState& );
         void FastDrawPolygon( Node, ExecutionState& );
         void FastMultiBlit  ( Node, ExecutionState& );
@@ -174,6 +177,16 @@ namespace XMLProgram {
         void DrawPolygon    ( Node, ExecutionState& );
         void MultiBlit      ( Node, ExecutionState& );
         void SubCanvasPaint ( Node, ExecutionState& );
+    };
+    
+    struct WidgetPainterProxy : PainterProxy
+    {
+        Useless::WidgetPainter   _wpainter;
+
+        WidgetPainterProxy( const Useless::WidgetPainter & );
+        ~WidgetPainterProxy();
+
+        void RepaintWidget  ();
     };
 
     struct WidgetProxy: XMLCodeBlock
@@ -255,9 +268,14 @@ namespace XMLProgram {
         catch(...) { delete block; throw; }
     }
 
-    inline IChunk *make_value_chunk( const Useless::WidgetPainter &painter )
+    inline IChunk *make_value_chunk( const Useless::Painter &painter )
     {
         return new PainterProxy( painter );
+    }
+
+    inline IChunk *make_value_chunk( const Useless::WidgetPainter &painter )
+    {
+        return new WidgetPainterProxy( painter );
     }
 
     inline IChunk *make_value_chunk( Useless::Widget *widget )
@@ -323,9 +341,9 @@ namespace XMLProgram {
         }
     };
 
-    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::WidgetPainter & >
+    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::Painter & >
     {
-        static Useless::WidgetPainter & get( const TextAnsi &name, Node node, ExecutionState &state )
+        static Useless::Painter & get( const TextAnsi &name, Node node, ExecutionState &state )
         {
             IChunkPtr pChunk = GetChunk( name, state );
             PainterProxy *pPainter = dynamic_cast< PainterProxy * >( pChunk.get() );
@@ -334,6 +352,20 @@ namespace XMLProgram {
                 throw Useless::Error("Painter expected");
             }
             return pPainter->_painter;
+        }
+    };
+
+    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::WidgetPainter & >
+    {
+        static Useless::WidgetPainter & get( const TextAnsi &name, Node node, ExecutionState &state )
+        {
+            IChunkPtr pChunk = GetChunk( name, state );
+            WidgetPainterProxy *pPainter = dynamic_cast< WidgetPainterProxy * >( pChunk.get() );
+            if ( 0 == pPainter )
+            {
+                throw Useless::Error("Painter expected");
+            }
+            return pPainter->_wpainter;
         }
     };
 

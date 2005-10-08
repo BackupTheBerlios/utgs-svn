@@ -22,6 +22,8 @@ namespace Useless {
             HDC     GetParentDC()    const { return _parentDC; }
             HDC     GetHDC()         const { return _devContext; }
             HGLRC   GetHGLRC()       const { return _glContext; }
+        
+            bool IsValidBlitSource( const Surface &surface ) const;
     
             void Blit( int x, int y,                           // where to blit
                        const Surface &src,                     // what is to be blit

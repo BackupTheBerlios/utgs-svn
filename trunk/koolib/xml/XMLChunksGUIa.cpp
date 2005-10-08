@@ -77,7 +77,7 @@ namespace XMLProgram {
 
         void Apply( IBlockPtr env )
         {
-            env->AddChunk(L"__painter__", new PainterProxy( _pSignal->GetArg1() ));
+            env->AddChunk(L"__painter__", new WidgetPainterProxy( _pSignal->GetArg1() ));
         }
 
     };
@@ -260,12 +260,12 @@ namespace XMLFactory {
 
         IChunk *pChunk = GetChunk(L"__painter__", _state );
 
-        PainterProxy *pProxy = dynamic_cast< PainterProxy *>( pChunk );
+        WidgetPainterProxy *pProxy = dynamic_cast< WidgetPainterProxy *>( pChunk );
         IBlockPtr newBlock = new XMLCodeBlock();
         ExecutionState state( _state );
         state._prevState = &_state;
         state._currentBlock = newBlock.get();
-        PainterProxy *pProxy1 = new PainterProxy( WidgetPainter( pProxy->_painter, offset ));
+        WidgetPainterProxy *pProxy1 = new WidgetPainterProxy( WidgetPainter( pProxy->_wpainter, offset ));
         newBlock->AddChunk(L"__painter__", pProxy1 );
 
         if ( GetMultiAttr( _crop, _node, _state ))
@@ -283,7 +283,7 @@ namespace XMLFactory {
             pProxy1->_painter.MultiplyAlpha( *_alpha );
         }
 
-        AdvancedPaint advPaint( pProxy->_painter.GetWidget() );
+        AdvancedPaint advPaint( pProxy->_painter );
         int APtouched = 0;
 
         if ( GetAttr( _blending, _node, _state ))

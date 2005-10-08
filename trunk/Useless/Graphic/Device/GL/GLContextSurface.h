@@ -77,7 +77,7 @@ namespace Useless {
 
         void SetSize( int w, int h );
     
-    private:
+    protected:
         GLint       _w;
         GLint       _h;
         GLint       _viewport[4];

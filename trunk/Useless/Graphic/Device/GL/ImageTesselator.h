@@ -74,5 +74,8 @@ private:
     friend struct GLContextSurface;
 };
 
+extern double G_GLTesselatorStartingTexelOffset;
+extern double G_GLTesselatorEndingTexelOffset;
+
 }; //namespace Useless
 #endif//__INCLUDED_USELESS_IMAGE_TESSELATOR_H__

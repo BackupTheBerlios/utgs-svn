@@ -131,10 +131,22 @@ namespace XMLProgram {
             .add("OnMouseMove", make_signal_2_chunk( _spScreen->OnMouseMove ))
             .add("OnMouseWheel", make_signal_2_chunk( _spScreen->OnMouseWheel ))
             ;
+
+        add_methods( this )
+            .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
+            ;
     }
 
     ScreenProxy::~ScreenProxy()
     {
+    }
+
+    IChunkPtr ScreenProxy::CreateImageBuffer( int width, int height )
+    {
+        Useless::ImageBuffer *pBuf = new Useless::ImageBuffer( width, height );
+        IChunkPtr proxy = new ImageProxy( pBuf );
+        pBuf->Cooperate( *_spScreen->GetSurface() );
+        return proxy;
     }
     
 
@@ -157,10 +169,23 @@ namespace XMLProgram {
         add_methods( this )
             .def("QueryPixelColor", QueryPixelColor, "x", "y" )
             ;
+
+        if ( dynamic_cast< OGraphics *>( spImage.get() ))
+        {
+            add_methods( this )
+                .def("CreatePainter", CreatePainter )
+                ;
+        }
     }
 
     ImageProxy::~ImageProxy()
     {
+    }
+
+    IChunkPtr ImageProxy::CreatePainter()
+    {
+        OGraphics *pOutPlane = dynamic_cast< ImageBuffer *>( _spImage.get() );
+        return new PainterProxy( Painter( *pOutPlane ));
     }
     
     IChunkPtr ImageProxy::QueryPixelColor( int x, int y )
@@ -360,17 +385,36 @@ namespace XMLProgram {
     }
 #endif
 
+    /*******************************
+
+      WidgetPainterProxy
+
+    */
+    WidgetPainterProxy::WidgetPainterProxy( const WidgetPainter &painter ): _wpainter( painter ), PainterProxy( painter )
+    {
+        add_methods( this )
+            .def("RepaintWidget", RepaintWidget)
+            ;
+    }
+
+    WidgetPainterProxy::~WidgetPainterProxy()
+    {
+    }
+
+    void WidgetPainterProxy::RepaintWidget()
+    {
+        Widget *widget = _wpainter.GetWidget();
+        dynamic_cast_call< CompoundWidget >( widget, &CompoundWidget::DoRepaint, _wpainter );
+    }
 
     /*******************************
 
       PainterProxy
 
     */
-
-    PainterProxy::PainterProxy( const WidgetPainter &painter ):_painter( painter )
+    PainterProxy::PainterProxy( const Painter &painter ):_painter( painter )
     {
         add_methods( this )
-            .def("RepaintWidget", RepaintWidget)
             .def("Blit", Blit)
             .def("FastBlit", FastBlit)
             .def("FastDrawPolygon", FastDrawPolygon )
@@ -386,12 +430,6 @@ namespace XMLProgram {
 
     PainterProxy::~PainterProxy()
     {
-    }
-
-    void PainterProxy::RepaintWidget()
-    {
-        Widget *widget = _painter.GetWidget();
-        dynamic_cast_call< CompoundWidget >( widget, &CompoundWidget::DoRepaint, _painter );
     }
 
     void PainterProxy::FastBlit( Node __unused__, ExecutionState &_state )
@@ -626,7 +664,7 @@ namespace XMLProgram {
             offset.y = value_of< int >( pOffset->GetChunk(L"y") );
         }
 
-        PainterProxy *pProxy1 = new PainterProxy( WidgetPainter( _painter, offset ));
+        PainterProxy *pProxy1 = new PainterProxy( Painter( _painter, offset ));
 
         SubScope newState( state );
         newState._currentBlock->AddChunk(L"__painter__", pProxy1 );
@@ -644,7 +682,7 @@ namespace XMLProgram {
             pProxy1->_painter.MultiplyAlpha( value_of< int >( pAlpha ));
         }
         
-        AdvancedPaint advPaint( _painter.GetWidget() );
+        AdvancedPaint advPaint( _painter );
         int APtouched = 0;
         
         if ( pBlending )

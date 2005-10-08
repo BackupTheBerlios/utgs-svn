@@ -13,7 +13,7 @@ class PixelBuffer
 public:
     PixelBuffer();
     
-    void AllocatePixels( int w, int h, int fmt, int alignment_x, int alignment_y );
+    void AllocatePixels( int w, int h, int fmt, int alignment_x, int alignment_y, int border_w, int border_h );
     void FreePixels();
     bool BoundCheck( char *ptr, int w=1, int h=1 ) const;
 

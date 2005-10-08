@@ -110,9 +110,14 @@ void InitWGLExtensionsHWND( HWND wnd )
 {
     if (wnd == NULL)
         return;
+
+    HDC hdc = GetDC( wnd );
+    InitWGLExtensionsHDC( hdc );
+    ReleaseDC( wnd, hdc );
+}
     
-    HDC hdc = GetDC(wnd);
-    
+void InitWGLExtensionsHDC( HDC hdc )
+{    
     PIXELFORMATDESCRIPTOR pfd;
     ZeroMemory( &pfd, sizeof(pfd));
     pfd.nSize = sizeof(pfd);
@@ -126,13 +131,12 @@ void InitWGLExtensionsHWND( HWND wnd )
     SetPixelFormat( hdc, iFormat, &pfd);
     HGLRC context = wglCreateContext( hdc );
     wglMakeCurrent( hdc, context );
-    InitWGLExtensionsHDC( hdc );
+    InitWGLExtensionsHGLRC( hdc, context );
     wglMakeCurrent( 0, 0 );
     wglDeleteContext( context );
-    ReleaseDC( wnd, hdc );
 }
 
-void InitWGLExtensionsHDC( HDC hdc )
+void InitWGLExtensionsHGLRC( HDC hdc, HGLRC glrc )
 {
     wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC) wglGetProcAddress("wglGetExtensionsStringARB");
     if (wglGetExtensionsStringARB == NULL)

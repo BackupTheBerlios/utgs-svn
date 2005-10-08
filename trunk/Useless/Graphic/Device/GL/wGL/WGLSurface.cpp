@@ -3,6 +3,8 @@
 #include "WGLSurface.h"
 #include "WGLScreen.h"
 
+#include <cmath>
+
 #include "Useless/ErrorConfig.h"
 #define WGLERR(e) APP_ERROR(e,"WGLScreen");
 
@@ -205,6 +207,17 @@ namespace Useless {
         return pSurface;
     }
 
+    bool WGLSurface::IsValidBlitSource( const Surface &surface ) const
+    {
+        if ( const WGLSurface *p = dynamic_cast< const WGLSurface *>( &surface ))
+        {
+            return true;
+        }
+        else
+        {
+            return GLContextSurface::IsValidBlitSource( surface );
+        }
+    }
 
     void WGLSurface::Blit( int x, int y,
             const Surface &src, const Useless::Rect &src_rect,
@@ -224,23 +237,87 @@ namespace Useless {
             glReadBuffer( GL_FRONT );
             glDrawBuffer( GL_BACK );
             Rect dstR;
+            double stretch_w = 1.0;
+            double stretch_h = 1.0;
+            double recip_stretch_x = 1.0;
+            double recip_stretch_y = 1.0;
+            double recip_stretch_w = 1.0;
+            double recip_stretch_h = 1.0;
             if ( fx.stretch && ( fx.width != src_rect.GetW() || fx.height != src_rect.GetH() ))
             {
                 dstR = Rect(x, y, fx.width, fx.height );
-                double stretch_w = ((double)dstR.GetW()) / (double)src_rect.GetW();
-                double stretch_h = ((double)dstR.GetH()) / (double)src_rect.GetH();
-                glPixelZoom( stretch_w, stretch_h );
+                stretch_w = dstR.GetW() / (double)src_rect.GetW();
+                stretch_h = dstR.GetH() / (double)src_rect.GetH();
+                recip_stretch_x = 1.0 / stretch_w;
+                recip_stretch_w = 1.0 / stretch_w;
+                recip_stretch_y = 1.0 / stretch_h;
+                recip_stretch_h = 1.0 / stretch_h;
             }
             else
             {
                 dstR = Rect( x, y, src_rect.GetW(), src_rect.GetH() );
-                glPixelZoom( 1.0, 1.0 );
             }
+
+            if ( !dstR )
+            {
+                return;
+            }
+            glPixelZoom( stretch_w, stretch_h );
+
+            /*
             // on NV RasterPos(0,0) is [upper,left]
             glRasterPos2i( x, y + dstR.GetH() );
             // but CopyPixels(0,0,.) is [lower,left]
             glCopyPixels( src_rect.GetX(), src.GetHeight() - (src_rect.GetY() + src_rect.GetH()), src_rect.GetW(), src_rect.GetH(), GL_COLOR );
             // Clip regions are not implemented for <WGLSurface to WGLSurface> blits.
+            */
+
+            glEnable( GL_SCISSOR_TEST );
+
+           
+            // apply clip region 
+            for ( RectList::iterator itRect = _clipRegion.begin();
+                    itRect != _clipRegion.end(); ++itRect )
+            {
+                // clip destination rectangle
+                Rect dstRectClipped = (*itRect) & dstR;
+                
+                if ( !!dstRectClipped )
+                {
+                    glScissor(
+                            dstRectClipped.GetX(),
+                            GetHeight() - dstRectClipped.GetY() - dstRectClipped.GetH(),
+                            dstRectClipped.GetW(),
+                            dstRectClipped.GetH());
+            
+                    glRasterPos2i( x, y + dstR.GetH() );
+                    glCopyPixels( src_rect.GetX(),
+                            src.GetHeight() - src_rect.GetY() - src_rect.GetH(),
+                            src_rect.GetW(),
+                            src_rect.GetH(),
+                            GL_COLOR );
+
+                    /*
+                    // calculate clipped coords in source coord space
+                    Rect srcRectClipped = Rect(
+                            std::floor( recip_stretch_x * (dstRectClipped.GetX() - x) ),
+                            std::floor( recip_stretch_y * (dstRectClipped.GetY() - y) ),
+                            std::floor( recip_stretch_w * dstRectClipped.GetW() ),
+                            std::floor( recip_stretch_h * dstRectClipped.GetH() ));
+
+                    // on NV RasterPos(0,0) is [upper,left]
+                    glRasterPos2d( dstRectClipped.GetX(), dstRectClipped.GetY() + dstRectClipped.GetH() );
+
+                    // but CopyPixels(0,0,.) is [lower,left]
+                    glCopyPixels(
+                            srcRectClipped.GetX(),
+                            src.GetHeight() - (srcRectClipped.GetY() + srcRectClipped.GetH()),
+                            srcRectClipped.GetW(),
+                            srcRectClipped.GetH(),
+                            GL_COLOR );
+                    */
+                }
+            }
         }
         else
         {

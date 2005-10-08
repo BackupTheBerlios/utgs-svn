@@ -26,8 +26,8 @@ namespace Useless {
         GLTextureSurfaceAllocator();
         ~GLTextureSurfaceAllocator();
 
-        void ValidateTesselator( const GLTextureSurface *s );
-        void FinishTesselator( const GLTextureSurface *s );
+        ImageTesselator & GetTesselator     ( const GLTextureSurface *s );
+        void              ReleaseTesselator ( const GLTextureSurface *s, ImageTesselator & tess );
 
         void GLFreeGarbage();
         void GLFreeGarbage( GLTextureSurface *s );

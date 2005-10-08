@@ -10,13 +10,18 @@ namespace Useless {
     //
     //
 
-    void GLTextureSurfaceAllocator::ValidateTesselator( const GLTextureSurface *s )
+    ImageTesselator & GLTextureSurfaceAllocator::GetTesselator( const GLTextureSurface *s )
     {
         // I assume current gl context is correct
         // MakeCurrent() is not needed
 
-        // surface already has assigned GL resources
+        // It is safe to use <SPointer<*> > and to return <ImageTesselator &>,
+        // since the only owner of ImageTesselator is always GLGarbage.
+        // ImageTesselator shall exists only if its GLGarbage exists in GLGarbageCollection.
+        // After GLGarbage removeal from GLGarbageCollection, ImageTesselator shall be destroyed.
+        SPointer< ImageTesselator > tesselator;
 
+        // surface already has assigned GL resources
         GLSurfTessMap::iterator it = _glSurfTess.find( s );
         // surface has assigned tesselator
         if ( it != _glSurfTess.end() )
@@ -26,13 +31,13 @@ namespace Useless {
             {
                 --(*it).second->_age;
             }
-            s->_tesselator = (*it).second->_tess;
+            tesselator = (*it).second->_tess;
             if ( s->_dirty )
             {
-                s->_tesselator->UpdateAllTextures( s->_pixelBuffer );
+                tesselator->UpdateAllTextures( s->_pixelBuffer );
                 s->_dirty = false;
             }
-            return;
+            return *tesselator;
         }
         // allocate new tesselator
         else
@@ -48,31 +53,28 @@ namespace Useless {
                     {
                         (*it)._age = 0;
                         (*it)._surf = s;                    
-                        s->_tesselator = (*it)._tess;                    
-                        s->_tesselator->UpdateAllTextures( s->_pixelBuffer );
+                        tesselator = (*it)._tess;                    
+                        tesselator->UpdateAllTextures( s->_pixelBuffer );
                         s->_dirty = false;
                         _glSurfTess.insert( std::make_pair( s, &(*it) ));
-                        return;
+                        return *tesselator;
                     }
                 }
             }
             // allocate new one
-            s->_tesselator.Reset( new ImageTesselator( s->_pixelBuffer ));
+            tesselator.Reset( new ImageTesselator( s->_pixelBuffer ));
             s->_dirty = false;
             GLGarbage g;
             g._age = 0;
             g._surf = s;
-            g._tess = s->_tesselator;
+            g._tess = tesselator;
             _glSurfTess.insert( std::make_pair( s, &(*_glGarbage.insert( _glGarbage.end(), g )) ));
+            return *tesselator;
         }
     }
 
-    void GLTextureSurfaceAllocator::FinishTesselator( const GLTextureSurface *s )
+    void GLTextureSurfaceAllocator::ReleaseTesselator( const GLTextureSurface *s, ImageTesselator &tess )
     {
-        // I assume current gl context is correct
-        // MakeCurrent() is not needed
-        
-        s->_tesselator.Reset();
     }
 
     void GLTextureSurfaceAllocator::GLFreeGarbage()
