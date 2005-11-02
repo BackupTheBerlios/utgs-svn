@@ -52,8 +52,8 @@ void GLUpdateMovieSample( GLTextureSurfaceAllocator *pTexAlloc, GLTextureSurface
     int height = pSurface->GetHeight();
     BYTE *pData;
     pSample->GetPointer( &pData );
-    ImageTesselator &tesselator = pTexAlloc->GetTesselator( pSurface );
-    tesselator.UpdateAllTextures( (char*)pData, width, height, CSurfaceRender::_prefered_bpp, width );
+    GLImageTesselator &tesselator = pTexAlloc->GetTesselator( pSurface );
+    tesselator.UpdateAllTextures( (char*)pData, 0, 0, width, height, CSurfaceRender::_prefered_bpp, width );
     tesselator.SetFlip( false, true );
     pTexAlloc->ReleaseTesselator( pSurface, tesselator );
 }

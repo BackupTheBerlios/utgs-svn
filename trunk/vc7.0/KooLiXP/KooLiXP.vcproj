@@ -18,6 +18,8 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm800
+"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(DXSDK)/include/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
@@ -66,8 +68,11 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm800
+"
 				Optimization="1"
-				InlineFunctionExpansion="2"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="1"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="TRUE"
@@ -84,7 +89,8 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4244;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool

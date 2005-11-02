@@ -19,8 +19,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;&quot;$(LIBPNG_ROOT)/include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -68,13 +68,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="1"
 				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="2"
+				InlineFunctionExpansion="1"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="2"
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
-				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;&quot;$(LIBPNG_ROOT)/include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -541,6 +541,12 @@
 						RelativePath="..\..\Useless\Graphic\detail\MemorySurface.h">
 					</File>
 					<File
+						RelativePath="..\..\Useless\Graphic\detail\PixelBuffer.cpp">
+					</File>
+					<File
+						RelativePath="..\..\Useless\Graphic\detail\PixelBuffer.h">
+					</File>
+					<File
 						RelativePath="..\..\Useless\Graphic\detail\SpecializedSurfacePainter.cpp">
 					</File>
 					<File
@@ -566,6 +572,12 @@
 						RelativePath="..\..\Useless\Graphic\Device\CreateScreen.h">
 					</File>
 					<File
+						RelativePath="..\..\Useless\Graphic\Device\GVM_Context.h">
+					</File>
+					<File
+						RelativePath="..\..\Useless\Graphic\Device\GVM_Message.h">
+					</File>
+					<File
 						RelativePath="..\..\Useless\Graphic\Device\Screen.h">
 					</File>
 					<File
@@ -587,6 +599,12 @@
 							RelativePath="..\..\Useless\Graphic\Device\Gl\GLContextSurface.h">
 						</File>
 						<File
+							RelativePath="..\..\Useless\Graphic\Device\Gl\GLImageTesselator.cpp">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\Gl\GLImageTesselator.h">
+						</File>
+						<File
 							RelativePath="..\..\Useless\Graphic\Device\Gl\GLResourcePool.cpp">
 						</File>
 						<File
@@ -594,6 +612,12 @@
 						</File>
 						<File
 							RelativePath="..\..\Useless\Graphic\Device\Gl\GLSurfacePainter.h">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\Gl\GLTexture.cpp">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\Gl\GLTexture.h">
 						</File>
 						<File
 							RelativePath="..\..\Useless\Graphic\Device\Gl\GLTextureSurface.cpp">
@@ -608,22 +632,10 @@
 							RelativePath="..\..\Useless\Graphic\Device\Gl\GLTextureSurfaceAllocator.h">
 						</File>
 						<File
-							RelativePath="..\..\Useless\Graphic\Device\Gl\ImageTesselator.cpp">
+							RelativePath="..\..\Useless\Graphic\Device\Gl\GVM_GLContext.cpp">
 						</File>
 						<File
-							RelativePath="..\..\Useless\Graphic\Device\Gl\ImageTesselator.h">
-						</File>
-						<File
-							RelativePath="..\..\Useless\Graphic\Device\Gl\PixelBuffer.cpp">
-						</File>
-						<File
-							RelativePath="..\..\Useless\Graphic\Device\Gl\PixelBuffer.h">
-						</File>
-						<File
-							RelativePath="..\..\Useless\Graphic\Device\Gl\Texture.cpp">
-						</File>
-						<File
-							RelativePath="..\..\Useless\Graphic\Device\Gl\Texture.h">
+							RelativePath="..\..\Useless\Graphic\Device\Gl\GVM_GLContext.h">
 						</File>
 						<Filter
 							Name="wGL"
@@ -664,6 +676,16 @@
 							</Filter>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="winGDI"
+						Filter="">
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDIPrinter.cpp">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDIPrinter.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="FileIO"
@@ -694,6 +716,12 @@
 					</File>
 					<File
 						RelativePath="..\..\Useless\Graphic\FileIO\ImageSaver.h">
+					</File>
+					<File
+						RelativePath="..\..\Useless\Graphic\FileIO\PNGLoader.cpp">
+					</File>
+					<File
+						RelativePath="..\..\Useless\Graphic\FileIO\PNGLoader.h">
 					</File>
 					<File
 						RelativePath="..\..\Useless\Graphic\FileIO\TGALoader.cpp">

@@ -1,7 +1,10 @@
 #include "Dynamo/classes/CInterfaceProvider.h"
 #include "koolib/xml/XMLChunksProgram.h"
+#include "koolib/xml/XMLChunksUseless.h"
 
 namespace Dynamo {
+    
+    IPaint *CreateIPaint( const Useless::WidgetPainter & );
 
     struct CXmlChunk: IXmlChunk, CInterface
     {
@@ -68,6 +71,18 @@ namespace Dynamo {
         float AsFloat()
         {
             return XMLProgram::value_of< float >( _pChunk.get() );
+        }
+        
+        IPaint * AsIPaint()
+        {
+            if ( XMLProgram::WidgetPainterProxy *proxy = dynamic_cast< XMLProgram::WidgetPainterProxy *>( _pChunk.get() ))
+            {
+                return CreateIPaint( proxy->_wpainter );
+            }
+            else
+            {
+                return NULL;
+            }
         }
         
         std::basic_string< wchar_t > AsText()
@@ -178,10 +193,10 @@ namespace Dynamo {
         
         IXmlScope*  NewScope()
         {
-            Hand< CXmlScope > pNewScope = new CXmlScope( _state );
+            CXmlScope *pNewScope = new CXmlScope( _state );
             pNewScope->_guardian = pNewScope->_state._currentBlock = new XMLProgram::XMLCodeBlock;
             pNewScope->_state._prevState = &_state;
-            return pNewScope.get();
+            return pNewScope;
         }
     };
     
@@ -218,6 +233,7 @@ namespace Dynamo {
         {
             Hand< CXmlScope > pScope = new CXmlScope( state );
             _pHook->Apply( pScope.get() );
+			state.SetResult( pScope->_state.GetResult() );
             return true;
         }
     };

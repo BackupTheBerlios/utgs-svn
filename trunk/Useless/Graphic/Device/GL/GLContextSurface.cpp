@@ -33,6 +33,9 @@ GLContextSurface::GLContextSurface( Surf::Properties &properties )
 {
     _w = properties.width;
     _h = properties.height;
+    _primary = properties.primary;
+    _numBackbuffers = properties.num_surfaces;
+    _transparency = properties.alpha;
     _constantAlpha = 1.0;
     _enableFlags = 0;
     BlendFun(0,0,0);
@@ -62,6 +65,7 @@ GLContextSurface::GLContextSurface( Surf::Properties &properties )
         _viewport[2] = _w;
         _viewport[3] = _h;
     }
+    GetProperties( &properties );
 }
 
 GLContextSurface::~GLContextSurface()
@@ -86,6 +90,40 @@ GLContextSurface::CreatePainter()
 {
     return new GLSurfacePainter( this );
 }
+
+void GLContextSurface::GetViewport ( int *rect )
+{
+    GLContext::GetViewport( rect );
+    rect[1] = _h - rect[1] - rect[3];
+}
+
+void GLContextSurface::SetViewport ( int x, int y, int w, int h )
+{
+    GLContext::SetViewport( x, _h - (h + y), w, h );
+}
+
+void GLContextSurface::InitViewport( int x, int y, int w, int h )
+{
+    GLContext::InitViewport( x, _h - (h + y), w, h );
+}
+
+void GLContextSurface::Invoke( const GVM::Message &msg )
+{
+    /*
+    for ( RectList::iterator itRect = _clipRegion.begin();
+            itRect != _clipRegion.end(); ++itRect )
+    {
+        Rect r = (*itRect);
+        if ( !!r )
+        {
+            glScissor( r.GetX(), _h - (r.GetH() + r.GetY()), r.GetW(), r.GetH() );
+            GLContext::Invoke( msg );
+        }
+    }
+    */
+    GLContext::Invoke( msg );
+}
+
 
 bool GLContextSurface::IsValidBlitSource( const Surface &surface ) const
 {
@@ -137,7 +175,7 @@ GLContextSurface::Blit( int x, int y,
 
     Prepare2D();
 
-    ImageTesselator &tesselator = GetTesselator( &glSrc );
+    GLImageTesselator &tesselator = GetTesselator( &glSrc );
 
     glEnable( GL_TEXTURE_2D );
 
@@ -191,7 +229,7 @@ GLContextSurface::Blit( int x, int y,
         double stretch_w = ((double)dstR.GetW()) / (double)src_rect.GetW();
         double stretch_h = ((double)dstR.GetH()) / (double)src_rect.GetH();
         
-        ImageTesselator::RenderTransform renderTransform;
+        GLImageTesselator::RenderTransform renderTransform;
         tesselator.SetRenderTransform( &renderTransform, stretch_w, stretch_h );
 
         dstP.x = x - ( src_rect.GetX() * dstR.GetW()) / src_rect.GetW();
@@ -214,7 +252,7 @@ GLContextSurface::Blit( int x, int y,
     }
     else
     {
-        ImageTesselator::RenderTransform renderTransform;
+        GLImageTesselator::RenderTransform renderTransform;
         tesselator.SetRenderTransform( &renderTransform, 1.0, 1.0 );
 
         dstP = Pos(x, y) - src_rect.GetPos();
@@ -248,7 +286,7 @@ void GLContextSurface::MultiBlit( const Surface &src,
 
     Prepare2D();
 
-    ImageTesselator &tesselator = GetTesselator( &glSrc );
+    GLImageTesselator &tesselator = GetTesselator( &glSrc );
 
     glEnable( GL_TEXTURE_2D );
 
@@ -285,7 +323,7 @@ void GLContextSurface::MultiBlit( const Surface &src,
     glEnable( GL_SCISSOR_TEST );
 
     glLoadIdentity();
-    ImageTesselator::RenderTransform renderTransform;
+    GLImageTesselator::RenderTransform renderTransform;
     tesselator.SetRenderTransform( &renderTransform, 1.0, 1.0 );
     
     
@@ -425,6 +463,16 @@ GLContextSurface::GetProperties( Surf::Properties *prop ) const
     prop->width = _w;
     prop->height = _h;
     prop->pixelformat = ImageFormat::R8G8B8A8;
+    prop->color = 1;
+    prop->alpha = _transparency;
+    prop->zbuffer = 1;
+    prop->renderable = 1;
+    prop->blit_source = 1;
+    prop->prefer_copy = 1;
+    prop->video_memory = 1;
+    prop->primary = _primary;
+    prop->has_color_key = 0;
+    prop->num_surfaces = _numBackbuffers;
 }
 
 bool

@@ -91,9 +91,13 @@ public:
         iterator i = lower_bound(n);
         return ( i==end() || (*i).first!=n )? end() : i;
     }
+
+    __vector::clear;
     __vector::erase;
     __vector::begin;
     __vector::end;
+    __vector::rbegin;
+    __vector::rend;
     __vector::size;
     __vector::empty;
     typedef __vector::iterator iterator;

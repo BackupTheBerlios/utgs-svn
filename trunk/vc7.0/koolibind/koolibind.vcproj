@@ -64,7 +64,8 @@
 				AdditionalOptions="/Zm800
 "
 				Optimization="1"
-				InlineFunctionExpansion="2"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="1"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="TRUE"
@@ -81,7 +82,8 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
 				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4244;"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool

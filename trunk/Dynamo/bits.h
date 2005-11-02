@@ -15,7 +15,17 @@ namespace XMLProgram {
     struct IFiniteStateMachine;
 };
 
+namespace Useless {
+    namespace GVM {
+        struct Context;
+        struct Message;
+    };
+};
+
 namespace Dynamo {
+
+    typedef Useless::GVM::Context GVM_Context;
+    typedef Useless::GVM::Message GVM_Message;
 
     struct Point2i
     {

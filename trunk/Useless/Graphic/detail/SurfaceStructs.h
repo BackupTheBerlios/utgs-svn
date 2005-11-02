@@ -53,15 +53,18 @@ public:
     unsigned color:1,         // color plane
              alpha:1,         // alpha plane
              zbuffer:1,       // Z plane
-             texture:1,       // is it texture
-             renderable:1,    // is it renderable
-             video_memory:1,  // should use video memory
-             system_memory:1, // should use system memory
-             primary:1,       // is it primary surface
+             texture:1,       // to use as texture for objects
+             renderable:1,    // to render images and object on it
+             blit_source:1,   // to be used as blit source
+             prefer_copy:1,   // create new surface and copy pixels, instead of using this as blit source
+             use_textures:1,  // scatter to several textures
+             video_memory:1,  // use video memory
+             system_memory:1, // use system memory
+             primary:1,       // is it primary surface (screen or window)
              has_color_key:1; // set color key
 
-    unsigned   color_key;     // color key value
-    int        num_surfaces;  // length of backbuffer chain
+    unsigned color_key;     // color key value
+    int      num_surfaces;  // length of backbuffer chain
 
 
 #ifdef WIN32

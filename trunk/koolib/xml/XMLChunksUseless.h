@@ -65,6 +65,9 @@ namespace XMLProgram {
         ~ScreenProxy();
 
         IChunkPtr CreateImageBuffer( int width, int height );
+	IChunkPtr CreateSubImage( const Useless::Rect &area );
+        IChunkPtr CreatePainter();
+        void      WriteImage( std::string file );
     };
 
     struct ImageProxy : XMLCodeBlock
@@ -77,6 +80,8 @@ namespace XMLProgram {
         IChunkPtr QueryPixelColor( int x, int y );
 
         IChunkPtr CreatePainter();
+	IChunkPtr CreateSubImage( const Useless::Rect &area );
+        void      WriteImage( std::string file );
     };
 
     struct SampleProxy : XMLCodeBlock

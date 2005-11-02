@@ -3,7 +3,7 @@
 
 #include "Useless/Graphic/Device/Surface.h"
 #include "Useless/Util/Storage/MemBlock.h"
-#include "Useless/Graphic/Device/GL/ImageTesselator.h"
+#include "Useless/Graphic/Device/GL/GLImageTesselator.h"
 
 namespace Useless {
 
@@ -25,8 +25,7 @@ namespace Useless {
                 { assert(0); return false; }
 
         SPointer< PixelTransfer >
-            CreateReader( int channelFormat = COLOR ) const
-                { assert(0); return 0; }
+            CreateReader( int channelFormat = COLOR ) const;
         
         SPointer< PixelTransfer >
             CreateWriter( int channelFormat = COLOR );

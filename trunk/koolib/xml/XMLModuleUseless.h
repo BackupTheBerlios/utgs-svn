@@ -55,6 +55,7 @@ namespace XMLProgram {
             void        CreatePointList ( Node node, ExecutionState &state );
             void        CreateRectList  ( Node node, ExecutionState &state );
             void        CreateScreen    ( Node node, ExecutionState &state );
+            void        CreatePrinter   ( Node node, ExecutionState &state );
             void        CreateImage     ( Node node, ExecutionState &state );
             IChunkPtr   CreateImageBuffer( int width, int height );
             IChunkPtr   CreateSample    ( std::string fileName );

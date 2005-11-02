@@ -3,6 +3,7 @@
 #include "Useless/XML/Resources/CreateGUIResources.h"
 #include "Useless/Graphic/Planes/TransparentImage.h"
 #include "Useless/Graphic/FileIO/ImageFactory.h"
+#include "Useless/Graphic/Device/GVM_Context.h"
 #include "Useless/File/VIFS.h"
 
 
@@ -305,6 +306,15 @@ namespace Dynamo {
     
     struct CGraphix : CInterface, virtual IGraphix
     {
+
+        CGraphix()
+        {
+        }
+
+        ~CGraphix()
+        {
+        }
+
         IGraphicPlane * GetImage( std::string imageId )
         {
             return new CInputGraphicPlane( *ImageResource("images", imageId ));
@@ -334,7 +344,13 @@ namespace Dynamo {
             loader->Load( *file, wrapper );
             wrapper.Transform();
         }
-
+        
+        GVM_Context * GetGVMContext( std::string screenId )
+        {
+            SPointer< Screen > screen = *ScreenResource("system", screenId );
+            GVM_Context *gvmContext = dynamic_cast< GVM::Context *>( screen->GetSurface() );
+            return gvmContext;
+        }
     };
 
     IGraphix * CInterfaceProvider::ProvideIGraphix()

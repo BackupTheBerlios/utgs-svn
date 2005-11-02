@@ -12,7 +12,7 @@ namespace Useless {
     {
         int                         _age;
         const GLTextureSurface     *_surf;
-        SPointer< ImageTesselator > _tess;
+        SPointer< GLImageTesselator > _tess;
     };
 
     typedef std::map< const GLTextureSurface *, GLGarbage * > GLSurfTessMap;
@@ -26,8 +26,8 @@ namespace Useless {
         GLTextureSurfaceAllocator();
         ~GLTextureSurfaceAllocator();
 
-        ImageTesselator & GetTesselator     ( const GLTextureSurface *s );
-        void              ReleaseTesselator ( const GLTextureSurface *s, ImageTesselator & tess );
+        GLImageTesselator &   GetTesselator ( const GLTextureSurface *s );
+        void              ReleaseTesselator ( const GLTextureSurface *s, GLImageTesselator & tess );
 
         void GLFreeGarbage();
         void GLFreeGarbage( GLTextureSurface *s );

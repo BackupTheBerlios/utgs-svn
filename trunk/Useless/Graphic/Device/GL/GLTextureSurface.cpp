@@ -1,8 +1,8 @@
 #include "UselessPch.h"
 
-#include "GLTextureSurface.h"
-#include "Useless/Graphic/Device/SurfaceExtFun.h"
+#include "Useless/Graphic/Device/GL/GLTextureSurface.h"
 #include "Useless/Graphic/Device/GL/GLTextureSurfaceAllocator.h"
+#include "Useless/Graphic/Device/SurfaceExtFun.h"
 #include <string>
 
 namespace Useless {
@@ -28,14 +28,7 @@ GLTextureSurface::GLTextureSurface( Surf::Properties &properties )
             ( _useAlpha || _useColorKey ) ? ImageFormat::B8G8R8A8 : ImageFormat::B8G8R8, 
             1, 1, 2, 2 );
 
-    properties = Surf::Properties();
-    properties.width = _pixelBuffer.GetWidth();
-    properties.height = _pixelBuffer.GetHeight();
-    properties.pixelformat = ImageFormat( _pixelBuffer.GetFormat() );
-    properties.has_color_key = _useColorKey;
-    properties.color_key = _colorKey;
-    properties.alpha = _useAlpha;
-
+    GetProperties( &properties );
 }
 
 GLTextureSurface::~GLTextureSurface()
@@ -101,6 +94,20 @@ struct GenericTransferAndNotify : GenericTransfer
 
 
 SPointer< PixelTransfer >
+GLTextureSurface::CreateReader( int channelFormat ) const
+{
+    PixelTransfer *ptr = new GenericTransfer( (void*)_pixelBuffer.GetData(), 0 );
+    ptr->SetSource(
+            _pixelBuffer.GetWidth(),
+            _pixelBuffer.GetHeight(),
+            _pixelBuffer.GetPitch(),
+            (channelFormat == ALPHA ? ImageFormat::ALPHA8 : _pixelBuffer.GetFormat())
+            );
+    return ptr;
+}
+
+
+SPointer< PixelTransfer >
 GLTextureSurface::CreateWriter( int channelFormat )
 {
     PixelTransfer *ptr = new GenericTransferAndNotify( this );
@@ -135,6 +142,19 @@ void GLTextureSurface::GetProperties( Surf::Properties *prop ) const
     prop->width = _pixelBuffer.GetWidth();
     prop->height = _pixelBuffer.GetHeight();
     prop->pixelformat = ImageFormat( _pixelBuffer.GetFormat() );
+    prop->color = 1;
+    prop->alpha = _useAlpha;
+    prop->zbuffer = 0;
+    prop->texture = 0;
+    prop->renderable = 0;
+    prop->blit_source = 1;
+    prop->prefer_copy = 0;
+    prop->video_memory = 1;
+    prop->primary = 0;
+    prop->use_textures = 1;
+    prop->has_color_key = _useColorKey;
+    prop->color_key = _colorKey;
+    prop->num_surfaces = 1;
 }
 
 
@@ -155,6 +175,8 @@ void * GLTextureSurface::GetExtFun( const std::string &name )
     {
         return (void *)(& SurfExt::Thunk1< int *, GLTextureSurface, &GLTextureSurface::IsDirty >::apply );
     }
+	throw Error("GLTextureSurface::GetExtFun: '%s' - function not supported.", name.c_str());
+	return NULL;
 }
 
 }; //Useless

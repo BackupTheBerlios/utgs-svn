@@ -4,6 +4,7 @@
 #include "Useless/Graphic/Device/Surface.h"
 #include "Useless/System/Assert.h"
 #include "Useless/Graphic/Planes/ImageBase.h"
+#include "Useless/Graphic/Device/GVM_Context.h"
 
 
 //#cannot include "Threads/Lock.h"
@@ -86,22 +87,23 @@ static bool s_FlushCache = true;
 
 
 //////////////////////////////////////////////////////////////////////////////// Painter::Painter //
-Painter::Painter(): _plane(0), _constantAlpha(255)
+Painter::Painter(): _plane(0), _constantAlpha(255), _gvmInitialized(0)
 {
 }
 
 //////////////////////////////////////////////////////////////////////////////// Painter::Painter //
 Painter::Painter ( OGraphics &plane, const Pos &offset )
-    :_plane(&plane), _offset(offset)
+    :_plane(&plane), _offset(offset), _gvmInitialized(0)
 {
     assert(_plane);
     _minimal_area = _plane->GetClipper();
     _constantAlpha = _plane->GetConstantAlpha();
+    _paintArea = Rect( _plane->GetWidth(), _plane->GetHeight() );
 }
 
 //////////////////////////////////////////////////////////////////////////////// Painter::Painter //
 Painter::Painter ( const Painter &painter, const Pos &offset )
-    :_plane(painter._plane), _offset(painter._offset+offset)
+    :_plane(painter._plane), _offset(painter._offset+offset), _gvmInitialized(0), _paintArea( painter._paintArea )
 {
     assert(_plane); 
     _minimal_area = _plane->GetClipper();
@@ -291,6 +293,42 @@ void  Painter::PaintPolygon( const std::vector<Pos> &vertices, NormalPixel color
         t_vertices.push_back( vertices[i] + _offset );
     
     GetSurfacePainter().PaintPolygon( t_vertices, color.c );
+}
+
+GVM::Context * Painter::GetGVMContext()
+{
+    if ( 0 == _gvmInitialized )
+    {
+        _gvmInitialized = dynamic_cast< GVM::Context *>( _plane->GetSurface());
+        _gvmInitialized->InitViewport( _paintArea.GetX(), _paintArea.GetY(), _paintArea.GetW(), _paintArea.GetH() );
+    }
+    return _gvmInitialized;
+}
+
+void Painter::SetFrustum    ( double left, double right, double bottom, double top, double znear, double zfar )
+{
+    GetGVMContext()->SetFrustum( left, right, bottom, top, znear, zfar );
+}
+
+void Painter::SetOrtho      ( double left, double right, double bottom, double top, double znear, double zfar )
+{
+    GetGVMContext()->SetOrtho( left, right, bottom, top, znear, zfar );
+}
+
+void Painter::SetOrtho2D    ( double left, double right, double bottom, double top )
+{
+    GetGVMContext()->SetOrtho2D( left, right, bottom, top );
+}
+
+void Painter::SetPerspective( double fov, double aspect, double znear, double zfar )
+{
+    GetGVMContext()->SetPerspective( fov, aspect, znear, zfar );
+}
+
+void Painter::Invoke        ( const GVM::Message &msg )
+{
+    // TODO: apply clip region (also to messages)
+    GetGVMContext()->Invoke( msg );
 }
 
 

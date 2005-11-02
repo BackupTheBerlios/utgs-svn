@@ -36,26 +36,41 @@ namespace Useless {
 class ImageBuffer : public ImageBase, public OGraphics
 {
 public:
+    // Dummy initializer
     ImageBuffer();
+    
+    // New buffer W x H (writeable)
     ImageBuffer( int w, int h);
-    ImageBuffer( const ImageBuffer& image, const Useless::Rect &rect );
-    ImageBuffer( Surface *psurface, const Useless::Rect &rect=Useless::Rect() );
-    ImageBuffer( Share<Surface> sh_surface, const Useless::Rect &rect=Useless::Rect() );
-    ImageBuffer &operator=( const ImageBuffer & );
+
+    // Just copy all ImageBuffer members, and adjust rectangle
+    ImageBuffer( const ImageBuffer &source, const Rect &rect );
+    
+    // Adopt surface for this ImageBuffer.
+    ImageBuffer( Share< Surface > surface, const Rect &rect = Useless::Rect() );
+   
+    // Buffer containing new copy of source pixels (always copy)
+    ImageBuffer( Surface *source, const Rect &rect = Rect() );
+    
+    // Just copy all ImageBuffer members
+    ImageBuffer &operator = ( const ImageBuffer & );
+    
     virtual ~ImageBuffer();
+    
     virtual SPointer<IGraphics> Copy()                 const { return new ImageBuffer (*this); }
     virtual SPointer<IGraphics> Copy(const Rect &rect) const { return new ImageBuffer (*this, rect); }
-    virtual SPointer<IGraphics> QueryIGraphics( const Rect &cut ) { return Copy(cut); }
+    
+    // Buffer containing new copy of source pixels (always copy)
+    virtual SPointer<IGraphics> QueryIGraphics( const Rect &cut );
 
     virtual const Surface* GetSurface() const { return _sh_surface.GetTarget(); }
     virtual       Surface* GetSurface()       { return _sh_surface.GetTarget(); }
 
-    virtual int   GetWidth()  const  { return _rectangle.GetW(); }
-    virtual int   GetHeight() const  { return _rectangle.GetH(); }
+    virtual int   GetWidth  ()  const   { return _rectangle.GetW(); }
+    virtual int   GetHeight () const    { return _rectangle.GetH(); }
 
-    virtual void Clear    ( NormalPixel color=0L, const Rect &area=Useless::Rect() );
+    virtual void  Clear    ( NormalPixel color=0L, const Rect &area = Rect() );
     
-    virtual void SetClipper( const RectList &region );
+    virtual void     SetClipper( const RectList &region );
     virtual RectList GetClipper( const Rect &crop = Rect() ) const;
     
     void Create( const Screen& screen );
@@ -63,8 +78,7 @@ public:
 
     bool IsValid() const { return (!!_sh_surface); }
 
-    Useless::Signal OnPaint;
-
+    Signal OnPaint;
 
 protected:
     virtual void Load() { OnPaint.Send(); }

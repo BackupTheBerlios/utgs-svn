@@ -60,6 +60,8 @@ namespace Dynamo {
         virtual IGraphicPlane * CreateTransparentImage( std::string fileName, std::string maskName ) = 0;
         // Transfer pixels from file to user-supplied writter
         virtual void LoadPixels( std::string fileName, IPixelWriter *writer ) = 0;
+        // Get GVM::Context
+        virtual GVM_Context * GetGVMContext( std::string screenId ) = 0;
     };
 
     // Sounds & Music
@@ -150,6 +152,13 @@ namespace Dynamo {
         virtual void SetBlendMode( int mode ) = 0;        
         virtual void MultiplyAlpha( int value ) = 0;
         virtual void SetColorFilter( unsigned int color ) = 0;
+        
+        virtual GVM_Context * GetGVMContext() = 0;
+        virtual void SetFrustum    ( double left, double right, double bottom, double top, double znear, double zfar ) = 0;
+        virtual void SetOrtho      ( double left, double right, double bottom, double top, double znear, double zfar ) = 0;
+        virtual void SetOrtho2D    ( double left, double right, double bottom, double top ) = 0; 
+        virtual void SetPerspective( double fov, double aspect, double znear, double zfar ) = 0;
+        virtual void Invoke        ( const GVM_Message &msg ) = 0;
     };
 
 
@@ -414,6 +423,7 @@ namespace Dynamo {
 
         virtual int         AsInt() = 0;
         virtual float       AsFloat() = 0;
+        virtual IPaint*     AsIPaint() = 0;
         virtual std::basic_string< wchar_t > AsText() = 0;
 
         virtual IXmlChunk*  GetChunk( const std::string &name ) = 0;

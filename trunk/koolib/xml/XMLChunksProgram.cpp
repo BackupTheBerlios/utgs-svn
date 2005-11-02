@@ -349,26 +349,100 @@ namespace XMLProgram {
         TextUtf8 result;
 
         int p=0,q=0;
-
+        
+        enum CvtMode { CVT_STRING, CVT_INTEGER, CVT_FLOAT, CVT_NOT, CVT_BOOL };
+        CvtMode cvtMode;
+        int dp = 0;
+        
         while ( true )
         {
+            cvtMode = CVT_STRING;
             p = value.find(L"$(",q);
+            dp = 2;
+            
+            if ( -1 == p )
+            {
+                cvtMode = CVT_INTEGER;
+                p = value.find(L"#(",q);
+                dp = 2;
+            }
+            
+            if ( -1 == p )
+            {
+                cvtMode = CVT_FLOAT;
+                p = value.find(L"#.(",q);
+                dp = 3;
+            }
+            
+            if ( -1 == p )
+            {
+                cvtMode = CVT_NOT;
+                p = value.find(L"!(",q);
+                dp = 2;
+            }
+            
+            if ( -1 == p )
+            {
+                cvtMode = CVT_BOOL;
+                p = value.find(L"!!(",q);
+                dp = 3;
+            }
+
             if ( -1 == p )
             {
                 result += value.substr(q, value.size()-q);
                 break;
             }
             result += value.substr(q, p-q);
-            p += 2;
+            p += dp;
             q = value.find(L")", p);
             if ( -1 == q )
             {
                 q = value.size() - p;
             }
             TextUtf8 name = value.substr(p, q-p);
-            Attr< TextUtf8 , true, wchar_t > a( name );
-            GetChunkAttr( a, state );
-            result += TextUtf8( a.str());
+            if ( CVT_STRING == cvtMode )
+            {
+                Attr< TextUtf8 , true, wchar_t > a( name );
+                GetChunkAttr( a, state );
+                result += TextUtf8( a.str());
+            }
+            else if ( CVT_INTEGER == cvtMode )
+            {
+                Attr< int, true, wchar_t > a( name );
+                GetChunkAttr( a, state );
+                TextUtf8 value;
+                assign( value, *a );
+                result += value;
+            }
+            else if ( CVT_FLOAT == cvtMode )
+            {
+                Attr< double, true, wchar_t > a( name );
+                GetChunkAttr( a, state );
+                TextUtf8 value;
+                assign( value, *a );
+                if ( -1 == value.find(L".") )
+                {
+                    value += L".0";
+                }
+                result += value;
+            }
+            else if ( CVT_NOT == cvtMode )
+            {
+                Attr< int, true, wchar_t > a( name );
+                GetChunkAttr( a, state );
+                TextUtf8 value;
+                assign( value, !(*a) );
+                result += value;
+            }
+            else if ( CVT_BOOL == cvtMode )
+            {
+                Attr< int, true, wchar_t > a( name );
+                GetChunkAttr( a, state );
+                TextUtf8 value;
+                assign( value, !!(*a) );
+                result += value;
+            }
             q += 1;
         }
         
@@ -585,36 +659,143 @@ namespace XMLProgram {
         return GetCurrentExecutionState();
     }
 
-
-    IChunk* XMLCodeBlock::GetChunk( const TextUtf8 &name )
+    XMLCodeBlock::~XMLCodeBlock()
     {
-        if ( name == L"__block__" )
-        {
-            return (this);
-        }
-        else if ( name == L"__symbols__" )            
-        {
-            //ChunkMap::iterator it = _chunks.find( L"__symbols__" );
-            //if ( it != _chunks.end() )
-            //{
-            //    _chunks.erase( it );
-            //}
-            IChunkPtr result = CreateEmpty();
-            for ( ChunkMap::reverse_iterator it = _chunks.rbegin(); it != _chunks.rend(); ++it )
-            {
-                result = CreateList( CreateList( CreateValue( (*it).first ), CreateList( (*it).second.get(), CreateEmpty() )), result.get() );
-            }
-            //_chunks.insert( std::make_pair(L"__symbols__", result ));
-            GetGlobals().SetResult( result.get() );
-            return result.get();
-        }
+    }
 
-        ChunkMap::iterator itChunk = _chunks.find( name );
+    void XMLCodeBlock::DropAll()
+    {
+        _chunks.clear();
+    }
+
+    void XMLCodeBlock::AddChunk( unsigned int name, IChunk *chunk )
+    {
+        _chunks.insert( std::make_pair( name, chunk ));
+    }
+
+    void XMLCodeBlock::AddChunk( const TextUtf8 &name, IChunk *chunk )
+    {
+        unsigned int id = GetGlobalSymbolDict().AddSymbol( name );
+        _chunks.insert( std::make_pair( id, chunk ));
+    }
+
+    IChunk* XMLCodeBlock::_getChunk( unsigned int id )
+    {
+        ChunkMap::iterator itChunk = _chunks.find( id );
         if ( itChunk != _chunks.end() )
         {
             return (*itChunk).second.get();
         }
+        else
+        {
+            static unsigned int s_BlkId = GetGlobalSymbolDict().AddSymbol( L"__block__" );
+            static unsigned int s_SymId = GetGlobalSymbolDict().AddSymbol( L"__symbols__" );
+            
+            if ( id == s_BlkId )
+            {
+                return (this);
+            }
+
+            if ( id == s_SymId )
+            {
+                typedef std::multimap< TextUtf8, IChunkPtr > _SortBin; _SortBin sortBin;
+                for ( ChunkMap::iterator it = _chunks.begin(); it != _chunks.end(); ++it )
+                {
+                    sortBin.insert( std::make_pair( GetGlobalSymbolDict().GetSymbolName( (*it).first ), (*it).second ));
+                }
+                IChunkPtr result = CreateEmpty();
+                for ( _SortBin::reverse_iterator it = sortBin.rbegin(); it != sortBin.rend(); ++it )
+                {
+                    result = CreateList( // create pair [NAME, VALUE]
+                            CreateList( CreateValue( (*it).first ), //< 1-st: NAME
+                                CreateList( (*it).second.get(), CreateEmpty() )) //<< 2-nd: VALUE
+                            , result.get() );
+                }
+                GetGlobals().SetResult( result.get() );
+                return result.get();
+            }
+            return 0;
+        }
+    }
+    
+    IChunk* XMLCodeBlock::_getChunk( const TextUtf8 &name )
+    {
         return 0;
+    }
+
+    IChunk* XMLCodeBlock::GetChunk( unsigned int id )
+    {
+        assert ( id != SymbolDict::NO_SYMBOL );
+        
+        if ( IChunk *ptr = _getChunk( id ))
+        {
+            return ptr;
+        }
+        else
+        {
+            return 0;//_getChunk( GetGlobalSymbolDict().GetSymbolName( id ));
+        }
+    }
+
+    IChunk* XMLCodeBlock::GetChunk( const TextUtf8 &name )
+    {
+        if ( IChunk *ptr = _getChunk( GetGlobalSymbolDict().GetSymbolId( name ) ))
+        {
+            return ptr;
+        }
+        else
+        {
+            return _getChunk( name );
+        }
+    }
+    
+    bool XMLCodeBlock::operator >> ( XMLFactory::AttrUniBase &attr )
+    {
+        IChunkPtr pChunk = GetChunk( attr._name );
+
+        if ( !!pChunk )
+        {
+            Attr< TextUtf8, true, wchar_t > attr1(L"value");
+            (*pChunk) >> attr1;
+            attr.str( attr1.str() );
+            return true;
+        }        
+        else if ( attr._name == L"type-name" )
+        {
+            attr.str(L"xml-block");
+            return true;
+        }
+        else if ( attr._name == L"defined-symbols" )
+        {
+            TextUtf8 s(L"type-name");
+            for ( ChunkMap::iterator it = _chunks.begin(); it != _chunks.end(); ++it )
+            {
+                s += L' ';
+                s += GetGlobalSymbolDict().GetSymbolName( (*it).first );
+            }
+            attr.str( s );
+            return true;
+        }
+        return false;
+    }
+
+        
+    void XMLCodeBlock::SetChunk( unsigned int id, IChunk *pChunk )
+    {
+        ChunkMap::iterator it = _chunks.find( id );
+        if ( it != _chunks.end() )
+        {
+            (*it).second = pChunk;
+        }
+        else
+        {
+            // error vs. ignore ?
+        }
+    }
+
+    void XMLCodeBlock::SetChunk( const TextUtf8 &name, IChunk *pChunk )
+    {
+        SetChunk( GetGlobalSymbolDict().GetSymbolId( name ), pChunk );
     }
     
     IChunk* CreateSequence( const TextUtf8 &text )
@@ -688,7 +869,7 @@ namespace XMLProgram {
     bool XMLListChunk::Execute( Node node, ExecutionState &state )
     {
         IChunkPtr guard( this );
-        if ( _head->Execute( node, state ) && _tail->Execute( node, state ) || IsEmpty( _tail.get() ))
+        if ( _head->Execute( node, state ) && ( IsEmpty( _tail.get() ) ||_tail->Execute( node, state ) ))
         {
             return true;
         }
@@ -696,6 +877,34 @@ namespace XMLProgram {
         {
             throw Error("Not all chunks of list are executable");
             return false;
+        }
+    }
+
+    unsigned int XMLListChunk::GetFourCC( unsigned int name )
+    {
+        if ( FOURCC_NAME_TYPE == name )
+        {
+            return FOURCC_TYPE_LIST;
+        }
+        /* Probably it is NP problem, and I can't see any purpose of having
+         * the list of instructions that all are constant (may be invoked w/o separate scope-block)
+        else if ( name == FOURCC_NAME_CONST )
+        {
+            // fold over all items, check if they are constant
+            IChunkPtr guard( this );
+            if ( _head->GetFourCC( FOURCC_NAME_CONST ) && ( IsEmpty( _tail.get() ) || _tail->GetFourCC( FOURCC_NAME_CONST ) ))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        */
+        else
+        {
+            return 0L;
         }
     }
 
@@ -794,6 +1003,12 @@ namespace XMLProgram {
             throw Error("Cannot access __globals__");
         }
         return g_GlobalExecState;
+    }
+
+    SymbolDict & GetGlobalSymbolDict()
+    {
+        static SymbolDict s_Dict;
+        return s_Dict;
     }
     
     IBlockPtr XMLNodeToBlock( Node node, ExecutionState &state )

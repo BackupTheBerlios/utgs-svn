@@ -628,21 +628,45 @@ namespace XMLFactory {
     // <less><!-- compare --></less>
     LOCAL_TAG_HANDLER( CXML::LESS )
     {
-        _state.SetResult( new CXML::LESS( Compile( _node, _state ).get() ));
+        IChunkPtr compiled = Compile( _node, _state );
+        if ( 0 != compiled->GetChunk( FOURCC_LIST_TAIL ) || IsEmpty( compiled.get() ))
+        {
+			throw Useless::Error("<less> expects exactly one child.\n"
+                    "You've probably forgotten <compare> node.\n"
+                    "The child shall return one out of set { -1, 0, 1}.\n"
+                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'.");
+        }
+        _state.SetResult( new CXML::LESS( compiled.get() ));
         HookDefinition( _node, _state );
     }
 
     // <greater><!-- compare --></greater>
     LOCAL_TAG_HANDLER( CXML::GREATER )
     {
-        _state.SetResult( new CXML::GREATER( Compile( _node, _state ).get() ));
+        IChunkPtr compiled = Compile( _node, _state );
+        if ( 0 != compiled->GetChunk( FOURCC_LIST_TAIL ) || IsEmpty( compiled.get() ))
+        {
+            throw Useless::Error("<greater> expects exactly one child.\n"
+                    "You've probably forgotten <compare> node.\n"
+                    "The child shall return one out of set { -1, 0, 1}.\n"
+                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'.");
+        }
+        _state.SetResult( new CXML::GREATER( compiled.get() ));
         HookDefinition( _node, _state );
     }
 
     // <equal><!-- compare --></equal>
     LOCAL_TAG_HANDLER( CXML::EQUAL )
     {
-        _state.SetResult( new CXML::EQUAL( Compile( _node, _state ).get() ));
+        IChunkPtr compiled = Compile( _node, _state );
+        if ( 0 != compiled->GetChunk( FOURCC_LIST_TAIL ) || IsEmpty( compiled.get() ))
+        {
+            throw Useless::Error("<greater> expects exactly one child.\n"
+                    "You've probably forgotten <compare> node.\n"
+                    "The child shall return one out of set { -1, 0, 1}.\n"
+                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'.");
+        }
+        _state.SetResult( new CXML::EQUAL( compiled.get() ));
         HookDefinition( _node, _state );
     }
 

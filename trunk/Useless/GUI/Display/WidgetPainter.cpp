@@ -14,11 +14,25 @@ WidgetPainter::WidgetPainter( DisplayMan &display, const Pos &p )
 
 WidgetPainter::WidgetPainter(const WidgetPainter &wp, const Pos &p )
     : Painter(wp,p), _display(wp._display), _widget(wp._widget)
-{}
+{
+    _paintArea = _widget->GetBoundingRect();
+    if ( Widget *parent = _widget->GetParent() )
+    {
+        _paintArea &= parent->GetClientRect(_widget) - _widget->GetPosition();
+    }
+    _paintArea += GetOffset();
+}
 
 WidgetPainter::WidgetPainter(const WidgetPainter &wp, Widget &w )
     : Painter(wp, w.GetPosition() ), _display(wp._display), _widget(&w)
-{}
+{
+    _paintArea = _widget->GetBoundingRect();
+    if ( Widget *parent = _widget->GetParent() )
+    {
+        _paintArea &= parent->GetClientRect(_widget) - _widget->GetPosition();
+    }
+    _paintArea += GetOffset();
+}
 
 WidgetPainter& WidgetPainter::operator =( const WidgetPainter &wp )
 {

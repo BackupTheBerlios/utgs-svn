@@ -182,6 +182,36 @@ namespace Dynamo {
                 _advPaint = new AdvancedPaint( _painter.GetWidget() );
             }
         }
+        
+        GVM_Context * GetGVMContext()
+        {
+            return _painter.GetGVMContext();
+        }
+
+        void SetFrustum    ( double left, double right, double bottom, double top, double znear, double zfar )
+        {
+            _painter.SetFrustum( left, right, bottom, top, znear, zfar );
+        }
+
+        void SetOrtho      ( double left, double right, double bottom, double top, double znear, double zfar )
+        {
+            _painter.SetOrtho( left, right, bottom, top, znear, zfar );
+        }
+
+        void SetOrtho2D    ( double left, double right, double bottom, double top )
+        {
+            _painter.SetOrtho2D( left, right, bottom, top );
+        }
+
+        void SetPerspective( double fov, double aspect, double znear, double zfar )
+        {
+            _painter.SetPerspective( fov, aspect, znear, zfar );
+        }
+
+        void Invoke        ( const GVM_Message &msg )
+        {
+            _painter.Invoke( msg );
+        }
     };
 
     struct CWidget : CInterface, virtual IWidget
@@ -555,6 +585,9 @@ namespace Dynamo {
             else if ( _prTextField ) {
                 return _prTextField->GetText();
             }
+            else {
+                return L"";
+            }
         }
 
         void SetText( const char *localeName, std::basic_string< char > text )
@@ -756,6 +789,11 @@ namespace Dynamo {
     IGui * CInterfaceProvider::ProvideIGui()
     {
         return new CGui( Useless::GUIMasterResource("system", "gui")->get() );
+    }
+    
+    IPaint *CreateIPaint( const Useless::WidgetPainter &wpaint )
+    {
+        return new CPaint( wpaint );
     }
 
 };// Dynamo

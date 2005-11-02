@@ -422,18 +422,27 @@ namespace XMLProgram {
             virtual IChunkPtr Get( IChunkPtr parent, ExecutionState &state ) = 0;
         };
 
-        template< class _Name >
         struct LazyGetChunkMember : LazyGetChunk 
         {
-            _Name _name;
+            TextUtf8        _name;
+            unsigned int    _id;
 
-            LazyGetChunkMember( const _Name &name ): _name( name )
+            LazyGetChunkMember( const TextUtf8 &name ): _name( name )
             {
+                _id = GetGlobalSymbolDict().AddSymbol( name );
             }
 
             IChunkPtr Get( IChunkPtr parent, ExecutionState &state )
             {
-                IChunkPtr pChunk = parent->GetChunk( _name );
+                IChunkPtr pChunk;
+                if ( !!_id )
+                {
+                    pChunk = parent->GetChunk( _id );
+                }
+                if ( !pChunk )
+                {
+                    pChunk = parent->GetChunk( _name );
+                }
                 if ( 0 != pChunk.get() )
                 {
                     if ( 0 != _next )
@@ -454,7 +463,9 @@ namespace XMLProgram {
 
         struct LazyGetChunkInScope : LazyGetChunk
         {
+            bool     _noThrow;
             TextUtf8 _name;
+            unsigned int _id;
             TextUtf8 _fullName;
 
             SplitNames _SplitChunkName( TextUtf8 fullName )
@@ -476,31 +487,20 @@ namespace XMLProgram {
                 return names;
             }
 
-            LazyGetChunkInScope()
+            LazyGetChunkInScope(): _noThrow(0)
             {
             }
 
-            LazyGetChunkInScope( const TextUtf8 &name ): _fullName( name )
+            LazyGetChunkInScope( const TextUtf8 &name, bool noThrow = false ): _fullName( name ), _noThrow( noThrow )
             {
                 SplitNames p = _SplitChunkName( name );
                 _name = p.first;
+                _id = GetGlobalSymbolDict().AddSymbol( _name );
                 LazyGetChunk *g = this;
                 p = _SplitChunkName( p.second );
                 while ( !p.first.empty() )
                 {
-                    LazyGetChunk *n = 0;
-                    if ( L"head" == p.first )
-                    {
-                        n = new LazyGetChunkMember< unsigned int >( FOURCC_LIST_HEAD );
-                    }
-                    else if ( L"tail" == p.first )
-                    {
-                        n = new LazyGetChunkMember< unsigned int >( FOURCC_LIST_TAIL );
-                    }
-                    else
-                    {
-                        n = new LazyGetChunkMember< TextUtf8 >( p.first );
-                    }
+                    LazyGetChunk *n = new LazyGetChunkMember( p.first );
                     g->SetNext( n );
                     g = n;
                     p = _SplitChunkName( p.second );
@@ -509,12 +509,24 @@ namespace XMLProgram {
             
             IChunkPtr Get( IChunkPtr parent, ExecutionState &state )
             {
-                IChunkPtr pChunk = state._currentBlock->GetChunk( _name );
-                ExecutionState *s = state._prevState;
-                while ( 0 == pChunk.get() && 0 != s )
+                IChunkPtr pChunk;
+                if ( !!_id )
                 {
-                    pChunk = s->_currentBlock->GetChunk( _name );
-                    s = s->_prevState;
+                    ExecutionState *s = &state;
+                    while ( !pChunk && 0 != s )
+                    {
+                        pChunk = s->_currentBlock->GetChunk( _id );
+                        s = s->_prevState;
+                    }
+                }
+                if ( !pChunk )
+                {
+                    ExecutionState *s = &state;
+                    while ( !pChunk && 0 != s )
+                    {
+                        pChunk = s->_currentBlock->GetChunk( _name );
+                        s = s->_prevState;
+                    }
                 }
                 if ( 0 != pChunk.get() )
                 {
@@ -524,6 +536,10 @@ namespace XMLProgram {
                         if ( 0 != pChunk.get() )
                         {
                             return pChunk;
+                        }
+                        else if ( _noThrow )
+                        {
+                            return 0;
                         }
                         else
                         {
@@ -536,6 +552,10 @@ namespace XMLProgram {
                         return pChunk;
                     }
                 }
+                else if ( _noThrow )
+                {
+                    return 0;
+                }
                 else
                 {
                     throw Useless::Error("Undefined symbol '%S'", _fullName.c_str());
@@ -546,12 +566,14 @@ namespace XMLProgram {
 
         struct LET : IChunk, CXmlErrors
         {
-            TextUtf8  _name;
-            IChunkPtr _value;
+            TextUtf8     _name;
+            unsigned int _id;
+            IChunkPtr    _value;
 
             LET(){}
             LET( const TextUtf8 &name, IChunk *value ): _name( name ), _value( value )
             {
+                _id = GetGlobalSymbolDict().AddSymbol( _name );
             }
 
             bool Execute( Node __unused__, ExecutionState &state )
@@ -560,7 +582,17 @@ namespace XMLProgram {
                     IChunk *pChunk = state._currentBlock->GetChunk( _name );
                     if ( 0 != pChunk ) { throw Useless::Error("<let> Symbol already defined %S", _name.c_str() ); }
                     _value->Execute( __unused__, state );
-                    state._currentBlock->AddChunk( _name, state.GetResult() );
+                    if ( 0 != state.GetResult() )
+                    {
+                        if ( !!_id )
+                        {
+                            state._currentBlock->AddChunk( _id, state.GetResult() );
+                        }
+                        else
+                        {
+                            state._currentBlock->AddChunk( _name, state.GetResult() );
+                        }
+                    }
                     state.SetResult(0);
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
@@ -583,8 +615,8 @@ namespace XMLProgram {
 
         struct SET : IChunk, CXmlErrors
         {
-            TextUtf8 _name;
-            IChunkPtr _value;
+            TextUtf8     _name;
+            IChunkPtr    _value;
 
             SET(){}
             SET( const TextUtf8 &name, IChunk *value ): _name( name ), _value( value )
@@ -604,7 +636,10 @@ namespace XMLProgram {
                         names = SplitChunkName( names.second, state );
                     }
                     _value->Execute( __unused__, state );
-                    pParent->SetChunk( names.first, state.GetResult() );
+                    if ( 0 != state.GetResult() )
+                    {
+                        pParent->SetChunk( names.first, state.GetResult() );
+                    }
                     state.SetResult(0);
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
@@ -668,14 +703,26 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetDict(L"dict", true);
+                    static LazyGetChunkInScope s_LazyGetName(L"name", true);
+                    static LazyGetChunkInScope s_LazyGetDefault(L"default", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
-                    IChunk *pDict = XMLProgram::GetChunk(L"dict", newState);
-                    IChunk *pName = XMLProgram::GetChunk(L"name", newState);
+                    IChunkPtr pDict = s_LazyGetDict.Get( 0, newState );
+                    IChunkPtr pName = s_LazyGetName.Get( 0, newState );
+                    IChunkPtr pDefault = s_LazyGetDefault.Get( 0, newState );
                     if ( !pDict ) { throw Useless::Error("<lookup> expects 'dict'"); }
                     if ( !pName ) { throw Useless::Error("<lookup> expects 'name'"); }                    
-                    TextUtf8 name = value_of< TextUtf8 >( pName );
-                    state.SetResult( pDict->GetChunk( name ));
+                    TextUtf8 name = value_of< TextUtf8 >( pName.get() );
+                    IChunk *value = pDict->GetChunk( name );
+                    if ( 0 != value )
+                    {   // return found value
+                        state.SetResult( value );
+                    }
+                    else
+                    {   // return default value or 0 (is-defined will return FALSE)
+                        state.SetResult( pDefault.get() );
+                    }
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
@@ -693,19 +740,42 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetDict(L"dict", true);
+                    static LazyGetChunkInScope s_LazyGetName(L"name", true);
+                    static LazyGetChunkInScope s_LazyGetValue(L"value", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
-                    IChunk *pDict = XMLProgram::GetChunk(L"dict", newState);
-                    IChunk *pName = XMLProgram::GetChunk(L"name", newState);
-                    IChunk *pValue= XMLProgram::GetChunk(L"value", newState);
-                    if ( !pDict ) { throw Useless::Error("<register> expects 'dict'"); }
+                    IChunkPtr pDict = s_LazyGetDict.Get( 0, newState );
+                    IChunkPtr pName = s_LazyGetName.Get( 0, newState );
+                    IChunkPtr pValue = s_LazyGetValue.Get( 0, newState );
                     if ( !pName ) { throw Useless::Error("<register> expects 'name'"); }
                     if ( !pValue ) { throw Useless::Error("<register> expects 'value'"); }
-                    IBlock *pBlock = dynamic_cast< IBlock * >( pDict );
-					if ( !pBlock ) { throw Useless::Error("<register> expects 'dict' to be type of Block"); }
-                    pBlock->AddChunk( value_of< TextUtf8 >( pName ), pValue );
+                    IBlock *pBlock;
+                    if ( !pDict )
+                    {
+                        // insert symbol into current (OUTER) scope
+                        pBlock = state._currentBlock;
+                    }
+                    else
+                    {
+                        // use supplied scope
+                        pBlock = dynamic_cast< IBlock * >( pDict.get() );
+		        if ( !pBlock ) { throw Useless::Error("<register> expects 'dict' to be type of Block"); }
+                    }
+                    TextUtf8 name = value_of< TextUtf8 >( pName.get() );
+                    if ( !pBlock->GetChunk( name ))
+                    {   // define new entry 
+                        pBlock->AddChunk( name, pValue.get() );
+                    }
+                    else
+                    {   // reset existing entry
+                        pBlock->SetChunk( name, pValue.get() );
+                    }
                 }
-                catch( Useless::Error &e ) { RaiseError( e ); }
+                catch( Useless::Error &e )
+                {
+                    RaiseError( e );
+                }
                 return true;
             }
         };
@@ -735,19 +805,14 @@ namespace XMLProgram {
             LazyGetChunkInScope _getChunk;
 
             IS_DEFINED() {}
-            IS_DEFINED( const TextUtf8 &name ): _getChunk( name )
+            IS_DEFINED( const TextUtf8 &name ): _getChunk( name, true )
             {
             }
 
             bool Execute( Node __unused__, ExecutionState &state )
             {
-                try {
-                    IChunkPtr pChunk = _getChunk.Get( 0, state );
-                    state.SetResult( CreateValue( (int)( 0 != pChunk.get() )) );
-                }
-                catch( Useless::Error & ) {
-                    state.SetResult( CreateValue( 0 ) );
-                }
+                IChunkPtr pChunk = _getChunk.Get( 0, state );
+                state.SetResult( CreateValue( (int)( 0 != pChunk.get() )) );
                 return true;
             }
         };
@@ -833,22 +898,26 @@ namespace XMLProgram {
         {
             TextUtf8  _iterator;
             IChunkPtr _pChunk;
+            unsigned int _iterId;
             
             MAP(){}
             MAP( const TextUtf8 &iterator, IChunk *pChunk ): _iterator( iterator ), _pChunk( pChunk )
             {
+                _iterId = GetGlobalSymbolDict().AddSymbol( _iterator );
             }
 
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetList(L"list", true);
+                    static LazyGetChunkInScope s_LazyGetFunc(L"func", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
                     IChunkPtr pEnd = CreateEmpty();
                     IChunkPtr pHead = pEnd;
                     XMLListChunk *pLast = 0;
-                    IChunkPtr pList = XMLProgram::GetChunk(L"list", newState);
-                    IChunkPtr pFunc = XMLProgram::GetChunk(L"func", newState);
+                    IChunkPtr pList = s_LazyGetList.Get( 0, newState );
+                    IChunkPtr pFunc = s_LazyGetFunc.Get( 0, newState );
                     if ( !pList.get() ) { throw Useless::Error("<map> Undefined symbol 'list'"); }
                     if ( !pFunc.get() ) { throw Useless::Error("<map> Undefined symbol 'func'"); }
                     while ( !IsEmpty( pList.get() ))
@@ -857,7 +926,7 @@ namespace XMLProgram {
                         if ( IsEmpty( pList.get() )) { break; }
                         IChunk *pElement = pList->GetChunk( FOURCC_LIST_HEAD );
                         newState.Reuse();
-                        newState._currentBlock->AddChunk( _iterator, pElement );
+                        newState._currentBlock->AddChunk( _iterId, pElement );
                         pFunc->Execute( __unused__, newState );
                         if ( !IsEmpty( newState.GetResult() ))
                         {
@@ -899,19 +968,33 @@ namespace XMLProgram {
             TextUtf8  _iterator;
             TextUtf8  _accum;
             IChunkPtr _pChunk;
+            unsigned int _iterId;
+            unsigned int _accumId;
+            LazyGetChunkInScope _getAccum;
             FOLD(){}
-            FOLD( const TextUtf8 &iter, const TextUtf8 &accum, IChunk *pChunk ):_iterator(iter),_accum(accum),_pChunk(pChunk)
+            FOLD( const TextUtf8 &iter, const TextUtf8 &accum, IChunk *pChunk )
+                :_iterator(iter),_accum(accum),_pChunk(pChunk)
             {
+                _iterId = GetGlobalSymbolDict().AddSymbol( _iterator );
+                _accumId = GetGlobalSymbolDict().AddSymbol( _accum );
+                _getAccum = LazyGetChunkInScope( _accum, true);
             }
 
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetFunc(L"func", true);
+                    static LazyGetChunkInScope s_LazyGetList(L"list", true);
+                    static LazyGetChunkInScope s_LazyGetAccum(L"accum", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
-                    IChunkPtr pFunc  = XMLProgram::GetChunk(L"func",  newState);
-                    IChunkPtr pList  = XMLProgram::GetChunk(L"list",  newState);
-                    IChunkPtr pAccum = XMLProgram::GetChunk(L"accum", newState);
+                    IChunkPtr pFunc  = s_LazyGetFunc.Get( 0,  newState);
+                    IChunkPtr pList  = s_LazyGetList.Get( 0,  newState);
+                    IChunkPtr pAccum = s_LazyGetAccum.Get( 0, newState);
+                    if ( !pAccum.get() )
+                    {   // try new accumulator name (semantic sugar)
+                        pAccum = _getAccum.Get( 0, newState );
+                    }
                     if ( !pFunc.get() ) { throw Useless::Error("<fold> Undefined symbol 'func'"); }
                     if ( !pList.get() ) { throw Useless::Error("<fold> Undefined symbol 'list'"); }
                     if ( !pAccum.get()) { throw Useless::Error("<fold> Undefined symbol 'accum'"); }
@@ -921,8 +1004,8 @@ namespace XMLProgram {
                         if ( IsEmpty( pList.get() )) { break; }
                         IChunk *pElement = pList->GetChunk( FOURCC_LIST_HEAD );
                         newState.Reuse();
-                        newState._currentBlock->AddChunk( _iterator, pElement );
-                        newState._currentBlock->AddChunk( _accum, pAccum.get() );
+                        newState._currentBlock->AddChunk( _iterId, pElement );
+                        newState._currentBlock->AddChunk( _accumId, pAccum.get() );
                         pFunc->Execute( __unused__, newState );
                         pList = pList->GetChunk( FOURCC_LIST_TAIL );
                         pAccum = newState.GetResult();
@@ -959,10 +1042,12 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetCount(L"count", true);
+                    static LazyGetChunkInScope s_LazyGetList(L"list", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
-                    IChunkPtr pCount = XMLProgram::GetChunk(L"count", newState);
-                    IChunkPtr pList  = XMLProgram::GetChunk(L"list", newState);
+                    IChunkPtr pCount = s_LazyGetCount.Get( 0, newState );
+                    IChunkPtr pList = s_LazyGetList.Get( 0, newState );
                     if ( !pList.get() ) { throw Useless::Error("<seek> Undefined symbol 'list'"); }
                     if ( !pCount.get() ) { throw Useless::Error("<seek> Undefined symbol 'count'"); }
                     int Count = value_of< int >( pCount.get() );
@@ -1004,10 +1089,12 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetCount(L"count", true);
+                    static LazyGetChunkInScope s_LazyGetList(L"list", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
-                    IChunkPtr pCount = XMLProgram::GetChunk(L"count", newState);
-                    IChunkPtr pList  = XMLProgram::GetChunk(L"list", newState);
+                    IChunkPtr pCount = s_LazyGetCount.Get( 0, newState );
+                    IChunkPtr pList = s_LazyGetList.Get( 0, newState );
                     if ( !pList.get() ) { throw Useless::Error("<head> Undefined symbol 'list'"); }
                     if ( !pCount.get() ) { throw Useless::Error("<head> Undefined symbol 'count'"); }
                     int nCount = value_of< int >( pCount.get() );
@@ -1043,13 +1130,18 @@ namespace XMLProgram {
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
+                    static LazyGetChunkInScope s_LazyGetCount(L"count", true);
+                    static LazyGetChunkInScope s_LazyGetFirst(L"first", true);
                     SubScope newState( state );
                     _pChunk->Execute( __unused__, newState );
-                    IChunkPtr pCount = XMLProgram::GetChunk(L"count", newState);
-                    IChunkPtr pFirst  = XMLProgram::GetChunk(L"first", newState);
-                    if ( !pFirst.get() ) { throw Useless::Error("<range> Undefined symbol 'first'"); }
+                    IChunkPtr pCount = s_LazyGetCount.Get( 0, newState );
+                    IChunkPtr pFirst  = s_LazyGetFirst.Get( 0, newState );
+                    int nFirst = 0;
+                    if ( 0 != pFirst.get() ) 
+                    {
+                        nFirst = value_of< int >( pFirst.get() );
+                    }
                     if ( !pCount.get() ) { throw Useless::Error("<range> Undefined symbol 'count'"); }
-                    int nFirst = value_of< int >( pFirst.get() );
                     int nCount = value_of< int >( pCount.get() );
                     state.SetResult( new LazyRange( nFirst, nCount ));
                 }

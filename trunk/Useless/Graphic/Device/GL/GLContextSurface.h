@@ -1,12 +1,13 @@
 #ifndef __INCLUDED_USELESS_GL_CONTEXT_SURFACE_H__
 #define __INCLUDED_USELESS_GL_CONTEXT_SURFACE_H__
 
+#include "Useless/Graphic/Device/GL/GVM_GLContext.h"
 #include "Useless/Graphic/Device/GL/GLTextureSurface.h"
 #include "Useless/Graphic/Device/GL/GLTextureSurfaceAllocator.h"
 
 namespace Useless {
 
-    struct GLContextSurface : Surface, GLTextureSurfaceAllocator
+    struct GLContextSurface : GLTextureSurfaceAllocator, GVM::GLContext, Surface
     {
         GLContextSurface();
         GLContextSurface( Surf::Properties &properties );
@@ -24,6 +25,11 @@ namespace Useless {
         
         SPointer< PixelTransfer >
             CreateWriter( int channelFormat = COLOR );
+        
+        void GetViewport ( int *rect );
+        void SetViewport ( int x, int y, int w, int h );
+        void InitViewport( int x, int y, int w, int h );
+        void Invoke( const GVM::Message &msg );
         
         bool IsValidBlitSource( const Surface &surface ) const;
 
@@ -80,6 +86,9 @@ namespace Useless {
     protected:
         GLint       _w;
         GLint       _h;
+        GLboolean   _primary;
+        GLuint      _numBackbuffers;
+        GLboolean   _transparency;
         GLint       _viewport[4];
         GLfloat     _constantAlpha;
         GLenum      _srcBlend;

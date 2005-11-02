@@ -1,6 +1,7 @@
 #include <koolib/xml/XMLChunksUseless.h>
 #include <gl/GL.h> //@TODO: needed for PainterProxy::SubCanvasPaint
 #include "Useless/Graphic/Planes/MemSurface.h" //needed by QueryPixelColor
+#include "Useless/Graphic/Planes/ImageToFile.h" //needed by WriteImage
 
 namespace XMLProgram {
 
@@ -114,6 +115,9 @@ namespace XMLProgram {
             .def("AllowCursorWrapping", &Screen::AllowCursorWrapping, "allow" )
             .def("NoCursorWrapping", unconst_method_cast( &Screen::NoCursorWrapping ))
             .def("GetTitle", unconst_method_cast( &Screen::GetTitle ))
+            .def("GetWidth", unconst_method_cast( &Screen::GetWidth ))
+            .def("GetHeight", unconst_method_cast( &Screen::GetHeight ))
+            .def("Swap", &Screen::Swap )
             // signals
             .add("OnCreate", make_signal_0_chunk( _spScreen->OnCreate ))
             .add("OnDestroy", make_signal_0_chunk( _spScreen->OnDestroy ))
@@ -134,6 +138,9 @@ namespace XMLProgram {
 
         add_methods( this )
             .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
+            .def("CreateSubImage", CreateSubImage, "area" )
+            .def("CreatePainter", CreatePainter )
+            .def("WriteImage", WriteImage, "file" )
             ;
     }
 
@@ -147,6 +154,22 @@ namespace XMLProgram {
         IChunkPtr proxy = new ImageProxy( pBuf );
         pBuf->Cooperate( *_spScreen->GetSurface() );
         return proxy;
+    }
+    
+    IChunkPtr ScreenProxy::CreateSubImage( const Rect &area )
+    {
+        return new ImageProxy( SPointer< ImageBase >( _spScreen->QueryIGraphics( area ), dynamic_cast_tag ));
+    }
+    
+    IChunkPtr ScreenProxy::CreatePainter()
+    {
+        _spScreen->SetClipper( Rect( _spScreen->GetWidth(), _spScreen->GetHeight() ));
+        return new PainterProxy( Painter( *_spScreen ));
+    }
+
+    void ScreenProxy::WriteImage( std::string file )
+    {
+        ImageToFile::Store( *_spScreen->GetSurface(), file );
     }
     
 
@@ -168,6 +191,8 @@ namespace XMLProgram {
 
         add_methods( this )
             .def("QueryPixelColor", QueryPixelColor, "x", "y" )
+            .def("CreateSubImage", CreateSubImage, "area" )
+            .def("WriteImage", WriteImage, "file" )
             ;
 
         if ( dynamic_cast< OGraphics *>( spImage.get() ))
@@ -186,6 +211,23 @@ namespace XMLProgram {
     {
         OGraphics *pOutPlane = dynamic_cast< ImageBuffer *>( _spImage.get() );
         return new PainterProxy( Painter( *pOutPlane ));
+    }
+    
+    IChunkPtr ImageProxy::CreateSubImage( const Rect &area )
+    {
+        if ( OGraphics *out = dynamic_cast< OGraphics *>( _spImage.get() ))
+        {
+            return new ImageProxy( SPointer< ImageBase >( out->QueryIGraphics( area ), dynamic_cast_tag ));
+        }
+        else
+        {
+            return new ImageProxy( SPointer< ImageBase >( _spImage->Copy( area ), dynamic_cast_tag ));
+        }
+    }
+    
+    void ImageProxy::WriteImage( std::string file )
+    {
+        ImageToFile::Store( *_spImage->GetSurface(), file );
     }
     
     IChunkPtr ImageProxy::QueryPixelColor( int x, int y )

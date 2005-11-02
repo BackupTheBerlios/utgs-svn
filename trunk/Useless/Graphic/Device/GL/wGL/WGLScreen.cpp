@@ -23,6 +23,7 @@ namespace Useless {
         m_prop.renderable = true;
         m_prop.color = true;
         m_prop.zbuffer = true;
+        m_prop.num_surfaces = 2;
     }
 
     WGLScreen::~WGLScreen()

@@ -7,6 +7,12 @@
 
 namespace Useless {
 
+namespace GVM {
+    struct Texture;
+    struct Context;
+    struct Message;
+};
+
 /*! ... */
 class Painter
 {
@@ -50,12 +56,22 @@ public:
     void * GetExtFun( const std::string &fun );
 
     OGraphics * GetPlane() { return _plane; }
+    
+    GVM::Context * GetGVMContext();
 
-private:
+    void SetFrustum    ( double left, double right, double bottom, double top, double znear, double zfar );
+    void SetOrtho      ( double left, double right, double bottom, double top, double znear, double zfar );
+    void SetOrtho2D    ( double left, double right, double bottom, double top ); 
+    void SetPerspective( double fov, double aspect, double znear, double zfar );
+    void Invoke        ( const GVM::Message &msg );
+
+protected:
     OGraphics         *_plane;          //!< Destination for paint operations
     Pos                _offset;         //!< Destination position offset
     RectList           _minimal_area;   //!< Initial destination clip-region
     int                _constantAlpha;
+    GVM::Context      *_gvmInitialized;
+    Rect               _paintArea;
     
     mutable SPointer< SurfacePainter > _surfacePainter;
 };

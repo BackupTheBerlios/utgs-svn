@@ -47,11 +47,56 @@ void ImageBase::Cooperate( const Surface& surface )
     if ( !!_sh_surface ) { _sh_surface->GetProperties(&actual); }
 
     //  Check if surface is allocated, valid and conforms to descriptor
-    if ( !_sh_surface ||
-            !surface.IsValidBlitSource( *_sh_surface ) ||
-            actual.width!=_properties.width ||
-            actual.height!=_properties.height
-       )
+
+    // debug variables
+    bool height_is_wrong = false;
+    bool width_is_wrong = false;
+    bool not_valid_blit_source = false;
+    bool no_surface = false;
+    
+    while( true )
+    {
+        if ( !!_sh_surface )
+        {
+            if ( surface.IsValidBlitSource( *_sh_surface ) )
+            {
+                if ( actual.width == _properties.width )
+                {
+                    if ( actual.height == _properties.height )
+                    {
+                        //  Set color-key if this is what descriptors says
+                        if ( _properties.has_color_key )
+                        {
+                            if ( !_sh_surface->IsColorKeyed() ) 
+                            {
+                                _sh_surface->SetColorKey( _properties.color_key );
+                            }
+                        }
+                        // This plane has associated correct surface
+                        return;
+                    }
+                    else {
+                        height_is_wrong = true;
+                        break; //< a place for debug breakpoint
+                    }
+                }
+                else {
+                    width_is_wrong = true;
+                    break; //< a place for debug breakpoint
+                }
+            }
+            else {
+                not_valid_blit_source = true;
+                break; //< a place for debug breakpoint
+            }
+        }
+        else {
+            no_surface = true;
+            break; //< a place for debug breakpoint
+        }
+    }
+
+    if ( no_surface || not_valid_blit_source || width_is_wrong || height_is_wrong )
     {
         //  This creates new Surface
         Surface *p_new = surface.CreateSurface( _properties );
@@ -78,14 +123,6 @@ void ImageBase::Cooperate( const Surface& surface )
         if ( _properties.has_color_key ) 
         {
             _sh_surface->SetColorKey(_properties.color_key); 
-        }
-    }
-    else
-    {
-        //  Set color-key if this is what descriptors says
-        if ( _properties.has_color_key && !_sh_surface->IsColorKeyed() ) 
-        {
-            _sh_surface->SetColorKey( _properties.color_key );
         }
     }
 }

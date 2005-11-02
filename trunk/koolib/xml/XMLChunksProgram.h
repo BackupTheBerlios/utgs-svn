@@ -23,6 +23,7 @@
 #include "koolib/xml/XMLProgram.h"
 #include "koolib/xml/XMLFactoryUtil.h"
 #include "koolib/FastAllocator.h"
+#include "koolib/SymbolDict.h"
 
 #include "Useless/XML/Resources/CreateFromXML.h"
 #include "Useless/Functional/Signal.h"
@@ -381,6 +382,9 @@ namespace XMLProgram {
     ExecutionState & GetGlobals();
     void GlobalsAddRef();
     void GlobalsRemRef();
+
+    // Global symbol dictionary
+    SymbolDict & GetGlobalSymbolDict();
     
     // Convert string to list
     IChunk *    CreateSequence( const TextUtf8 &text );
@@ -645,78 +649,26 @@ namespace XMLProgram {
      */
     struct XMLCodeBlock : virtual IBlock, XMLCodeChunk
     {
-        typedef std::multimap< TextUtf8, IChunkPtr > ChunkMap;
+        typedef std::multimap< unsigned int, IChunkPtr > ChunkMap;
         ChunkMap _chunks;
 
-        ~XMLCodeBlock()
-        {
-        }
+        ~XMLCodeBlock();
 
-        void AddChunk( unsigned int name, IChunk *chunk )
-        {
-            AddChunk( TextUtf8( StringFrom4CC( name )), chunk );
-        }
+        void AddChunk( unsigned int name, IChunk *chunk );
+        void AddChunk( const TextUtf8 &name, IChunk *chunk );
 
-        void AddChunk( const TextUtf8 &name, IChunk *chunk )
-        {
-            _chunks.insert( std::make_pair( name, IChunkPtr( chunk )) );
-        }
-
-        IChunk* GetChunk( unsigned int name )
-        {
-            return GetChunk( TextUtf8( StringFrom4CC( name )));
-        }
-        
+        IChunk* GetChunk( unsigned int name );
         IChunk* GetChunk( const TextUtf8 &name );
         
-        void SetChunk( unsigned int name, IChunk *pChunk )
-        {
-            SetChunk( TextUtf8( StringFrom4CC( name )), pChunk );
-        }
+        IChunk* _getChunk( unsigned int name );
+        IChunk* _getChunk( const TextUtf8 &name );
+        
+        void SetChunk( unsigned int name, IChunk *pChunk );
+        void SetChunk( const TextUtf8 &name, IChunk *pChunk );
 
-        void SetChunk( const TextUtf8 &name, IChunk *pChunk )
-        {
-            ChunkMap::iterator itChunk = _chunks.find( name );
-            if ( itChunk != _chunks.end() )
-            {
-                (*itChunk).second = pChunk;
-            }
-        }
+        void DropAll();
 
-        void DropAll()
-        {
-            _chunks.clear();
-        }
-
-        bool operator >> ( XMLFactory::AttrUniBase &attr )
-        {
-            ChunkMap::iterator itChunk = _chunks.find( attr._name );
-
-            if ( itChunk != _chunks.end() )
-            {
-                Attr< TextUtf8, true, wchar_t > attr1(L"value");
-                (*(*itChunk).second) >> attr1;
-                attr.str( attr1.str() );
-                return true;
-            }        
-            else if ( attr._name == L"type-name" )
-            {
-                attr.str(L"xml-block");
-                return true;
-            }
-            else if ( attr._name == L"defined-symbols" )
-            {
-                TextUtf8 s(L"type-name");
-                for ( ChunkMap::iterator it = _chunks.begin(); it != _chunks.end(); ++it )
-                {
-                    s += L' ';
-                    s += (*it).first;
-                }
-                attr.str( s );
-                return true;
-            }
-            return false;
-        }
+        bool operator >> ( XMLFactory::AttrUniBase &attr );
 
         unsigned int GetFourCC( unsigned int name )
         {
@@ -1065,11 +1017,10 @@ namespace XMLProgram {
             {
                 return _tail.get();
             }
-            else if ( name >= FOURCC_LIST_1ST && name <= FOURCC_LIST_9TH )
+            else
             {
                 return GetChunkAtPosition4CC( name );
             }
-            return 0;
         }
 
         IChunk* GetChunk( const TextUtf8 &name )
@@ -1099,6 +1050,8 @@ namespace XMLProgram {
 
         bool Execute( Node node, ExecutionState &state );
         
+        unsigned int GetFourCC( unsigned int name );
+        
         bool operator >> ( XMLFactory::AttrUniBase &attr )
         {
             if ( attr._name == L"type-name" )
@@ -1112,18 +1065,6 @@ namespace XMLProgram {
                 return true;
             }
             return false;
-        }
-
-        unsigned int GetFourCC( unsigned int name )
-        {
-            if ( FOURCC_NAME_TYPE == name )
-            {
-                return FOURCC_TYPE_LIST;
-            }
-            else
-            {
-                return 0L;
-            }
         }
     };
     

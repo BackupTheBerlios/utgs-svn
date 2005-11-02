@@ -83,9 +83,12 @@ namespace Useless {
                 // Select color mode.
                 attrListInt[ nAttr++ ] = WGL_PIXEL_TYPE_ARB;
                 attrListInt[ nAttr++ ] = WGL_TYPE_RGBA_ARB;
-                // Number of bits per pixel.
-                attrListInt[ nAttr++ ] = WGL_COLOR_BITS_ARB;
-                attrListInt[ nAttr++ ] = (prop.alpha ? 32 : 24);
+                if ( !prop.primary )
+                {
+                    // Number of bits per pixel.
+                    attrListInt[ nAttr++ ] = WGL_COLOR_BITS_ARB;
+                    attrListInt[ nAttr++ ] = (prop.alpha ? 32 : 24);
+                }
             }
             if ( prop.zbuffer )
             {
@@ -203,6 +206,8 @@ namespace Useless {
 
     GLContextSurface * WGLSurface::CreateContext( Surf::Properties &properties ) const
     {
+        properties.primary = 0;
+        properties.num_surfaces = 1;
         WGLSurface *pSurface = new WGLSurface( _parentDC, properties );
         return pSurface;
     }

@@ -29,6 +29,7 @@
 
 namespace Useless {
 
+static const struct dynamic_cast_tag_t {} dynamic_cast_tag;
 
 template<class T>
 class SPointer
@@ -36,30 +37,62 @@ class SPointer
 /* Templates goes first
  */
 public:
-    template< class Y>  SPointer( const SPointer<Y> &sp ) : _object(0), _counter(0) { Assign(sp); }
-    template< class Y>  SPointer& operator=( const SPointer<Y> &sp )   { Assign(sp); return *this; }
-    template< class Y>  bool operator ==(const SPointer<Y> &sp ) const { return get()==sp.get(); }
-    template< class Y>  bool operator !=(const SPointer<Y> &sp ) const { return get()!=sp.get(); }
-    template< class Y>  bool operator  <(const SPointer<Y> &sp ) const { return get() <sp.get(); }
+    template< class _T1, class _T2 >
+        struct static_assignment_t
+        {
+            static void apply( _T1 *&lhs, _T2 *rhs )
+            {
+                lhs = rhs;
+            }
+        };
+
+    template< class _T1, class _T2 >
+        struct dynamic_assignment_t
+        {
+            static void apply( _T1 *&lhs, _T2 *rhs )
+            {
+                lhs = dynamic_cast< _T1* >( rhs );
+            }
+        };
+
+    template< class Y >  SPointer( const SPointer<Y> &sp ) : _object(0), _counter(0) { Assign(sp); }
+    template< class Y >  SPointer& operator = ( const SPointer<Y> &sp )   { Assign(sp); return *this; }
+    template< class Y >  bool operator ==     ( const SPointer<Y> &sp ) const { return get() == sp.get(); }
+    template< class Y >  bool operator !=     ( const SPointer<Y> &sp ) const { return get() != sp.get(); }
+    template< class Y >  bool operator  <     ( const SPointer<Y> &sp ) const { return get()  < sp.get(); }
+    
+    template< class Y >  SPointer( const SPointer<Y> &sp, dynamic_cast_tag_t tag ) : _object(0), _counter(0) { DoAssign(sp, dynamic_assignment_t< T, Y >() ); }
 
 private:
-    // Some kind of msvc template friendship workaround 
     template< class Y >
         void Assign( const SPointer<Y> &spy )
+        {
+            DoAssign( spy, static_assignment_t< T, Y >() );
+        }
+    
+    // Some kind of msvc template friendship workaround 
+    template< class Y, class _A >
+        void DoAssign( const SPointer<Y> &spy, _A a )
         {
             // Treat SPointer<Y> as it were SPointer<T> - exact structure (8 bytes)
             const SPointer<T> &sp = reinterpret_cast< const SPointer<T>& >(spy);
             // Tell compiler that sp._object should be treaten as it were type of Y*
-            Y *ptr = reinterpret_cast<Y*>(sp._object);
+            Y *yptr = reinterpret_cast<Y*>(sp._object);
+            T *ptr;
             // Cast Y* to T*
-            if (_object!=ptr)
+            _A::apply( ptr, yptr );
+            if ( _object != ptr )
             {
-                if (_counter)
-                { RemRef(); }
+                if ( NULL != _counter )
+                {
+                    RemRef();
+                }
                 _counter = sp._counter;
                 _object = ptr;
-                if (_counter)
-                { ++*_counter; }
+                if ( NULL != _counter )
+                {
+                    ++(*_counter);
+                }
             }
         }
 

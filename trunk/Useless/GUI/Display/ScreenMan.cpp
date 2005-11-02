@@ -171,7 +171,8 @@ void ScreenMan::Attach()
 
     _event_ties.Insert( _screen->OnActivate.TieUnary( &workspace,      &Workspace::SetDirty, Rect() ) );
     _event_ties.Insert( _screen->OnPaint.TieUnary   ( &workspace,      &Workspace::SetDirty, Rect() ) );
-    _event_ties.Insert( _screen->OnPaint.TieVoid    ( _screen,         &Screen::Swap ) );
+    //_event_ties.Insert( _screen->OnPaint.TieVoid    ( _screen,         &Screen::Swap ) );
+    _event_ties.Insert( _screen->OnPaint.TieBinary  ( this,            &ScreenMan::Advance, 0,0 ) );
     _event_ties.Insert( _screen->OnPaint.TieBinary  ( this,            &ScreenMan::Advance, 0,0 ) );
     _event_ties.Insert( _screen->OnPaint.TieUnary   ( &workspace,      &Workspace::SetDirty, Rect() ) );
 

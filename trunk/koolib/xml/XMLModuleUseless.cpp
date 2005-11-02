@@ -21,7 +21,6 @@
 #include "Useless/Sound/FileIO/WaveLoader.h"
 
 
-
 #include "Useless/Graphic/Planes/TransparentImage.h"
 #include "Useless/Sound/SampleFile.h"
 
@@ -32,6 +31,8 @@
 
 #include "Useless/System/factory/CreateScreen.h"
 
+#include "Useless/Graphic/device/winGDI/GDIPrinter.h" // < non x-platform solution - requires testing
+
 #include <koolib/xml/XMLModuleUseless.h>
 #include <cmath>
 #define M_PI 3.14159265358979323846
@@ -39,6 +40,86 @@
 
 
 namespace XMLProgram {
+
+    struct GDIPageProxy : XMLCodeBlock
+    {
+        SPointer< GDIPage > m_page;
+
+        GDIPageProxy( SPointer< GDIPage > p ): m_page( p )
+        {
+            add_methods( m_page.get(), this )
+                .def("Finish", &GDIPage::Finish )
+                ;
+
+            add_methods( this )
+                .def("BlitImage", BlitImage )
+                ;
+        }
+        
+        void BlitImage( Node __unused__, ExecutionState &_state )
+        {
+            IChunk *pImage =_state._currentBlock->GetChunk( L"Imag" );
+            if ( !pImage ) { throw Error("BlitImage: expects 'Imag'"); }
+            ImageProxy *pImageProx = dynamic_cast< ImageProxy *>( pImage );
+            if ( !pImageProx ) { throw Error("BlitImage: expects 'Imag' to be type of Image");} 
+            IChunk *pCanv = _state._currentBlock->GetChunk( L"Canv" );
+            if ( !pCanv ) { throw Error("BlitImage: expects 'Canv'");}            
+            int x = attribute_of< int >( pCanv, L"x" );
+            int y = attribute_of< int >( pCanv, L"y" );
+            int w = attribute_of< int >( pCanv, L"w" );
+            int h = attribute_of< int >( pCanv, L"h" );
+            SPointer< ImageBase > spImg = pImageProx->_spImage;
+            m_page->BlitImage( Rect( x, y, w, h ), *spImg );
+        }
+
+    };
+
+    struct GDIDocumentProxy : XMLCodeBlock
+    {
+        SPointer< GDIDocument > m_document;
+
+        GDIDocumentProxy( SPointer< GDIDocument > d ): m_document( d )
+        {
+            add_methods( m_document.get(), this )
+                .def("Print", &GDIDocument::Print )
+                ;
+
+            add_methods( this )
+                .def("CreatePage", CreatePage )
+                ;
+        }
+
+        IChunkPtr CreatePage()
+        {
+            return new GDIPageProxy( m_document->CreateGDIPage() );
+        }
+    };
+    
+    struct GDIPrinterProxy : XMLCodeBlock
+    {
+        SPointer< GDIPrinter > m_printer;
+
+        GDIPrinterProxy( SPointer< GDIPrinter > p ): m_printer( p )
+        {
+            add_methods( this )
+                .def("CreateDocument", CreateDocument, "title" )
+                .add("sizeOnPaperX", make_value_chunk( m_printer->m_sizeOnPaperX ))
+                .add("sizeOnPaperY", make_value_chunk( m_printer->m_sizeOnPaperY ))
+                .add("xLeft", make_value_chunk( m_printer->m_xLeft ))
+                .add("yTop", make_value_chunk( m_printer->m_yTop ))
+                .add("inchOnPaperX", make_value_chunk( m_printer->m_inchOnPaperX ))
+                .add("inchOnPaperY", make_value_chunk( m_printer->m_inchOnPaperY ))
+                .add("sizeInchesX", make_value_chunk( m_printer->m_sizeInchesX ))
+                .add("sizeInchesY", make_value_chunk( m_printer->m_sizeInchesY ))
+                ;
+        }
+
+        IChunkPtr CreateDocument( TextUtf8 title )
+        {
+            return new GDIDocumentProxy( m_printer->CreateGDIDocument( title ));
+        }
+    };
+
     /*****************************************************************
 
       Modules to be imported
@@ -78,6 +159,7 @@ namespace XMLProgram {
                 .def("CreatePointList", CreatePointList )
                 .def("CreateRectList", CreateRectList )
                 .def("CreateScreen", CreateScreen )
+                .def("CreatePrinter", CreatePrinter )
                 .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
                 .def("CreateImage", CreateImage )
                 .def("CreateSample", CreateSample, "file" )
@@ -212,6 +294,11 @@ namespace XMLProgram {
             state.SetResult( new ScreenProxy( spScreen ));
         }
 
+        void USELESS_TK::CreatePrinter( Node node, ExecutionState &state )
+        {
+            state.SetResult( new GDIPrinterProxy( CreateGDIPrinter() ));
+        }
+
         void USELESS_TK::CreateImage( Node node, ExecutionState &state )
         {
             Attr< std::string, false, char > _color("color");
@@ -246,7 +333,7 @@ namespace XMLProgram {
             pBuf->Cooperate( *_screen->GetSurface() );
             return proxy;
         }
-
+        
         IChunkPtr USELESS_TK::CreateSample( std::string fileName )
         {
             return new SampleProxy( new SampleFile( fileName ));
