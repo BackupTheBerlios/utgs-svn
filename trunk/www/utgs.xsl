@@ -4,7 +4,7 @@
         <html>
             <head>
                 <title>Project Overview</title>
-                <base href="http://utgs.berlios.de/www"/>
+                <base href="http://utgs.berlios.de/www/"/>
             </head>
             <body background="utgs-bg.jpg">
                 <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64">
