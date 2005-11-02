@@ -38,8 +38,10 @@ In addition to Lesson 1, we will create resources:
 +   skins,
 +   fonts,
 +   widgets.
-In next lesson you will learn how to AVOID typing all of THOSE PARAMETERS like skin, font etc..!
                         </fixed-comment>
+                        <comment>
+                            In next lesson you will learn how to AVOID typing all of THOSE PARAMETERS like skin, font etc..!
+                        </comment>
                         <system>
                             <screen id="screen"
                                 title="Lesson 2 - Skins, Fonts &amp; Widgets"
@@ -166,8 +168,10 @@ To do so we use 'parent' xml element.
                                 <fixed-comment>
 create frame
 +   skin                    := the id of skin to be used,
-+   left,top,right,bottom   := margins used for children placement, (by default skin ise querried for those parameters),
-+   layout                  := the method of children placement, can be 'horizontal' or 'vertical',
++   left,top,right,bottom   := margins used for children placement,
+                            (by default skin ise querried for those parameters),
++   layout                  := the method of children placement,
+                            can be 'horizontal' or 'vertical',
 +   autofill                := fill whole parent's area,
                                 </fixed-comment>
                                 <frame

@@ -61,7 +61,8 @@ When using KooLiXP.exe we'll need resource named: 'screen'.
 
                             <fixed-comment>
 If you'd like to play some sounds, movies or ogg/vorbis streams, then you'll need soundcard.
-+   screen          := the id of screen, required since operating system binds a sound device to the window.
++   screen          := the id of screen, required since
+                        operating system binds a sound device to the window.
                             </fixed-comment>
                             <soundcard id="soundcard"
                                 screen="screen"
