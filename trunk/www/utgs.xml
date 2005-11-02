@@ -25,6 +25,9 @@
             <name>Preface</name>
             <body>
                 <p>
+                    <image src="koolas.png"/>
+                </p>
+                <p>
                     Hi. I am Radoslaw Kolasinski, M.Sc. of Computer Science.
                     I've been Lead Programer involved in sevral commercial game projects, for 5 years.
                     The work presented here is derived from these projects.

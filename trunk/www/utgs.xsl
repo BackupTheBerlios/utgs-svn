@@ -3,14 +3,16 @@
     <xsl:template match="document">
         <html>
             <head>
-                <title>Project Overview</title>
-                <!--
-                <base href="http://utgs.berlios.de/www/"/>
-                -->
+                <title>
+                    <xsl:apply-templates select="title"/>
+                    <xsl:text> - </xsl:text>
+                    <xsl:apply-templates select="sub-title"/>
+                </title>
             </head>
-            <body background="http://utgs.berlios.de/www/utgs-bg.jpg">
-                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64">
-                    <tr valign="top" bgcolor="#3c8fdc" background="http://utgs.berlios.de/www/utgslogobg.jpg">
+            <body background="http://utgs.berlios.de/www/utgs-bg.jpg" margin="0">
+                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64"
+                    background="http://utgs.berlios.de/www/utgslogobg.jpg" bgcolor="#3c8fdc">
+                    <tr valign="top">
                         <td width="128px">
                             <table width="128px"/>
                         </td>
@@ -20,12 +22,16 @@
                     </tr>
                     <tr>
                         <td colspan="2" bgcolor="black">
-                            <table height="1px"/>
+                            <table height="2px"/>
                         </td>
                     </tr>
                 </table>
                 
-                <table width="80%" align="center" bgcolor="#3c8fdc" cellpadding="0">
+                <table width="80%" align="center" cellspacing="0" cellpadding="0">
+                    <tr height="10px"/>
+                    <tr height="2px">
+                        <td bgcolor="black"/>
+                    </tr>
                     <tr>
                         <td bgcolor="white">
                             <table cellpadding="10" width="100%" background="http://utgs.berlios.de/www/utgs-bg2.jpg">
@@ -89,6 +95,9 @@
                             </table>
                         <xsl:apply-templates select="chapters/chapter"/>
                         </td>
+                    </tr>
+                    <tr height="2px">
+                        <td bgcolor="black"/>
                     </tr>
                 </table>
                 
