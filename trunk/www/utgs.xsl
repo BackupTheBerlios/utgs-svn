@@ -4,6 +4,7 @@
         <html>
             <head>
                 <title>Project Overview</title>
+                <base>http://utgs.berlios.de/www</base>
             </head>
             <body background="utgs-bg.jpg">
                 <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64">
