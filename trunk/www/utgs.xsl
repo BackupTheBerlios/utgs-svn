@@ -4,16 +4,18 @@
         <html>
             <head>
                 <title>Project Overview</title>
+                <!--
                 <base href="http://utgs.berlios.de/www/"/>
+                -->
             </head>
-            <body background="utgs-bg.jpg">
+            <body background="http://utgs.berlios.de/www/utgs-bg.jpg">
                 <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64">
-                    <tr valign="top" bgcolor="#3c8fdc" background="utgslogobg.jpg">
+                    <tr valign="top" bgcolor="#3c8fdc" background="http://utgs.berlios.de/www/utgslogobg.jpg">
                         <td width="128px">
                             <table width="128px"/>
                         </td>
                         <td valign="middle" width="99%">
-                            <img src="utgslogo.png"/>
+                            <img src="http://utgs.berlios.de/www/utgslogo.png"/>
                         </td>
                     </tr>
                     <tr>
@@ -26,7 +28,7 @@
                 <table width="80%" align="center" bgcolor="#3c8fdc" cellpadding="0">
                     <tr>
                         <td bgcolor="white">
-                            <table cellpadding="10" width="100%" background="utgs-bg2.jpg">
+                            <table cellpadding="10" width="100%" background="http://utgs.berlios.de/www/utgs-bg2.jpg">
                                 <tr>
                                     <td>
                                         <h2><xsl:apply-templates select="title"/></h2>
@@ -143,9 +145,9 @@
         <xsl:variable name="chapterNo">
             <xsl:number count="chapter"/>
         </xsl:variable>
-        <table width="100%" cellspacing="0" background="utgs-bg1.jpg">
+        <table width="100%" cellspacing="0" background="http://utgs.berlios.de/www/utgs-bg1.jpg">
             <tr height="96px">
-                <td bgcolor="#dc8f3c" width="80%" background="utgschapterbg.jpg">
+                <td bgcolor="#dc8f3c" width="80%" background="http://utgs.berlios.de/www/utgschapterbg.jpg">
                     <xsl:element name="h2">
                         <xsl:attribute name="id">
                             <xsl:value-of select="name"/>
@@ -162,13 +164,13 @@
                         </xsl:element>
                     </xsl:element>
                 </td>
-                <td width="46px" background="utgschapter.jpg"/>
+                <td width="46px" background="http://utgs.berlios.de/www/utgschapter.jpg"/>
                 <td align="center">
                     <a href="#">Back to ToC</a>
                 </td>
             </tr>
         </table>
-        <table cellpadding="10" width="100%" background="utgs-bg2.jpg">
+        <table cellpadding="10" width="100%" background="http://utgs.berlios.de/www/utgs-bg2.jpg">
             <tr>
                 <td>
                     <xsl:apply-templates select="body"/>
