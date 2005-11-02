@@ -100,6 +100,13 @@
             <title><i>Useless.Graphic</i></title>
             <name>Graphic</name>
             <body>
+                <p>
+                    <link>
+                        <title>The example of usage (in C++ and KooLiXP).</title>
+                        <href>UselessGraphicExample.xml</href>
+                    </link>
+                    The example demonstrates how to use components: <i>Screen</i>, <i>Image</i> and <i>ImageBuffer</i>.
+                </p>
                 <p>The module defines interfaces:
                     <ul>
                         <li><n>Useless.IGraphics</n><d>device independent blit source.</d></li>
@@ -117,14 +124,17 @@
                     <ul>
                         <li><n>Useless.Image</n><d>component loads pixels from file ignoring any alpha information.</d></li>
                         <li><n>Useless.TransparentImage</n><d>component loads color-pixels from one file and alpha-pixels from another file.  Both first and second files may be the same.</d></li>
-                        <li><n>Useless.Animation</n><d>component usefull for static animations.  All subsequent frames must: be of same size, lay in one image, and be placed one after another horizontally in correct order.</d></li>
-                        <li><n>Useless.ImageBuffer</n><d>component which may be the blit target and blit source. <b>Implemented only for DirectDraw Device</b>.</d></li>
+                        <li><n>Useless.Animation</n><d>component usefull for static animations.
+                                All subsequent frames must: be of same size, lay in one image, and be placed one after another horizontally in correct order.</d></li>
+                        <li><n>Useless.ImageBuffer</n><d>component which may be the blit target and blit source.
+                                You may first blit some images or do some painting on it, and then blit it to other Useless.OGraphics.</d></li>
                     </ul>
                 </p>
                 <p><i>Useless.OGraphics</i> has folowing implementations:
                     <ul>
                         <li><n>Useless.Screen</n><d>blit target bound to system window.</d></li>
-                        <li><n>Useless.ImageBuffer</n><d>component which may be the blit target and blit source. <b>Implemented only for DirectDraw Device</b>.</d></li>
+                        <li><n>Useless.ImageBuffer</n><d>component which may be the blit target and blit source.
+                                You may first blit some images or do some painting on it, and then blit it to other Useless.OGraphics.</d></li>
                     </ul>
                 </p>
                 <p><i>Useless.PixelTransfer</i> has following implementations:
@@ -137,6 +147,7 @@
                     <ul>
                         <li><n>Useless.BMPLoader</n><d>loads window bitmap.</d></li>
                         <li><n>Useless.TGALoader</n><d>loads truevision image.</d></li>
+                        <li><n>Useless.PNGLoader</n><d>loads PNG image. <b>Requires libPNG and ZLib</b></d></li>
                     </ul>
                 </p>
                 <p><i>Useless.ImageSaver</i> has following implementations:

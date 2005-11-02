@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="utgs.xsl" type="text/xsl" version="1.0"?>
+
+<document>
+    <title>Useless.Graphic - Example</title>
+    <sub-title>Multimedia &amp; Games Library.</sub-title>
+
+    <links>
+        <link name=""></link>
+    </links>
+
+
+    <chapters>
+        <toc>
+            <link>
+                <title><i>UTGS</i> Overview</title>
+                <href>utgs.xml</href>
+            </link>
+            <link>
+                <title><i>Useless</i> - Multimedia &amp; Games Library (Overview)</title>
+                <href>UselessOverview.xml</href>
+            </link>
+        </toc>
+        <chapter>
+            <title><i>Useless.Graphic</i> Example in C++</title>
+            <name>GraphicExampleCXX</name>
+            <body>
+                <p>
+                    Here is an example of usage, that demonstrates how to use components: <i>Screen</i>, <i>Image</i> and <i>ImageBuffer</i>.<br/>
+                    An ImageBuffer is used only to show how to use an offscreen surfaces. You may directly blit images to the Screen.<br/>
+                    A call to Screen.Swap() method is required after you've done with blitting images and want to see the result on your screen.
+                </p>
+                <p>
+                    <code lang="cpp">
+                        <s>using namespace Useless</s>;<br/>
+                        <s>SPointer&lt; Screen &gt; myScreen</s> <o>=</o> <s>CreateScreen</s><o>(</o><v>"Your Window Title"</v><o>)</o>;<br/>
+                        // Let's say we'll open windowed version.<br/>
+                        <s>myScreen->OpenWindowed</s><o>(</o> <v>800</v>, <v>600</v> <o>)</o>;<br/>
+                        <s>Image imgSky</s><o>(</o><v>"sky.tga"</v><o>)</o>;<br/>
+                        <s>Image imgCloud</s><o>(</o><v>"cloud.tga"</v><o>)</o>;<br/>
+                        <s>ImageBuffer myOffscreenBuffer</s><o>(</o><v>640</v>,<v>480</v><o>)</o>;<br/>
+                        // Before we blit anything to myOffscreenBuffer we must assign it a hardware resource.<br/>
+                        // IGraphics.Cooperate method creates hardware surface (it also loads pixels in case of Image objects).<br/>
+                        <s>myOffscreenBuffer.Cooperate</s><o>(</o><o>*</o><s>myScreen->GetSurface()</s><o>)</o>;<br/>
+                        // We would like to stretch image to cover whole myOffscreenBuffer area.<br/>
+                        // So, now we set image dimensions on target surface.<br/>
+                        <s>imgSky.SetDestWidth</s><o>(</o> <s>myOffscreenBuffer.GetWidth</s> <o>())</o>;<br/>
+                        <s>imgSky.SetDestHeight</s><o>(</o> <s>myOffscreenBuffer.GetHeight</s> <o>())</o>;<br/>
+                        // Sky is ready to blit, do it!<br/>
+                        // IGraphics.BlitTo will invoke IGraphics.Cooperate, and if this is first blit, a new hardware resource<br/>
+                        // will be created, and pixels from image file will be loaded.<br/>
+                        <s>imgSky.BlitTo</s><o>(</o> <v>0</v>, <v>0</v>, <s>myOffscreenBuffer</s> <o>)</o>;<br/>
+                        // Now, let's blit our cloud at left-upper corrner.<br/>
+                        // Our cloud won't be stretched, we'll use original dimensions, so SetDestWidth, SetDestHeight is not invoked here.<br/>
+                        <s>imgCloud.BlitTo</s><o>(</o> <v>0</v>, <v>0</v>, <s>myOffscreenBuffer</s> <o>)</o>;<br/>
+                        // Our window has different dimensions, so stretch...<br/>
+                        <s>myOffscreenBuffer.SetDestWidth</s><o>(</o> <s>myScreen->GetWidth</s><o>())</o>;<br/>
+                        <s>myOffscreenBuffer.SetDestHeight</s><o>(</o> <s>myScreen->GetHeight</s><o>())</o>;<br/>
+                        // Now our offscreen buffer is complete to be presented on screen, do it!<br/>
+                        <s>myOffscreenBuffer.BlitTo</s><o>(</o> <v>0</v>, <v>0</v>, <o>*</o><s>myScreen</s><o>)</o>;<br/>
+                        // Screen is doublebuffered, so we need to swap them.<br/>
+                        <s>myScreen->Swap</s><o>()</o>;<br/>
+                    </code>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title><i>Useless.Graphic</i> Example in <i>KooLiXP</i></title>
+            <name>GraphicExampleKooLiXP</name>
+            <body>
+                <p>
+                    Doing the "same" thing in <i>KooLiXP</i>.
+                    It may seem a little bit more complicated than previous one. <br/>
+                    Actually we're not doing the same as in C++ example. Program presented bellow repaints window when
+                    you change the size of it (for instance by using mouse, or maximize button).
+                </p>
+                <p>
+                    <code lang="xml">
+                        <xml>
+                            <system>
+                                <comment>KooLiXP requires at least one screen to be named "screen"</comment>
+                                <screen id="screen" width="800" height="600" title="Your Window Title"/>
+                            </system>
+                            <programms>
+                                <comment>I know, the stub is really killing, but...</comment>
+                                <fsm id="myprogram">
+                                    <comment>You will need Toolkit module to create images.</comment>
+                                    <let id="Toolkit"><let id="screen">screen</let><import id="Toolkit"/></let>
+                                    <comment>You will need Resources module to ask for screen.</comment>
+                                    <let id="Resources"><import id="Resources"/></let>
+                                    <compile run="1">
+                                        <comment>First, we create some images.</comment>
+                                        <apply id="imgSky" select="Toolkit:CreateImage">
+                                            <string id="color+alpha">sky.tga</string>
+                                        </apply>
+                                        <apply id="imgCloud" select="Toolkit:CreateImage">
+                                            <string id="color+alpha">cloud.tga</string>
+                                        </apply>
+                                        <comment>Ask for screen.</comment>
+                                        <apply id="myScreen" select="Resources:GetScreen">
+                                            <string id="name">screen</string>
+                                        </apply>
+                                        <comment>Create our offscreen buffer (just for an example).</comment>
+                                        <apply id="myOffscreenBuffer" select="Toolkit:CreateImageBuffer">
+                                            <integer id="width" value="640"/>
+                                            <integer id="height" value="480"/>
+                                        </apply>
+                                        <comment>Using painter in same scope as its target plane causes crash. So we use separate scope using 'do'.</comment>
+                                        <do>
+                                            <comment>Create painter with myOffscreenBuffer as paint target.</comment>
+                                            <apply id="painter" select="myOffscreenBuffer:CreatePainter"/>
+                                            <comment>Use its FastBlit method to blit an image on target.</comment>
+                                            <apply select="painter:FastBlit">
+                                                <let id="Imag" select="imgSky"/>
+                                                <block id="Canv">
+                                                    <integer id="x" value="0"/>
+                                                    <integer id="y" value="0"/>
+                                                    <apply id="w" select="myScreen:GetWidth"/>
+                                                    <apply id="h" select="myScreen:GetHeight"/>
+                                                </block>
+                                            </apply>
+                                            <comment>Here we blit our cloud.</comment>
+                                            <apply select="painter:FastBlit">
+                                                <let id="Imag" select="imgSky"/>
+                                                <block id="Canv">
+                                                    <integer id="x" value="0"/>
+                                                    <integer id="y" value="0"/>
+                                                    <apply id="w" select="imgCloud:GetWidth"/>
+                                                    <apply id="h" select="imgCloud:GetHeight"/>
+                                                </block>
+                                            </apply>
+                                        </do>
+                                        <comment>Attach to window repaint signal (also send when window is being resized).</comment>
+                                        <apply id="slotPaint" select="myScreen:OnPaint:Tie">
+                                            <function id="callback">
+                                                <apply id="painter" select="myScreen:CreatePainter"/>
+                                                <apply select="painter:FastBlit">
+                                                    <let id="Imag" select="myOffscreenBuffer"/>
+                                                    <block id="Canv">
+                                                        <integer id="x" value="0"/>
+                                                        <integer id="y" value="0"/>
+                                                        <apply id="w" select="myScreen:GetWidth"/>
+                                                        <apply id="h" select="myScreen:GetHeight"/>
+                                                    </block>
+                                                </apply>
+                                                <comment>Each paint should be followed by buffer swapping.</comment>
+                                                <apply select="myScreen:Swap"/>
+                                            </function>
+                                        </apply>
+                                        <comment>Invoke first repaint.</comment>
+                                        <apply select="slotPaint"/>
+                                    </compile>
+                                </fsm>
+                                <run fsm="myprogram" object="myobject"/>
+                            </programms>
+                        </xml>
+                    </code>
+                </p>
+            </body>
+        </chapter>
+    </chapters>
+</document>
+

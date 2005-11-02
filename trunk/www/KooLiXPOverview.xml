@@ -14,6 +14,7 @@
         <link name="is-not-empty">KooLiXPCompiler.xml#is-not-empty</link>
         <link name="is-defined">KooLiXPCompiler.xml#is-defined</link>
         <link name="error">KooLiXPCompiler.xml#error</link>
+        <link name="Simplified Assignment Syntax">KooLiXPCompiler.xml#Simplified Assignment Syntax</link>
     </links>
 
     <chapters>
@@ -64,7 +65,7 @@
                                 It creates precompiled function, and if <q>run</q> flag is <q>1</q> function is executed just after compilation.
                             </tip>
                         </li>
-                        <li>a little bit simplified syntax,
+                        <li><i>Simplified Assignment Syntax</i>,
                             <tip>
                                 When doing something like this:
                                 <p>
@@ -110,7 +111,7 @@
                                                                 <integer value="0"/>
                                                             </compare>
                                                         </equal>
-                                                        <integer value="1"/>
+                                                        <get id="a"/>
                                                     </when>
                                                     <otherwise>
                                                         <apply select="Worker">
@@ -399,7 +400,54 @@
                     </link>.
                 </p>
                 <p>
-                    Unfortunatelly compiled code is a little bit different from non-compiled.
+                    Unfortunatelly compiled code is a little bit different from non-compiled.<br/><br/>
+                    <tip>
+                        The code <b>inside &lt;compile&gt; differs</b> from code <b>outside of &lt;compile&gt;</b>, but
+                        in most cases, almost whole app is writen inside &lt;compile&gt;.
+                    </tip>
+                    <p>Here are some differences between instructions inside and outside &lt;compile&gt;:</p>
+                    <ll>
+                        <li>Some instructions are available only inside &lt;compile&gt;, and some are available only outside of &lt;compile&gt;.
+                            <tip>
+                                <p>&lt;import&gt; is currently available only outside of &lt;compile&gt;</p>
+                                <code lang="xml">
+                                    <let id="Toolkit">
+                                        <import id="Toolkit"/>
+                                    </let>
+                                </code>
+                                <p>&lt;call&gt; is available only outside &lt;compile&gt;.</p>
+                                <code lang="xml">
+                                    <call id="Func" x="0" y="10"/>
+                                </code>
+                                <p>&lt;error&gt; is currently available only inside &lt;compile&gt;</p>
+                                <code lang="xml">
+                                    <error>This is an error!</error>
+                                </code>
+                                <p>&lt;apply&gt; instruction is available only inside &lt;compile&gt;</p>
+                                <code lang="xml">
+                                    <apply select="Func">
+                                        <integer id="x" value="0"/>
+                                        <integer id="y" value="10"/>
+                                    </apply>
+                                </code>
+                            </tip>
+                        </li>
+                        <li>Inside &lt;compile&gt; xml node attributes are always static, outside &lt;compile&gt; they are dynamicaly resolved at run-time.
+                            <tip>
+                                <p>An instruction bellow defines new symbol with name taken from 'x' variable. It works only outside of &lt;compile&gt;.</p>
+                                <code lang="xml">
+                                    <let id="$(x)">Hello</let>
+                                </code>
+                                <p>Inside &lt;compile&gt; you'll need to use different instruction.</p>
+                                <code lang="xml">
+                                    <register>
+                                        <let id="name" select="x"/>
+                                        <string id="value">Hello</string>
+                                    </register>
+                                </code>
+                            </tip>
+                        </li>
+                    </ll>
                 </p>
                 <p>
                     Here is a quick list of operations allowed inside of <code lang="xml"><compile/></code> instruction:
@@ -484,7 +532,7 @@
                             <li><n>boolean</n><d>create boolean from value or convert existing object to boolean.</d></li>
                             <li><n>integer</n><d>create integer from value or convert existing object to integer.</d></li>
                             <li><n>float</n><d>create real number from value or convert existing object to real number.</d></li>
-                            <li><n>sting</n><d>create string from value or convert existing object to string.</d></li>
+                            <li><n>string</n><d>create string from value or convert existing object to string.</d></li>
                             <li><n>copy</n><d>convert inner xml, to <i>block</i> with <q>name</q>, <q>attributes</q>, and <q>children</q> or <q>value</q> symbols defined.</d></li>
                         </ul>
                     </p>

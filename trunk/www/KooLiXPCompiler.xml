@@ -6,9 +6,11 @@
     <sub-title>Reference Manual.</sub-title>
 
     <links>
+        <link name="Chunk">#Chunk</link>
+        <link name="Symbol">#Symbol</link>
         <link name="Lookup">#Lookup</link>
         <link name="Scope">#Scope</link>
-        <link name="Simplified Syntax">#Simplified Syntax</link>
+        <link name="Simplified Assignment Syntax">#Simplified Assignment Syntax</link>
     </links>
     
     <chapters>
@@ -27,37 +29,154 @@
             </link>
         </toc>
         <chapter>
+            <title>A <i>Chunk</i></title>
+            <name>Chunk</name>
+            <body>
+                <p>
+                    A chunk represents: number, string, object, function, closure or any other <q>thing</q> in KooLiXP.
+                </p>
+                <p>
+                    In KooLiXP <b>every <i>Symbol</i> refers to some chunk</b>.
+                </p>
+                <p>
+                    A C++ corresponding type is <code lang="text">XMLProgram::IChunk</code>
+                    <ul>
+                        <li><n>operator &gt;&gt; ( int &amp; )</n><d>convert to integer,</d></li>
+                        <li><n>operator &gt;&gt; ( double &amp; )</n><d>convert to float,</d></li>
+                        <li><n>operator &gt;&gt; ( TextUtf8 &amp; )</n><d>convert to string.</d></li>
+                        <li><n>IChunk *  GetChunk( name )</n><d>get child with given name,</d></li>
+                        <li><n>void SetChunk( name, IChunk *)</n><d>set child with given name,</d></li>
+                        <li><n>bool IsLazy()</n><d>is it lazy chunk? (should execute to obtain its value)</d></li>
+                    </ul>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>A <i>Symbol</i></title>
+            <name>Symbol</name>
+            <body>
+                <p>
+                    While <i>Chunk</i> represents some concrete <q>value</q>, a symbol exists only in concrete <i>Scope</i> or other <i>Chunk</i>.
+                </p>
+                <p>
+                    A symbol is an <b>association of a name with concrete <i>Chunk</i></b>.
+                </p>
+                <p>
+                    <b>Note:</b> One chunk may be used to define several symbols, since you may assign several names to same object.<br/>
+                    This is why objects are <b>reference-counted</b>.<br/>
+                    Since reference counting is used instead of garbage collection, KooLiXP has well known <b>problem of cyclic references</b>.<br/>
+                    However it is rather easy to cope with that manually. You know the places where it could happen, and you are able to make
+                    reference graph acyclic, by removing cyclic connections (In most cases you know which connections are cyclic).
+                    <tip>
+                        <code lang="xml">
+                            <compile run="1">
+                                <block id="MyObject">
+                                    <comment>Creating referece to self is cyclic.</comment>
+                                    <let id="self" select="__block__"/>
+                                </block>
+                                <comment>To fix this, assign an empty chunk to a variable keeping cyclic reference.</comment>
+                                <set id="MyObject:self">
+                                    <empty/>
+                                </set>
+                            </compile>
+                        </code>
+                    </tip>
+                </p>
+            </body>
+        </chapter>
+        <chapter>
             <title><i>Lookup</i> for a symbol</title>
             <name>Lookup</name>
             <body>
                 <p>Lookup is done via searching for given symbol name in all scopes, starting from current <i>Scope</i>, and moving thru previous scopes.
                 </p>
+                <tip>
+                    <p>The pseudo-code bellow shows how does the lookup work:</p>
+                    <pre>
+Lookup( name, currentState )
+{
+    while( nil != currentState )
+    {
+        found = currentState._currentBlock.GetChunk( name );
+        if( nil != found )
+        {
+            return found;
+        }
+        currentState = currentState._prevState;
+    }
+    return nil;
+}
+                    </pre>
+                </tip>
             </body>
         </chapter>
         <chapter>
             <title><i>Scope</i> for a symbol</title>
             <name>Scope</name>
             <body>
-                <p>Scope is an object containing information about:
-                    <ll>
-                        <li>instructions allowed in current context,</li>
-                        <li>current <b>symbol dictionary</b>,</li>
-                        <li><b>last result</b>,</li>
-                        <li>a reference to previous scope.</li>
-                    </ll>
+                <p>Scope is an object containing information about current context.
+                    A C++ corresponding type is <code lang="text">XMLProgram::ExecutionState</code>, where such fields are defined (names in <q/> are <i>KooLiXP</i> names):
+                    <ul>
+                        <li><n>_currentBlock, <q>__block__</q></n><d>block of symbols (here we lookup for a symbols like: constants, variables, functions or closures),</d></li>
+                        <li><n>_lastResult, <q>__result__</q></n><d>the invocation result of the most recent instruction,</d></li>
+                        <li><n>_prevState</n><d>the previous scope (where we lookup for a symbol if we couldn't find it here).</d></li>
+                        <li><n>_currentDict</n><d>an instruction dictionary (depends on context),</d></li>
+                        <li><n>IChunk * GetResult() const</n><d>C++ function used to obtain <i>_lastResult</i>.</d></li>
+                        <li><n>void SetResult( IChunk * )</n><d>C++ functions used to set <i>_lastResult</i>
+                                (the previous result is released, and a new one is add-reffed).</d></li>
+                    </ul>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Simplified Syntax</i> for defining <b>new</b> symbol.</title>
-            <name>Simplified Syntax</name>
+            <title><i>Simplified Assignment Syntax</i></title>
+            <name>Simplified Assignment Syntax</name>
             <body>
                 <p>
                     Most of KooLiXP instructions support <q>id</q> attribute.
-                    When you set this attribute, result of instruction is automatically assigned to new symbol name in current <i>Scope</i>.
+                    When you set this attribute, the result of an instruction is automatically assigned to new symbol name in current <i>Scope</i>.
+                </p>
+                <p>
+                    Main rules:
+                    <ll>
+                        <li>Each instruction returns result.</li>
+                        <li>The result is passed to parent instruction, or</li>
+                        <li>the result is placed in <i>_currentBlock</i> under name
+                            taken from <q>id</q> attribute.</li>
+                    </ll>
+                    When you write an instruction with an <q>id</q> attribute, you define new symbol from value returned by this instruction.
                 </p>
                 <p>
                     <b>Note:</b> It is easy to make mistake, when you errorneously given <q>id</q> attribute. <b>last result won't be set</b>.
+                </p>
+                <p>
+                    <tip>
+                        <code lang="xml">
+                            <xml>
+                                <comment>Bellow are non-compile instructions:</comment>
+                                <let id="x">
+                                    <integer value="10"/>
+                                </let>
+                                <let id="d">
+                                    <float value="12.5"/>
+                                </let>
+                                <let id="h">
+                                    <call id="image:GetHeight"/>
+                                </let>
+                            </xml>
+                        </code>
+                        <p>A Simplified Assignment Syntax.</p>
+                        <code lang="xml">
+                            <xml>
+                                <comment>Bellow are in-compile substitutes:</comment>
+                                <compile run="1">
+                                    <integer id="x" value="10"/>
+                                    <float id="d" value="12.5"/>
+                                    <apply id="h" select="image:GetHeight"/>
+                                </compile>
+                            </xml>
+                        </code>
+                    </tip>
                 </p>
             </body>
         </chapter>
@@ -96,7 +215,7 @@
                         </code>
                     </p>
                 </tip>
-                <p><b>Note:</b> You shouldn't use &lt;<i>let</i>&gt; to define new symbol. Instead use the <i>Simplified Syntax</i>.
+                <p><b>Note:</b> You shouldn't use &lt;<i>let</i>&gt; to define new symbol. Instead use the <i>Simplified Assignment Syntax</i>.
                 </p>
             </body>
         </chapter>
@@ -158,7 +277,7 @@
                         </code>
                     </p>
                 </tip>
-                <p><b>Note:</b> Instruction &lt;<i>get</i>&gt; cannot use <i>Simplified Syntax</i>, since an <q>id</q> attribute would be in conflict.
+                <p><b>Note:</b> Instruction &lt;<i>get</i>&gt; cannot use <i>Simplified Assignment Syntax</i>, since an <q>id</q> attribute would be in conflict.
                 </p>
             </body>
         </chapter>

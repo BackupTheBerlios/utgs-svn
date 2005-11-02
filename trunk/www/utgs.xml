@@ -8,16 +8,16 @@
     <chapters>
         <toc>
             <link>
-                <title>Compiled <i>KooLiXP</i> Instructions (Overview)</title>
+                <title><i>Useless</i> - Multimedia &amp; Games Library (Overview)</title>
+                <href>UselessOverview.xml</href>
+            </link>
+            <link>
+                <title><i>KooLiXP</i> - Compiled Instructions (Overview)</title>
                 <href>KooLiXPOverview.xml#Overview</href>
             </link>
             <link>
-                <title>Compiled <i>KooLiXP</i> Instructions (Reference Manual)</title>
+                <title><i>KooLiXP</i> - Compiled Instructions (Reference Manual)</title>
                 <href>KooLiXPCompiler.xml</href>
-            </link>
-            <link>
-                <title>Useless Multimedia &amp; Games Library (Overview)</title>
-                <href>UselessOverview.xml</href>
             </link>
         </toc>
         <chapter>
@@ -88,7 +88,8 @@
                         <li>built-in, just-in-time compiler, which provides ability to create compiled functions from selected parts of code,</li>
                         <li>function curring, which provides ability to in-place creation of function objects with bound selected function and given parameters,</li>
                         <li>infinite streams, when you create listnode providing a function as a <q>tail</q>,</li>
-                        <li>built-in operations such as: map, fold, zip, range, seek, head, providing easy and fast iteration algorithms,</li>
+                        <li>built-in operations such as: <i>map</i>, <i>fold</i>, <i>zip</i>, <i>range</i>, <i>seek</i>, <i>head</i> providing
+                            easy and fast iteration algorithms,</li>
                         <li>runtime in-place objects, which means you are able to create object with members without having defined any class,</li>
                         <li>runtime object templates, actually there are no classes, so you need to create just constructor function,</li>
                         <li>import built-in library bindings,</li>

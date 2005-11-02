@@ -3,86 +3,94 @@
     <xsl:template match="document">
         <html>
             <head>
-                <style type="text/css">
-                    /* <![CDATA[ */ 
-                    @import "http://www.tigris.org/branding/css/tigris.css"; 
-                    @import "http://www.tigris.org/branding/css/inst.css"; 
-                    /*  ]]> */
-                </style>
-                <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/print.css" media="print" />
-                <script src="http://www.tigris.org/branding/scripts/tigris.js" type="text/javascript">
-                </script>
                 <title>Project Overview</title>
             </head>
-            <body>
-                <center>
-                    <h1>
-                        <xsl:apply-templates select="title"/>
-                    </h1>
-                    <h3>
-                        <xsl:apply-templates select="sub-title"/>
-                    </h3>
-                </center>
-                <hr/>
-                <h3>Table Of Contents.</h3>
-                <p>On <a href="#">this</a> page:
-                    <ul>
-                        <xsl:for-each select="chapters/chapter">
-                            <xsl:variable name="chapterNo">
-                                <xsl:number count="chapter"/>
-                            </xsl:variable>
-                            <li>
-                                <xsl:element name="a">
-                                    <xsl:attribute name="href">
-                                        <xsl:text>#</xsl:text>
-                                        <xsl:value-of select="./name"/>
-                                    </xsl:attribute>
-                                    <xsl:text>Chapter </xsl:text>
-                                    <xsl:value-of select="$chapterNo"/>
-                                    <xsl:text> : </xsl:text>
-                                    <xsl:value-of select="./title"/>
-                                </xsl:element>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </p>
-                <xsl:if test="chapters/toc">
-                    <p>Other pages:
-                        <ul>
-                            <xsl:for-each select="chapters/toc/*">
-                                <li>
-                                    <xsl:element name="a">
-                                        <xsl:attribute name="href">
-                                            <xsl:apply-templates select="./href"/>
-                                        </xsl:attribute>
-                                        <xsl:apply-templates select="./title"/>
-                                    </xsl:element>
-                                </li>
-                            </xsl:for-each>
-                        </ul>
-                    </p>
-                </xsl:if>
-                <hr/>
-                <xsl:apply-templates select="chapters/chapter"/>
-                <table width="50%">
-                    <tr height="100px"/>
-                    <tr>
-                        <td>
-                            <hr/>
-                            Copyright (c) 2005, Radoslaw Kolasinski (<a href="mailto:koolas@gmail.com">koolas@gmail.com</a>) All rights reserved.
+            <body background="utgs-bg.jpg">
+                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64">
+                    <tr valign="top" bgcolor="#3c8fdc" background="utgslogobg.jpg">
+                        <td width="128px">
+                            <table width="128px"/>
+                        </td>
+                        <td valign="middle" width="99%">
+                            <img src="utgslogo.png"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            See <a href="../COPYING">COPYING</a> for license information.
+                        <td colspan="2" bgcolor="black">
+                            <table height="1px"/>
                         </td>
                     </tr>
+                </table>
+                
+                <table width="80%" align="center" bgcolor="#3c8fdc" cellpadding="0">
                     <tr>
-                        <td>
-                            See <a href="http://utgs.berlios.de">UTGS home page</a>.
+                        <td bgcolor="white">
+                            <table cellpadding="10" width="100%" background="utgs-bg2.jpg">
+                                <tr>
+                                    <td>
+                                        <h2><xsl:apply-templates select="title"/></h2>
+                                        <h4><xsl:apply-templates select="sub-title"/></h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h3>Table Of Contents.</h3>
+                                        <p>On <a href="#">this</a> page:
+                                            <ul>
+                                                <xsl:for-each select="chapters/chapter">
+                                                    <xsl:variable name="chapterNo">
+                                                        <xsl:number count="chapter"/>
+                                                    </xsl:variable>
+                                                    <li>
+                                                        <xsl:element name="a">
+                                                            <xsl:attribute name="href">
+                                                                <xsl:text>#</xsl:text>
+                                                                <xsl:value-of select="./name"/>
+                                                            </xsl:attribute>
+                                                            <xsl:text>Chapter </xsl:text>
+                                                            <xsl:value-of select="$chapterNo"/>
+                                                            <xsl:text> : </xsl:text>
+                                                            <xsl:value-of select="./title"/>
+                                                        </xsl:element>
+                                                    </li>
+                                                </xsl:for-each>
+                                            </ul>
+                                        </p>
+                                        <xsl:if test="chapters/toc">
+                                            <p>Other pages:
+                                                <ul>
+                                                    <xsl:for-each select="chapters/toc/*">
+                                                        <li>
+                                                            <xsl:element name="a">
+                                                                <xsl:attribute name="href">
+                                                                    <xsl:apply-templates select="./href"/>
+                                                                </xsl:attribute>
+                                                                <xsl:apply-templates select="./title"/>
+                                                            </xsl:element>
+                                                        </li>
+                                                    </xsl:for-each>
+                                                </ul>
+                                            </p>
+                                        </xsl:if>
+                                    </td>
+                                </tr>
+                                <tr height="64px"/>
+                                <tr>
+                                    <td align="right" valign="bottom" width="99%">
+                                        See <a href="http://utgs.berlios.de">UTGS home page</a>.<br/>
+                                        See <a href="../COPYING">COPYING</a> for license information.<br/>
+                                        Copyright (c) 2005, Radoslaw Kolasinski (<a href="mailto:koolas@gmail.com">koolas@gmail.com</a>) All rights reserved.<br/>
+                                    </td>
+                                </tr>
+                                <tr height="64px"/>
+                            </table>
+                        <xsl:apply-templates select="chapters/chapter"/>
                         </td>
                     </tr>
-                    <tr height="800px"/>
+                </table>
+                
+                <table>
+                    <tr height="480px"/>
                 </table>
             </body>
         </html>
@@ -134,25 +142,44 @@
         <xsl:variable name="chapterNo">
             <xsl:number count="chapter"/>
         </xsl:variable>
-        <xsl:element name="h2">
-            <xsl:attribute name="id">
-                <xsl:value-of select="name"/>
-            </xsl:attribute>
-            <xsl:text>Chapter </xsl:text>
-            <xsl:value-of select="$chapterNo"/>
-            <xsl:text> : </xsl:text>
-            <xsl:element name="a">
-                <xsl:attribute name="href">
-                    <xsl:text>#</xsl:text>
-                    <xsl:value-of select="name"/>
-                </xsl:attribute>
-                <xsl:apply-templates select="title"/>
-            </xsl:element>
-        </xsl:element>
-        <xsl:apply-templates select="body"/>
-        <p>
-            <a href="#">Back to ToC</a>
-        </p>
+        <table width="100%" cellspacing="0" background="utgs-bg1.jpg">
+            <tr height="96px">
+                <td bgcolor="#dc8f3c" width="80%" background="utgschapterbg.jpg">
+                    <xsl:element name="h2">
+                        <xsl:attribute name="id">
+                            <xsl:value-of select="name"/>
+                        </xsl:attribute>
+                        <xsl:text>Chapter </xsl:text>
+                        <xsl:value-of select="$chapterNo"/>
+                        <xsl:text> : </xsl:text>
+                        <xsl:element name="a">
+                            <xsl:attribute name="href">
+                                <xsl:text>#</xsl:text>
+                                <xsl:value-of select="name"/>
+                            </xsl:attribute>
+                            <xsl:apply-templates select="title"/>
+                        </xsl:element>
+                    </xsl:element>
+                </td>
+                <td width="46px" background="utgschapter.jpg"/>
+                <td align="center">
+                    <a href="#">Back to ToC</a>
+                </td>
+            </tr>
+        </table>
+        <table cellpadding="10" width="100%" background="utgs-bg2.jpg">
+            <tr>
+                <td>
+                    <xsl:apply-templates select="body"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#">Back to ToC</a>
+                </td>
+            </tr>
+            <tr height="128px"/>
+        </table>
     </xsl:template>
 
     <xsl:template match="ul">
@@ -284,20 +311,18 @@
                 <xsl:text> </xsl:text>
             </xsl:if>
             <xsl:for-each select="@*">
-                <i>
-                    <b>
-                        <font color="darkgreen">
-                            <xsl:value-of select="name()"/>
-                        </font>
-                    </b>
+                <b>
+                    <font color="green">
+                        <xsl:value-of select="name()"/>
+                    </font>
                     <xsl:text>=</xsl:text>
-                    <font color="magenta">
+                    <font color="darkmagenta">
                         <xsl:text>"</xsl:text>
                         <xsl:value-of select="."/>
                         <xsl:text>"</xsl:text>
                     </font>
                     <xsl:text> </xsl:text>
-                </i>
+                </b>
             </xsl:for-each>
             <xsl:choose>
                 <xsl:when test="./*">
@@ -307,29 +332,34 @@
                         </b>
                     </font>
                     <xsl:for-each select="./*">
-                        <blockquote>
-                            <xsl:choose>
-                                <xsl:when test="name() = 'fixed-comment'">
-                                    <font color="blue">
-                                        <xsl:text>&lt;!-- </xsl:text>
-                                        <xmp>
-                                            <xsl:value-of select="."/>
-                                        </xmp>
-                                        <xsl:text> --&gt;</xsl:text>
-                                    </font>
-                                </xsl:when>
-                                <xsl:when test="name() = 'comment'">
-                                    <font color="blue">
-                                        <xsl:text>&lt;!-- </xsl:text>
-                                        <xsl:value-of select="."/>
-                                        <xsl:text> --&gt;</xsl:text>
-                                    </font>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:call-template name="codePartXML"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </blockquote>
+                        <table cellspacing="4" cellpadding="0">
+                            <tr>
+                                <td width="16px"/>
+                                <td>
+                                    <xsl:choose>
+                                        <xsl:when test="name() = 'fixed-comment'">
+                                            <font color="blue">
+                                                <xsl:text>&lt;!-- </xsl:text>
+                                                <xmp>
+                                                    <xsl:value-of select="."/>
+                                                </xmp>
+                                                <xsl:text> --&gt;</xsl:text>
+                                            </font>
+                                        </xsl:when>
+                                        <xsl:when test="name() = 'comment'">
+                                            <font color="blue">
+                                                <xsl:text>&lt;!-- </xsl:text>
+                                                <xsl:value-of select="."/>
+                                                <xsl:text> --&gt;</xsl:text>
+                                            </font>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:call-template name="codePartXML"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </td>
+                            </tr>
+                        </table>
                     </xsl:for-each>
                     <font color="darkcyan">
                         <b>
