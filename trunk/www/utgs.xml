@@ -8,15 +8,15 @@
     <chapters>
         <toc>
             <link>
-                <title><i>Useless</i> - Multimedia &amp; Games Library (Overview)</title>
+                <title><i>Useless</i> - Library Overview</title>
                 <href>UselessOverview.xml</href>
             </link>
             <link>
-                <title><i>KooLiXP</i> - Compiled Instructions (Overview)</title>
+                <title><i>KooLiXP</i> - Language Overview</title>
                 <href>KooLiXPOverview.xml#Overview</href>
             </link>
             <link>
-                <title><i>KooLiXP</i> - Compiled Instructions (Reference Manual)</title>
+                <title><i>KooLiXP</i> - Language Reference Manual</title>
                 <href>KooLiXPCompiler.xml</href>
             </link>
         </toc>
@@ -77,48 +77,48 @@
             </body>
         </chapter>
         <chapter>
-            <title>What is <i>KooLiXP</i> ? - An introduction to scripts.</title>
+            <title>About <i>KooLiXP</i> Language</title>
             <name>AbountKooLiXP</name>
             <body>
                 <p>
-                    KooLiXP is LISP like functional, and Python like objective language.
-                    XML was choosen as its form, so it may look similar to XSLT language.
-                    The language is realy easy to learn and use.
+                    The <i>KooLiXP</i> language is functional like LISP, and object oriented like Python.
+                    It looks similar to XSL Transform language, since an XML syntax have been choosed as its form.
+                    This is high-level language, where you don't bother how to do a thing, you'd rather think what
+                    thing is to be done. It is is realy easy to learn declarative language.
                 </p>
                 <p>
-                    What's cooking in <i>KooLiXP</i>:
+                    The major features of <i>KooLiXP</i> are:
                     <ll>
-                        <li>built-in, just-in-time compiler, which provides ability to create compiled functions from selected parts of code,</li>
-                        <li>function curring, which provides ability to in-place creation of function objects with bound selected function and given parameters,</li>
-                        <li>infinite streams, when you create listnode providing a function as a <q>tail</q>,</li>
-                        <li>built-in operations such as: <i>map</i>, <i>fold</i>, <i>zip</i>, <i>range</i>, <i>seek</i>, <i>head</i> providing
+                        <li>built-in, <b>just-in-time compiler</b>, which provides ability to create compiled functions from selected parts of code,</li>
+                        <li>function <b>curring</b>, which provides ability to in-place creation of function objects with bound selected function and given parameters,</li>
+                        <li>infinite <b>streams</b>, when you create listnode with a listnode generator function in a <q>tail</q>,</li>
+                        <li>built-in operations such as: <b><i>map</i>, <i>fold</i>, <i>zip</i>, <i>range</i>, <i>seek</i>, <i>head</i></b> providing
                             easy and fast iteration algorithms,</li>
-                        <li>runtime in-place objects, which means you are able to create object with members without having defined any class,</li>
-                        <li>runtime object templates, actually there are no classes, so you need to create just constructor function,</li>
-                        <li>import built-in library bindings,</li>
-                        <li>dynamic library linking (win32 DLL or linux SO). </li>
+                        <li><b>runtime in-place objects</b>, when you create an object and initial values of its members without having defined any class,</li>
+                        <li>import built-in library <b>bindings</b>,</li>
+                        <li>control over <b>loading at runtime</b> of user supplied dynamic libraries (win32 DLL or linux SO). </li>
                     </ll>
                 </p>
                 <p>
                     <link>
-                        <title>See KooLiXP Overview...</title>
+                        <title>See Language Overview...</title>
                         <href>KooLiXPOverview.xml</href>
                     </link>
                 </p>
                 <p>
                     <link>
-                        <title>See KooLiXP complex example ...</title>
+                        <title>See Complex Example ...</title>
                         <href>KooLiXPComplexExample.xml</href>
                     </link>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title>What is <i>Useless</i> ? - An introduction to C++ modules.</title>
+            <title>About <i>Useless</i> Library</title>
             <name>AboutUseless</name>
             <body>
                 <p>
-                    Useless is Multimedia &amp; Games library.
+                    The <i>Useless</i> Library is a Multimedia &amp; Games library.
                 </p>
                 <p>
                     Layers in <i>Useless</i> module:
@@ -133,7 +133,7 @@
                 </p>
                 <p>
                     <link>
-                        <title>See Useless overview...</title>
+                        <title>See Library Overview...</title>
                         <href>UselessOverview.xml</href>
                     </link>
                 </p>
