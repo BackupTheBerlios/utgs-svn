@@ -978,6 +978,11 @@ namespace XMLProgram {
             g_GlobalExecState._currentBlock = g_GlobalsBlock.get();
             g_GlobalExecState._currentDict = &xtdProgram;
             g_GlobalExecState._prevState = 0;
+            g_GlobalsBlock->AddChunk(L"__Empty__", CreateEmpty());
+            g_GlobalsBlock->AddChunk(L"__Zero__", CreateValue( 0 ));
+            g_GlobalsBlock->AddChunk(L"__One__", CreateValue( 1 ));
+            g_GlobalsBlock->AddChunk(L"__False__", CreateValue( 0 ));
+            g_GlobalsBlock->AddChunk(L"__True__", CreateValue( 1 ));
         }
         ++g_GlobalsRefCount;
     }

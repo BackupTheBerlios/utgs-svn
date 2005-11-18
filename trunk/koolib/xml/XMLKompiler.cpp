@@ -26,7 +26,7 @@ namespace XMLFactory {
             // symbols
             .AddReg< CXML::LET >("let")
             .AddReg< CXML::SET >("set")
-            .AddReg< CXML::GET >("get")            
+            .AddReg< CXML::GET >("get")
             .AddReg< CXML::LOOKUP >("lookup")
             .AddReg< CXML::REGISTER >("register")
             .AddReg< CXML::IS_NOT_EMPTY >("is-not-empty")
@@ -49,6 +49,7 @@ namespace XMLFactory {
             .AddReg< CXML::EXTRACT >("extract")
             .AddReg< CXML::DOIN >("doin")
             .AddReg< CXML::DO >("do")
+            .AddReg< CXML::OBJECT >("object")
 
             // list operations
             .AddReg< CXML::EMPTY    >("empty")
@@ -146,10 +147,10 @@ namespace XMLProgram {
         }
     }
 
-    IChunkPtr Compile( Node node, ExecutionState &state )
+    IChunkPtr Compile( Node node, ExecutionState &state, XMLFactory::XMLTagDict< ExecutionState > *currentDict )
     {
         SubScope newState( state );
-        newState._currentDict = &xtdProgramCompile;
+        newState._currentDict = currentDict;
 
         IChunkPtr pEnd = new XMLEmpty();
         IChunkPtr pHead = pEnd;
@@ -186,6 +187,12 @@ namespace XMLProgram {
             return pHead;
         }
     }
+    
+    IChunkPtr Compile( Node node, ExecutionState &state )
+    {
+        return Compile( node, state, &xtdProgramCompile );
+    }
+    
 
     IChunkPtr CompileOneNode( Node node, ExecutionState &state )
     {
@@ -547,6 +554,68 @@ namespace XMLFactory {
         HookDefinition( _node, _state );
     }
 
+    
+    /*
+     * Create object.
+     *
+     *  <object [id="Name"]>
+     *      <!-- let -->
+     *      <!-- let -->
+     *      ..
+     *      <!-- let -->
+     *      <!-- function -->
+     *      <!-- method -->
+     *  </object>
+     */
+    LOCAL_TAG_HANDLER( CXML::OBJECT )
+    {
+        IChunkPtr pPrivate = Compile( _node, _state );
+        IChunkPtr pMethods = CreateEmpty();
+        {
+            IChunkPtr pEnd = CreateEmpty();
+            IChunkPtr pHead = pEnd;
+            XMLListChunk *pLast = 0;
+
+            for ( Node child( _node.GetFirstChild() ); !!child; ++child )
+            {
+                if ( child->_name == "function" )
+                {
+                    Attr< TextUtf8, true, wchar_t > _id(L"id");
+                    GetAttr( _id, child, _state );
+                    IChunkPtr pResult = HookErrors( child,
+                            new CXML::LET( _id.str(), new CXML::LAZY_CALL( L"__private__:" + _id.str(),
+                                    new CXML::LET( L"__self__", new CXML::GET( L"__private__" ))
+                                    ))
+                            );
+                    XMLListChunk *p = new XMLListChunk( pResult.get(), pEnd.get() );
+                    if ( 0 == pLast )
+                    {
+                        pHead = p;
+                    }
+                    else
+                    {                
+                        pLast->SetTail( p );
+                    }
+                    pLast = p;
+                }
+            }
+            if ( IsEmpty( pHead.get() ))
+            {
+                pMethods = pEnd;
+            }
+            else if ( IsEmpty( pHead->GetChunk( FOURCC_LIST_TAIL )))
+            {
+                pMethods = pHead->GetChunk( FOURCC_LIST_HEAD );
+            }
+            else
+            {
+                pMethods = pHead;
+            }
+        }
+        _state.SetResult( new CXML::OBJECT(  pPrivate.get(), pMethods.get() ));
+        HookDefinition( _node, _state );
+    }
+    
 
     //---------------------------------------------------------
     //
@@ -628,13 +697,13 @@ namespace XMLFactory {
     // <less><!-- compare --></less>
     LOCAL_TAG_HANDLER( CXML::LESS )
     {
-        IChunkPtr compiled = Compile( _node, _state );
+        IChunkPtr compiled = CompileRightValue( _node, _state );
         if ( 0 != compiled->GetChunk( FOURCC_LIST_TAIL ) || IsEmpty( compiled.get() ))
         {
-			throw Useless::Error("<less> expects exactly one child.\n"
-                    "You've probably forgotten <compare> node.\n"
-                    "The child shall return one out of set { -1, 0, 1}.\n"
-                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'.");
+            throw Useless::Error("<less> expects exactly one child.\n"
+                    "The child(or select/force) must return the value in set of { -1, 0, 1}.\n"
+                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'."
+                    "You've probably forgotten <compare> node.\n");
         }
         _state.SetResult( new CXML::LESS( compiled.get() ));
         HookDefinition( _node, _state );
@@ -643,13 +712,13 @@ namespace XMLFactory {
     // <greater><!-- compare --></greater>
     LOCAL_TAG_HANDLER( CXML::GREATER )
     {
-        IChunkPtr compiled = Compile( _node, _state );
+        IChunkPtr compiled = CompileRightValue( _node, _state );
         if ( 0 != compiled->GetChunk( FOURCC_LIST_TAIL ) || IsEmpty( compiled.get() ))
         {
             throw Useless::Error("<greater> expects exactly one child.\n"
-                    "You've probably forgotten <compare> node.\n"
-                    "The child shall return one out of set { -1, 0, 1}.\n"
-                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'.");
+                    "The child(or select/force) must return the value in set of { -1, 0, 1}.\n"
+                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'."
+                    "You've probably forgotten <compare> node.\n");
         }
         _state.SetResult( new CXML::GREATER( compiled.get() ));
         HookDefinition( _node, _state );
@@ -658,13 +727,13 @@ namespace XMLFactory {
     // <equal><!-- compare --></equal>
     LOCAL_TAG_HANDLER( CXML::EQUAL )
     {
-        IChunkPtr compiled = Compile( _node, _state );
+        IChunkPtr compiled = CompileRightValue( _node, _state );
         if ( 0 != compiled->GetChunk( FOURCC_LIST_TAIL ) || IsEmpty( compiled.get() ))
         {
-            throw Useless::Error("<greater> expects exactly one child.\n"
-                    "You've probably forgotten <compare> node.\n"
-                    "The child shall return one out of set { -1, 0, 1}.\n"
-                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'.");
+            throw Useless::Error("<equal> expects exactly one child.\n"
+                    "The child(or select/force) must return the value in set of { -1, 0, 1}.\n"
+                    "-1 is 'less', 0 is 'equal' and 1 is 'greater'."
+                    "You've probably forgotten <compare> node.\n");
         }
         _state.SetResult( new CXML::EQUAL( compiled.get() ));
         HookDefinition( _node, _state );
@@ -868,10 +937,71 @@ namespace XMLFactory {
      */
     LOCAL_TAG_HANDLER( CXML::MAP )
     {
-        Attr< TextUtf8, true, wchar_t > _iterator(L"iterator");
-        GetAttr( _iterator, _node, _state );
-        _state.SetResult( HookErrors( _node, new CXML::MAP( _iterator.str(), Compile( _node, _state ).get() )));
-        HookDefinition( _node, _state );
+        Node child( _node.GetFirstChild() );
+        if ( !!child )
+        {
+            IChunkPtr pFunctor;
+            Attr< TextUtf8, false, wchar_t > _select(L"select");
+            
+            if ( "iterator" == child->_name )
+            {
+                Attr< TextUtf8, true > _iteratorId("id");
+                if ( !(child >> _iteratorId))
+                {
+                    throw Useless::Error("<map><iterator> required 'id' attribute.");
+                }
+                ++child;
+                IChunkPtr listDef;
+                if ( "list" == child->_name )
+                {
+                    listDef = new CXML::LET( L"list", CompileRightValue( child, _state ).get() );
+                }
+                else if ( "range" == child->_name )
+                {
+                    listDef = new CXML::LET( L"list", CompileOneNode( child, _state ).get() );
+                }
+                else
+                {
+                    throw Useless::Error("<map> expected <list> or <range>.");
+                }
+                if ( !child )
+                {
+                    throw Useless::Error("<map> requires function body.");
+                }
+                IChunkPtr pFunc;
+                if ( "function" == child->_name )
+                {
+                    pFunc = CompileRightValue( child, _state );
+                }
+                else
+                {
+                    std::list< IChunkPtr > defs;
+                    for ( ++child; !!child; ++child )
+                    {
+                        defs.push_back( CompileOneNode( child, _state ));
+                    }
+                    pFunc = CreateEmpty();
+                    for ( std::list< IChunkPtr >::reverse_iterator i = defs.rbegin(); i != defs.rend(); ++i )
+                    {
+                        pFunc = CreateList( (*i).get(), pFunc.get() );
+                    }
+                }
+                IChunkPtr funcDef = new CXML::LET( L"func", new CXML::ConstantValue( pFunc.get() ));
+                pFunctor = new CXML::MAP( _iteratorId.str(), CreateList( listDef.get(), CreateList( funcDef.get(), CreateEmpty() )) );
+            }
+            else
+            {
+                Attr< TextUtf8, true, wchar_t > _iterator(L"iterator");
+                GetAttr( _iterator, _node, _state );
+                pFunctor = new CXML::MAP( _iterator.str(), Compile( _node, _state ).get() );
+            }
+            _state.SetResult( HookErrors( _node, pFunctor.get() ));
+            HookDefinition( _node, _state );
+        }
+        else
+        {
+            throw Useless::Error("<map> expects children nodes {list, function}.");
+        }
     }
 
     /*
@@ -887,12 +1017,87 @@ namespace XMLFactory {
      */
     LOCAL_TAG_HANDLER( CXML::FOLD )
     {
-        Attr< TextUtf8, true, wchar_t > _iterator(L"iterator");
-        Attr< TextUtf8, true, wchar_t > _accumulator(L"accumulator");
-        GetAttr( _iterator, _node, _state );
-        GetAttr( _accumulator, _node, _state );
-        _state.SetResult( HookErrors( _node, new CXML::FOLD( _iterator.str(), _accumulator.str(), Compile( _node, _state ).get() )));
-        HookDefinition( _node, _state );
+        Node child( _node.GetFirstChild() );
+        if ( !!child )
+        {
+            IChunkPtr pFunctor;
+            Attr< TextUtf8, false, wchar_t > _select(L"select");
+            
+            if ( "iterator" == child->_name )
+            {
+                Attr< TextUtf8, true > _iteratorId("id");
+                if ( !(child >> _iteratorId))
+                {
+                    throw Useless::Error("<fold><iterator> required 'id' attribute.");
+                }
+                ++child;
+                if ( "accumulator" != child->_name )
+                {
+                    throw Useless::Error("<fold> expected <accumulator>.");
+                }
+                Attr< TextUtf8, true > _accumulatorId("id");
+                if ( !(child >> _accumulatorId))
+                {
+                    throw Useless::Error("<fold><accumulator> required 'id' attribute.");
+                }
+                IChunkPtr accumDef = new CXML::LET( _accumulatorId.str(), CompileRightValue( child, _state ).get());
+                ++child;
+                IChunkPtr listDef;
+                if ( "list" == child->_name )
+                {
+                    listDef = new CXML::LET( L"list", CompileRightValue( child, _state ).get() );
+                }
+                else if ( "range" == child->_name )
+                {
+                    listDef = new CXML::LET( L"list", CompileOneNode( child, _state ).get() );
+                }
+                else
+                {
+                    throw Useless::Error("<fold> expected <list> or <range>.");
+                }
+                if ( !child )
+                {
+                    throw Useless::Error("<fold> requires function body.");
+                }
+                IChunkPtr pFunc;
+                if ( "function" == child->_name )
+                {
+                    pFunc = CompileRightValue( child, _state );
+                }
+                else
+                {
+                    std::list< IChunkPtr > defs;
+                    for ( ++child; !!child; ++child )
+                    {
+                        defs.push_back( CompileOneNode( child, _state ));
+                    }
+                    pFunc = CreateEmpty();
+                    for ( std::list< IChunkPtr >::reverse_iterator i = defs.rbegin(); i != defs.rend(); ++i )
+                    {
+                        pFunc = CreateList( (*i).get(), pFunc.get() );
+                    }
+                }
+                IChunkPtr funcDef = new CXML::LET( L"func", new CXML::ConstantValue( pFunc.get() ));
+                pFunctor = new CXML::FOLD( _iteratorId.str(), _accumulatorId.str(),
+                                CreateList( listDef.get(), CreateList( accumDef.get(), CreateList( funcDef.get(), CreateEmpty() )))
+                                );
+            }
+            else
+            {
+                Attr< TextUtf8, true, wchar_t > _iterator(L"iterator");
+                Attr< TextUtf8, true, wchar_t > _accumulator(L"accumulator");
+                GetAttr( _iterator, _node, _state );
+                GetAttr( _accumulator, _node, _state );
+                pFunctor = new CXML::FOLD( _iterator.str(), _accumulator.str(), Compile( _node, _state ).get() );
+            }
+            _state.SetResult( HookErrors( _node, pFunctor.get() ));
+            HookDefinition( _node, _state );
+        }
+        else
+        {
+            throw Useless::Error("<map> expects children nodes {list, function}.");
+        }
+        
     }
 
     /*

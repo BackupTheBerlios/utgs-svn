@@ -1,3 +1,4 @@
+#include <koolib/xml/XMLKompiler.h> //used for faster symbol access
 #include <koolib/xml/XMLChunksUseless.h>
 #include <gl/GL.h> //@TODO: needed for PainterProxy::SubCanvasPaint
 #include "Useless/Graphic/Planes/MemSurface.h" //needed by QueryPixelColor
@@ -7,6 +8,8 @@ namespace XMLProgram {
 
     using namespace Useless;
     using namespace XMLFactory;
+    using CXML::LazyGetChunkInScope;
+    using CXML::LazyGetChunkMember;
 
 
     /*******************************
@@ -18,7 +21,9 @@ namespace XMLProgram {
     {
         add_methods( this )
             .def("AddPoint", AddPoint, "pos")
+            .def("SetPoint", SetPoint, "index", "pos")
             .def("Size", Size)
+            .def("Empty", Empty)
             .def("At", At, "index")
             ;
     }
@@ -31,10 +36,27 @@ namespace XMLProgram {
     {
         _points.push_back( pos );
     }
+        
+    void PointListProxy::SetPoint( int index, const Useless::Pos &pos )
+    {
+        if ( index < _points.size() )
+        {
+            _points[ index ] = pos;
+        }
+        else
+        {
+            throw Error("At: index exceeds array");
+        }
+    }
     
     int  PointListProxy::Size()
     {
         return _points.size();
+    }
+
+    int PointListProxy::Empty()
+    {
+        return _points.empty();
     }
     
     Useless::Pos PointListProxy::At( int index )
@@ -54,8 +76,11 @@ namespace XMLProgram {
     {
         add_methods( this )
             .def("AddRect", AddRect, "rect")
+            .def("SetRect", SetRect, "index", "rect")
             .def("Size", Size)
+            .def("Empty", Empty)
             .def("At", At, "index")
+            .def("Intersect", Intersect, "region")
             ;
     }
 
@@ -68,9 +93,26 @@ namespace XMLProgram {
         _rects.push_back( rect );
     }
     
+    void RectListProxy::SetRect( int index, const Useless::Rect &rect )
+    {
+        if ( index < _rects.size() )
+        {
+            _rects[ index ] = rect;
+        }
+        else
+        {
+            throw Error("At: index exceeds array");
+        }
+    }
+    
     int  RectListProxy::Size()
     {
         return _rects.size();
+    }
+
+    int RectListProxy::Empty()
+    {
+        return _rects.empty();
     }
     
     Useless::Rect RectListProxy::At( int index )
@@ -78,6 +120,20 @@ namespace XMLProgram {
         if ( index < 0 ) { throw Error("At: invalid index"); }
         if ( index >= _rects.size() ) { throw Error("At: index exceeds array"); }
         return _rects[ index ];
+    }
+        
+    IChunkPtr RectListProxy::Intersect( const Useless::RectList &region )
+    {
+        RectListProxy *pOut = new RectListProxy( RectList() );
+        IChunkPtr pResult = pOut;
+        for ( int i=0, I=region.size(); i<I; ++i )
+        {
+            for ( int j=0, J=_rects.size(); j<J; ++j )
+            {
+                pOut->_rects.push_back( _rects[j] & region[i] );
+            }
+        }
+        return pOut;
     }
 
 
@@ -140,6 +196,7 @@ namespace XMLProgram {
             .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
             .def("CreateSubImage", CreateSubImage, "area" )
             .def("CreatePainter", CreatePainter )
+            .def("GetClipper", GetClipper, "crop" )
             .def("WriteImage", WriteImage, "file" )
             ;
     }
@@ -165,6 +222,11 @@ namespace XMLProgram {
     {
         _spScreen->SetClipper( Rect( _spScreen->GetWidth(), _spScreen->GetHeight() ));
         return new PainterProxy( Painter( *_spScreen ));
+    }
+        
+    IChunkPtr ScreenProxy::GetClipper( const Useless::Rect &crop )
+    {
+        return new RectListProxy( _spScreen->GetClipper( crop ));
     }
 
     void ScreenProxy::WriteImage( std::string file )
@@ -461,17 +523,52 @@ namespace XMLProgram {
             .def("FastBlit", FastBlit)
             .def("FastDrawPolygon", FastDrawPolygon )
             .def("FastMultiBlit", FastMultiBlit )
+            .def("FastFillRect", FastFillRect )
+            .def("FastDrawRect", FastDrawRect )
+            .def("FastDrawLine", FastDrawLine )
             .def("FillRect", FillRect)
             .def("DrawRect", DrawRect)
             .def("DrawLine", DrawLine)
             .def("DrawPolygon", DrawPolygon)
             .def("MultiBlit", MultiBlit)
             .def("SubCanvasPaint", SubCanvasPaint)
+            .def("GetClipper", GetClipper, "crop" )
+            .def("GetOffset", GetOffset )
+            .def("Clear", Clear, "color" )
+            .def("Intersect", Intersect, "crop" )
             ;
     }
 
     PainterProxy::~PainterProxy()
     {
+    }
+
+    IChunkPtr PainterProxy::GetClipper( const Useless::Rect &crop )
+    {
+        Pos offset = _painter.GetOffset();
+        RectList absRegion = _painter.GetPlane()->GetClipper( crop + offset );
+        RectListProxy *pOut = new RectListProxy( RectList() );
+        IChunkPtr pResult = pOut;
+        for ( int i=0, I=absRegion.size(); i<I; ++i )
+        {
+            pOut->_rects.push_back( absRegion[i] - offset );
+        }
+        return pResult;
+    }
+
+    Pos PainterProxy::GetOffset()
+    {
+        return _painter.GetOffset();
+    }
+
+    void PainterProxy::Clear( int color )
+    {
+        _painter.Clear( color );
+    }
+
+    void PainterProxy::Intersect( const Rect &crop )
+    {
+        _painter.Intersect( crop );
     }
 
     void PainterProxy::FastBlit( Node __unused__, ExecutionState &_state )
@@ -530,6 +627,87 @@ namespace XMLProgram {
         _painter.ProjectImages( *pImageProx->_spImage, pPointList->_points, pRectList->_rects );
 
     }
+    
+    void PainterProxy::FastFillRect( Node _node, ExecutionState &_state )
+    {
+        Attr< Color, true, wchar_t >   _color(L"color");
+        GetAttr( _color, _node, _state );
+
+        static LazyGetChunkInScope s_LazyGetX(L"x", true);
+        static LazyGetChunkInScope s_LazyGetY(L"y", true);
+        static LazyGetChunkInScope s_LazyGetW(L"w", true);
+        static LazyGetChunkInScope s_LazyGetH(L"h", true);
+        
+        IChunk *pChunk = _state._currentBlock;
+        int x = value_of< int >( s_LazyGetX( _state ));
+        int y = value_of< int >( s_LazyGetY( _state ));
+        int w = value_of< int >( s_LazyGetW( _state ));
+        int h = value_of< int >( s_LazyGetH( _state ));
+
+        _painter.PaintRectangle( _color->GetInteger(), Rect(x,y,w,h));
+    }
+
+    void PainterProxy::FastDrawRect( Node _node, ExecutionState &_state )
+    {
+        Attr< Color, true, wchar_t >   _color(L"color");
+        GetAttr( _color, _node, _state );
+        int c = _color->GetInteger();
+
+        static LazyGetChunkInScope s_LazyGetX(L"x", true);
+        static LazyGetChunkInScope s_LazyGetY(L"y", true);
+        static LazyGetChunkInScope s_LazyGetW(L"w", true);
+        static LazyGetChunkInScope s_LazyGetH(L"h", true);
+        
+        IChunk *pChunk = _state._currentBlock;
+        int x = value_of< int >( s_LazyGetX( _state ));
+        int y = value_of< int >( s_LazyGetY( _state ));
+        int w = value_of< int >( s_LazyGetW( _state ));
+        int h = value_of< int >( s_LazyGetH( _state ));
+
+        _painter.PaintBoundary( Rect(x,y,w,h), c, c, c, c);
+    }
+
+    void PainterProxy::FastDrawLine( Node _node, ExecutionState &_state )
+    {
+        static LazyGetChunkInScope s_LazyGetVertices(L"vertices", true);
+        static LazyGetChunkInScope s_LazyGetThickness(L"thickness", true);
+        static LazyGetChunkInScope s_LazyGetColor(L"color", true);
+        
+        IChunk *pVertices = s_LazyGetVertices( _state ).get();
+        if ( pVertices )
+        {
+            IChunk *pThickness = s_LazyGetThickness( _state ).get();
+            IChunk *pColor = s_LazyGetColor( _state ).get();
+            if ( !pThickness ) { throw Error("FastDrawLine: expects 'thickness'"); }
+            if ( !pColor ) { throw Error("FastDrawLine: expects 'color'"); }
+            PointListProxy *vertices = dynamic_cast< PointListProxy *>( pVertices );
+            if ( !vertices ) { throw Error("FastDrawLine: excpects 'vertices' to be type of PointList"); }
+            _painter.PaintLine( vertices->_points, value_of< int >( pColor ), value_of< int >( pThickness ));
+        }
+        else
+        {
+            Attr< Color, true, wchar_t >   _color(L"color");
+            Attr< int, true, wchar_t >     _thickness(L"thickness");
+
+            GetAttr( _color, _node, _state );
+            GetAttr( _thickness, _node, _state );
+            int c = _color->GetInteger();
+
+            static LazyGetChunkInScope s_LazyGetX0(L"x0", true);
+            static LazyGetChunkInScope s_LazyGetX1(L"x1", true);
+            static LazyGetChunkInScope s_LazyGetY0(L"y0", true);
+            static LazyGetChunkInScope s_LazyGetY1(L"y1", true);
+
+            IChunk *pChunk = _state._currentBlock;
+            int x0 = value_of< int >( s_LazyGetX0( _state ));
+            int y0 = value_of< int >( s_LazyGetY0( _state ));
+            int x1 = value_of< int >( s_LazyGetX1( _state ));
+            int y1 = value_of< int >( s_LazyGetY1( _state ));
+
+            _painter.PaintLine( Pos(x0,y0), Pos(x1,y1), c, *_thickness );
+        }
+    }
+
 
     void PainterProxy::Blit( Node _node, ExecutionState &_state )
     {
@@ -627,21 +805,23 @@ namespace XMLProgram {
     void PainterProxy::DrawPolygon( Node _node, ExecutionState &_state )
     {
         Attr< Color, true, wchar_t > _color(L"color");
-
         GetAttr( _color, _node, _state );
+        
+        static LazyGetChunkInScope s_LazyGetVertices(L"vertices", true);
+        static LazyGetChunkMember s_LazyGetX(L"x");
+        static LazyGetChunkMember s_LazyGetY(L"y");
+        
+        IChunk *pChunk = _state._currentBlock;
 
         std::vector< Pos > vertices;
-        IChunkPtr pObject = XMLProgram::GetChunk(L"vertices", _state);
-
+        IChunkPtr pObject = s_LazyGetVertices( _state );
         IChunk *pCurrent = pObject.get();
         while ( !IsEmpty( pCurrent ))
         {
             IChunk *pHead = pCurrent->GetChunk( FOURCC_LIST_HEAD );
-            Attr< int, true, wchar_t > _x(L"x");
-            Attr< int, true, wchar_t > _y(L"y");
-            (*pHead) >> _x;
-            (*pHead) >> _y;
-            vertices.push_back( Pos( *_x, *_y ));
+            int x = value_of< int >( s_LazyGetX( pHead, _state ));
+            int y = value_of< int >( s_LazyGetY( pHead, _state ));
+            vertices.push_back( Pos( x, y ));
             pCurrent = pCurrent->GetChunk( FOURCC_LIST_TAIL );
         }
 

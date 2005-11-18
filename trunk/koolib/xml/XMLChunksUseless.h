@@ -42,19 +42,25 @@ namespace XMLProgram {
         ~PointListProxy();
         
         void AddPoint( const Useless::Pos &pos );
+        void SetPoint( int index, const Useless::Pos &pos );
         int  Size();
+        int Empty();
         Useless::Pos At( int index );
     };
     
     struct RectListProxy : XMLCodeBlock
     {
         Useless::RectList _rects;
-        RectListProxy( const Useless::RectList &points );
+        RectListProxy( const Useless::RectList &rectangles );
         ~RectListProxy();
 
         void AddRect( const Useless::Rect &rect );
+        void SetRect( int index, const Useless::Rect &rect );
         int  Size();
+        int Empty();
         Useless::Rect At( int index );
+
+        IChunkPtr Intersect( const Useless::RectList &rectangles );
     };
 
     struct ScreenProxy : XMLCodeBlock
@@ -67,6 +73,7 @@ namespace XMLProgram {
         IChunkPtr CreateImageBuffer( int width, int height );
 	IChunkPtr CreateSubImage( const Useless::Rect &area );
         IChunkPtr CreatePainter();
+        IChunkPtr GetClipper( const Useless::Rect &crop );
         void      WriteImage( std::string file );
     };
 
@@ -173,15 +180,25 @@ namespace XMLProgram {
         ~PainterProxy();
 
         void FastBlit       ( Node, ExecutionState& );
-        void FastDrawPolygon( Node, ExecutionState& );
         void FastMultiBlit  ( Node, ExecutionState& );
+        void FastFillRect   ( Node, ExecutionState& );
+        void FastDrawRect   ( Node, ExecutionState& );
+        void FastDrawLine   ( Node, ExecutionState& );
+        void FastDrawPolygon( Node, ExecutionState& );
+        
         void Blit           ( Node, ExecutionState& );
+        void MultiBlit      ( Node, ExecutionState& );
         void FillRect       ( Node, ExecutionState& );
         void DrawRect       ( Node, ExecutionState& );
-        void DrawLine       ( Node, ExecutionState& );
+        void DrawLine       ( Node, ExecutionState& );        
         void DrawPolygon    ( Node, ExecutionState& );
-        void MultiBlit      ( Node, ExecutionState& );
+        
         void SubCanvasPaint ( Node, ExecutionState& );
+       
+        void Clear( int color );
+        void Intersect( const Useless::Rect &crop );
+        Useless::Pos GetOffset();
+        IChunkPtr GetClipper( const Useless::Rect &crop );
     };
     
     struct WidgetPainterProxy : PainterProxy
@@ -345,6 +362,35 @@ namespace XMLProgram {
             return result;
         }
     };
+    
+    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::PointList & >
+    {
+        static Useless::PointList & get( const TextAnsi &name, Node node, ExecutionState &state )
+        {
+            IChunkPtr pChunk = GetChunk( name, state );
+            PointListProxy *pPointList = dynamic_cast< PointListProxy * >( pChunk.get() );
+            if ( 0 == pPointList )
+            {
+                throw Useless::Error("PointList expected");
+            }
+            return pPointList->_points;
+        }
+    };
+    
+    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::RectList & >
+    {
+        static Useless::RectList & get( const TextAnsi &name, Node node, ExecutionState &state )
+        {
+            IChunkPtr pChunk = GetChunk( name, state );
+            RectListProxy *pRectList = dynamic_cast< RectListProxy * >( pChunk.get() );
+            if ( 0 == pRectList )
+            {
+                throw Useless::Error("RectList expected");
+            }
+            return pRectList->_rects;
+        }
+    };
+
 
     KOOLIB_SPECIALIZATION struct argument_traits< const Useless::Painter & >
     {

@@ -364,6 +364,11 @@ namespace XMLProgram {
         return ChunkValueTraits< _T >::value_of( pChunk );
     }
 
+    template< class _T > _T value_of( IChunkPtr pChunk )
+    {
+        return ChunkValueTraits< _T >::value_of( pChunk.get() );
+    }
+
     inline TextUtf8 type_of( IChunk *pChunk )
     {
         Attr< TextUtf8, true, wchar_t > a(L"type-name");
@@ -864,7 +869,7 @@ namespace XMLProgram {
     /*! Get value of symbol in given execution scope
      */
     template< class _Type, const int _Req, class _CharType >
-        bool GetAttr( Attr< _Type, _Req, _CharType > &attr, const Node &node, ExecutionState &state )
+        bool GetNodeAttr( Attr< _Type, _Req, _CharType > &attr, const Node &node, ExecutionState &state  )
         {
             if ( !!node )
             {
@@ -874,6 +879,16 @@ namespace XMLProgram {
                     assign_value( attr, EvaluateString( query.str(), state, _Type() ));
                     return true;
                 }
+            }
+            return false;
+        }
+
+    template< class _Type, const int _Req, class _CharType >
+        bool GetAttr( Attr< _Type, _Req, _CharType > &attr, const Node &node, ExecutionState &state )
+        {
+            if ( GetNodeAttr( attr, node, state ))
+            {
+                return true;
             }
         
             if ( GetChunkAttr( attr, state ))
@@ -1148,7 +1163,14 @@ namespace XMLProgram {
 
     inline XMLEmpty *CreateEmpty()
     {
-        return Memory::FastAllocate< XMLEmpty >();
+        // use only one instance of XMLEmpty in whole world
+        static boost::intrusive_ptr< XMLEmpty > s_Empty;
+        if ( !s_Empty )
+        {
+            s_Empty = new XMLEmpty();
+        }
+        return s_Empty.get();
+        //return Memory::FastAllocate< XMLEmpty >();
     }
 
     template< class _Type > XMLValueChunk< _Type > *CreateValue( const _Type &value )
@@ -1156,6 +1178,33 @@ namespace XMLProgram {
         XMLValueChunk< _Type > *pValue = Memory::FastAllocate< XMLValueChunk< _Type > >();
         pValue->SetValue( value );
         return pValue;
+    }
+
+    inline XMLValueChunk< int > *CreateValue( int value )
+    {
+        // use only one instance of 0 and 1
+        static boost::intrusive_ptr< XMLValueChunk< int > > s_Zero, s_One;
+        switch( value )
+        {
+            case 0:
+                if ( !s_Zero )
+                {
+                    s_Zero = new XMLValueChunk< int >( 0 );
+                }
+                return s_Zero.get();
+                
+            case 1:
+                if ( !s_One )
+                {
+                    s_One = new XMLValueChunk< int >( 1 );
+                }
+                return s_One.get();
+                
+            default:
+                XMLValueChunk< int > *pValue = Memory::FastAllocate< XMLValueChunk< int > >();
+                pValue->SetValue( value );
+                return pValue;
+        }
     }
 
     inline XMLListChunk *CreateList( IChunk *pHead, IChunk *pTail )

@@ -1,3 +1,4 @@
+#include <koolib/xml/XMLKompiler.h> //used for faster symbol access
 #include <koolib/xml/XMLModuleBuiltIn.h>
 #include <koolib/xml/XMLChunksMethod.h>
 #include <koolib/Random.h>
@@ -5,6 +6,9 @@
 #define M_PI 3.14159265358979323846
 
 namespace XMLProgram {
+    
+    using CXML::LazyGetChunkInScope;
+    using CXML::LazyGetChunkMember;
     
     namespace XML_IMPORT
     {
@@ -146,6 +150,7 @@ namespace XMLProgram {
                     .def("Sort", Sort )
                     .def("Reverse", Reverse )
                     .def("Last", Last )
+                    .def("LinkLast", LinkLast )
                     ;
             }
 
@@ -241,7 +246,8 @@ namespace XMLProgram {
 
             void Reverse( Node __unused__, ExecutionState &state )
             {
-                IChunkPtr pList = XMLProgram::GetChunk(L"list", state);
+                static LazyGetChunkInScope s_GetList(L"list");
+                IChunkPtr pList = s_GetList( state );
                 IChunkPtr pPrev = CreateEmpty();
                 while ( !IsEmpty( pList.get() ) )
                 {
@@ -255,16 +261,41 @@ namespace XMLProgram {
 
             void Last( Node __unused__, ExecutionState &state )
             {
-                IChunkPtr pList = XMLProgram::GetChunk(L"list", state);
+                static LazyGetChunkInScope s_GetList(L"list");
+                IChunkPtr pList = s_GetList( state );
                 IChunkPtr pTail = CreateEmpty();
+                pList = Force( pList, state );
                 while ( !IsEmpty( pList.get() ) )
                 {
-                    pList = Force( pList, state );
-                    if ( IsEmpty( pList.get() )) { break; }
                     pTail = pList;
                     pList = pList->GetChunk( FOURCC_LIST_TAIL );                    
+                    pList = Force( pList, state );
                 }
                 state.SetResult( pTail.get() );
+            }
+
+            void LinkLast( Node __unused__, ExecutionState &state )
+            {
+                static LazyGetChunkInScope s_GetList(L"list");
+                static LazyGetChunkInScope s_GetTail(L"tail");
+                IChunkPtr pMyList = s_GetList( state );
+                IChunkPtr pNewTail = s_GetTail( state );
+                IChunkPtr pList = pMyList;
+                if ( IsEmpty( pList.get() ))
+                {
+                    state.SetResult( pNewTail.get() );
+                }
+                else
+                {
+                    IChunkPtr pTail;
+                    while ( !IsEmpty( pList.get() ) )
+                    {
+                        pTail = pList;
+                        pList = pList->GetChunk( FOURCC_LIST_TAIL );                    
+                    }
+                    pTail->SetChunk( FOURCC_LIST_TAIL, pNewTail.get() );
+                    state.SetResult( pMyList.get() );
+                }
             }
         };
 

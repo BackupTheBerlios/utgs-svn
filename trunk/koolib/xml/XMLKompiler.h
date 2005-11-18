@@ -459,6 +459,11 @@ namespace XMLProgram {
                     return 0;
                 }
             }
+
+            IChunkPtr operator()( IChunkPtr parent, ExecutionState &state )
+            {
+                return Get( parent, state );
+            }
         };
 
         struct LazyGetChunkInScope : LazyGetChunk
@@ -560,6 +565,11 @@ namespace XMLProgram {
                 {
                     throw Useless::Error("Undefined symbol '%S'", _fullName.c_str());
                 }
+            }
+            
+            IChunkPtr operator() ( ExecutionState &state )
+            {
+                return Get( 0, state );
             }
         };
 
@@ -861,6 +871,40 @@ namespace XMLProgram {
                 return true;
             }
         };
+        
+        struct OBJECT : IChunk, CXmlErrors
+        {
+            IChunkPtr _pPrivate;
+            IChunkPtr _pMethods;
+            OBJECT(){}
+            OBJECT( IChunk *pPrivate, IChunk *pMethods ): _pPrivate( pPrivate ), _pMethods( pMethods )
+            {
+            }
+
+            bool Execute( Node __unused__, ExecutionState &state )
+            {
+                try {
+                    IBlockPtr pBlock = CreateBlock();
+                    IBlock *pPrivate;
+                    pBlock->AddChunk(L"__private__", pPrivate = CreateBlock());
+
+                    ExecutionState newState1( state );
+                    newState1._prevState = &state;
+                    newState1._currentBlock = pPrivate;                    
+                    _pPrivate->Execute( __unused__, newState1 );
+                    
+                    ExecutionState newState2( state );
+                    newState2._prevState = &state;
+                    newState2._currentBlock = pBlock.get();
+                    _pMethods->Execute( __unused__, newState2 );
+                    
+                    state.SetResult( pBlock.get() );
+                }
+                catch( Useless::Error &e ) { RaiseError( e ); }
+                return true;
+            }
+        };
+
 
         struct EXTRACT : IChunk, CXmlErrors
         {
