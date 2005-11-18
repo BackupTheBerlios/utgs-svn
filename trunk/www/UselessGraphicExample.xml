@@ -2,8 +2,8 @@
 <?xml-stylesheet href="utgs.xsl" type="text/xsl" version="1.0"?>
 
 <document>
-    <title>Useless.Graphic - Example</title>
-    <sub-title>Multimedia &amp; Games Library.</sub-title>
+    <title>Useless.Graphic Library</title>
+    <sub-title>Examples</sub-title>
 
     <links>
         <link name=""></link>
@@ -13,11 +13,11 @@
     <chapters>
         <toc>
             <link>
-                <title><i>UTGS</i> Overview</title>
+                <title><i>UTGS</i> - Library of Libraries - All Documentation</title>
                 <href>utgs.xml</href>
             </link>
             <link>
-                <title><i>Useless</i> - Multimedia &amp; Games Library (Overview)</title>
+                <title><i>Useless</i> - Library Overview</title>
                 <href>UselessOverview.xml</href>
             </link>
         </toc>

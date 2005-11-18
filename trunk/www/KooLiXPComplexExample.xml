@@ -8,12 +8,12 @@
     <chapters>
         <toc>
             <link>
-                <title><i>KooLiXP</i> Overview</title>
-                <href>KooLiXPOverview.xml</href>
+                <title><i>UTGS</i> - Library of Libraries - All Documentation</title>
+                <href>utgs.xml</href>
             </link>
             <link>
-                <title><i>UTGS</i> Overview</title>
-                <href>utgs.xml</href>
+                <title><i>KooLiXP</i> - Language Overview</title>
+                <href>KooLiXPOverview.xml</href>
             </link>
         </toc>
         <chapter>

@@ -2,8 +2,8 @@
 <?xml-stylesheet href="utgs.xsl" type="text/xsl" version="1.0"?>
 
 <document>
-    <title>Compiled KooLiXP Instructions</title>
-    <sub-title>Reference Manual.</sub-title>
+    <title>KooLiXP Language</title>
+    <sub-title>Reference Manual</sub-title>
 
     <links>
         <link name="Chunk">#Chunk</link>
@@ -16,16 +16,16 @@
     <chapters>
         <toc>
             <link>
-                <title><i>KooLiXP</i> Overview</title>
+                <title><i>UTGS</i> - Library of Libraries - All Documentation</title>
+                <href>utgs.xml</href>
+            </link>
+            <link>
+                <title><i>KooLiXP</i> - Language Overview</title>
                 <href>KooLiXPOverview.xml</href>
             </link>
             <link>
-                <title><i>KooLiXP</i> Complex Example</title>
+                <title><i>KooLiXP</i> - Complex Example</title>
                 <href>KooLiXPComplexExample.xml</href>
-            </link>
-            <link>
-                <title><i>UTGS</i> Overview</title>
-                <href>utgs.xml</href>
             </link>
         </toc>
         <chapter>
@@ -122,7 +122,7 @@ Lookup( name, currentState )
                         <li><n>_prevState</n><d>the previous scope (where we lookup for a symbol if we couldn't find it here).</d></li>
                         <li><n>_currentDict</n><d>an instruction dictionary (depends on context),</d></li>
                         <li><n>IChunk * GetResult() const</n><d>C++ function used to obtain <i>_lastResult</i>.</d></li>
-                        <li><n>void SetResult( IChunk * )</n><d>C++ functions used to set <i>_lastResult</i>
+                        <li><n>void SetResult( IChunk * )</n><d>C++ function used to set <i>_lastResult</i>
                                 (the previous result is released, and a new one is add-reffed).</d></li>
                     </ul>
                 </p>
@@ -139,12 +139,18 @@ Lookup( name, currentState )
                 <p>
                     Main rules:
                     <ll>
-                        <li>Each instruction returns result.</li>
+                        <li>Each instruction returns result (the only exceptions to this rule are <i>let</i>, <i>set</i> and <i>register</i> instructions).</li>
                         <li>The result is passed to parent instruction, or</li>
                         <li>the result is placed in <i>_currentBlock</i> under name
                             taken from <q>id</q> attribute.</li>
                     </ll>
+                </p>
+                <p>
                     When you write an instruction with an <q>id</q> attribute, you define new symbol from value returned by this instruction.
+                </p>
+                <p>
+                    <b>Warning:</b> Simplified Assignment Syntax applies only to <b>in-compile</b> instructions. Outside of <code lang="xml"><compile/></code> you
+                    must use <i>let</i> instruction.
                 </p>
                 <p>
                     <b>Note:</b> It is easy to make mistake, when you errorneously given <q>id</q> attribute. <b>last result won't be set</b>.
@@ -165,7 +171,7 @@ Lookup( name, currentState )
                                 </let>
                             </xml>
                         </code>
-                        <p>A Simplified Assignment Syntax.</p>
+                        <p>A Simplified Assignment Syntax (allowed only in-compile).</p>
                         <code lang="xml">
                             <xml>
                                 <comment>Bellow are in-compile substitutes:</comment>
@@ -372,6 +378,78 @@ Lookup( name, currentState )
                             </error>
                         </code>
                     </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>function</i>&gt;</title>
+            <name>function</name>
+            <body>
+                <p>Define new function.
+                </p>
+                <tip>
+                    <p>
+                        <code lang="xml">
+                            <function id="FunctionName" parameters="Param1 Param2 Param3 ...">
+                                <comment>instructions...</comment>
+                                <comment>last instruction result is used as a result of this function.</comment>
+                            </function>
+                        </code>
+                    </p>
+                </tip>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>apply</i>&gt;</title>
+            <name>apply</name>
+            <body>
+                <p>Apply a function.
+                </p>
+                <p>
+                    Main rules:
+                    <ll>
+                        <li>New execution <i>Scope</i> is always created.</li>
+                        <li>User may execute his own code inside of an execution scope, providing this way parameters to a function.</li>
+                        <li>Execution scope is linked with scope where <code lang="xml"><apply/></code> occures, providing function
+                            an access to all currently accessible <i>Symbol</i>s.</li>
+                    </ll>
+                </p>
+                <tip>
+                    <p>
+                        <code lang="xml">
+                            <apply select="FunctionName">
+                                <comment>instructions preparing execution scope such as:</comment>
+                                <let id="Param1" select="Param1Value"/>
+                                <let id="Param2" select="Param2Value"/>
+                            </apply>
+                        </code>
+                    </p>
+                </tip>
+                <p><b>Note:</b> Function has an access to each symbol that may be found in current or in any previous scope.
+                </p>
+            </body>
+        </chapter>
+        <chapter>
+            <title>Instruction: &lt;<i>curry</i>&gt;</title>
+            <name>curry</name>
+            <body>
+                <p>Postpone function application with some given parameters.
+                </p>
+                <tip>
+                    <p>Create <q>CurriedFunction</q>.</p>
+                    <code lang="xml">
+                        <curry id="CurriedFunction" select="FunctionName">
+                            <comment>this execution scope is curried with function.</comment>
+                            <let id="Param2" select="Param2Value"/>
+                        </curry>
+                    </code>
+                    <p>Invoke <q>CurriedFunction</q>.</p>
+                    <code lang="xml">
+                        <apply select="CurriedFunction">
+                            <comment>instructions preparing execution scope which is linked with curried scope and current scope.</comment>
+                            <let id="Param1" select="Param1Value"/>
+                        </apply>
+                    </code>
                 </tip>
             </body>
         </chapter>

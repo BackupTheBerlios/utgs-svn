@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:variable name="baseurl">
+        <xsl:text>http://utgs.berlios.de/www/</xsl:text>
+    </xsl:variable>
     <xsl:template match="document">
         <html>
             <head>
@@ -9,15 +12,27 @@
                     <xsl:apply-templates select="sub-title"/>
                 </title>
             </head>
-            <body background="http://utgs.berlios.de/www/utgs-bg.jpg" margin="0">
-                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64"
-                    background="http://utgs.berlios.de/www/utgslogobg.jpg" bgcolor="#3c8fdc">
+            <body margin="0">
+                <xsl:attribute name="background">
+                    <xsl:value-of select="$baseurl"/>
+                    <xsl:text>utgs-bg.jpg</xsl:text>
+                </xsl:attribute>
+                <table border="0" cellspacing="0" cellpadding="0" width="100%" height="64" bgcolor="#3c8fdc">
+                    <xsl:attribute name="background">
+                        <xsl:value-of select="$baseurl"/>
+                        <xsl:text>utgslogobg.jpg</xsl:text>
+                    </xsl:attribute>
                     <tr valign="top">
                         <td width="128px">
                             <table width="128px"/>
                         </td>
                         <td valign="middle" width="99%">
-                            <img src="http://utgs.berlios.de/www/utgslogo.png"/>
+                            <xsl:element name="img">
+                                <xsl:attribute name="src">
+                                    <xsl:value-of select="$baseurl"/>
+                                    <xsl:text>utgslogo.png</xsl:text>
+                                </xsl:attribute>
+                            </xsl:element>
                         </td>
                     </tr>
                     <tr>
@@ -34,7 +49,11 @@
                     </tr>
                     <tr>
                         <td bgcolor="white">
-                            <table cellpadding="10" width="100%" background="http://utgs.berlios.de/www/utgs-bg2.jpg">
+                            <table cellpadding="10" width="100%">
+                                <xsl:attribute name="background">
+                                    <xsl:value-of select="$baseurl"/>
+                                    <xsl:text>utgs-bg2.jpg</xsl:text>
+                                </xsl:attribute>
                                 <tr>
                                     <td>
                                         <h2><xsl:apply-templates select="title"/></h2>
@@ -86,7 +105,7 @@
                                 <tr height="64px"/>
                                 <tr>
                                     <td align="right" valign="bottom" width="99%">
-                                        See <a href="http://utgs.berlios.de">UTGS home page</a>.<br/>
+                                        See <a href="http://utgs.berlios.de">UTGS Home Page</a>.<br/>
                                         See <a href="../COPYING">COPYING</a> for license information.<br/>
                                         Copyright (c) 2005, Radoslaw Kolasinski (<a href="mailto:koolas@gmail.com">koolas@gmail.com</a>) All rights reserved.<br/>
                                     </td>
@@ -154,9 +173,17 @@
         <xsl:variable name="chapterNo">
             <xsl:number count="chapter"/>
         </xsl:variable>
-        <table width="100%" cellspacing="0" background="http://utgs.berlios.de/www/utgs-bg1.jpg">
+        <table width="100%" cellspacing="0">
+            <xsl:attribute name="background">
+                <xsl:value-of select="$baseurl"/>
+                <xsl:text>utgs-bg1.jpg</xsl:text>
+            </xsl:attribute>
             <tr height="96px">
-                <td bgcolor="#dc8f3c" width="80%" background="http://utgs.berlios.de/www/utgschapterbg.jpg">
+                <td bgcolor="#dc8f3c" width="80%">
+                    <xsl:attribute name="background">
+                        <xsl:value-of select="$baseurl"/>
+                        <xsl:text>utgschapterbg.jpg</xsl:text>
+                    </xsl:attribute>
                     <xsl:element name="h2">
                         <xsl:attribute name="id">
                             <xsl:value-of select="name"/>
@@ -173,13 +200,22 @@
                         </xsl:element>
                     </xsl:element>
                 </td>
-                <td width="46px" background="http://utgs.berlios.de/www/utgschapter.jpg"/>
+                <td width="46px">
+                    <xsl:attribute name="background">
+                        <xsl:value-of select="$baseurl"/>
+                        <xsl:text>utgschapter.jpg</xsl:text>
+                    </xsl:attribute>
+                </td>
                 <td align="center">
                     <a href="#">Back to ToC</a>
                 </td>
             </tr>
         </table>
-        <table cellpadding="10" width="100%" background="http://utgs.berlios.de/www/utgs-bg2.jpg">
+        <table cellpadding="10" width="100%">
+            <xsl:attribute name="background">
+                <xsl:value-of select="$baseurl"/>
+                <xsl:text>utgs-bg2.jpg</xsl:text>
+            </xsl:attribute>
             <tr>
                 <td>
                     <xsl:apply-templates select="body"/>
@@ -197,15 +233,25 @@
     <xsl:template match="ul">
         <center>
             <br/>
-            <table bgcolor="lightgrey" width="80%" noborder="1">
+            <table bgcolor="#808080" cellspacing="1" cellpadding="4" noborder="1">
+                <xsl:attribute name="width">
+                    <xsl:choose>
+                        <xsl:when test="@width">
+                            <xsl:value-of select="@width"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:text>80%</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:attribute>
                 <xsl:for-each select="./li">
                     <tr>
-                        <td width="300px" bgcolor="white">
+                        <td width="300px" bgcolor="#E0E0E0">
                             <xsl:for-each select="./n">
                                 <xsl:call-template name="ResolveLink"/>
                             </xsl:for-each>
                         </td>
-                        <td bgcolor="white">
+                        <td bgcolor="#E0E0E0">
                             <xsl:apply-templates select="./d"/>
                         </td>
                     </tr>
@@ -273,9 +319,9 @@
     <xsl:template match="tip">
         <center>
             <br/>
-            <table bgcolor="yellow" width="80%">
+            <table cellspacing="1" bgcolor="#808080" width="80%">
                 <tr>
-                    <td bgcolor="lightyellow">
+                    <td bgcolor="#E0E0E0">
                         <table>
                             <tr height="5px"/>
                             <tr>
