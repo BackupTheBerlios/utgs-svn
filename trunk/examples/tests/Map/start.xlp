@@ -36,24 +36,49 @@
             <let id="String"><import id="String"/></let>            
             <let id="List"><import id="List"/></let>            
             <compile run="1">
-                <apply id="out_text" select="String:Cat">
-                    <string id="sepa">&sp;</string>
-                    <map id="list" iterator="i"> 
-                        <list id="list">
-                            <block>
-                                <string id="name">Nick</string>
-                                <integer id="age" value="12"/>
-                            </block>
-                            <block>
-                                <string id="name">Kate</string>
-                                <integer id="age" value="14"/>
-                            </block>
-                        </list>
-                        <function id="func">
-                            <get id="i:name"/>
-                        </function>
-                    </map>
-                </apply>
+                <list id="People">
+                    <block>
+                        <string id="name">Nick</string>
+                        <integer id="age" value="12"/>
+                    </block>
+                    <block>
+                        <string id="name">Kate</string>
+                        <integer id="age" value="14"/>
+                    </block>
+                </list>
+                <cat  id="out_text">
+                    <string>Map1:</string>
+                    <apply select="String:Cat">
+                        <string id="sepa">&sp;</string>
+                        
+                        <map id="list" iterator="i"> 
+                            <let id="list" select="People"/>
+                            <function id="func">
+                                <cat>
+                                    <get id="i:name"/>
+                                    <string>=</string>
+                                    <get id="i:age"/>
+                                </cat>
+                            </function>
+                        </map>
+                        
+                    </apply>
+                    <string>&nl;Map2:</string>
+                    <apply select="String:Cat">
+                        <string id="sepa">&sp;</string>
+                        
+                        <map id="list"> 
+                            <iterator id="i"/>
+                            <list select="People"/>
+                            <cat>
+                                <get id="i:name"/>
+                                <string>=</string>
+                                <get id="i:age"/>
+                            </cat>
+                        </map>
+                        
+                    </apply>
+                </cat>
 
                 
             </compile>

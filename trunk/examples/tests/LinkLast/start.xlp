@@ -34,32 +34,29 @@
     <programms>
         <fsm id="main">
             <let id="String"><import id="String"/></let>            
-            <let id="List"><import id="List"/></let>            
+            <let id="List"><import id="List"/></let>
             <compile run="1">
-                <list id="List1">
-                    <string>First</string>
-                    <string>Second</string>
-                    <string>Third</string>
-                </list>
-
+                <fold id="Numbers">
+                    <iterator id="n"/>
+                    <accumulator id="range" select="__Empty__"/>
+                    <range>
+                        <integer id="count" value="10"/>
+                    </range>
+                    <apply select="List:LinkLast">
+                        <let id="list" select="range"/>
+                        <list id="tail">
+                            <get id="n"/>
+                        </list>
+                    </apply>
+                </fold>
+                            
+                
                 <cat id="out_text">
-                    <string>Fold1:</string>
-                    <fold iterator="i" accumulator="a">
-                        <empty id="a"/>
-                        <let id="list" select="List1"/>
-                        <function id="func">
-                            <cat>
-                                <get id="a"/>
-                                <get id="i"/>
-                                <string>&sp;</string>
-                            </cat>
-                        </function>
-                    </fold>
-                    <string>\255&nl;Fold2:</string>
+                    <string>LinkLast [0,1,2,3,4,5,6,7,8,9]:&sp;</string>
                     <fold>
                         <iterator id="i"/>
                         <accumulator id="a"><empty/></accumulator>
-                        <list select="List1"/>
+                        <list select="Numbers"/>
                         <cat>
                             <get id="a"/>
                             <get id="i"/>
