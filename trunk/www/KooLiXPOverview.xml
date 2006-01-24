@@ -270,22 +270,22 @@
                         XSL Transform:
                         <p>
                             <code lang="xml">
-                                <xsl:stylesheet>
-                                    <xsl:variable name="Name" select="XPath"/>
-                                    <xsl:variable name="Name">
+                                <stylesheet>
+                                    <variable name="Name" select="XPath"/>
+                                    <variable name="Name">
                                         <comment>code returning value</comment>
-                                    </xsl:variable>
-                                    <xsl:value-of select="XPath"/>
-                                    <xsl:for-each select="XPath">
+                                    </variable>
+                                    <value-of select="XPath"/>
+                                    <for-each select="XPath">
                                         <comment>code optionally returning value per each node</comment>
-                                    </xsl:for-each>
-                                    <xsl:call-template name="Name" select="XPath">
-                                        <xsl:with-param name="Name" select="XPath"/>
-                                        <xsl:with-param name="Name">
+                                    </for-each>
+                                    <call-template name="Name" select="XPath">
+                                        <with-param name="Name" select="XPath"/>
+                                        <with-param name="Name">
                                             <comment>code returning value</comment>
-                                        </xsl:with-param>
-                                    </xsl:call-template>
-                                </xsl:stylesheet>
+                                        </with-param>
+                                    </call-template>
+                                </stylesheet>
                             </code>
                         </p>
                         KooLiXP:
