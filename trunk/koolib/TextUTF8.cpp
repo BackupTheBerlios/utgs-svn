@@ -22,10 +22,16 @@ last mod: $Id: $
 
 #ifdef USELESS_HAS_BOOST_SERIALIZATION
 
-#   include <boost/utf8_codecvt_facet.hpp>
+#   include <boost/version.hpp>
+#   if BOOST_VERSION < 103300
+#       include <boost/utf8_codecvt_facet.hpp>  //< use for boost 1.31
+	    std::locale utf8_loc( std::locale("C"), new utf8_codecvt_facet< wchar_t, char > );  //< use for boost 1.31
+#   else
+#	    include <boost/archive/detail/utf8_codecvt_facet.hpp> //< use for boost 1.33
+        std::locale utf8_loc( std::locale("C"), new boost::archive::detail::utf8_codecvt_facet );  //< use for boost 1.33
+#   endif
         
     typedef std::codecvt_byname< wchar_t, char, std::mbstate_t > CodeCvt;
-    std::locale utf8_loc( std::locale("C"), new utf8_codecvt_facet< wchar_t, char > );
 
     void ReadUtf8( std::wstring &wstr, const std::string &strIn )
     {

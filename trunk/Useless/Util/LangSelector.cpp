@@ -3,7 +3,12 @@
 #include "LangSelector.h"
 
 #ifdef __USE_BOOST_UTF8_CODECVT__
-#   include <boost/utf8_codecvt_facet.hpp>
+#   include <boost/version.hpp>
+#   if BOOST_VERSION < 103300
+#       include <boost/utf8_codecvt_facet.hpp>  //< use for boost 1.31
+#   else
+#	    include <boost/archive/detail/utf8_codecvt_facet.hpp> //< use for boost 1.33
+#   endif
 #endif
 
 namespace Useless {
@@ -56,7 +61,11 @@ __LangSelector::__LangSelector()
     
 #   ifdef __USE_BOOST_UTF8_CODECVT__
     {
-        std::locale utf8_loc( std::locale("C"), new utf8_codecvt_facet< wchar_t, char > );
+#      if BOOST_VERSION < 103300
+		std::locale utf8_loc( std::locale("C"), new utf8_codecvt_facet< wchar_t, char > );  //< use for boost 1.31
+#      else
+		std::locale utf8_loc( std::locale("C"), new boost::archive::detail::utf8_codecvt_facet );  //< use for boost 1.33
+#      endif
         _locales.insert( std::make_pair( "utf-8", utf8_loc ));
     }
 #   endif
