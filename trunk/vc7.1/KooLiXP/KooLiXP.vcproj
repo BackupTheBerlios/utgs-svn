@@ -80,7 +80,7 @@
 				FavorSizeOrSpeed="2"
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
-				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;"
+				AdditionalIncludeDirectories="./;../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_LIBPNG;USELESS_HAS_BOOST_SERIALIZATION"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
@@ -129,6 +129,12 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\bitmap1.bmp">
+		</File>
+		<File
+			RelativePath=".\icon1.ico">
+		</File>
+		<File
 			RelativePath="..\..\KooLiXP\KooLiXP.cpp">
 			<FileConfiguration
 				Name="Debug|Win32">
@@ -146,6 +152,9 @@
 					PrecompiledHeaderThrough="KoolixpPch.h"
 					PrecompiledHeaderFile="$(IntDir)/KoolixpPch.pch"/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\KooLiXP.rc">
 		</File>
 		<File
 			RelativePath="..\..\KooLiXP\KoolixpPch.cpp">
@@ -168,6 +177,9 @@
 		</File>
 		<File
 			RelativePath="..\..\KooLiXP\KoolixpPch.h">
+		</File>
+		<File
+			RelativePath=".\resource.h">
 		</File>
 	</Files>
 	<Globals>

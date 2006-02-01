@@ -685,6 +685,27 @@
 						<File
 							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDIPrinter.h">
 						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDIScreen.cpp">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDIScreen.h">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDISurface.cpp">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDISurface.h">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDISurfacePainter.h">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDITransfer.cpp">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\winGDI\GDITransfer.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
