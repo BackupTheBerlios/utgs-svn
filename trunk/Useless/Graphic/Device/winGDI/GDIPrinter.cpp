@@ -4,6 +4,7 @@
 #include "Useless/Graphic/Planes/IGraphics.h"
 #include "Useless/Graphic/Planes/MemSurface.h"
 #include "Useless/Graphic/Device/Surface.h"
+#include <stdio.h>
 
 namespace Useless {
     
@@ -97,6 +98,9 @@ namespace Useless {
 
     GDIPrinter::GDIPrinter( const GDIPrinterInfo &info ): m_info( info ), m_hdc(0)
     {
+        FILE *fDump = fopen("Printers.log", "a+");
+        _ftprintf( fDump, _T("[Printer]\n") );
+        
         ::DEVMODE devmode;
         std::memset( &devmode, 0, sizeof( ::DEVMODE ));
         devmode.dmSize = sizeof( ::DEVMODE );
@@ -113,7 +117,21 @@ namespace Useless {
         m_inchOnPaperY = ::GetDeviceCaps( m_hdc, LOGPIXELSY );
         m_sizeInchesX = m_sizeOnPaperX / (float)m_inchOnPaperX;
         m_sizeInchesY = m_sizeOnPaperY / (float)m_inchOnPaperY;
-  
+        
+        _ftprintf( fDump, _T("m_info = {Printer: %s; Port: %s; Driver: %s; Local: %s}\n"),
+                m_info.m_name.c_str(), m_info.m_port.c_str(), m_info.m_driver.c_str(),
+                (m_info.m_local ? _T("TRUE") : _T("FALSE") ));
+        _ftprintf( fDump, _T("m_hdc = %0x\n"), m_hdc );
+        _ftprintf( fDump, _T("m_sizeOnPaperX = %d\n"), m_sizeOnPaperX );
+        _ftprintf( fDump, _T("m_sizeOnPaperY = %d\n"), m_sizeOnPaperY );
+        _ftprintf( fDump, _T("m_xLeft = %d\n"), m_xLeft );
+        _ftprintf( fDump, _T("m_yTop = %d\n"), m_yTop );
+        _ftprintf( fDump, _T("m_inchOnPaperX = %d\n"), m_inchOnPaperX );
+        _ftprintf( fDump, _T("m_inchOnPaperY = %d\n"), m_inchOnPaperY );
+        _ftprintf( fDump, _T("m_sizeInchesX = %f\n"), m_sizeInchesX );
+        _ftprintf( fDump, _T("m_sizeInchesY = %f\n"), m_sizeInchesY );
+        
+        fclose( fDump );
     }
 
     GDIPrinter::~GDIPrinter()
@@ -136,16 +154,19 @@ namespace Useless {
         ::DWORD cReturned1, cReturned2;
 
         ::EnumPrinters( PRINTER_ENUM_NAME, NULL, 2, NULL, 0, &cbNeeded1, &cReturned1 );
-        ::EnumPrinters( PRINTER_ENUM_CONNECTIONS, NULL, 2, NULL, 0, &cbNeeded2, &cReturned2 );
+        ::EnumPrinters( PRINTER_ENUM_LOCAL | PRINTER_ENUM_CONNECTIONS, NULL, 2, NULL, 0, &cbNeeded2, &cReturned2 );
 
         printerEnum.resize( cbNeeded1 + cbNeeded2 );
         ::PRINTER_INFO_2 *pInfo1 = (::PRINTER_INFO_2 *)&printerEnum[0];
         ::PRINTER_INFO_2 *pInfo2 = (::PRINTER_INFO_2 *)&printerEnum[cbNeeded1];
 
         ::EnumPrinters( PRINTER_ENUM_NAME, NULL, 2, &printerEnum[0], cbNeeded1, &cbNeeded1, &cReturned1 );
-        ::EnumPrinters( PRINTER_ENUM_CONNECTIONS, NULL, 2, &printerEnum[cbNeeded1], cbNeeded2, &cbNeeded2, &cReturned2 );
+        ::EnumPrinters( PRINTER_ENUM_LOCAL | PRINTER_ENUM_CONNECTIONS, NULL, 2, &printerEnum[cbNeeded1], cbNeeded2, &cbNeeded2, &cReturned2 );
 
         m_printers.resize( cReturned1 + cReturned2 );
+
+        FILE *fDump = fopen("Printers.log", "a+");
+        _ftprintf( fDump, _T("[Printers]\n") );
 
         for ( int i=0; i < cReturned1; ++i )
         {
@@ -154,6 +175,8 @@ namespace Useless {
             info.m_port = pInfo1[i].pPortName;
             info.m_driver = pInfo1[i].pDriverName;
             info.m_local = true;
+            _ftprintf( fDump, _T("Printer: %s; Port: %s; Driver: %s; Local: TRUE\n"),
+                    info.m_name.c_str(), info.m_port.c_str(), info.m_driver.c_str() );
         }
 
         for ( int i=0; i < cReturned2; ++i )
@@ -163,7 +186,11 @@ namespace Useless {
             info.m_port = pInfo2[i].pPortName;
             info.m_driver = pInfo2[i].pDriverName;
             info.m_local = false;
+            _ftprintf( fDump, _T("Printer: %s Port: %s Driver: %s Local: FALSE\n"),
+                    info.m_name.c_str(), info.m_port.c_str(), info.m_driver.c_str() );
         }
+
+        fclose( fDump );
 
     }
 
@@ -214,10 +241,13 @@ namespace Useless {
         for ( GDIPrintManager::const_iterator it = GDIPrintManager::Instance().begin();
                 it != GDIPrintManager::Instance().end(); ++it )
         {
-            if ( (*it).m_port != TEXT("MSFAX:") )
+            if ( (*it).m_port != _T("MSFAX:") )
             {
                 pPrinter = new GDIPrinter( *it );
-                break;
+                if ( 0 != pPrinter->m_hdc )
+                {
+                    break;
+                }
             }
         }
         return pPrinter;
