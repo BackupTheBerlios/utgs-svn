@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="import.xsl" type="text/xsl" version="1.0"?>
+
+<xml encoding="utf-8">
+    <title>Type: Widget.</title>
+    <description>
+        Any particular widget.
+    </description>
+    <block>
+        <chunk id="BeAlwaysDirty">
+            <type-name>function( always:bool ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="DoInputReset">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="FocusIntercept">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="FocusRelease">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetAbsolutePos">
+            <type-name>function( relativePos:class Useless::Point&lt;int&gt; ) -&gt; class Useless::Point&lt;int</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetAbsoluteRect">
+            <type-name>function( relativeRect:class Useless::Rect ) -&gt; class Useless::Rect</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetBoundingRect">
+            <type-name>function() -&gt; class Useless::Rect</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetHeight">
+            <type-name>function() -&gt; int</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetOpacity">
+            <type-name>function() -&gt; int</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetPosition">
+            <type-name>function() -&gt; class Useless::Point&lt;int</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetRelativePos">
+            <type-name>function( absolutePos:class Useless::Point&lt;int&gt; ) -&gt; class Useless::Point&lt;int</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetRelativeRect">
+            <type-name>function( absoluteRect:class Useless::Rect ) -&gt; class Useless::Rect</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="GetWidth">
+            <type-name>function() -&gt; int</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="HasFocus">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="HasInput">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="InputDecEager">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="InputIncEager">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="InputIntercept">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="InputIsEager">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="InputRelease">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="IsAlwaysDirty">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="IsOnTop">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="IsPhantom">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="IsVisible">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <block id="OffFocus">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnActorMove">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnFocus">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnIdle">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnPaint">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnReposition">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnResize">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnVisible">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <chunk id="Resize">
+            <type-name>function( w:int, h:int ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetBoundingRect">
+            <type-name>function( bound:class Useless::Rect ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetDirty">
+            <type-name>function() -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetOnTop">
+            <type-name>function( ontop:bool ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetOpacity">
+            <type-name>function( opacity:int ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetPhantom">
+            <type-name>function( phantom:bool ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetPosition">
+            <type-name>function( pos:class Useless::Point&lt;int&gt; ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <chunk id="SetVisible">
+            <type-name>function( visible:bool ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+    </block>
+</xml>

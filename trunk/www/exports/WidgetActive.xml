@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="import.xsl" type="text/xsl" version="1.0"?>
+
+<xml encoding="utf-8">
+    <title>Type: Widget:Active.</title>
+    <description>
+        Any widget that translates input messages from mouse and keyboard.
+    </description>
+    <block>
+        <chunk id="IsActive">
+            <type-name>function() -&gt; bool</type-name>
+            <defined-symbols/>
+        </chunk>
+        <block id="OffChar">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OffKeyPress">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OffPress">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OffPress1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OffPress2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OffWheel">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnActivate">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnCatch">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnCatch1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnCatch2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnChar">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnClick">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnClick1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnClick2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDoubleClick">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDoubleClick1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDoubleClick2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDrag">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDrag1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDrag2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDrop">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDrop1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnDrop2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnKeyPress">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnKeyRelease">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveIn">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveIn1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveIn2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveOut">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveOut1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveOut2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveOutside">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnMoveOver">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnPress">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnPress1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnPress2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnRelease">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnRelease1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnRelease2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnWheel">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <chunk id="SetActive">
+            <type-name>function( active:bool ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+        <block id="WhileDrag">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileDrag1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileDrag2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileHold">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileHold1">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileHold2">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileKey">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileMoving">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="WhileOffKey">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+    </block>
+</xml>

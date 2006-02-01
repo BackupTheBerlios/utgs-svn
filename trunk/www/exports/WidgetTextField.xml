@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="import.xsl" type="text/xsl" version="1.0"?>
+
+<xml encoding="utf-8">
+    <title>Type: Widget:TextField.</title>
+    <description>
+        An editable box of text.
+    </description>
+    <block id="TextField">
+        <chunk id="GetText">
+            <type-name>function() -&gt; unicode-string</type-name>
+            <defined-symbols/>
+        </chunk>
+        <block id="OnCarMove">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnConfirm">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <block id="OnTextChange">
+            <chunk id="Send">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+            <chunk id="Tie">
+                <type-name>function( Node, State ) -&gt; void</type-name>
+                <defined-symbols/>
+            </chunk>
+        </block>
+        <chunk id="SetText">
+            <type-name>function( text:unicode-string ) -&gt; void</type-name>
+            <defined-symbols/>
+        </chunk>
+    </block>
+</xml>
