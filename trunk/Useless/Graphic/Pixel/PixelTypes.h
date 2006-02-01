@@ -367,7 +367,7 @@ struct PixelType1000
     unsigned short pixel;
 };
 
-/*! Simgle channel:8
+/*! Single channel:8
 -----------------------------------------*/
 struct PixelType8
 { 
@@ -375,8 +375,18 @@ struct PixelType8
     PixelType8( int pixel): pixel(pixel) {}
     PixelType8( NormalRGB p )
     {
-        //calculate energy 0.5R + 0.375G + 0.125B (close to human perception)
-        pixel = (p.r /2) + (p.g /4) + (p.g /8) + (p.b /8);
+		if ( p.a < 0x10 )
+		{
+			pixel = p.a;
+		}
+		else if ( 0xFF == p.r && 0xFF == p.g && 0xFF == p.b )
+		{
+			pixel = p.a;
+		}
+		else
+		{
+			pixel = ((2 * ((long)p.r+1) + ((long)p.g+1) + ((long)p.b+1)) * ((long)p.a+1)) /1024;
+		}
     }
 
     NormalPixel Get() 
