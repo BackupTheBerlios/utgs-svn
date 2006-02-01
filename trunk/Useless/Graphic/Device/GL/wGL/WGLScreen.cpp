@@ -58,7 +58,7 @@ namespace Useless {
         else
         {
             InitDDraw( width, height, bpp, refresh );
-            _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );    
+			_glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );    
         }
         
         _glContextSurface->GetProperties( &m_prop );
@@ -78,6 +78,7 @@ namespace Useless {
         
         Rect dr = GetWindowRect() - GetClientRect();
         Window::Resize( width + dr.GetW(), height + dr.GetH() );
+        Window::Show();
 
         HWND hwnd = Window::GetHandle();
         HDC hdc = GetDC( hwnd );
@@ -85,7 +86,11 @@ namespace Useless {
         _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );
         
         Tie2Signal( OnResize, this, SlotResize );
-        Window::Show();
+    }
+
+    bool DbgTrace_DevMode( int w, int h, int bpp, int f )
+    {
+        return false;
     }
 
     void WGLScreen::InitDevMode( int width, int height, int bpp, float refresh )
@@ -98,29 +103,49 @@ namespace Useless {
 
         int maxRefresh = 0;
         int i,j;
-        for ( i=0,j=0;; ++i)
+        for ( i=0,j=-1;; ++i)
         {
             if ( !::EnumDisplaySettings( 0, ++i, &m_devmode ))
             {
                 break;
-            }
-            if ( m_devmode.dmBitsPerPel==bpp &&
-                    m_devmode.dmPelsWidth==width &&
-                    m_devmode.dmPelsHeight==height )
+            } 
+            // used to allow inspection of DEVMODE members in some hard-to-debug project settings.
+            DbgTrace_DevMode( m_devmode.dmPelsWidth, m_devmode.dmPelsHeight, m_devmode.dmBitsPerPel, m_devmode.dmDisplayFrequency );
+            
+            if ( m_devmode.dmBitsPerPel >= bpp && m_devmode.dmPelsWidth==width && m_devmode.dmPelsHeight==height )
             {
-                if ( m_devmode.dmDisplayFrequency == refresh )
+                if ( refresh > 0.0 )
                 {
-                    break;
-                }
+                    // we select mode where dmDisplayFrequency value is closest to desired refresh rate.
+                    float d1 = m_devmode.dmDisplayFrequency - refresh;
+                    float d2 = maxRefresh - refresh;
+                    d1 = (d1 < 0 ? -d1 : d1);
+                    d2 = (d2 < 0 ? -d2 : d2);
 
-                if ( m_devmode.dmDisplayFrequency > maxRefresh )
+                    if ( d1 < d2 )
+                    {
+                        j = i;
+                        maxRefresh = m_devmode.dmDisplayFrequency;
+                    }
+                }
+                else
                 {
-                    maxRefresh = m_devmode.dmDisplayFrequency;
-                    j=i;
+                    // use devmode with maximum refresh not greater than 100Hz.
+                    // using 100Hz barrier we may help to avoid situations where user doesn't have correct system display settings.
+                    if ( m_devmode.dmDisplayFrequency > maxRefresh && (m_devmode.dmDisplayFrequency <= 100 ))
+                    {
+                        maxRefresh = m_devmode.dmDisplayFrequency;
+                        j=i;
+                    }
                 }
             }
         }
+        if ( -1 == j )
+        {
+            throw Error("InitDevMode: Cannot find mode: %i x %i x %i : %f Hz.", width, height, bpp, refresh );
+        }
         ::EnumDisplaySettings( 0, j, &m_devmode );
+        DbgTrace_DevMode( m_devmode.dmPelsWidth, m_devmode.dmPelsHeight, m_devmode.dmBitsPerPel, m_devmode.dmDisplayFrequency );
         m_devmode.dmFields |= DM_DISPLAYFREQUENCY;
     }
 
@@ -158,6 +183,7 @@ namespace Useless {
                 case DISP_CHANGE_RESTART: WGLERR("DISP_CHANGE_RESTART"); break;
                 default: WGLERR("Unknown reason."); break;
             };
+			Window::Show();
         }
     }
 
