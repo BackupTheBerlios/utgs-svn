@@ -47,7 +47,6 @@ Window::Window(const char * title, Window* parent, int width, int height, int po
 
 Window::~Window()
 {
-    Application::UnregisterWindow( _window_handle);
     DestroyWindow( _window_handle );
 }
 

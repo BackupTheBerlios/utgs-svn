@@ -178,6 +178,7 @@ namespace Useless {
                 }
             case WM_DESTROY: // close application when last window is closed
                 window->OnDestroy.Send();
+                UnregisterWindow( window->_window_handle);
                 if (( 0 == window->GetParent()) && ( 0 == --_counter )) 
                 {
                     PostQuitMessage(0);
@@ -444,6 +445,10 @@ namespace Useless {
                 {
                     break;
                 }
+                /*if ( _windows->empty() )
+                {
+                    break;
+                }*/
                 if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg)) 
                 {
                     TranslateMessage(&msg);
@@ -507,6 +512,16 @@ namespace Useless {
                         return false;
                     }
                 }
+                /*if ( _windows->empty() )
+                {
+                    if ( flags & QUIT_EXCEPTION) // quit application
+                    {
+                        throw Quit();
+                    }
+                    else {
+                        return false;
+                    }
+                }*/
                 if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg)) 
                 {
                     TranslateMessage(&msg);
