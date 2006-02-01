@@ -37,7 +37,7 @@ namespace Useless {
         }
 
         // Standard OpenGL window initializaton w/o using WGL_ARB_pixel_format extension.
-        if ( !WGLExtensionSupported("WGL_ARB_pixel_format") )
+        if ( !WGLExtensionSupported("WGL_ARB_pixel_format") || prop.primary )
         {
             if ( prop.primary )
             {
@@ -48,8 +48,8 @@ namespace Useless {
                 pfd.nVersion = 1;
                 pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
                 pfd.iPixelType = PFD_TYPE_RGBA;
-                pfd.cColorBits = 24;
-                pfd.cDepthBits = 16;
+                pfd.cColorBits = 32;
+                pfd.cDepthBits = 32;
                 pfd.iLayerType = PFD_MAIN_PLANE;
                 int iFormat = ChoosePixelFormat( _devContext, &pfd);
                 if ( 0 == iFormat )
