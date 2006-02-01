@@ -244,7 +244,7 @@ SurfacePainter & Painter::GetSurfacePainter() const
     if ( !_surfacePainter )
     {
         _surfacePainter = _plane->GetSurface()->CreatePainter();
-        assert( _surfacePainter );
+        assert( !!_surfacePainter );
     }
     return *_surfacePainter;
 }
