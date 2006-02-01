@@ -302,22 +302,22 @@ namespace XMLProgram {
             pSurface = _spImage->GetSurface();
         }
         int red, green, blue, alpha;
+        NormalPixel data;
         {   // Read COLOR
             SPointer< PixelTransfer > pixTrans = pSurface->CreateReader( Surface::COLOR );
             pixTrans->SetDestination( _spImage->GetWidth(), _spImage->GetHeight(), 1, 32 );
             pixTrans->Transform();
-            NormalPixel data;
             pixTrans->Store( (unsigned char *)&data, Rect( x, y, 1, 1 ));
             red = data.c.r;
             green = data.c.g;
             blue = data.c.b;
-            // Read ALPHA
-            SPointer< PixelTransfer > pixTrans1 = pSurface->CreateReader( Surface::ALPHA );
-            pixTrans1->SetDestination( _spImage->GetWidth(), _spImage->GetHeight(), 1, 8 );
-            pixTrans1->Transform();
-            unsigned char data1;
-            pixTrans1->Store( &data1, Rect( x, y, 1, 1 ));
-            alpha = data1;
+		}
+		{   // Read ALPHA
+            SPointer< PixelTransfer > pixTrans = pSurface->CreateReader( Surface::ALPHA );
+            pixTrans->SetDestination( _spImage->GetWidth(), _spImage->GetHeight(), 1, 8 );
+            pixTrans->Transform();
+            pixTrans->Store( &(data.c.a = 0x00), Rect( x, y, 1, 1 ));
+            alpha = data.c.a;
         }
         IBlockPtr block = XMLProgram::CreateBlock();
         block->AddChunk(L"red", XMLProgram::CreateValue( red ));
@@ -348,7 +348,7 @@ namespace XMLProgram {
     {
         Snd::Properties p;
         _spSample->GetProperties( p );
-        return (p.length * p.sample_rate);
+        return (p.length / (double)p.sample_rate);
     }
     
     

@@ -1280,8 +1280,15 @@ int   g_Debug_StackTop = G_DebugNodeStackSize;
         // execute result
         else
         {
-            newState.GetResult()->Execute( _node, newState );
-            _state.SetResult( newState.GetResult() );
+			if  ( !newState.GetResult() )
+			{
+				throw Error("<call>: Cannot execute NULL object, the result from inner nodes is NULL.", _id->c_str() );
+			}
+			else
+			{
+                newState.GetResult()->Execute( _node, newState );
+                _state.SetResult( newState.GetResult() );
+			}
         }
     }
    

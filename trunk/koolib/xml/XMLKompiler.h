@@ -616,6 +616,11 @@ namespace XMLProgram {
                     attr.str(L"<let id [select|call]>[<!-- right-value -->]</let>");
                     return true;
                 }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-let");
+                    return true;
+                }
                 else
                 {
                     return false;
@@ -663,6 +668,11 @@ namespace XMLProgram {
                     attr.str(L"<set id [select|call]>[<!-- right-value -->]</set>");
                     return true;
                 }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-set");
+                    return true;
+                }
                 else
                 {
                     return false;
@@ -698,6 +708,24 @@ namespace XMLProgram {
                 else
                 {
                     return 0;
+                }
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<get id>[<!-- right-value -->]</get>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-get");
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         };
@@ -736,6 +764,24 @@ namespace XMLProgram {
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<lookup><!-- dict, name --></lookup>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-lookup");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -788,6 +834,24 @@ namespace XMLProgram {
                 }
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<register>[<!-- [dict], name, value -->]</register>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-get");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
         
         struct IS_NOT_EMPTY : IChunk, CXmlErrors
@@ -808,6 +872,24 @@ namespace XMLProgram {
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<is-not-empty id/>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-is-not-empty");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
 
         struct IS_DEFINED : IChunk, CXmlErrors
@@ -825,7 +907,74 @@ namespace XMLProgram {
                 state.SetResult( CreateValue( (int)( 0 != pChunk.get() )) );
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<is-defined id/>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-is-defined");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
+
+        struct TYPE_OF : IChunk, CXmlErrors
+        {
+            IChunkPtr _pChunk;
+
+            TYPE_OF(){}
+            TYPE_OF( IChunk *pChunk ): _pChunk( pChunk )
+            {
+            }            
+            
+            bool Execute( Node __unused__, ExecutionState &state )
+            {
+                state.SetResult( CreateValue( (int)(0)));
+                _pChunk->Execute( __unused__, state );
+                IChunk *result = state.GetResult();
+                if ( !!result )
+                {
+                    state.SetResult( CreateValue( ( int )( result->GetFourCC( FOURCC_NAME_TYPE ) )));
+                }
+                return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<type-of [select|force]>[<!-- right-value -->]</type-of>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-type-of");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        };
+
+        struct TYPE_OF_INTEGER {};
+        struct TYPE_OF_FLOAT {};
+        struct TYPE_OF_STRING {};
+        struct TYPE_OF_BINARY {};
+        struct TYPE_OF_BLOCK {};
+        struct TYPE_OF_LIST {};
+        struct TYPE_OF_EMPTY {};
+        struct TYPE_OF_LAZY {};
 
         struct ERROR : IChunk, CXmlErrors
         {
@@ -846,6 +995,24 @@ namespace XMLProgram {
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 throw Useless::Error("%s", errString.c_str());
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<error>[<!-- right-value -->]</error>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-error");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -870,23 +1037,59 @@ namespace XMLProgram {
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<block>[<!-- right-value -->]</block>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-block");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
         
         struct OBJECT : IChunk, CXmlErrors
         {
             IChunkPtr _pPrivate;
             IChunkPtr _pMethods;
+            LazyGetChunkInScope _getObjectToExtend;
             OBJECT(){}
             OBJECT( IChunk *pPrivate, IChunk *pMethods ): _pPrivate( pPrivate ), _pMethods( pMethods )
+            {
+            }
+            OBJECT( IChunk *pPrivate, IChunk *pMethods, TextUtf8 objectToExtend ): _pPrivate( pPrivate ), _pMethods( pMethods ), _getObjectToExtend( objectToExtend )
             {
             }
 
             bool Execute( Node __unused__, ExecutionState &state )
             {
                 try {
-                    IBlockPtr pBlock = CreateBlock();
+                    IBlockPtr pBlock;
                     IBlock *pPrivate;
-                    pBlock->AddChunk(L"__private__", pPrivate = CreateBlock());
+                    if ( _getObjectToExtend._name.empty() )
+                    {
+                        pBlock = CreateBlock();
+                        pBlock->AddChunk(L"__private__", pPrivate = CreateBlock());
+                    }
+                    else
+                    {
+                        IChunkPtr object = _getObjectToExtend( state );
+                        IChunk *priv = object->GetChunk(L"__private__");
+                        pBlock = dynamic_cast< IBlock *>( object.get() );
+                        pPrivate = dynamic_cast< IBlock *>( priv );
+                        if ( !pBlock || !pPrivate ) {
+                            throw Useless::Error("<object extend=\"name\">Chunk refered by 'name' is not an <object> type.");
+                        }
+                    }
 
                     ExecutionState newState1( state );
                     newState1._prevState = &state;
@@ -902,6 +1105,24 @@ namespace XMLProgram {
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<object [extend]>[<!-- right-value -->]</object>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-object");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -932,6 +1153,24 @@ namespace XMLProgram {
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
+            }
+
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<extract select/>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-extract");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             
         };
@@ -997,7 +1236,16 @@ namespace XMLProgram {
             {
                 if ( attr._name == L"help" )
                 {
-                    attr.str(L"<map iterator>\n<!-- 'list' 'func' -->\n</map>");
+                    attr.str(L"<map>\n"
+                            L"\t<iterator id/>\n"
+                            L"\t{<list [select]/>/<range><!-- [first], count --></range>}\n"
+                            L"\t<!-- instructions -->\n"
+                            L"</map>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-map");
                     return true;
                 }
                 else
@@ -1064,7 +1312,17 @@ namespace XMLProgram {
             {
                 if ( attr._name == L"help" )
                 {
-                    attr.str(L"<fold iterator accumulator>\n<!-- 'list' 'func' 'accum' -->\n</fold>");
+                    attr.str(L"<fold>\n"
+                            L"\t<iterator id/>\n"
+                            L"\t<accumulator id [select]><!-- right-value --></accumulator>\n"
+                            L"\t{<list [select]/>/<range><!-- [first], count --></range>}\n"
+                            L"\t<!-- instructions -->\n"
+                            L"</fold>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-fold");
                     return true;
                 }
                 else
@@ -1114,6 +1372,11 @@ namespace XMLProgram {
                     attr.str(L"<seek>\n<!-- 'list' 'count' -->\n</seek>");
                     return true;
                 }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-seek");
+                    return true;
+                }
                 else
                 {
                     return false;
@@ -1153,6 +1416,11 @@ namespace XMLProgram {
                 if ( attr._name == L"help" )
                 {
                     attr.str(L"<head>\n<!-- 'list' 'count' -->\n</head>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-head");
                     return true;
                 }
                 else
@@ -1198,6 +1466,11 @@ namespace XMLProgram {
                 if ( attr._name == L"help" )
                 {
                     attr.str(L"<range>\n<!-- 'first' 'count' -->\n</range>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-range");
                     return true;
                 }
                 else
@@ -1262,6 +1535,11 @@ namespace XMLProgram {
                     attr.str(L"<zip>\n<!-- several lists -->\n</zip>");
                     return true;
                 }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-zip");
+                    return true;
+                }
                 else
                 {
                     return false;
@@ -1296,7 +1574,14 @@ namespace XMLProgram {
             {
                 if ( attr._name == L"help" )
                 {
-                    attr.str(L"<call id>\n<!-- parameters -->\n</call>");
+                    //attr.str(L"<call id>\n<!-- parameters -->\n</call>");
+                    attr.str(L"<apply select>\n<!-- parameters -->\n</apply>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    //attr.str(L"instruction-call");
+                    attr.str(L"instruction-apply");
                     return true;
                 }
                 else
@@ -1332,7 +1617,13 @@ namespace XMLProgram {
             {
                 if ( attr._name == L"help" )
                 {
-                    attr.str(L"<lazy-call id>\n<!-- parameters -->\n</lazy-call>");
+                    //attr.str(L"<lazy-call id>\n<!-- parameters -->\n</lazy-call>");
+                    attr.str(L"<curry select>\n<!-- parameters -->\n</curry>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-curry");
                     return true;
                 }
                 else
@@ -1366,6 +1657,24 @@ namespace XMLProgram {
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<listnode>\n<!-- head -->\n<!-- tail -->\n</listnode>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-list-node");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
         
         struct LISTNODE : IChunk, CXmlErrors
@@ -1393,7 +1702,12 @@ namespace XMLProgram {
             {
                 if ( attr._name == L"help" )
                 {
-                    attr.str(L"<listnode>\n<!-- head -->\n<!-- tail -->\n</listnode>");
+                    attr.str(L"<listnode>[<!-- head, tail -->]</listnode>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-listnode");
                     return true;
                 }
                 else
@@ -1432,6 +1746,24 @@ namespace XMLProgram {
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<doin [select]>[<!-- block -->]<!-- right-value --></get>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-doin");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -1472,6 +1804,7 @@ namespace XMLProgram {
         struct COMPARE {};
         struct FCOMPARE {};
         struct STRCMP {};
+        struct TYPECMP {};
         struct CAT {};
         
         struct LESS : IChunk
@@ -1487,6 +1820,24 @@ namespace XMLProgram {
                 _value->Execute( __unused__, state );
                 state.SetResult( CreateValue( 0 > value_of< int >( state.GetResult() ) ));
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<less [select]>[<!-- right-value {-1,0,1} -->]</less>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-less");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -1504,6 +1855,24 @@ namespace XMLProgram {
                 state.SetResult( CreateValue( 0 <  value_of< int >( state.GetResult() ) ));
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<greater [select]>[<!-- right-value {-1,0,1} -->]</greater>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-greater");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
 
         struct EQUAL : IChunk
@@ -1520,6 +1889,24 @@ namespace XMLProgram {
                 state.SetResult( CreateValue( 0 == value_of< int >( state.GetResult() ) ));
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<equal [select]>[<!-- right-value {-1,0,1} -->]</equal>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-equal");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
 
         struct NOT : IChunk
@@ -1535,6 +1922,24 @@ namespace XMLProgram {
                 _value->Execute( __unused__, state );
                 state.SetResult( CreateValue( !value_of< int >( state.GetResult() ) ));
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<not [select]>[<!-- right-value -->]</not>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-not");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -1553,6 +1958,24 @@ namespace XMLProgram {
                 state.SetResult( CreateValue( -value_of< _Type >( state.GetResult() ) ));
                 return true;
             }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<minus [select]>[<!-- right-value -->]</minus>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-minus");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         };
 
         struct RECIPROCAL : IChunk
@@ -1568,6 +1991,24 @@ namespace XMLProgram {
                 _value->Execute( __unused__, state );
                 state.SetResult( CreateValue( 1.0/value_of< double >( state.GetResult() ) ));
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<reciprocal [select]>[<!-- right-value -->]</reciprocal>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-reciprocal");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -1599,6 +2040,24 @@ namespace XMLProgram {
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<if [select|force]>[<!-- cond -->][<!-- right-value -->]</if>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-if");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -1643,6 +2102,27 @@ namespace XMLProgram {
                 }
                 catch( Useless::Error &e ) { RaiseError( e ); }
                 return true;
+            }
+            
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<chose>\n"
+                            L"\t<when><!-- instructions --></when>\n"
+                            L"\t<otherwise><!-- instructions --></othrwise>\n"
+                            L"</choose>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-choose");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         };
 
@@ -1809,6 +2289,26 @@ namespace XMLProgram {
             }
         };
 
+        struct EQUAL_STR {};
+        struct EQUAL_PTR {};
+        struct EQUAL_INT {};
+        struct EQUAL_FLOAT {};
+        struct EQUAL_TYPE {};
+        
+        struct LESS_STR {};
+        struct LESS_PTR {};
+        struct LESS_INT {};
+        struct LESS_FLOAT {};
+        struct LESS_TYPE {};
+        
+        struct GREATER_STR {};
+        struct GREATER_PTR {};
+        struct GREATER_INT {};
+        struct GREATER_FLOAT {};
+        struct GREATER_TYPE {};
+
+        struct TRUE_VALUE {};
+        struct FALSE_VALUE {};
 
     };
 

@@ -31,6 +31,7 @@ namespace XMLFactory {
             .AddReg< CXML::REGISTER >("register")
             .AddReg< CXML::IS_NOT_EMPTY >("is-not-empty")
             .AddReg< CXML::IS_DEFINED   >("is-defined")
+            .AddReg< CXML::TYPE_OF >("type-of")
             .AddReg< CXML::ERROR >("error")
             .AddReg< CXML::NOCOMPILE >("nocompile")
 
@@ -76,9 +77,25 @@ namespace XMLFactory {
             .AddReg< CXML::FCOMPARE >("fcompare")
             .AddReg< CXML::STRCMP   >("strcmp")
             .AddReg< CXML::PTRCMP   >("ptrcmp")
+            .AddReg< CXML::TYPECMP  >("typecmp")
             .AddReg< CXML::LESS     >("less")
+            .AddReg< CXML::LESS_STR >("less-str")
+            .AddReg< CXML::LESS_PTR >("less-ptr")
+            .AddReg< CXML::LESS_INT >("less-int")
+            .AddReg< CXML::LESS_FLOAT >("less-float")
+            .AddReg< CXML::LESS_TYPE >("less-type")
             .AddReg< CXML::GREATER  >("greater")
+            .AddReg< CXML::GREATER_STR >("greater-str")
+            .AddReg< CXML::GREATER_PTR >("greater-ptr")
+            .AddReg< CXML::GREATER_INT >("greater-int")
+            .AddReg< CXML::GREATER_FLOAT >("greater-float")
+            .AddReg< CXML::GREATER_TYPE >("greater-type")
             .AddReg< CXML::EQUAL    >("equal")
+            .AddReg< CXML::EQUAL_STR >("equal-str")
+            .AddReg< CXML::EQUAL_PTR >("equal-ptr")
+            .AddReg< CXML::EQUAL_INT >("equal-int")
+            .AddReg< CXML::EQUAL_FLOAT >("equal-float")
+            .AddReg< CXML::EQUAL_TYPE  >("equal-type")
             
             // unary operators
             .AddReg< CXML::NOT              >("not")
@@ -91,6 +108,18 @@ namespace XMLFactory {
             .AddReg< CXML::INTEGER  >("integer")
             .AddReg< CXML::FLOAT    >("float")
             .AddReg< CXML::STRING   >("string")
+            
+            .AddReg< CXML::TYPE_OF_INTEGER >("type-of-integer")
+            .AddReg< CXML::TYPE_OF_FLOAT  >("type-of-float")
+            .AddReg< CXML::TYPE_OF_STRING >("type-of-string")
+            .AddReg< CXML::TYPE_OF_BINARY >("type-of-binary")
+            .AddReg< CXML::TYPE_OF_BLOCK >("type-of-block")
+            .AddReg< CXML::TYPE_OF_LIST  >("type-of-list")
+            .AddReg< CXML::TYPE_OF_EMPTY >("type-of-empty")
+            .AddReg< CXML::TYPE_OF_LAZY  >("type-of-lazy")
+
+            .AddReg< CXML::TRUE_VALUE >("true")
+            .AddReg< CXML::FALSE_VALUE >("false")
 
             // just copy xml nodes
             .AddReg< CXML::COPY     >("copy")
@@ -253,12 +282,11 @@ namespace XMLFactory {
         Attr< int, false, wchar_t > _run(L"run");
         if ( GetAttr( _run, _node, _state ) && 1 == *_run )
         {
-            IChunkPtr compiled = NoCompile( _node, _state );
-            compiled->Execute( Node(), _state );
+            _state.SetResult( NoCompile( _node, _state ).get() );
         }
         else
         {
-            _state.SetResult( NoCompile( _node, _state ).get() );
+            throw Useless::Error("<nocompile run=\"0\"> is not supported!");
         }
     }
 
@@ -352,6 +380,15 @@ namespace XMLFactory {
         Attr< TextUtf8, true, wchar_t > _id(L"id");
         GetAttr( _id, _node, _state );
         _state.SetResult( HookErrors( _node, new CXML::IS_DEFINED( _id.str() )));
+    }
+
+    /*
+     * Get FCC type of object
+     */
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF )
+    {
+        _state.SetResult( HookErrors( _node, new CXML::TYPE_OF( CompileRightValue( _node, _state ).get() )));
+        HookDefinition( _node, _state );
     }
 
     /*
@@ -612,7 +649,15 @@ namespace XMLFactory {
                 pMethods = pHead;
             }
         }
-        _state.SetResult( new CXML::OBJECT(  pPrivate.get(), pMethods.get() ));
+        Attr< TextUtf8, false, wchar_t > _extend(L"extend");
+        if ( !GetAttr( _extend, _node, _state ))
+        {
+            _state.SetResult( new CXML::OBJECT(  pPrivate.get(), pMethods.get() ));
+        }
+        else
+        {
+            _state.SetResult( new CXML::OBJECT(  pPrivate.get(), pMethods.get(), _extend.str() ));
+        }
         HookDefinition( _node, _state );
     }
     
@@ -622,21 +667,30 @@ namespace XMLFactory {
     // Accumulatives operations
     //
 
+    template< class _OpType >
+        struct AccumHandler
+        {
+            static IChunkPtr Create( Node _node, ExecutionState &_state )
+            {
+                IChunkPtr pChunk = Compile( _node, _state );
+                boost::intrusive_ptr< CXML::ValueAccumulator< _OpType > > adder = new CXML::ValueAccumulator< _OpType >();
+                while ( !IsEmpty( pChunk.get()))
+                {
+                    adder->Add( pChunk->GetChunk( FOURCC_LIST_HEAD ) );
+                    pChunk = pChunk->GetChunk( FOURCC_LIST_TAIL );
+                }
+                return adder.get();
+            }
+        };
+
 #define CXML_ACCUM_HANDLER( _Name, _OpType ) \
     LOCAL_TAG_HANDLER( _Name ) \
     { \
-        IChunkPtr pChunk = Compile( _node, _state ); \
-            boost::intrusive_ptr< CXML::ValueAccumulator< _OpType > > \
-            adder = new CXML::ValueAccumulator< _OpType >(); \
-            while ( !IsEmpty( pChunk.get())) \
-            { \
-                adder->Add( pChunk->GetChunk( FOURCC_LIST_HEAD ) ); \
-                    pChunk = pChunk->GetChunk( FOURCC_LIST_TAIL ); \
-            } \
+        IChunkPtr adder = AccumHandler< _OpType >::Create( _node, _state ); \
         _state.SetResult( HookErrors( _node, adder.get() )); \
         HookDefinition( _node, _state ); \
     }
-
+    
     // <add><!-- integer --></add>
     CXML_ACCUM_HANDLER( CXML::ADD, CXML::OpADD< int > );
 
@@ -663,6 +717,9 @@ namespace XMLFactory {
 
     // <strcmp><!-- string --></strcmp>
     CXML_ACCUM_HANDLER( CXML::STRCMP, CXML::OpCOMPARE< TextUtf8 > );
+    
+    // <typecmp><!-- type --></typecmp>
+    CXML_ACCUM_HANDLER( CXML::TYPECMP, CXML::OpCOMPARE< int > );
 
     // <cat><!-- string --></cat>
     LOCAL_TAG_HANDLER( CXML::CAT ) 
@@ -681,16 +738,24 @@ namespace XMLFactory {
         HookDefinition( _node, _state ); 
     }
 
+    struct PtrComparingHandler
+    {
+        static IChunkPtr Create( Node _node, ExecutionState &_state )
+        {
+            IChunkPtr ptr[2];
+            int i=0;
+            for ( Node child(_node.GetFirstChild()); !!child && i < 2; ++child, ++i )
+            {
+                ptr[i] = CompileOneNode( child, _state );
+            }
+            return new CXML::PTRCMP( ptr[0].get(), ptr[1].get() );
+        }
+    };
+
     // <ptrcmp><!-- pointer --></ptrcmp>
     LOCAL_TAG_HANDLER( CXML::PTRCMP )
     {
-        IChunkPtr ptr[2];
-        int i=0;
-        for ( Node child(_node.GetFirstChild()); !!child && i < 2; ++child, ++i )
-        {
-            ptr[i] = CompileOneNode( child, _state );
-        }
-        _state.SetResult( new CXML::PTRCMP( ptr[0].get(), ptr[1].get() ));
+		_state.SetResult( PtrComparingHandler::Create( _node, _state ).get() );
         HookDefinition( _node, _state );
     }
 
@@ -739,6 +804,47 @@ namespace XMLFactory {
         HookDefinition( _node, _state );
     }
 
+#define CXML_COMPARING_HANDLER( _Name, _Comp, _OpType ) \
+    LOCAL_TAG_HANDLER( _Name ) \
+    {\
+        IChunkPtr compiled = AccumHandler< _OpType >::Create( _node, _state );\
+        _state.SetResult( new _Comp( compiled.get() )); \
+        HookDefinition( _node, _state ); \
+    }
+
+    CXML_COMPARING_HANDLER( CXML::EQUAL_STR, CXML::EQUAL, CXML::OpCOMPARE< TextUtf8 > );
+    CXML_COMPARING_HANDLER( CXML::EQUAL_INT, CXML::EQUAL, CXML::OpCOMPARE< int > );
+    CXML_COMPARING_HANDLER( CXML::EQUAL_FLOAT, CXML::EQUAL, CXML::OpCOMPARE< double > );
+    CXML_COMPARING_HANDLER( CXML::EQUAL_TYPE, CXML::EQUAL, CXML::OpCOMPARE< int > );
+    
+    CXML_COMPARING_HANDLER( CXML::LESS_STR, CXML::LESS, CXML::OpCOMPARE< TextUtf8 > );
+    CXML_COMPARING_HANDLER( CXML::LESS_INT, CXML::LESS, CXML::OpCOMPARE< int > );
+    CXML_COMPARING_HANDLER( CXML::LESS_FLOAT, CXML::LESS, CXML::OpCOMPARE< double > );
+    CXML_COMPARING_HANDLER( CXML::LESS_TYPE, CXML::LESS, CXML::OpCOMPARE< int > );
+    
+    CXML_COMPARING_HANDLER( CXML::GREATER_STR, CXML::GREATER, CXML::OpCOMPARE< TextUtf8 > );
+    CXML_COMPARING_HANDLER( CXML::GREATER_INT, CXML::GREATER, CXML::OpCOMPARE< int > );
+    CXML_COMPARING_HANDLER( CXML::GREATER_FLOAT, CXML::GREATER, CXML::OpCOMPARE< double > );
+    CXML_COMPARING_HANDLER( CXML::GREATER_TYPE, CXML::GREATER, CXML::OpCOMPARE< int > );
+    
+    LOCAL_TAG_HANDLER( CXML::EQUAL_PTR )
+    {
+		_state.SetResult( new CXML::EQUAL( PtrComparingHandler::Create( _node, _state ).get() ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::LESS_PTR )
+    {
+		_state.SetResult( new CXML::LESS( PtrComparingHandler::Create( _node, _state ).get() ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::GREATER_PTR )
+    {
+		_state.SetResult( new CXML::GREATER( PtrComparingHandler::Create( _node, _state ).get() ));
+        HookDefinition( _node, _state );
+    }
+
     // <not><!-- boolean --></not>
     LOCAL_TAG_HANDLER( CXML::NOT )
     {
@@ -773,32 +879,42 @@ namespace XMLFactory {
     // Primitive types
     //
 
+    template< class _Type >
+        struct ValueHandler
+        {
+            static IChunkPtr Create( Node _node, ExecutionState &_state )
+            {
+                Attr< TextUtf8, false, wchar_t > _select(L"select");
+                Attr< TextUtf8, false, wchar_t > _force (L"force");
+                Attr< _Type, false, wchar_t >    _value (L"value");
+                
+                if ( GetAttr( _value, _node, _state )) 
+                { 
+                    return new CXML::ConstantValue( CreateValue( *_value ) );
+                } 
+                else if ( GetAttr( _select, _node, _state ))
+                {
+                    return new CXML::ValueConvertion< _Type >( new CXML::GET( _select.str() ));
+                }
+                else if ( GetAttr( _force, _node, _state ))
+                {
+                    return new CXML::ValueConvertion< _Type >( new CXML::LazyCall( new CXML::GET( _force.str() )));
+                }
+                else if ( _node.HasChildren() )
+                {
+                    return new CXML::ValueConvertion< _Type >( Compile( _node, _state ).get() );
+                }
+                else
+                {
+                    return new CXML::EvaluableValue< _Type >( _node->_value );
+                }
+            }
+        };
+
 #define CXML_VALUE_HANDLER( _Name, _Type ) \
     LOCAL_TAG_HANDLER( _Name ) \
     { \
-        Attr< TextUtf8, false, wchar_t > _select(L"select");\
-            Attr< TextUtf8, false, wchar_t > _force(L"force");\
-            Attr< _Type, false, wchar_t > _value(L"value"); \
-            if ( GetAttr( _value, _node, _state )) \
-            { \
-                _state.SetResult( new CXML::ConstantValue( CreateValue( *_value ) )); \
-            } \
-            else if ( GetAttr( _select, _node, _state ))\
-            {\
-                _state.SetResult( new CXML::ValueConvertion< _Type >( new CXML::GET( _select.str() )));\
-            }\
-            else if ( GetAttr( _force, _node, _state ))\
-            {\
-                _state.SetResult( new CXML::ValueConvertion< _Type >( new CXML::LazyCall( new CXML::GET( _force.str() ))));\
-            }\
-            else if ( _node.HasChildren() ) \
-            { \
-                _state.SetResult( new CXML::ValueConvertion< _Type >( Compile( _node, _state ).get() )); \
-            } \
-            else \
-            { \
-                _state.SetResult( new CXML::EvaluableValue< _Type >( _node->_value )); \
-            } \
+        _state.SetResult( ValueHandler< _Type >::Create( _node, _state ).get() ); \
         HookDefinition( _node, _state );\
     }
 
@@ -809,6 +925,67 @@ namespace XMLFactory {
     CXML_VALUE_HANDLER( CXML::INTEGER, int );
     CXML_VALUE_HANDLER( CXML::FLOAT, double );
     CXML_VALUE_HANDLER( CXML::STRING, TextUtf8 );
+
+
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_INTEGER )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_INT ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_FLOAT )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_FLOAT ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_STRING )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_TEXT ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_BINARY )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_STRING ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_BLOCK )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_BLOCK ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_LIST )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_LIST ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_EMPTY )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_EMPTY ) ));
+        HookDefinition( _node, _state );
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::TYPE_OF_LAZY )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)FOURCC_TYPE_LAZY ) ));
+        HookDefinition( _node, _state );
+    }
+
+    LOCAL_TAG_HANDLER( CXML::TRUE_VALUE )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)true ) ));
+        HookDefinition( _node, _state );
+    }
+
+    LOCAL_TAG_HANDLER( CXML::FALSE_VALUE )
+    {
+        _state.SetResult( new CXML::ConstantValue( CreateValue( (int)false ) ));
+        HookDefinition( _node, _state );
+    }
 
 
     /*
@@ -1218,6 +1395,7 @@ namespace XMLFactory {
             IChunkPtr pFunc = pInner->GetChunk( FOURCC_LIST_TAIL );
             _state.SetResult( HookErrors( _node, new CXML::IF( pCond.get(), pFunc.get() )));
         }
+        HookDefinition( _node, _state );
     }
 
     /*

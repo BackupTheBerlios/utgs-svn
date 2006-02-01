@@ -290,11 +290,18 @@ namespace XMLProgram {
         
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = TypeNameTraits< _R >::name();
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method( node )";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function( Node )" + L" -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }
@@ -318,11 +325,18 @@ namespace XMLProgram {
         
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = L"__result__";
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method( node )";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function( Node, State ) -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }
@@ -346,11 +360,18 @@ namespace XMLProgram {
             
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = TypeNameTraits< _R >::name();
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method()";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function() -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }
@@ -376,12 +397,20 @@ namespace XMLProgram {
             
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = TypeNameTraits< _R >::name();
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
                     TextUtf8 arg1_tn = TypeNameTraits< _A1 >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method( "+arg1_tn+L" )";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 arg1_tn = TypeNameTraits< _A1 >::name();
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function( "+ _a1 +L":"+ arg1_tn +L" ) -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }
@@ -409,13 +438,22 @@ namespace XMLProgram {
             
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = TypeNameTraits< _R >::name();
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
                     TextUtf8 arg1_tn = TypeNameTraits< _A1 >::name();
                     TextUtf8 arg2_tn = TypeNameTraits< _A2 >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method( "+arg1_tn+L", "+arg2_tn+L" )";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 arg1_tn = TypeNameTraits< _A1 >::name();
+                    TextUtf8 arg2_tn = TypeNameTraits< _A2 >::name();
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function( "+ _a1 +L":"+ arg1_tn +L", "+ _a2 +L":"+ arg2_tn +L" ) -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }
@@ -445,7 +483,7 @@ namespace XMLProgram {
             
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = TypeNameTraits< _R >::name();
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
@@ -453,6 +491,16 @@ namespace XMLProgram {
                     TextUtf8 arg2_tn = TypeNameTraits< _A2 >::name();
                     TextUtf8 arg3_tn = TypeNameTraits< _A3 >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method( "+arg1_tn+L", "+arg2_tn+L", "+arg3_tn+L" )";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 arg1_tn = TypeNameTraits< _A1 >::name();
+                    TextUtf8 arg2_tn = TypeNameTraits< _A2 >::name();
+                    TextUtf8 arg3_tn = TypeNameTraits< _A3 >::name();
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function( "+ _a1 +L":"+ arg1_tn +L", "+ _a2 +L":"+ arg2_tn +L", "+ _a3 +L":"+ arg3_tn + L" ) -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }
@@ -484,7 +532,7 @@ namespace XMLProgram {
             
             bool operator >> ( XMLFactory::AttrUniBase &attr )
             {
-                if ( attr._name == L"type-name" )
+                if ( attr._name == L"cpp-type-name" )
                 {
                     TextUtf8 result_tn = TypeNameTraits< _R >::name();
                     TextUtf8 callee_tn = TypeNameTraits< _Cp >::name();
@@ -493,6 +541,18 @@ namespace XMLProgram {
                     TextUtf8 arg3_tn = TypeNameTraits< _A3 >::name();
                     TextUtf8 arg4_tn = TypeNameTraits< _A4 >::name();
                     TextUtf8 method = result_tn+L" "+callee_tn+L" method( "+arg1_tn+L", "+arg2_tn+L", "+arg3_tn+L" "+arg4_tn+L" )";
+                    attr.str( method );
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    TextUtf8 arg1_tn = TypeNameTraits< _A1 >::name();
+                    TextUtf8 arg2_tn = TypeNameTraits< _A2 >::name();
+                    TextUtf8 arg3_tn = TypeNameTraits< _A3 >::name();
+                    TextUtf8 arg4_tn = TypeNameTraits< _A4 >::name();
+                    TextUtf8 result_tn = TypeNameTraits< _R >::name();
+                    TextUtf8 method = L"function( "+ _a1 +L":"+ arg1_tn +L", "+ _a2 +L":"+ arg2_tn +L", "+ _a3 +L":"+ arg3_tn  +L", "+
+                        _a4 +L":"+ arg4_tn+ L" ) -> "+ result_tn;
                     attr.str( method );
                     return true;
                 }

@@ -145,6 +145,18 @@ namespace XMLProgram {
             static const char * name() { return "float"; }
             static unsigned int fcc() { return FOURCC_TYPE_FLOAT; }
         };
+    
+    KOOLIB_SPECIALIZATION struct TypeNameTraits< IChunkPtr > 
+        {
+            static const char * name() { return "IChunkPtr"; }
+            static unsigned int fcc() { return 0L; }
+        };
+    
+    KOOLIB_SPECIALIZATION struct TypeNameTraits< IBlockPtr > 
+        {
+            static const char * name() { return "IBlockPtr"; }
+            static unsigned int fcc() { return 0L; }
+        };
 
     template< class _Type > struct AttrTraits
     {
