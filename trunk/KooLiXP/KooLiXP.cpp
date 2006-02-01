@@ -205,7 +205,9 @@ struct KooLiXP
                     splashProps.height = 240;
                     splashProps.pixelformat = ImageFormat::B8G8R8A8;
                     _screen = new GDIScreen( Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
-                    _screen->Reposition( 480, 360 );
+                    int whereX = (::GetSystemMetrics( SM_CXFULLSCREEN ) - splashProps.width)/2;
+                    int whereY = (::GetSystemMetrics( SM_CYFULLSCREEN ) - splashProps.height)/2;
+                    _screen->Reposition( whereX, whereY );
                     _screen->HideDecorations();
                     _screen->OpenWindowed( splashProps.width, splashProps.height);
                     _screen->SetClipper( Rect(splashProps.width, splashProps.height) );
