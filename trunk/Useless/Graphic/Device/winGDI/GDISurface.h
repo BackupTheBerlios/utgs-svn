@@ -13,6 +13,7 @@ class GDISurface : public Surface
 public:
     GDISurface();
     GDISurface( const Surf::Properties &properties, HWND hwnd );
+    GDISurface( const Surf::Properties &properties, HWND hwnd, int resourceName );
     virtual ~GDISurface();
     void Create( const Surf::Properties &properties, HWND hwnd );
     

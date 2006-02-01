@@ -1,9 +1,12 @@
+#include "UselessPch.h"
+
 #include "Useless/Graphic/Device/winGDI/GDISurface.h"
 #include "Useless/Graphic/Device/winGDI/GDITransfer.h"
 #include "Useless/System/TypeInfo.h"
 #include "Useless/ErrorConfig.h"
 #include "Useless/Graphic/Transfer/GenericTransfer.h"
 #include "Useless/Graphic/detail/ImageDesc.h"
+#include "Useless/System/Application.h"
 
 namespace Useless {
 
@@ -16,6 +19,17 @@ GDISurface::GDISurface( const Surf::Properties &properties, HWND hwnd )
     : _constantAlpha(255)
 {
     Create( properties, hwnd);
+}
+
+GDISurface::GDISurface( const Surf::Properties &properties, HWND hwnd, int resourceName )
+{
+    _hbmp = ::LoadBitmap( Application::GetInstance(), MAKEINTRESOURCE( resourceName ));
+    
+    HDC window_dc=::GetDC( _hwnd=hwnd);
+    _hdc=::CreateCompatibleDC( window_dc );
+    HGDIOBJ hgdiobj=::SelectObject( _hdc, _hbmp );
+    assert(hgdiobj!=0);
+    _properties=properties;
 }
 
 void GDISurface::Create( const Surf::Properties &properties, HWND hwnd )

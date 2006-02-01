@@ -1,3 +1,5 @@
+#include "UselessPch.h"
+
 #include "Useless/Graphic/Device/winGDI/GDIScreen.h"
 #include "Useless/Graphic/Planes/ImageBuffer.h"
 #include "Useless/ErrorConfig.h"

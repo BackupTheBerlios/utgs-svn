@@ -1,3 +1,5 @@
+#include "UselessPch.h"
+
 #include "Useless/Graphic/Device/winGDI/GDITransfer.h"
 #include "Useless/Graphic/detail/ImageDesc.h"
 #include "Useless/Graphic/Rect.h"
