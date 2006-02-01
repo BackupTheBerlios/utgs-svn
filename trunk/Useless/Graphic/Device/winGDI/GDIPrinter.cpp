@@ -7,6 +7,26 @@
 #include <stdio.h>
 
 namespace Useless {
+
+    namespace {
+        LogError( FILE *fDump )
+        {
+            LPVOID lpMsgBuf;
+            FormatMessage( 
+                    FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+                    FORMAT_MESSAGE_FROM_SYSTEM | 
+                    FORMAT_MESSAGE_IGNORE_INSERTS,
+                    NULL,
+                    GetLastError(),
+                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+                    (LPTSTR) &lpMsgBuf,
+                    0,
+                    NULL 
+                    );
+            _ftprintf( fDump, _T("Error: %s\n"), lpMsgBuf );
+            LocalFree( lpMsgBuf );
+        }
+    };//unnamed
     
     GDIPage::GDIPage( ::HDC hdc ): m_hdc( hdc )
     {
@@ -106,7 +126,24 @@ namespace Useless {
         devmode.dmSize = sizeof( ::DEVMODE );
         devmode.dmFields = DM_PAPERSIZE;
         devmode.dmPaperSize = DMPAPER_A4;
-        m_hdc = ::CreateDC( info.m_driver.c_str(), m_info.m_name.c_str(), NULL, &devmode );
+
+        while( true )
+        {
+#define USELESS_GDI_PRINTER_CREATE_DC( _Driver, _Name, _Devmode ) \
+            _ftprintf( fDump, _T("CreateDC( %s, %s, NULL, %0x )\n"), _Driver, _Name, _Devmode ); \
+            m_hdc = ::CreateDC( _Driver, _Name, NULL, _Devmode ); \
+            if ( !!m_hdc ) { break; } \
+            LogError( fDump );
+
+            USELESS_GDI_PRINTER_CREATE_DC( m_info.m_driver.c_str(), m_info.m_name.c_str(), &devmode );
+            USELESS_GDI_PRINTER_CREATE_DC( _T("WINSPOOL"), m_info.m_name.c_str(), &devmode );
+            USELESS_GDI_PRINTER_CREATE_DC( NULL, m_info.m_name.c_str(), &devmode );
+            
+            USELESS_GDI_PRINTER_CREATE_DC( m_info.m_driver.c_str(), m_info.m_name.c_str(), NULL );
+            USELESS_GDI_PRINTER_CREATE_DC( _T("WINSPOOL"), m_info.m_name.c_str(), NULL );
+            USELESS_GDI_PRINTER_CREATE_DC( NULL, m_info.m_name.c_str(), NULL );
+        }
+        
         GDIPrintManager::Instance().RegisterGDIPrinter( this );
         
         m_sizeOnPaperX = ::GetDeviceCaps( m_hdc, HORZRES );
@@ -153,15 +190,15 @@ namespace Useless {
         ::DWORD cbNeeded1, cbNeeded2;
         ::DWORD cReturned1, cReturned2;
 
-        ::EnumPrinters( PRINTER_ENUM_NAME, NULL, 2, NULL, 0, &cbNeeded1, &cReturned1 );
-        ::EnumPrinters( PRINTER_ENUM_LOCAL | PRINTER_ENUM_CONNECTIONS, NULL, 2, NULL, 0, &cbNeeded2, &cReturned2 );
+        ::EnumPrinters( PRINTER_ENUM_LOCAL, NULL, 2, NULL, 0, &cbNeeded1, &cReturned1 );
+        ::EnumPrinters( PRINTER_ENUM_CONNECTIONS, NULL, 2, NULL, 0, &cbNeeded2, &cReturned2 );
 
         printerEnum.resize( cbNeeded1 + cbNeeded2 );
         ::PRINTER_INFO_2 *pInfo1 = (::PRINTER_INFO_2 *)&printerEnum[0];
         ::PRINTER_INFO_2 *pInfo2 = (::PRINTER_INFO_2 *)&printerEnum[cbNeeded1];
 
-        ::EnumPrinters( PRINTER_ENUM_NAME, NULL, 2, &printerEnum[0], cbNeeded1, &cbNeeded1, &cReturned1 );
-        ::EnumPrinters( PRINTER_ENUM_LOCAL | PRINTER_ENUM_CONNECTIONS, NULL, 2, &printerEnum[cbNeeded1], cbNeeded2, &cbNeeded2, &cReturned2 );
+        ::EnumPrinters( PRINTER_ENUM_LOCAL, NULL, 2, &printerEnum[0], cbNeeded1, &cbNeeded1, &cReturned1 );
+        ::EnumPrinters( PRINTER_ENUM_CONNECTIONS, NULL, 2, &printerEnum[cbNeeded1], cbNeeded2, &cbNeeded2, &cReturned2 );
 
         m_printers.resize( cReturned1 + cReturned2 );
 
@@ -238,6 +275,25 @@ namespace Useless {
         using namespace Useless;
         GDIPrinter *pPrinter = 0;
 
+        FILE *fDump = fopen("Printers.log", "a+");
+        TCHAR lpReturnedString[256];
+        DWORD dwRes = GetProfileString( _T("windows"), _T("device"), _T("none"), lpReturnedString, 256 );
+        _ftprintf( fDump, _T("windows.device = %s\n"), lpReturnedString );
+        fclose( fDump );
+        std::basic_string< TCHAR > strDefaultPrn( lpReturnedString );
+        int comaName = strDefaultPrn.find(_T(","));
+        int comaDrv = strDefaultPrn.find(_T(","), comaName+1 );
+        GDIPrinterInfo prnInfo;
+        prnInfo.m_name = strDefaultPrn.substr(0, comaName);
+        prnInfo.m_driver = strDefaultPrn.substr( comaName+1, comaDrv-comaName-1 );
+        prnInfo.m_port = strDefaultPrn.substr( comaDrv+1, -1 );
+        pPrinter = new GDIPrinter( prnInfo );
+        if ( 0 != pPrinter->m_hdc )
+        {
+            return pPrinter;
+        }
+        delete pPrinter;
+
         for ( GDIPrintManager::const_iterator it = GDIPrintManager::Instance().begin();
                 it != GDIPrintManager::Instance().end(); ++it )
         {
@@ -248,6 +304,7 @@ namespace Useless {
                 {
                     break;
                 }
+                delete pPrinter;
             }
         }
         return pPrinter;
