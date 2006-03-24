@@ -1,6 +1,7 @@
 #ifndef __INCLUDED_USELESS_HATCHERY_H__
 #define __INCLUDED_USELESS_HATCHERY_H__
 
+#include "Useless/HatcheryConfig.h"
 #include "Useless/Util/IOStruct.h"
 #include "Useless/File/IFileSystem.h"
 #include "Useless/File/SubIFile.h"
@@ -9,7 +10,7 @@
 
 namespace Useless {
 
-class HatcheryBase
+class USELESS_API HatcheryBase
 {
 public:
     // Here we define names of structure fields
@@ -29,7 +30,7 @@ public:
 
 
 //! Creates hatchery from directory
-class HatcheryBuilder : public HatcheryBase
+class USELESS_API HatcheryBuilder : public HatcheryBase
 {
 public:
     void Create( const std::string &in_dir, const std::string &out_name );
@@ -45,7 +46,7 @@ private:
 
 
 //! Hatchery - packed files
-class Hatchery : public HatcheryBase, public IFileSystem
+class USELESS_API Hatchery : public HatcheryBase, public IFileSystem
 {
 public:
     Hatchery();
@@ -86,7 +87,7 @@ private:
 };
 
 //! HatchedIFile - IFile created from hatchery
-class HatchedIFile : public SubIFile
+class USELESS_API HatchedIFile : public SubIFile
 {
 public:
     HatchedIFile( Hatchery &hatchery, const std::string &name );

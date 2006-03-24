@@ -18,7 +18,7 @@ namespace Useless {
  *  It has also hilite capability, which means it may hilite
  *  any number of rows and columns inside row/col-rectangle.
  */
-class TableWidget : virtual public Widget, public IWTable
+class USELESS_API TableWidget : virtual public Widget, public IWTable
 {
 public:
     TableWidget(  const ArraySkin &skin );

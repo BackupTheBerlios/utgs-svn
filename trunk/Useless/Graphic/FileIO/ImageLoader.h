@@ -23,7 +23,7 @@ namespace Useless {
 /*! \ingroup ImgIO
  *  Abstract for loading images of many different types
  */
-class ImageLoader
+class USELESS_API ImageLoader
 {
 public:
     virtual void Load( IFile &ifile, OGfxFilter &filter ) = 0;

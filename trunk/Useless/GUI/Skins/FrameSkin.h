@@ -23,7 +23,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  \a FrameWidget skin.
  */
-class FrameSkin : virtual public Skin, virtual protected ImageDicer
+class USELESS_API FrameSkin : virtual public Skin, virtual protected ImageDicer
 {
 public:
     FrameSkin(): _width(0), _height(0) {}

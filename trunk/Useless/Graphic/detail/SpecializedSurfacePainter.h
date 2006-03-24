@@ -209,7 +209,7 @@ void SpecializedSurfacePainter<PixelType>::PaintPolygon( const std::vector<Pos> 
 namespace Useless {
 //------------------------------------------------------------------------------------
 //-- Creates SurfacePainter which will fit to given Surface properties
-SafePtr< SurfacePainter > CreateSurfacePainter( LockableSurface *p_surface );
+SafePtr< SurfacePainter > USELESS_API CreateSurfacePainter( LockableSurface *p_surface );
 
 };//namespace Useless
 #endif//__INCLUDED__USELESS_SPECIALIZED_SURFACE_PAINTER_H__

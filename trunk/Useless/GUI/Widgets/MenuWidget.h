@@ -13,7 +13,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Menu like Widget. It's frame resizes to size of its content.
  */
-class MenuWidget : virtual private FrameWidget, virtual public Widget, public IWList, public IWActive
+class USELESS_API MenuWidget : virtual private FrameWidget, virtual public Widget, public IWList, public IWActive
 {
 public:
     template< class ListStyle >

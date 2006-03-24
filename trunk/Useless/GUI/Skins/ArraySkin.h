@@ -9,7 +9,7 @@ namespace Useless {
 /*! ArraySkin is abstract Skin which is divided into cells.
  *  It may be divided horizontaly and/or verticaly.
  */
-class ArraySkin : virtual public Skin
+class USELESS_API ArraySkin : virtual public Skin
 {
 public:
     //! Set horizontal dividers (separators between rows)

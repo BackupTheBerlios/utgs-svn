@@ -20,7 +20,7 @@ struct WarnEnabledAttr
     enum { IsEnabled = true };
 };
 
-struct RTTIWarnEnabledAttr
+struct USELESS_API RTTIWarnEnabledAttr
 {
     static bool
     IsEnabled( const std::type_info &tp, int id );
@@ -30,14 +30,14 @@ struct RTTIWarnEnabledAttr
 // only int, float, char, void_pointer my be formated
 template< class T > struct Format {};
 
-USELESS_SPECIALIZATION struct Format<int>    { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<float>  { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<char *> { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<void *> { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<const int>    { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<const float>  { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<const char *> { static char x[3]; };
-USELESS_SPECIALIZATION struct Format<const void *> { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<int>    { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<float>  { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<char *> { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<void *> { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<const int>    { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<const float>  { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<const char *> { static char x[3]; };
+USELESS_SPECIALIZATION struct USELESS_API Format<const void *> { static char x[3]; };
 
 template< class _K>
 struct ErrorMessage

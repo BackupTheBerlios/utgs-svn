@@ -177,5 +177,10 @@ namespace Useless {
             (*iter)->GLFreeGarbage( s );
         }
     }
-
+/* implemented in Useless/Movie/DShow/CSurfaceRenderer.cpp
+	void GLUpdateMovieSamples( GLTextureSurfaceAllocator *pTexAlloc )
+	{
+		// DEFAULT IMPLEMENTATION....
+	}
+*/
 };//Useless

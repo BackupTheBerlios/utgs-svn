@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-Resource* CreateGUIBinder( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateGUIBinder( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_gui_binder( "binders::gui-binder", CreateGUIBinder );
 
 typedef ResourceQuery< SPointer< GUIBinder > > GUIBinderResource;

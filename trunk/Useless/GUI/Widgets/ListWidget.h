@@ -17,7 +17,7 @@ namespace Useless {
  *  Compatibility with version 1.0 preserved.
  *  v. 2.0
  */
-class ListWidget : public ListedTextItems, virtual public ListLogic, public IWList
+class USELESS_API ListWidget : public ListedTextItems, virtual public ListLogic, public IWList
 {
 public:
              ListWidget( const FontSet &fonts, const SkinMan &skins, int shift=2 )

@@ -2,4 +2,6 @@
 
 #include "COMInitializer.h"
 
-int Useless::PreInitializer<Useless::COMInitializer>::_counter=0;
+namespace Useless {
+	INIT_PREINITIALIZER( COMInitializer, COMInitializer, USELESS_API );
+};

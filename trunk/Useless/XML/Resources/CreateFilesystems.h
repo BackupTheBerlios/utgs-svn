@@ -8,13 +8,13 @@ namespace Useless {
 
     /* Create methods
 ---------------------------------------------------------------------------------------------*/
-Resource* CreateMountDir( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateMountDir( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_mount_dir( "filesystems::dir", CreateMountDir );
 
-Resource* CreateMountHtc( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateMountHtc( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_mount_htc( "filesystems::htc", CreateMountHtc );
 
-Resource* CreateMountScan( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateMountScan( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_mount_scan( "filesystems::scan", CreateMountScan );
 
 };

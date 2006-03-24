@@ -15,7 +15,7 @@ namespace Useless {
     class ScrollbarWidget;
     class FrameWidget;
 
-class TableSystemWidget : private HubWidget, virtual public Widget, 
+class USELESS_API TableSystemWidget : private HubWidget, virtual public Widget, 
                           public IWViewport, public IWSizer, public IWTableList
 {
 public:

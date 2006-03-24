@@ -22,7 +22,7 @@ namespace Useless {
  *  Gives IGraphics interface to memory block
  */
 
-class IGfxReader : public IGfxFilter
+class USELESS_API IGfxReader : public IGfxFilter
 {
 public:
     IGfxReader( const Types::UBYTE *d, const Types::UBYTE *p, int w, int h, int b, int s)

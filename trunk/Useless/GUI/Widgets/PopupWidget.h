@@ -14,7 +14,7 @@ class VLayout;
 
 /*! PopupWidget is a Popup with frame and button tray
  */
-class PopupWidget : public Popup
+class USELESS_API PopupWidget : public Popup
 {
 public:
     PopupWidget( const PopupStyle &style, const Text &title = "..." );

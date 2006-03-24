@@ -516,10 +516,10 @@ extern "C" {
 
 #include <string>
 
-void InitWGLExtensions( HINSTANCE );
-void InitWGLExtensionsHWND( HWND );
-void InitWGLExtensionsHDC( HDC );
-void InitWGLExtensionsHGLRC( HDC, HGLRC );
-bool WGLExtensionSupported(const std::string& extName);
+void USELESS_API InitWGLExtensions( HINSTANCE );
+void USELESS_API InitWGLExtensionsHWND( HWND );
+void USELESS_API InitWGLExtensionsHDC( HDC );
+void USELESS_API InitWGLExtensionsHGLRC( HDC, HGLRC );
+bool USELESS_API WGLExtensionSupported(const std::string& extName);
 
 #endif

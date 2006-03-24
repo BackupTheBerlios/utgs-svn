@@ -59,7 +59,7 @@
                     <empty/>
                 </set>
                 <set id="module">
-                    <call id="Dynamo:LoadModule" name="gvm1.dll"/>
+                    <call id="Dynamo:LoadModule" name="gvm1d.dll"/>
                 </set>
                 <goto id="running_module"/>
             </gui-event>

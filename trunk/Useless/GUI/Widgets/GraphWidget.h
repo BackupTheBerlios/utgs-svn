@@ -32,7 +32,7 @@ namespace Useless
 	 *   It can draw any set of points or mathematical function in any color and scale it.
 	 *  \todo Add GT_LINES graph type in Repaint(...) method.
 	 */
-	class GraphWidget : virtual public Widget
+	class USELESS_API GraphWidget : virtual public Widget
 	{
 		//======================================*
 		// Internal types definitions:          |
@@ -91,9 +91,9 @@ namespace Useless
 		//! Changes graph's dimensions.
 		virtual void          Resize( int w, int h );
 		//! Sets default value of new graph's color.
-		static tpe_color      SetDefaultGraphColor( const tpe_color par_color ) { fld_DefaultGraphColor = par_color; };
+		static tpe_color      SetDefaultGraphColor( const tpe_color par_color ) { return (fld_DefaultGraphColor = par_color); };
 		//! Sets default value of new graph's type.
-		static tpe_graph_type SetDefaultGraphType( const tpe_graph_type par_type ) { fld_DefaultGraphType = par_type; };
+		static tpe_graph_type SetDefaultGraphType( const tpe_graph_type par_type ) { return (fld_DefaultGraphType = par_type); };
 		//! Sets graph's color.
 		void                  SetGraphColor( tpe_color par_NewColor ) { fld_GraphColor = par_NewColor; SetDirty(); };
 		//! Sets graph's type.

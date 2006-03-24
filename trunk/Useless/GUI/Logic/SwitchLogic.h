@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class SwitchLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
+class USELESS_API SwitchLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
 {
 public:
     SwitchLogic();

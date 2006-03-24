@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class WaveLoader : public SoundLoader
+class USELESS_API WaveLoader : public SoundLoader
 {
 public:
     virtual void Load( IFile &file, OSoundInterface &sound_writer);

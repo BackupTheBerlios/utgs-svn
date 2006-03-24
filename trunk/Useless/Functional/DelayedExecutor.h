@@ -12,7 +12,7 @@
 
 namespace Useless {
 
-class DelayedExecutor
+class USELESS_API DelayedExecutor
 {
     DelayedExecutor();
     ~DelayedExecutor();
@@ -119,9 +119,7 @@ public:
 
 };
 
-typedef Singleton<DelayedExecutor> OnTimer;
-
-static SingletonKiller<OnTimer>::PostDestr _OnTimer_singleton_post_destructor;
+DECLARE_SINGLETON( DelayedExecutor, OnTimer, USELESS_API )
 
 inline void DelayedExecutor::TaskID::Free()
 {

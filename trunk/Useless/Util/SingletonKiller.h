@@ -5,43 +5,45 @@
 
 namespace Useless {
 
-template< class SingletonType >
-class SingletonKiller
-{
-public:
-    typedef PreInitializer< SingletonKiller > PostDestr;
+    template< class SingletonType >
+        class SingletonKiller
+        {
+            public:
+                typedef PreInitializer< SingletonKiller > PostDestr;
 
-private:
-    static void Init() {}
-    static void Destroy() { SingletonType::SafeKill(); }
+            private:
+                static void Init() {}
+                static void Destroy() { SingletonType::SafeKill(); }
 
-    friend class PreInitializer< SingletonKiller >;
-};
-
-
-/* Type this lines into place where you will use killer
---------------------------------------------------------
-in .h:
-    static SingletonKiller<T>::PostDestr _your_singleton_post_destructor;
-*/
-
-#define DECLARE_SINGLETON(base_name, singleton_name) \
-typedef Useless::Singleton< base_name > singleton_name; \
-static Useless::SingletonKiller<singleton_name>::PostDestr _##singleton_name##_singleton_post_destructor;
-
-#define DECLARE_SINGLETON_CTOR(base_name, singleton_name, ctor_type) \
-typedef Useless::Singleton< base_name, ctor_type > singleton_name; \
-static Useless::SingletonKiller<singleton_name>::PostDestr _##singleton_name##_singleton_post_destructor;
-
-/*
-in .cpp:
-    int SingletonKiller<T>::PostDestr::_counter = 0; 
-*/
-#define INIT_SINGLETON(singleton_name) \
-int Useless::SingletonKiller< singleton_name >::PostDestr::_counter = 0; \
-singleton_name::type* singleton_name::pInstance = 0;
+                friend class PreInitializer< SingletonKiller >;
+        };
 
 
+    /* Type this lines into place where you will use killer
+       --------------------------------------------------------
+       in .h:
+       */
+    
+#define DECLARE_SINGLETON(base_name, singleton_name, _API ) \
+        typedef Useless::Singleton< base_name > singleton_name; \
+        template class _API Singleton< singleton_name::type, singleton_name::creation_policy >; \
+        template class _API SingletonKiller< singleton_name >; \
+        DECLARE_PREINITIALIZER( SingletonKiller< singleton_name >, singleton_name##Killer, _API );
+        
+#define DECLARE_SINGLETON_CTOR(base_name, singleton_name, ctor_type, _API ) \
+        typedef Useless::Singleton< base_name, ctor_type > singleton_name; \
+        template class _API Singleton< singleton_name::type, singleton_name::creation_policy >; \
+        template class _API SingletonKiller< singleton_name >; \
+        DECLARE_PREINITIALIZER( SingletonKiller< singleton_name >, singleton_name##Killer, _API );
+        
+        /*
+           in .cpp:
+           */
+#define INIT_SINGLETON( singleton_name, _API ) \
+        USELESS_SPECIALIZATION singleton_name::pointer &\
+            Singleton< singleton_name::type, singleton_name::creation_policy >::\
+            InstancePtr() { static singleton_name::pointer s_ptr = 0; return s_ptr; } \
+	INIT_PREINITIALIZER( SingletonKiller< singleton_name >, singleton_name##Killer, _API );
 
 
 };//namespace Useless

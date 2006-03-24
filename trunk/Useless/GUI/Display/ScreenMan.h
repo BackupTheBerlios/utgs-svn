@@ -34,7 +34,7 @@ namespace Useless {
 /*! \ingroup gDisplay
  *  Manages Screen buffer flipping and cursor.
  */
-class ScreenMan : public DisplayMan
+class USELESS_API ScreenMan : public DisplayMan
 {
 public:
     ScreenMan(Screen &screen, GUIMaster &gui_master);

@@ -8,7 +8,7 @@ namespace Useless {
 
 namespace Snd {
 
-class DSBufferDesc
+class USELESS_API DSBufferDesc
 {
 public:
     DSBufferDesc();

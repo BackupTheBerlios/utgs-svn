@@ -10,23 +10,23 @@ namespace Useless {
 
 /* Create methods
 ---------------------------------------------------------------------------------------------*/
-Resource* CreateScreen( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateScreen( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_screen( "system::screen", CreateScreen );
 
-Resource* CreateGUI( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateGUI( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_gui( "system::gui", CreateGUI );
 
-Resource* CreateImageCursor( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImageCursor( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_image_cursor( "cursors::image", CreateImageCursor );
 
 
-Resource* CreateSysOutputOpen( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSysOutputOpen( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_sys_open_output("system::open-output", CreateSysOutputOpen );
 
-Resource* CreateSysOutputClose( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSysOutputClose( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_sys_close_output("system::close-output", CreateSysOutputClose );
 
-Resource* CreateSysOutputImage( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSysOutputImage( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_sys_image_out("system::image-out", CreateSysOutputImage );
 
 /* Query methods
@@ -58,7 +58,7 @@ inline Workspace& QueryWorkspace( const std::string &id )
 }
 
 //-------------------------------------------------------------------
-SPointer< MouseCursor > MakeMouseCursor( const std::string &id_expr );
+USELESS_RESOURCES_API SPointer< MouseCursor > MakeMouseCursor( const std::string &id_expr );
 
 };//namespace Useless
 #endif//__INCLUDED_USELESS_CREATE_SYSTEM_H__

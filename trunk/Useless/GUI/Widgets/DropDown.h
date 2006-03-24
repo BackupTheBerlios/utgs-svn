@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class DropDown : public ContentWidget, virtual public ActiveWidget, virtual public IWEnum
+class USELESS_API DropDown : public ContentWidget, virtual public ActiveWidget, virtual public IWEnum
 {
 public:
     DropDown( const CaptionStyle &style, bool menu_above = false );

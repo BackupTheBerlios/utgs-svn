@@ -15,14 +15,14 @@
 //#cannot include include "Threads/Lock.h" - signals don't need locking - bad concept
 //typedef RW_Mutex Mutex;
 //typedef WriteLock Lock;
-namespace { struct __Mutex {}; struct __Lock { __Lock(...){} }; };
+namespace { struct s_Mutex {}; struct s_Lock { s_Lock(...){} }; };
 
 #include "Useless/System/KeyCodes.h"
 
 #include "Useless/Functional/DelayedExecutor.h"
 
 #include "Useless/ErrorConfig.h"
-#if !defined(__GUI_DEBUG_LEVEL_NONE__)
+#if !defined(s_GUI_DEBUG_LEVEL_NONEs_)
 #   define   SCREENMAN_LOG(e) SMALL_LOG(e, "ScreenMan")
 #   define   SCREENMAN_ERR(e) APP_ERROR(e, "ScreenMan")
 #else
@@ -30,55 +30,55 @@ namespace { struct __Mutex {}; struct __Lock { __Lock(...){} }; };
 #   define   SCREENMAN_ERR(e)
 #endif
 
-//#define __DEBUG_DIRTY__
+//#define s_DEBUG_DIRTYs_
 
 namespace Useless {
 
-bool G_EnableDebugF11 = true;
-bool G_EnablePrintScr = true;
+USELESS_API bool G_EnableDebugF11 = true;
+USELESS_API bool G_EnablePrintScr = true;
 
 //#const int SCREENMANC1 = 131072;32768;
 //#const int SCREENMANC2 = 128;
 const int SCREENMANC1 = 16384;
 const int SCREENMANC2 = 128;
 
-static bool __show_FPS;
-static Pos  __FPS_position;
-static Pos  __cursor_position;
+static bool s_show_FPS;
+static Pos  s_FPS_position;
+static Pos  s_cursor_position;
 
 
 
 // We do this to protect copyrights of an application with red-green cross.
 // The magic password that shall be given as "protection" attribute of <gui> tag is: "scrnocross"
 // See also "Useless/XML/Resources/CreateGUI.cpp" lines 80-84.
-static std::string __screen_option1;
-static std::string __screen_option2;
+static std::string s_CopyrightProtectionString1;
+static std::string s_CopyrightProtectionString2;
 
-void _SetScreenOption( const std::string &screenOption1, std::string screenOption2 )
+void _SetCopyrightProtectionString( const std::string &screenOption1, std::string screenOption2 )
 {
     if ( screenOption1 == screenOption2 )
     {
-        __screen_option1 = screenOption1;
+        s_CopyrightProtectionString1 = screenOption1;
     }
 }
 
-void SetScreenOption( const std::string &screenOption1, std::string screenOption2 )
+void USELESS_API SetCopyrightProtectionString( const std::string &screenOption1, std::string screenOption2 )
 {
     if ( screenOption1 == screenOption2 )
     {
-        __screen_option2 = screenOption2;
+        s_CopyrightProtectionString2 = screenOption2;
     }
     else
     {
-        __screen_option2 += 's'; __screen_option2 += 'c'; __screen_option2 += 'r'; __screen_option2 += 'i';
-        __screen_option2 += 'n'; __screen_option2 += 'v'; __screen_option2 += 'a'; __screen_option2 += 'l';
-        __screen_option2 += 'i'; __screen_option2 += 'd';
+        s_CopyrightProtectionString2 += 's'; s_CopyrightProtectionString2 += 'c'; s_CopyrightProtectionString2 += 'r'; s_CopyrightProtectionString2 += 'i';
+        s_CopyrightProtectionString2 += 'n'; s_CopyrightProtectionString2 += 'v'; s_CopyrightProtectionString2 += 'a'; s_CopyrightProtectionString2 += 'l';
+        s_CopyrightProtectionString2 += 'i'; s_CopyrightProtectionString2 += 'd';
     }
 }
 
-std::string GetScreenOption()
+std::string USELESS_API GetCopyrightProtectionString()
 {
-    return __screen_option1;
+    return s_CopyrightProtectionString1;
 }
 
 
@@ -91,8 +91,8 @@ public:
     void OnActivateEnd() {  SCREENMAN_LOG(Error(" } OnActivate") ); }
     void OnPaint()       {  SCREENMAN_LOG(Error(" OnPaint {"   ) ); }
     void OnPaintEnd()    {  SCREENMAN_LOG(Error(" } OnPaint"   ) ); }
-    void OnCursor( Pos p ) { __cursor_position=p; }
-    void TurnFPS() {  __show_FPS=!__show_FPS; __FPS_position=__cursor_position; }
+    void OnCursor( Pos p ) { s_cursor_position=p; }
+    void TurnFPS() {  s_show_FPS=!s_show_FPS; s_FPS_position=s_cursor_position; }
     void TurnPaintBoundaries()
     {
         g_PaintWidgetBoundaries = !g_PaintWidgetBoundaries;
@@ -101,7 +101,7 @@ public:
     void NextDebugFunction( Workspace *space )
     {
         int state = 0;
-        state |= __show_FPS << 0;
+        state |= s_show_FPS << 0;
         state |= g_PaintWidgetBoundaries << 1;
 
         switch( state )
@@ -137,11 +137,11 @@ ScreenMan::ScreenMan(Screen &screen, GUIMaster &gui_master)
     _cursor_doubler=_cursor;
     _mouse_buttons_status=false;
  
-    __screen_option1 += 's'; __screen_option1 += 'c'; __screen_option1 += 'r'; __screen_option1 += 'n';
-    __screen_option1 += 'o'; __screen_option1 += 'c'; __screen_option1 += 'r'; __screen_option1 += 'o';
-    __screen_option1 += 's'; __screen_option1 += 's';
+    s_CopyrightProtectionString1 += 's'; s_CopyrightProtectionString1 += 'c'; s_CopyrightProtectionString1 += 'r'; s_CopyrightProtectionString1 += 'n';
+    s_CopyrightProtectionString1 += 'o'; s_CopyrightProtectionString1 += 'c'; s_CopyrightProtectionString1 += 'r'; s_CopyrightProtectionString1 += 'o';
+    s_CopyrightProtectionString1 += 's'; s_CopyrightProtectionString1 += 's';
 
-    SetScreenOption( "s1", "s2" );
+    SetCopyrightProtectionString( "s1", "s2" );
 }
 
 /*! Setup screen manager includes:
@@ -272,12 +272,12 @@ bool ScreenMan::Intersect( const Rect &crop )
     return true;
 }
 
-static __Mutex _mutex;
+static s_Mutex _mutex;
 
 /*! Notice dirty area, which will be repainted during next Advance() */
 void ScreenMan::AcceptDirtyRect(const Rect &r)
 {
-    __Lock guard(_mutex);
+    s_Lock guard(_mutex);
     GetRects(_current_frame)   |= r;
     GetRects(_current_frame+1) |= r;
 }
@@ -289,7 +289,7 @@ void ScreenMan::Advance(int t, int dt)
     assert( IsAttached() );
 
     // Do this if we protect application with red-green cross
-    if (( ((_current_frame - 1) % SCREENMANC1) == (SCREENMANC1-SCREENMANC2) || ((_current_frame - 1) % SCREENMANC1) == 0 ) && ( __screen_option1 != __screen_option2 ))
+    if (( ((_current_frame - 1) % SCREENMANC1) == (SCREENMANC1-SCREENMANC2) || ((_current_frame - 1) % SCREENMANC1) == 0 ) && ( s_CopyrightProtectionString1 != s_CopyrightProtectionString2 ))
     {
         AcceptDirtyRect( Rect(0,0,_screen->GetWidth(),_screen->GetHeight() ));
     }
@@ -298,7 +298,7 @@ void ScreenMan::Advance(int t, int dt)
     bool anything_dirty = false;
     RectList optimized;
 
-    {   __Lock guard(_mutex);
+    {   s_Lock guard(_mutex);
         if ( !_screen->IsValid() ) 
         { return; }
 
@@ -307,7 +307,7 @@ void ScreenMan::Advance(int t, int dt)
             dirty.copy(optimized);
             anything_dirty = true;
 
-#           ifdef __DEBUG_DIRTY__
+#           ifdef s_DEBUG_DIRTYs_
             _screen->SetClipper( Rect(0,0,_screen->GetWidth(),_screen->GetHeight()) );
             _screen->Clear();
 #           endif
@@ -325,18 +325,18 @@ void ScreenMan::Advance(int t, int dt)
         {   DrawCursor();  }
 
 /*-----------------------------------------------------*/
-        if ( __show_FPS )
+        if ( s_show_FPS )
         {
-            _screen->PrintFPS( __FPS_position.x, __FPS_position.y, dt );
+            _screen->PrintFPS( s_FPS_position.x, s_FPS_position.y, dt );
             MemBlock fr(40);
             sprintf( fr.GetPtrC(), "Frame: %i", _current_frame );
-            _screen->PrintText( __FPS_position.x+100, __FPS_position.y, fr.GetPtrC() );
-            _gui_master->GetWorkspace().SetDirty( __FPS_position+Rect(0,0,200,14) );
+            _screen->PrintText( s_FPS_position.x+100, s_FPS_position.y, fr.GetPtrC() );
+            _gui_master->GetWorkspace().SetDirty( s_FPS_position+Rect(0,0,200,14) );
         }
 /*-----------------------------------------------------*/
     
         // Do this if we protect application with red-green cross
-        if ( (_current_frame % SCREENMANC1) >= (SCREENMANC1-SCREENMANC2) && ( __screen_option1 != __screen_option2 ))
+        if ( (_current_frame % SCREENMANC1) >= (SCREENMANC1-SCREENMANC2) && ( s_CopyrightProtectionString1 != s_CopyrightProtectionString2 ))
         {
             _screen->SetClipper( optimized );
             Painter paint( *_screen );
@@ -348,7 +348,7 @@ void ScreenMan::Advance(int t, int dt)
             paint.PaintLine( Pos(16,_screen->GetHeight()-16), Pos(_screen->GetWidth()-16,_screen->GetHeight()-16), 0x8000FF00, 5 );
         }
         _screen->Swap();
-#       ifdef __DEBUG_DIRTY__
+#       ifdef s_DEBUG_DIRTYs_
         Sleep(200);
 #       endif
     }

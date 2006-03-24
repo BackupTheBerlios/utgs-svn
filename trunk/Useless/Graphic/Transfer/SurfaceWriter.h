@@ -27,7 +27,7 @@ class Surface;
  *  \ingroup gGfxAPI
  *  Writes incoming Image data onto Surface !!!! NOW ITS ONLY GENERIC-TRANSFER WRAPPER !!!!
  */
-class SurfaceWriter : public Useless::OGfxFilter
+class USELESS_API SurfaceWriter : public Useless::OGfxFilter
 {
 public:    
     SurfaceWriter(Surface &dest);

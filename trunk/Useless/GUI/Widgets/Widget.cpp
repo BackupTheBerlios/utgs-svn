@@ -78,6 +78,11 @@ Widget::Widget(int): _parent(NULL), _p_environment(NULL), _is_on_top(0),
 #   endif
 }
 
+Widget::Widget( const Widget & )
+{
+    assert( !"Widget cannot be copied !!!" );
+}
+
 Widget::~Widget()
 {
     //assert( !*_parent && "Widget::~Widget(): Widget mustn't be attached");

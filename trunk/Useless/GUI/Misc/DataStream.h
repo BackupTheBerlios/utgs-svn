@@ -10,7 +10,7 @@ namespace Useless {
 //-- It is visitable
 //-- Using AcceptVisitor( Visitor & )
 //-- is the only way to add virtual methods
-class DataObject : public BaseVisitable<>
+class USELESS_API DataObject : public BaseVisitable<>
 {
 public:
     virtual ~DataObject() {}

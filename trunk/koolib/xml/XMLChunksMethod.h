@@ -216,6 +216,68 @@ namespace XMLProgram {
             }
         };
 
+    // Use reference wrappers with def_remap_n to avoid refrence-to-refrence problems
+    template< class _T > struct refrence_wrapper { refrence_wrapper( _T &x ): m_x(x) {} _T &m_x; operator _T &() { return m_x; } };
+    template< class _T > struct const_refrence_wrapper { const_refrence_wrapper( const _T &x ): m_x(x) {} const _T &m_x; operator const _T &() { return m_x; } };
+    template< class _T > struct unknown_refrence_wrapper{ unknown_refrence_wrapper( _T &x ): m_x(x) {} _T &m_x; operator _T &() { return m_x; } };
+    template< class _T > struct unknown_const_refrence_wrapper { unknown_const_refrence_wrapper( const _T &x ): m_x(x) {} const _T &m_x; operator const _T &() { return m_x; } };
+
+    template< class _T > IChunk *make_value_chunk( const refrence_wrapper< _T > &ref )
+    {
+        return make_value_chunk( ref.m_x );
+    }
+
+    template< class _T > IChunk *make_value_chunk( const const_refrence_wrapper< _T > &ref )
+    {
+        return make_value_chunk( ref.m_x );
+    }
+
+    template< class _T > struct UnknownChunk_byReference : IChunk
+    {
+        _T &m_ref; UnknownChunk_byReference( _T &ref ): m_ref( ref ) {}
+    };
+
+    template< class _T > struct UnknownChunk_byReferenceConst : IChunk
+    {
+        const _T &m_ref; UnknownChunk_byReferenceConst( const _T &ref ): m_ref( ref ) {}
+    };
+
+    template< class _T > struct UnknownChunk_byPointer : IChunk
+    {
+        _T *m_ptr; UnknownChunk_byPointer( _T *ptr ): m_ptr( ptr ) {}
+    };
+
+    template< class _T > struct UnknownChunk_byPointerConst : IChunk
+    {
+        const _T *m_ptr; UnknownChunk_byPointerConst( const _T *ptr ): m_ptr( ptr ) {}
+    };
+
+    template< class _T > IChunk *make_value_chunk( const unknown_refrence_wrapper< _T > &ref )
+    {
+        return new UnknownChunk_byReference< _T >( ref.m_x );
+    }
+
+    template< class _T > IChunk *make_value_chunk( const unknown_const_refrence_wrapper< _T > &ref )
+    {
+        return new UnknownChunk_byReferenceConst< _T >( ref.m_x );
+    }
+
+    // @TODO: Works only if template specialization is supported !!!
+    template< class _T > struct argument_traits< unknown_const_refrence_wrapper< _T > >
+    {
+        static const _T & get( const TextAnsi &name, Node node, ExecutionState &state )
+        {
+            IChunkPtr pChunk = GetChunk( name, state );
+            UnknownChunk_byReferenceConst< _T > *pConst = dynamic_cast< UnknownChunk_byReferenceConst< _T > * >( pChunk.get() );
+            if ( 0 == pConst )
+            {
+                throw Useless::Error("UnknownChunk_byReferenceConst< %s > expected", typeid(_T).name());
+            }
+            return pConst->m_ref;
+        }
+    };
+
+
     template< class _Ret, class _Cl >
         struct unconst_method_0
         {

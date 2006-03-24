@@ -29,7 +29,7 @@ namespace Useless {
  *  Window specialized in DirectDraw.
  *  It also gives DirectInput features.
  */
-class DDrawWindow : virtual public Window
+class USELESS_API DDrawWindow : virtual public Window
 {
 public:
     DDrawWindow(const char *title="IAV Game");

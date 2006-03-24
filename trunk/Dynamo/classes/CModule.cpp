@@ -1,4 +1,5 @@
 #include "Dynamo/classes/CInterfaceProvider.h"
+#include "Useless/UselessConfig.h"
 #include "koolib/DynamicModule.h"
 
 namespace Dynamo {

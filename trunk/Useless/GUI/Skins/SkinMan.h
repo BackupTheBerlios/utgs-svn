@@ -25,7 +25,7 @@ class Widget;
 /*! \ingroup Skins
  *  Abstract class for skin manager.
  */
-class SkinMan
+class USELESS_API SkinMan
 {
 public:
     virtual ~SkinMan() {}

@@ -18,13 +18,13 @@ namespace Useless {
  */
 
 /*! Visitable None data type */
-struct DT_None : public Useless::DataObject
+struct USELESS_API DT_None : public Useless::DataObject
 {
     DataObject *CloneData() const { return new DT_None(); }
 };
 
 /*! Visitable Image data type */
-struct DT_Image : public DataObject, public Image
+struct USELESS_API DT_Image : public DataObject, public Image
 {
     DEFINE_CYCLIC_VISITABLE(DataObject);
     DT_Image( const Image &i, int placement=50 ): Image(i), _placement(placement) {}
@@ -33,7 +33,7 @@ struct DT_Image : public DataObject, public Image
 };
 
 /*! Visitable Text data type */
-struct DT_Text : public DataObject, public Text
+struct USELESS_API DT_Text : public DataObject, public Text
 {
     DEFINE_CYCLIC_VISITABLE(DataObject);
     DT_Text( const Text &t, int placement=0 ): Text(t), _placement(placement) {}
@@ -42,7 +42,7 @@ struct DT_Text : public DataObject, public Text
 };
 
 /*! Visitable association name => value */
-struct DT_PayEntry : public DataObject
+struct USELESS_API DT_PayEntry : public DataObject
 {
     DEFINE_CYCLIC_VISITABLE(DataObject);
 
@@ -64,7 +64,7 @@ struct DT_PayEntry : public DataObject
 };
 
 /*! Visitable association name => (value[0], value[1], ...) */
-struct DT_PayEntries : public DataObject
+struct USELESS_API DT_PayEntries : public DataObject
 {
     DEFINE_CYCLIC_VISITABLE(DataObject);
 
@@ -86,7 +86,7 @@ struct DT_PayEntries : public DataObject
 };
 
 /*! Visitable formated data stream */
-struct DT_SingleRow : public DataObject
+struct USELESS_API DT_SingleRow : public DataObject
 {
     DEFINE_CYCLIC_VISITABLE(DataObject);
 
@@ -106,7 +106,7 @@ struct DT_SingleRow : public DataObject
 
 
 /*! DataStream constructor */
-struct DataStreamer : Useless::DataStream
+struct USELESS_API DataStreamer : Useless::DataStream
 {
     DataStreamer()
     {}

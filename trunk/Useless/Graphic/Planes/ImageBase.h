@@ -11,7 +11,7 @@ namespace Useless {
  *  Base for all surface based IGraphics
  *  Cannot be instantiated alone
  */
-class ImageBase : public IGraphics
+class USELESS_API ImageBase : public IGraphics
 {
 public:
     ImageBase   ();

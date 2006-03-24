@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-    class GLSurfacePainter : public SurfacePainter
+    class USELESS_API GLSurfacePainter : public SurfacePainter
     {
     public:
         GLSurfacePainter( GLContextSurface *surf )

@@ -8,7 +8,7 @@
 namespace Useless {
 
 //typedef TemplateWidget< TextField, NumericEditLogic > NumericField;
-class NumericField : public TextField, virtual public NumericEditLogic
+class USELESS_API NumericField : public TextField, virtual public NumericEditLogic
 {
 public:
     NumericField( int w, int h, const FontSet &fonts, const SkinMan &skins, const Text &text )

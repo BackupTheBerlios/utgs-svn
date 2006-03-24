@@ -4,7 +4,7 @@
 namespace Useless {
 
 // Quit may be thrown to suddenly exit application
-class Quit
+class USELESS_API Quit
 {
 public:
     Quit( int level=0x0 ): _level(level) {}

@@ -18,22 +18,32 @@
 //#include "unused Threads/Lock.h"
 
 namespace Useless {
-        
+
 template< class T>
-class CreateUsingNew
+class CreateUsing_
 {
-    public:    
-        static T* Create(){ return new T; }
-        static void Destroy(T * pt) { delete pt; }
+    public:
+		CreateUsing_() {}
+		~CreateUsing_() {}
+        virtual T* Create()	= 0;
+        virtual void Destroy(T * pt) = 0;
+};
+
+template< class T>
+class CreateUsingNew : public CreateUsing_< T >
+{
+    public:
+        T* Create()			 { return new T; }
+        void Destroy(T * pt) { delete pt; }
 };
 
 
 template< class T>
-class CreateUsingMalloc
+class CreateUsingMalloc : public CreateUsing_< T >
 {
     public:    
-        static T* Create(){ return malloc( sizeof(T) ); }
-        static void Destroy(T * pt) { free(pt); }
+        T  * Create()		 { return (T*)malloc( sizeof(T) ); }
+        void Destroy(T * pt) { free(pt); }
 };
 
 /*! \ingroup Util
@@ -47,34 +57,43 @@ class Singleton
         {
             //static Mutex _mutex;
             //Lock guard(_mutex);
-            if (!pInstance)
+            if (! Exists() )
             {
-                pInstance = CreationPolicy::Create();    
+                InstancePtr() = CreationPolicy().Create();    
             }
-            return (*pInstance);
+            return (*InstancePtr());
         }        
 
         static void Kill()
         {
-            CreationPolicy::Destroy(pInstance); pInstance=0;
+            CreationPolicy().Destroy( InstancePtr() );
+            InstancePtr() = 0;
         }
 
         static void SafeKill()
         {
-            if (!!pInstance)
-            CreationPolicy::Destroy(pInstance); pInstance=0;
+            if ( Exists() )
+            {
+                CreationPolicy().Destroy( InstancePtr() );
+                InstancePtr() = 0;
+            }
         }
 
-        static bool Exists() { return !!pInstance; }
+        static bool Exists()
+        {
+            return !!InstancePtr();
+        }
 
         typedef T type;
+        typedef T * pointer;
+	typedef CreationPolicy creation_policy;
 
     private:
         Singleton();
         Singleton(const Singleton&);
         Singleton& operator=(const Singleton&);
         ~Singleton();
-        static  T * pInstance;
+        static pointer & InstancePtr();
 };
 
 }; // namespace Useless

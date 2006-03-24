@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class MultiChannel
+class USELESS_API MultiChannel
 {
 public:
     ~MultiChannel();

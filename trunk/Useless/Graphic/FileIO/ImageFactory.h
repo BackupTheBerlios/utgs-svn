@@ -22,6 +22,7 @@
 #include "Useless/Graphic/FileIO/ImageLoader.h"
 #include "Useless/Graphic/FileIO/ImageSaver.h"
 #include "Useless/Util/SPointer.h"
+#include "Useless/Util/PreInitializer.h"
 
 namespace Useless {
 
@@ -36,7 +37,7 @@ namespace Useless {
  *  The file is then tried to be recognized by any loader,
  *  If found any compatibile loader, this loader is created and returned.
  */
-class ImageFactory
+class USELESS_API ImageFactory
 {
 public:
     static void Init() { _entries = new Entries; }
@@ -66,17 +67,7 @@ private:
     friend class InitImageFactory;
 };
 
-class InitImageFactory
-{
-public:
-    InitImageFactory()  { if (_count++ == 0) ImageFactory::Init(); }
-    ~InitImageFactory() { if (--_count == 0) ImageFactory::Destroy(); }
-
-private:
-    static int _count;
-};
-
-static InitImageFactory init_image_factory;
+DECLARE_PREINITIALIZER( ImageFactory, ImageFactory, USELESS_API );
 
 };
 #endif __INCLUDED_USELESS_IMAGE_FACTORY__

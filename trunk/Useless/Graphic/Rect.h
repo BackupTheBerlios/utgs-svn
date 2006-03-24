@@ -37,7 +37,7 @@ namespace Useless
  *  \li operator *,/ (Rect) - multiply or divide lexycographically
  *  \li Align (Rect) - align self to Rect using one out of 9 alignments
  */
-class Rect
+class USELESS_API Rect
 {
 public:
     int x, y, w, h;

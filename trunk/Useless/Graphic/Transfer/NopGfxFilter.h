@@ -19,7 +19,7 @@
 
 namespace Useless {
 
-class NopGfxFilter : public OGfxFilter, public IGfxFilter
+class USELESS_API NopGfxFilter : public OGfxFilter, public IGfxFilter
 {
 public:
     virtual void SetSize( int w, int h, int d ) {}

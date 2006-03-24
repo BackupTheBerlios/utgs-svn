@@ -1,13 +1,14 @@
 #ifndef __INCLUDED_USELESS_VIDEO_H__
 #define __INCLUDED_USELESS_VIDEO_H__
 
+#include "Useless/UselessConfig.h"
 #include "Useless/Graphic/Planes/ImageBuffer.h"
 
 namespace Useless {
 
 /*! Abstract for video playback rendered onto Surface
  */
-class Video
+class USELESS_API Video
 {
 public:
     virtual ~Video() {}

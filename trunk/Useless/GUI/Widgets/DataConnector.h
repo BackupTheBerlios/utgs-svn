@@ -15,7 +15,7 @@ namespace Useless {
  *
  *  Database uses it to notify about changes
  */
-class DataConnector
+class USELESS_API DataConnector
 {
 public:
     // make sure we are polymorphic

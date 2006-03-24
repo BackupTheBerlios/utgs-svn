@@ -8,7 +8,7 @@ namespace Useless {
 
 /*! SurfacePainter is software implementation of painting onto a Surface
  */
-class SurfacePainter
+class USELESS_API SurfacePainter
 {
 public:
     virtual ~SurfacePainter() {}

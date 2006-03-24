@@ -23,7 +23,7 @@
 namespace Useless {
 
 
-class ClipList
+class USELESS_API ClipList
 {
 public:
     ClipList() {}

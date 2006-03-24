@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Relations
  *  Relations are some shemes. They tie-on widgets together.
  */
-class Relation
+class USELESS_API Relation
 {
 public:
     Relation() {}

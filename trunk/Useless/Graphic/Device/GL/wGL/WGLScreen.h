@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-    class WGLScreen : public Screen
+    class USELESS_API WGLScreen : public Screen
     {
         public:
             /* Screen overloads

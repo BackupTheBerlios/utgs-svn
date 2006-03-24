@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  TextWidget paints a single line text with one font.
  */
-class BaseTextWidget : virtual public FontWidget
+class USELESS_API BaseTextWidget : virtual public FontWidget
 {
 public:
     BaseTextWidget(const Font &font, const Text &text="...");

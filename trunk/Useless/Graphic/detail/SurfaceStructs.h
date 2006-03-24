@@ -28,7 +28,7 @@ struct Ptr
 
 /*! Simple description of image: WIDTH x HEIGHT x DEPTH
  */
-class Format
+class USELESS_API Format
 {
 public:
     Format();
@@ -45,7 +45,7 @@ public:
  *  Used to set parameters of newly created surface,
  *  or to obtain current surface parameters.
  */
-class Properties : public Format
+class USELESS_API Properties : public Format
 {
 public:
     Properties();
@@ -80,7 +80,7 @@ public:
  *
  *  Used to setup blit technique
  */
-class BlitFX
+class USELESS_API BlitFX
 {
 public:
     BlitFX();

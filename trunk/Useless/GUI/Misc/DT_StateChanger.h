@@ -8,7 +8,7 @@ namespace Useless {
 /*! Data Types Display State Changer - changes state of given DT instance
  *  -- Currently there are no data types supported --
  */
-class DT_StateChanger :
+class USELESS_API DT_StateChanger :
     public Visitor< DataObject >
 {
 public:

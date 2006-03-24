@@ -14,7 +14,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  Interface for \a Widget skins.
  */
-class Skin : public BaseVisitable<>
+class USELESS_API Skin : public BaseVisitable<>
 {
 public:
              Skin();

@@ -1,5 +1,5 @@
-#include "Useless/File/Hatchery.h"
-#include "Useless/HatcheryConfig.h"
+#include "Useless/UselessConfig.h"
+
 #undef GetFirstChild
 
 /* Include media I/Os
@@ -26,6 +26,7 @@
 
 #include "Useless/File/VIFS.h"
 #include "Useless/File/StdOFile.h"
+#include "Useless/Util/Crypto.h"
 
 #include "Useless/Util/XMLTag.h"
 
@@ -168,6 +169,7 @@ namespace XMLProgram {
                 .def("CreateVideo", CreateVideo, "file")
                 .def("CreateMovie", CreateMovie, "file")
                 .def("CreateMovie2", CreateMovie2, "file", "audio")
+                .def("CreateFontPainter", CreateFontPainter )
                 .def("IsDir", IsDir, "path")
                 .def("FileExists", FileExists, "path")
                 .def("ListFiles", ListFiles, "path")
@@ -296,7 +298,33 @@ namespace XMLProgram {
 
         void USELESS_TK::CreatePrinter( Node node, ExecutionState &state )
         {
-            state.SetResult( new GDIPrinterProxy( CreateGDIPrinter() ));
+            Attr< std::string, false, char > _paperSize("paperSize");
+            Attr< std::string, false, char > _paperOrient("paperOrient");
+            GetAttr( _paperSize, node, state );
+            GetAttr( _paperOrient, node, state );
+            int paperSize = DMPAPER_A4;
+            int paperOrient = DMORIENT_PORTRAIT;
+            if ( "Landscape" == _paperOrient.str() )
+            {
+                paperOrient = DMORIENT_LANDSCAPE;
+            }
+            typedef std::map< std::string, int > Name2Int;
+            static Name2Int s_PaperSizes;
+            if ( s_PaperSizes.empty() )
+            {
+                s_PaperSizes["Letter"] = DMPAPER_LETTER;
+                s_PaperSizes["Legal"] = DMPAPER_LEGAL;
+                s_PaperSizes["A3"] = DMPAPER_A3;
+                s_PaperSizes["A3 Rotated"] = DMPAPER_A3_ROTATED;
+                s_PaperSizes["A4"] = DMPAPER_A4;
+                s_PaperSizes["A4 Rotated"] = DMPAPER_A4_ROTATED;
+                s_PaperSizes["B5"] = DMPAPER_B5;
+                s_PaperSizes["Letter Rotated"] = DMPAPER_LETTER_ROTATED;
+                s_PaperSizes["Letter Small"] = DMPAPER_LETTERSMALL;
+            }
+            Name2Int::iterator foundSize = s_PaperSizes.find( _paperSize.str() );
+			if ( s_PaperSizes.end() != foundSize ) { paperSize = (*foundSize).second; }
+            state.SetResult( new GDIPrinterProxy( CreateGDIPrinter( paperSize, paperOrient ) ));
         }
 
         void USELESS_TK::CreateImage( Node node, ExecutionState &state )
@@ -403,11 +431,34 @@ namespace XMLProgram {
             return CreateBlock();
         }
 
-        IChunkPtr USELESS_TK::CreateMovie2( std::string fileName, std::wstring audioName )
+        IChunkPtr USELESS_TK::CreateMovie2( std::string fileName, TextUtf8 audioName )
         {
             return CreateBlock();
         }
 #endif
+            
+        void USELESS_TK::CreateFontPainter( Node node, ExecutionState &state )
+        {
+            FontPainter fp;
+            IChunkPtr pFont = XMLProgram::GetChunk( L"font", state );
+            IChunkPtr pText = XMLProgram::GetChunk( L"text", state );
+            IChunkPtr pWidth = XMLProgram::GetChunk( L"width", state );
+            if ( !!pFont )
+            {
+                fp.SetFont( argument_traits< const Useless::Font & >::get("font", node, state ));
+            }
+            if ( !!pText )
+            {
+                fp.SetText( value_of< TextUtf8 >( pText ));
+            }
+            if ( !!pWidth )
+            {
+                fp.SetWidth( value_of< int >( pWidth ));
+            }
+            state.SetResult( new FontPainterProxy( fp ));
+        }
+
+
 
         struct scan_dir_function : Functor_3< const std::string &, Types::QUAD, bool >
         {
@@ -454,17 +505,8 @@ namespace XMLProgram {
             else
             {
                 std::string &s = stringData;
-                HatcheryCipher::Out encFile( outFile, __key );
-                int remainAlgn = s.length() % HatcheryCipher::BLOCKSIZE;        
-                if ( 0 != remainAlgn )
-                {
-                    int toAlign = HatcheryCipher::BLOCKSIZE - remainAlgn;
-                    while ( 0 < toAlign-- )
-                    {
-                        s += '\n';
-                    }
-                }
-                encFile.Write( s.c_str(), s.length() );
+                AlignForEncryption( s );
+                CreateEncryptedOFile( outFile )->Write( s.c_str(), s.length() );
             }
         }
 
@@ -494,7 +536,7 @@ namespace XMLProgram {
             SPointer< IFile > inFile = IFS::Instance().OpenFile( atFile.str() );
             if ( GetAttr( atEncr, node, state ) && 1 == *atEncr )
             {
-                inFile = new Useless::HatcheryCipher::In( inFile, Useless::__key );
+				inFile = CreateEncryptedIFile( inFile );
             }
             size_t size = inFile->GetLen();
             XMLValueChunk< std::string > *pData = new XMLValueChunk< std::string >();
@@ -571,6 +613,8 @@ namespace XMLProgram {
                 .def("GetScreen", GetScreen, "name" )
                 .def("GetImage", GetImage, "name" )
                 .def("GetSample", GetSample, "name" )
+                .def("GetFont", GetFont, "name" )
+                .def("GetSkin", GetSkin, "name" )
                 .def("GetWidget", GetWidget, "name" )
                 .def("GetLayout", GetLayout, "name" )
                 .def("GetWorkspace", GetWorkspace, "name" )
@@ -592,6 +636,16 @@ namespace XMLProgram {
         IChunkPtr USELESS_RESOURCES::GetSample( std::string name )
         {
             return new SampleProxy( *SampleResource("sounds", name ));
+        }
+        
+        IChunkPtr USELESS_RESOURCES::GetFont   ( std::string name )
+        {
+            return new FontProxy( *FontResource("fonts", name ));
+        }
+        
+        IChunkPtr USELESS_RESOURCES::GetSkin   ( std::string name )
+        {
+            return new SkinProxy( **SkinResource("skins", name ));
         }
 
         IChunkPtr USELESS_RESOURCES::GetWidget( std::string name )
@@ -646,11 +700,13 @@ namespace XMLProgram {
 
     USELESS_XML_TAG_DICT_DEFINE( xtdImportUseless, ExecutionState );
 
-#ifdef USELESS_HAS_CRYPTOPP
+// not in cryptopp DLL
+#ifdef KOOLIB_WITH_SIMPLE_IPC //USELESS_HAS_CRYPTOPP
 #   define ADDREG_SIMPLE_IPC() .AddReg< XML_IMPORT::SIMPLE_IPC >("SimpleIPC")
 #else
 #   define ADDREG_SIMPLE_IPC()
 #endif
+
     
     static USELESS_XML_TAG_DICT_Extend( xtdImportUseless, ExecutionState, BasicProgram,
             .AddReg< XML_IMPORT::USELESS_TK >("Toolkit")

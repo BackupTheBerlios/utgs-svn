@@ -1,6 +1,7 @@
 #ifndef __INCLUDED__DECODER_H__
 #define __INCLUDED__DECODER_H__
 
+#include "Useless/UselessConfig.h"
 #include "Useless/File/IFile.h"
 #include "Useless/Sound/Device/SoundCard.h"
 #include "Useless/Sound/SampleStream.h"
@@ -20,7 +21,7 @@ namespace Useless {
 
 /*! Decode Ogg Vorbis stream
 */
-class OggVorbisDecoder
+class USELESS_API OggVorbisDecoder
 {
 public:
     OggVorbisDecoder( IFile &input_file );

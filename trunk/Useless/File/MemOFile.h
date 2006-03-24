@@ -31,7 +31,7 @@ namespace Useless {
 /*! \class MemOFile
  *  Used as buffer for some save actions
  */
-class MemOFile : public OFile
+class USELESS_API MemOFile : public OFile
 {
 public:
     MemOFile(int size);

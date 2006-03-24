@@ -9,7 +9,7 @@ namespace Useless {
 /*! \ingroup gDisplay
  *  Cursor shape form Image.
  */
-class ImageCursor : public MouseCursor
+class USELESS_API ImageCursor : public MouseCursor
 {
 public:
     ImageCursor() {}

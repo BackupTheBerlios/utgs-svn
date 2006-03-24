@@ -9,7 +9,7 @@ namespace Useless {
     /*! \ingroup Widgets
      *  Widget with state information.
      */
-    class EnumWidget : virtual public Widget, virtual public IWEnum
+    class USELESS_API EnumWidget : virtual public Widget, virtual public IWEnum
     {
         public:
             EnumWidget():

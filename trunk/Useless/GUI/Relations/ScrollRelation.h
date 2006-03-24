@@ -11,7 +11,7 @@ namespace Useless {
  *  ScrollRelation creates relation between ScrolledWidget and ScrollbarWidget.
  *  Direction of scroll (horizontal|vertical) is obtained from scrollbar orientation.
  */
-class ScrollRelation : public Relation
+class USELESS_API ScrollRelation : public Relation
 {
 public:
     ScrollRelation( IWScrollee &scrollee, IWScrollbar &scroller, bool use_mouse_wheel=false);

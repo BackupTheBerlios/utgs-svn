@@ -31,7 +31,7 @@ namespace Useless {
  *
  * "\020[d:10]some text" - add 10 pixel gap
  */
-class PreformatedText : public Text
+class USELESS_API PreformatedText : public Text
 {
 public:
     PreformatedText();

@@ -19,7 +19,7 @@ namespace Useless {
  *  A SizerWidget is a frame divided to rows or columns.
  *  It stores and aligns widgets inside cells.
  */
-class SizerWidget : private HubWidget, virtual public Widget, public IWSizer
+class USELESS_API SizerWidget : private HubWidget, virtual public Widget, public IWSizer
 {
 public:
     SizerWidget( const ArraySkin &skin );

@@ -11,7 +11,7 @@ namespace Useless {
 /*! SampleFile is a Sample built from sound file
  *  Use it for sound effects
 */
-class SampleFile : public Sample
+class USELESS_API SampleFile : public Sample
 {
 public:
     SampleFile() {}

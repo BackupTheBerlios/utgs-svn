@@ -9,7 +9,7 @@ namespace Useless {
 
 /*! Kind of LogicWidget that paints skin
  */
-class FacedWidget : virtual public LogicWidget
+class USELESS_API FacedWidget : virtual public LogicWidget
 {
 public:
     FacedWidget( const SkinMan &skinman_copy );

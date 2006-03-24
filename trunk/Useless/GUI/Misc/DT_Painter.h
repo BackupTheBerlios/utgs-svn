@@ -8,7 +8,7 @@ namespace Useless {
 /*! Data Types Painter - paints given DT in given position
  *  Should be instatiated only temporarly (as inline)
  */
-class DT_Painter :
+class USELESS_API DT_Painter :
     public Visitor< DataObject >,
     public Visitor< DT_Text >,
     public Visitor< DT_Image >,

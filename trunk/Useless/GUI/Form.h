@@ -9,7 +9,7 @@ class ActiveWidget; //W/A
 
 /*! Form manages input focus.
  */
-class Form
+class USELESS_API Form
 {
 public:
     virtual ~Form() {}

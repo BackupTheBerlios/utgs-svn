@@ -4,6 +4,6 @@
 
 namespace Useless {
 
-INIT_SINGLETON(NullWidgetInstance);
+INIT_SINGLETON( NullWidgetInstance, USELESS_API );
 
 };//namespace Useless

@@ -23,7 +23,7 @@ namespace Useless {
 /*! \ingroup ImgIO
  *  Loads TGA files.
  */
-class BMPLoader : public ImageLoader
+class USELESS_API BMPLoader : public ImageLoader
 {
 public:
     virtual void Load ( IFile &ifile, OGfxFilter &filter );

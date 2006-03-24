@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class ActiveAreaWidget : public ActiveWidget
+class USELESS_API ActiveAreaWidget : public ActiveWidget
 {
 public:
     /////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class FillRelation : public Relation
+class USELESS_API FillRelation : public Relation
 {
 public:
     FillRelation( Widget &widget, const Rect &padding = Rect(0,0,0,0));

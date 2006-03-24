@@ -8,7 +8,7 @@ namespace Useless {
 //USES
     class TextButtonStyle;
 
-class TextButtonWidget : public CaptionButton
+class USELESS_API TextButtonWidget : public CaptionButton
 {
 public:
     TextButtonWidget( const TextButtonStyle &style, const Text &title="...");

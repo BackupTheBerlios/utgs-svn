@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class HiliteLogic : virtual public ActiveWidget, virtual private LogicWidget
+class USELESS_API HiliteLogic : virtual public ActiveWidget, virtual private LogicWidget
 {
 public:
     HiliteLogic();

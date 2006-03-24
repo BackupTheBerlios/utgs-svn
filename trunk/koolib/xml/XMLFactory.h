@@ -120,9 +120,10 @@
 #ifndef __INCLUDED_XML_FACTORY_H__
 #define __INCLUDED_XML_FACTORY_H__
 
+#include "Useless/UselessConfig.h"
 #include "Useless/XML/XMLParser.h"
 #include "Useless/Util/XMLTag.h"
-#include "koolib/TemplateConfig.h"
+#include "koolib/koolibConfig.h"
 #include "koolib/TextUTF8.h"
 #include "koolib/FourCC.h"
 
@@ -641,7 +642,7 @@ namespace XMLFactory {
 };//XMLFactory
 
 #define USELESS_XML_TAG_DICT_DECLARE( _name, _ExecutionState ) \
-XMLFactory::XMLTagDict< _ExecutionState > & _name##SingleInstance();\
+KOOLIB_API XMLFactory::XMLTagDict< _ExecutionState > & _name##SingleInstance();\
 static XMLFactory::XMLTagDict< _ExecutionState > &_name = _name##SingleInstance();
 
 

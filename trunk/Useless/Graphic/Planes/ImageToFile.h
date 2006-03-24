@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class ImageToFile
+class USELESS_API ImageToFile
 {
 public:
     static void Store( const Surface     &surface, 

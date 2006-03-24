@@ -53,6 +53,25 @@ struct GraphicVirtualMachine1 : CInterface
     GraphicVirtualMachine1( IInterfaceProvider *provider, IXmlProgram *prog, IXmlScope *scope )
     {
         m_provider  =   provider;
+       
+        /*
+        m_graphics  = m_provider->ProvideIGraphics();
+        Hand< IGraphicPlane > image1 = m_graphics->GetImage("image1");
+        Hand< IPixelReader > rdr1 = image1->ProvideIPixelReader();
+        void *data = new char[ image1->GetWidth() * image1->GetHeight() * 4 ];
+        rdr1->ReadPixels( data, 32, 4 * image1->GetWidth(), Rect4i(0,0, image1->GetWidth(), image1->GetHeight()), ColorMode::RGBA );
+
+        struct GLPixelWriter : IPixelWriter
+        {
+            void WritePixels( void *data, int bits, int pitch, Rect4i area )
+            {
+                TexSubImage2D( ... data);
+            }
+            
+        } wrt;
+        m_graphics->LoadImage("image1.tga", &wrt );
+        */
+                
         m_gui   =   m_provider->ProvideIGui();
         m_desktop = m_gui->GetWidget("gui.desktop");
         m_area1 =   m_gui->GetWidget("gui.desktop.minimap");

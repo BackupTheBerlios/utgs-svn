@@ -39,7 +39,7 @@ namespace XMLProgram {
 
         */
 
-        struct USELESS_TK : XMLCodeBlock
+        struct KOOLIB_BIND_API USELESS_TK : XMLCodeBlock
         {
             SPointer< SoundCard > _soundcard;
             SPointer< Screen >    _screen;
@@ -64,6 +64,7 @@ namespace XMLProgram {
             IChunkPtr   CreateVideo     ( std::string fileName );
             IChunkPtr   CreateMovie     ( std::string fileName );
             IChunkPtr   CreateMovie2    ( std::string fileName, TextUtf8 audioName );
+            void        CreateFontPainter( Node node, ExecutionState &state );
 
             int       IsDir( std::string path );
             int       FileExists( std::string path );
@@ -84,13 +85,15 @@ namespace XMLProgram {
 
         */
 
-        struct USELESS_RESOURCES : XMLCodeBlock
+        struct KOOLIB_BIND_API USELESS_RESOURCES : XMLCodeBlock
         {
             USELESS_RESOURCES( Node node, ExecutionState &state );
 
             IChunkPtr GetScreen ( std::string name );
             IChunkPtr GetImage  ( std::string name );
             IChunkPtr GetSample ( std::string name );
+            IChunkPtr GetFont   ( std::string name );
+            IChunkPtr GetSkin   ( std::string name );
             IChunkPtr GetWidget ( std::string name );
             IChunkPtr GetLayout ( std::string name );
             IChunkPtr GetWorkspace( std::string name );

@@ -5,6 +5,9 @@
 #include "Useless/GUI/Widgets/SkinManagedWidget.h"
 #include "Useless/GUI/Skins/CaptionSkin.h"
 
+//warning C4311: 'type cast' : pointer truncation from 'Useless::Widget *' to 'int'
+#pragma warning(disable:4311)
+
 namespace Useless {
 //@todo: SkinnedHints have very similar code - unification of code
 

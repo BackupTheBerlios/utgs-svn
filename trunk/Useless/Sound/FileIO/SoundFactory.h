@@ -17,7 +17,7 @@ enum SampleTypes
     WAVE, IFF, SND 
 };
 
-class __SoundFactory
+class USELESS_API __SoundFactory
 {
 public:
     void Register( int st_id, bool         (*recognize)(IFile&,Snd::Format*) );
@@ -40,7 +40,7 @@ private:
     SoundCreatorMap _sound_creators;
 };
 
-DECLARE_SINGLETON(__SoundFactory, SoundFactory);
+DECLARE_SINGLETON(__SoundFactory, SoundFactory, USELESS_API);
 
 };//namespace Useless
 #endif//__INCLUDED__USELESS_SOUND_FACTORY_H__

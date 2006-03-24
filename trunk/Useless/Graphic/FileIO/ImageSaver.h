@@ -22,7 +22,7 @@ namespace Useless {
 /*! \ingroup ImgIO
  *  Abstract for saving images of many different types
  */
-class ImageSaver
+class USELESS_API ImageSaver
 {
 public:
     virtual ~ImageSaver() {}

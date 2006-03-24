@@ -27,7 +27,7 @@ namespace Useless {
  *
  *  Generalized Win32 Window
  */
-class Window
+class USELESS_API Window
 {
 public:
     Window(const char *title="IAV Game");

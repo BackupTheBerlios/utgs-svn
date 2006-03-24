@@ -1,16 +1,18 @@
 #ifndef __INCLUDED_USELESS_CAUDIO_RENDER_H__
 #define __INCLUDED_USELESS_CAUDIO_RENDER_H__
 
-#include "strmbase/streams.h"
+#include "Useless/UselessConfig.h"
 #include "Useless/Sound/Device/SampleData.h"
 #include "Useless/Sound/SampleStream.h"
 #include "Useless/Util/Shares.h"
 
+#include "strmbase/streams.h"
+
 namespace Useless{
 
-struct __declspec(uuid("{7E7B5575-911E-449c-81EA-FD3D2B1450D4}")) CLSID_AudioRenderer;
+struct USELESS_API __declspec(uuid("{7E7B5575-911E-449c-81EA-FD3D2B1450D4}")) CLSID_AudioRenderer;
 
-class CAudioRender : public CBaseRenderer
+class USELESS_API CAudioRender : public CBaseRenderer
 {
 public:
     CAudioRender();

@@ -7,11 +7,11 @@
 
 namespace Useless {
 
-Resource* CreateText( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateText( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_text( "texts::text", CreateText );
 static RegisterXMLCreator reg_create_dt_text( "texts::dt_text", CreateText );
 
-Resource* ResolveParentGroup( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* ResolveParentGroup( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_resolve_parent_group( "texts::group", ResolveParentGroup );
 
 /* Query methods
@@ -33,9 +33,9 @@ inline DT_Text& QueryDTText( const std::string &id )
 
 /* Helper methods
 ----------------------------------------------------------------------*/
-void BeginParentGroup( XMLCreatorEnv *env, const char* &name, XMLCreatorEnv &ch_env );
+USELESS_RESOURCES_API void BeginParentGroup( XMLCreatorEnv *env, const char* &name, XMLCreatorEnv &ch_env );
 
-Text MakeText( const Text &input );
+USELESS_RESOURCES_API Text MakeText( const Text &input );
 
 
 }; // namespace Useless

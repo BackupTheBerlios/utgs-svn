@@ -75,7 +75,7 @@
 
 namespace Useless {
 
-class Signal 
+class USELESS_API Signal 
 {
 public:
     Signal();

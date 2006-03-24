@@ -11,7 +11,7 @@
 namespace Useless
 {
 
-class ListedTextItems : virtual public MultiItemLogic
+class USELESS_API ListedTextItems : virtual public MultiItemLogic
 {
 public:
 

@@ -1,5 +1,6 @@
 #include "Dynamo/classes/CInterfaceProvider.h"
 
+#include "Useless/UselessConfig.h"
 #include "Useless/XML/Resources/CreateGUIResources.h"
 #include "Useless/Graphic/Planes/TransparentImage.h"
 #include "Useless/Graphic/FileIO/ImageFactory.h"

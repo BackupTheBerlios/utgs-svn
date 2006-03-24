@@ -24,7 +24,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Simple Image Widget.
  */
-class ImageWidget : virtual public Widget
+class USELESS_API ImageWidget : virtual public Widget
 {
 public:
 #   include "ImageWidget.inl" // ParmList Ctor

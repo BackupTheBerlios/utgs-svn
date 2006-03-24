@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-struct GUIBinder
+struct USELESS_RESOURCES_API GUIBinder
 {
     struct BindDef
     {

@@ -38,6 +38,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cryptlib", "..\..\CryptoPP\
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launcher", "Launcher\Launcher.vcproj", "{2801ECDB-69D4-4834-81CB-751C14780E11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{79336AED-098F-4380-8DCE-BAFA1B0D0BB2} = {79336AED-098F-4380-8DCE-BAFA1B0D0BB2}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -110,6 +115,14 @@ Global
 		{B47DE02B-E59B-4D00-A397-9BBFBFDFC65F}.DLL-Import Release.Build.0 = DLL-Import Release|Win32
 		{B47DE02B-E59B-4D00-A397-9BBFBFDFC65F}.Release.ActiveCfg = Release|Win32
 		{B47DE02B-E59B-4D00-A397-9BBFBFDFC65F}.Release.Build.0 = Release|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.Debug.ActiveCfg = Debug|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.Debug.Build.0 = Debug|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.DLL-Import Debug.ActiveCfg = Debug|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.DLL-Import Debug.Build.0 = Debug|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.DLL-Import Release.ActiveCfg = Release|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.DLL-Import Release.Build.0 = Release|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.Release.ActiveCfg = Release|Win32
+		{2801ECDB-69D4-4834-81CB-751C14780E11}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

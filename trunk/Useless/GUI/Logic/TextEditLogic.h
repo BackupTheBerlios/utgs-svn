@@ -13,7 +13,7 @@ struct CharValidator
     virtual bool Validate( int &ch ) const = 0;
 };
 
-class TextEditLogic : virtual public ActiveWidget, virtual public LogicWidget
+class USELESS_API TextEditLogic : virtual public ActiveWidget, virtual public LogicWidget
 {
 public:
     TextEditLogic( const Text & = Text() );

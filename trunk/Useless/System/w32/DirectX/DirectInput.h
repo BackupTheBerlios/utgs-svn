@@ -9,7 +9,7 @@
 
 namespace Useless {
 
-class DirectInput
+class USELESS_API DirectInput
 {
 private:
 

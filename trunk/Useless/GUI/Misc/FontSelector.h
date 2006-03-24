@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class FontSelector
+class USELESS_API FontSelector
 {
 public:
     FontSelector( const FontSet &font_manager );

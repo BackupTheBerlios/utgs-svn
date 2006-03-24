@@ -37,33 +37,33 @@ namespace Useless {
 
 /* Resource creation methods
 -----------------------------------------------------------------------------*/
-Resource* CreateActiveArea      ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateButtonWidget    ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateCredits         ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateDropDown        ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateFrameWidget     ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateGraphWidget     ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateHLText          ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateImageWidget     ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateLayoutGap       ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateListWidget      ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateLoomWidget      ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreatePopup           ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateProgressBar     ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateRollerWidget    ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateScoreRoller     ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateScrollbar       ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateScrolledWidget  ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateSizerWidget     ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateSlider          ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateTableView       ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateTableCells      ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateTemplateWidget  ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateTextField       ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateTextWidget      ( XMLIterator i, XMLCreatorEnv *env );
-Resource* CreateWidgetTableWidget   ( XMLIterator i, XMLCreatorEnv *env );
-Resource* InstantiateTemplateWidget ( XMLIterator i, XMLCreatorEnv *env );
-Resource* ResolveParentWidget   ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateActiveArea      ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateButtonWidget    ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateCredits         ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateDropDown        ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateFrameWidget     ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateGraphWidget     ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateHLText          ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImageWidget     ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateLayoutGap       ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateListWidget      ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateLoomWidget      ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreatePopup           ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateProgressBar     ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateRollerWidget    ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateScoreRoller     ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateScrollbar       ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateScrolledWidget  ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSizerWidget     ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSlider          ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateTableView       ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateTableCells      ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateTemplateWidget  ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateTextField       ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateTextWidget      ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateWidgetTableWidget   ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* InstantiateTemplateWidget ( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* ResolveParentWidget   ( XMLIterator i, XMLCreatorEnv *env );
 
 /* Resource creation registry
 -----------------------------------------------------------------------------*/

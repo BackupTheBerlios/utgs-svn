@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class FileName
+class USELESS_API FileName
 {
 public:
     FileName() {}

@@ -8,7 +8,7 @@ namespace Useless {
 
 /*! Surface interface to MemorySurface
 */
-class MemSurface : public LockableSurface, public MemorySurface
+class USELESS_API MemSurface : public LockableSurface, public MemorySurface
 {
 public:
     MemSurface();

@@ -1,7 +1,7 @@
 <xml encoding="utf-8">
     <system>
         <screen id="screen"
-            title="Unit Test: SmartSplit"
+            title="Unit Test: Serialize"
             width="800"
             height="600"
             windowed="1"
@@ -52,13 +52,16 @@
                 </apply>
                 <apply id="out_text" select="Toolkit:ToXMLString">
                     <apply id="root" select="Serialize">
+                        <integer id="maxLevel" value="0"/>
                         <apply id="object" select="ReadObject">
                             <string id="file">data1.xml</string>
                         </apply>
                     </apply>
                 </apply>
+                <nocompile run="1">
+                    <gui-set-text target="gui.desktop.output"><get id="out_text"/></gui-set-text>
+                </nocompile>
             </compile>
-            <gui-set-text target="gui.desktop.output"><get id="out_text"/></gui-set-text>
         </fsm>
         <run fsm="main" object="main"/>
     </programms>

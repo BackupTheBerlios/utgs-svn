@@ -3,12 +3,13 @@
 
 #include "Useless/Graphic/Device/GL/GLResourcePool.h"
 #include "Useless/Graphic/Device/GVM_Context.h"
+#include "Useless/Graphic/Device/GVM_Message.h"
 
 namespace Useless {
 
     namespace GVM {
 
-        struct GLContext : Context
+        struct USELESS_API GLContext : Context
         {
             unsigned int *m_indexPointer;
             unsigned int  m_numIndices;

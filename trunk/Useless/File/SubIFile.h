@@ -24,7 +24,7 @@ namespace Useless {
 
 
 
-class SubIFile : public IFile
+class USELESS_API SubIFile : public IFile
 {
 public:
     SubIFile();

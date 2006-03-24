@@ -9,7 +9,7 @@
 
 namespace Useless {
 
-class ListLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private MultiItemLogic
+class USELESS_API ListLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private MultiItemLogic
 {
 public:
     enum { NORMAL=0, HIGHLITEN=1, SELECTED=2, DISABLED=4, FOCUSSED=8, USER=16 };

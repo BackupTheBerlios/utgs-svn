@@ -27,7 +27,7 @@ namespace Useless {
  *  Frame like Widget. It may contain many other widgets.
  *  Acts like a hub for any requests.
  */
-class FrameWidget : public HubWidget
+class USELESS_API FrameWidget : public HubWidget
 {
 public:
     FrameWidget(int w, int h, const Skin &skin);

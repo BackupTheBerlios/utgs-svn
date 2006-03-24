@@ -19,6 +19,7 @@
 #include "koolib/xml/XMLChunksProgram.h"
 #include "koolib/xml/XMLChunksMethod.h"
 #include "koolib/xml/XMLKompiler.h"
+#include "koolib/FastAllocator.h"
 #include "koolib/dynamic_cast_call.h"
 #include "koolib/Random.h"
 #include <cmath>
@@ -186,6 +187,80 @@ namespace XMLProgram {
             .AddBase( &xtdFSM_Main )
             .HideReg("state")
             );
+    
+    XMLCodeBlock *CreateBlock()
+    {
+        return Memory::FastAllocate< XMLCodeBlock >();
+    }
+
+    XMLEmpty *CreateEmpty()
+    {
+        // use only one instance of XMLEmpty in whole world
+        static boost::intrusive_ptr< XMLEmpty > s_Empty;
+        if ( !s_Empty )
+        {
+            s_Empty = new XMLEmpty();
+        }
+        return s_Empty.get();
+        //return Memory::FastAllocate< XMLEmpty >();
+    }
+
+    XMLValueChunk< int > *CreateValue( int value )
+    {
+        // use only one instance of 0 and 1
+        static boost::intrusive_ptr< XMLValueChunk< int > > s_Zero, s_One;
+        switch( value )
+        {
+            case 0:
+                if ( !s_Zero )
+                {
+                    s_Zero = new XMLValueChunk< int >( 0 );
+                }
+                return s_Zero.get();
+                
+            case 1:
+                if ( !s_One )
+                {
+                    s_One = new XMLValueChunk< int >( 1 );
+                }
+                return s_One.get();
+                
+            default:
+                XMLValueChunk< int > *pValue = Memory::FastAllocate< XMLValueChunk< int > >();
+                pValue->SetValue( value );
+                return pValue;
+        }
+    }
+    
+    XMLValueChunk< double > *CreateValue( double value )
+    {
+        XMLValueChunk< double > *pValue = Memory::FastAllocate< XMLValueChunk< double > >();
+        pValue->SetValue( value );
+        return pValue;
+    }
+    
+    XMLValueChunk< TextUtf8 > *CreateValue( const TextUtf8 &value )
+    {
+        XMLValueChunk< TextUtf8 > *pValue = Memory::FastAllocate< XMLValueChunk< TextUtf8 > >();
+        pValue->SetValue( value );
+        return pValue;
+    }
+    
+    XMLValueChunk< std::string > *CreateValue( const std::string &value )
+    {
+        XMLValueChunk< std::string > *pValue = Memory::FastAllocate< XMLValueChunk< std::string > >();
+        pValue->SetValue( value );
+        return pValue;
+    }
+
+    XMLListChunk *CreateList( IChunk *pHead, IChunk *pTail )
+    {
+        XMLListChunk *pList = Memory::FastAllocate< XMLListChunk >();
+        pList->SetHead( pHead );
+        pList->SetTail( pTail );
+        return pList;
+    }
+
   
 
     TextUtf8 g_lastExpression, g_lastExpressionValue;
@@ -806,7 +881,7 @@ namespace XMLProgram {
         {
             TextUtf8 c;
             c += text[i-1];
-            result = CreateList( CreateValue< TextUtf8 >( c ), result.get() );
+            result = CreateList( CreateValue( c ), result.get() );
         }
         GetGlobals().SetResult( result.get() );
         return result.get();

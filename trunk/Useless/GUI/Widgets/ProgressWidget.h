@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class ProgressWidget : virtual public Widget
+class USELESS_API ProgressWidget : virtual public Widget
 {
 public:
     ProgressWidget( int range ) : _range(range), _advance(0) {}

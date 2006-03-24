@@ -1,45 +1,26 @@
 #ifndef __INCLUDED_USELESS_PLATFORM_CONFIG_H__
 #define __INCLUDED_USELESS_PLATFORM_CONFIG_H__
 
-///////////////////////////////////
-// THIS IS PLATFORM CONFIGURATION
-//
-// * Win32
-//   + RenderWare Graphics
-//   + DirectDraw 7.0
-//   + DirectSound 8.1
-//   + DirectShow (DX 8.1)
-//
-//--------------------------------
-
-///////////////////////////////////
-// User configuration
-//--------------------------------
-
-// Do we use Renderware-Graphics library ?
-
-#ifndef RENDERWARE
-#define RENDERWARE
-#endif // RENDERWARE
-
-
-
-///////////////////////////////////
-// Automatic configuration
-//--------------------------------
-#ifdef RENDERWARE
-#   define __USE_RENDERWARE__
-#endif
-
-#ifdef WIN32
-
-#   ifndef __USE_RENDERWARE__
-#       define __USE_DIRECT_DRAW__
+#ifndef USELESS_STATICLIB
+#   ifdef USELESS_EXPORTS
+#       define USELESS_API __declspec(dllexport)
+#   else
+#       define USELESS_API __declspec(dllimport)
 #   endif
-
-#   define __USE_DIRECT_SOUND__
-#   define __USE_DIRECT_SHOW__
-
+#   ifdef USELESS_RESOURCES_EXPORTS
+#       define USELESS_RESOURCES_API __declspec(dllexport)
+#   else
+#       define USELESS_RESOURCES_API __declspec(dllimport)
+#   endif
+#else
+#   define USELESS_API
+#   define USELESS_RESOURCES_API
 #endif
+
+
+
+#define __USE_DIRECT_SOUND__
+#define __USE_DIRECT_SHOW__
+
 
 #endif//__INCLUDED_USELESS_PLATFORM_CONFIG_H__

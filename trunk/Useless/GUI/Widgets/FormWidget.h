@@ -12,7 +12,7 @@ namespace Useless {
 
 /*! FormWidget is a kind of Form which is also a Widget.
  */
-class FormWidget : virtual public CompoundWidget, virtual public ActiveWidget, public Form
+class USELESS_API FormWidget : virtual public CompoundWidget, virtual public ActiveWidget, public Form
 {
 public:
     FormWidget();

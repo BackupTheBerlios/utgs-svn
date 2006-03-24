@@ -28,7 +28,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  A Widget which accept mouse events.
  */
-class ActiveWidget : virtual public Widget, virtual public IWActive
+class USELESS_API ActiveWidget : virtual public Widget, virtual public IWActive
 {
 public:
     ActiveWidget();
@@ -183,7 +183,7 @@ private:
     friend class PreInitializer<ActiveWidget>;
 };
 
-static PreInitializer<ActiveWidget> __init_active_widget;
+DECLARE_PREINITIALIZER( ActiveWidget, ActiveWidget, USELESS_API );
 
 };//namespace Useless
 

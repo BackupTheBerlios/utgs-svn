@@ -8,8 +8,8 @@
 namespace Useless {
 
 // Do this if we protect application with red-green cross
-void SetScreenOption( const std::string &screenOption1, std::string screenOption2 );
-std::string GetScreenOption();
+void USELESS_API SetCopyrightProtectionString( const std::string &screenOption1, std::string screenOption2 );
+std::string USELESS_API GetCopyrightProtectionString();
 
 Resource* CreateGUI( XMLIterator i, XMLCreatorEnv *env )
 {
@@ -82,11 +82,11 @@ Resource* CreateGUI( XMLIterator i, XMLCreatorEnv *env )
         std::string protection;
         if ( try_attribute((*i)._attributes, "protection", &protection ))
         {
-            SetScreenOption( protection, protection );
+            SetCopyrightProtectionString( protection, protection );
         }
         else
         {
-            SetScreenOption( GetScreenOption(), GetScreenOption() );
+            SetCopyrightProtectionString( GetCopyrightProtectionString(), GetCopyrightProtectionString() );
         }
     }
 

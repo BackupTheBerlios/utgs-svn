@@ -1,0 +1,98 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost_utf8", "boost_utf8\boost_utf8.vcproj", "{C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "koolib", "koolib\koolib.vcproj", "{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E} = {72EA4F08-0CAC-41D6-A761-E2612B65893E}
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D} = {8FF3AC23-EDB6-481B-8737-91C7E86BE18D}
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695} = {4AC5D735-5CC7-4E9B-8332-5E4E629F3695}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamo", "Dynamo\Dynamo.vcproj", "{72EA4F08-0CAC-41D6-A761-E2612B65893E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "strmbase", "strmbase\strmbase.vcproj", "{4EC8CB95-3447-4F50-8FB1-464BAD919B70}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UselessDllTest", "UselessDllTest\utdlltest.vcproj", "{9125CCE0-9D46-47FB-ACDD-7010E4DB0E07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D} = {8FF3AC23-EDB6-481B-8737-91C7E86BE18D}
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695} = {4AC5D735-5CC7-4E9B-8332-5E4E629F3695}
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1} = {1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UselessDll", "UselessDll\UselessDll.vcproj", "{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056} = {7FEDF915-5D1E-45A2-AC6E-C38425833056}
+		{C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8} = {C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8}
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70} = {4EC8CB95-3447-4F50-8FB1-464BAD919B70}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cryptlib", "..\..\CryptoPP\cryptlib.vcproj", "{7FEDF915-5D1E-45A2-AC6E-C38425833056}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UselessResourcesDll", "UselessDll\UselessResourcesDll.vcproj", "{8FF3AC23-EDB6-481B-8737-91C7E86BE18D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695} = {4AC5D735-5CC7-4E9B-8332-5E4E629F3695}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PostmanPat", "PostmanPat\postpat.vcproj", "{EB21D973-EFEE-460B-9521-10E6647CA92C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D} = {8FF3AC23-EDB6-481B-8737-91C7E86BE18D}
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695} = {4AC5D735-5CC7-4E9B-8332-5E4E629F3695}
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1} = {1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8}.Debug.ActiveCfg = Debug|Win32
+		{C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8}.Debug.Build.0 = Debug|Win32
+		{C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8}.Release.ActiveCfg = Release|Win32
+		{C4EEE41C-D299-4C2B-9B53-5F5F476E1BA8}.Release.Build.0 = Release|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Debug.ActiveCfg = Debug DLL|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Debug.Build.0 = Debug DLL|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Release.ActiveCfg = Release DLL|Win32
+		{1FD7DCDC-9541-4479-BBFB-FFB91F2FD7D1}.Release.Build.0 = Release DLL|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Debug.ActiveCfg = Debug|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Debug.Build.0 = Debug|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Release.ActiveCfg = Release|Win32
+		{72EA4F08-0CAC-41D6-A761-E2612B65893E}.Release.Build.0 = Release|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Debug.ActiveCfg = Debug|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Debug.Build.0 = Debug|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Release.ActiveCfg = Release|Win32
+		{4EC8CB95-3447-4F50-8FB1-464BAD919B70}.Release.Build.0 = Release|Win32
+		{9125CCE0-9D46-47FB-ACDD-7010E4DB0E07}.Debug.ActiveCfg = Debug|Win32
+		{9125CCE0-9D46-47FB-ACDD-7010E4DB0E07}.Debug.Build.0 = Debug|Win32
+		{9125CCE0-9D46-47FB-ACDD-7010E4DB0E07}.Release.ActiveCfg = Release|Win32
+		{9125CCE0-9D46-47FB-ACDD-7010E4DB0E07}.Release.Build.0 = Release|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Debug.ActiveCfg = Debug DLL|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Debug.Build.0 = Debug DLL|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Release.ActiveCfg = Release DLL|Win32
+		{4AC5D735-5CC7-4E9B-8332-5E4E629F3695}.Release.Build.0 = Release DLL|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Debug.ActiveCfg = Debug|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Debug.Build.0 = Debug|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Release.ActiveCfg = Release|Win32
+		{7FEDF915-5D1E-45A2-AC6E-C38425833056}.Release.Build.0 = Release|Win32
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D}.Debug.ActiveCfg = Debug DLL|Win32
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D}.Debug.Build.0 = Debug DLL|Win32
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D}.Release.ActiveCfg = Release DLL|Win32
+		{8FF3AC23-EDB6-481B-8737-91C7E86BE18D}.Release.Build.0 = Release DLL|Win32
+		{EB21D973-EFEE-460B-9521-10E6647CA92C}.Debug.ActiveCfg = Debug|Win32
+		{EB21D973-EFEE-460B-9521-10E6647CA92C}.Debug.Build.0 = Debug|Win32
+		{EB21D973-EFEE-460B-9521-10E6647CA92C}.Release.ActiveCfg = Release|Win32
+		{EB21D973-EFEE-460B-9521-10E6647CA92C}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

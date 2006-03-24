@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class ResizeRelation : public Relation
+class USELESS_API ResizeRelation : public Relation
 {
 public:
     ResizeRelation( Widget &copier, Widget &copied, bool copy_hsize, bool copy_vsize );

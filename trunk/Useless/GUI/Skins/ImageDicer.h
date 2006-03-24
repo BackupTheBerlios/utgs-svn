@@ -33,7 +33,7 @@ struct SwitchImages;
 /*! \ingroup Skins
  *  Class specialized in dicing image.
  */
-class ImageDicer : public SkinMan
+class USELESS_API ImageDicer : public SkinMan
 {
 public:
     enum{ SOURCE = -1 };

@@ -19,7 +19,7 @@ namespace Useless {
 /*! \ingroup Util
  *  Measures time in cycles of PC.
  */
-class Timer
+class USELESS_API Timer
 {
 public:
     //! default constructor does init object with current time
@@ -38,8 +38,8 @@ public:
 
 
 
-Types::QUAD ConvertToCPUCycles( double time );
-double ConvertFromCPUCycles( Useless::Types::QUAD time );
+Types::QUAD USELESS_API ConvertToCPUCycles( double time );
+double USELESS_API ConvertFromCPUCycles( Useless::Types::QUAD time );
 
 
 };// namespace Useless

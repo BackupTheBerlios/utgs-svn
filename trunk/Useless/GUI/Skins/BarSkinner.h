@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  \a BarWidget skin.
  */
-class BarSkinner : public Skin, private ImageDicer
+class USELESS_API BarSkinner : public Skin, private ImageDicer
 {
 public:
     BarSkinner() {}

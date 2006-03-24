@@ -10,7 +10,7 @@ namespace Useless {
 
 /*! Vertical ruller
  */
-class RollerWidget : public Widget
+class USELESS_API RollerWidget : public Widget
 {
 public:
     typedef CtorWrapper< ImageBase, Image, const char * > RefImage;
@@ -44,7 +44,7 @@ private:
 
 /*! ScoreRoller combines few rollers, with range 0..9
  */
-class ScoreRoller : public HubWidget
+class USELESS_API ScoreRoller : public HubWidget
 {
 public:
     ScoreRoller( const RollerWidget::RefImage &image, int numRollers );

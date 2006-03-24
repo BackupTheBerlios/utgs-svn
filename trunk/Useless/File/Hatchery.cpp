@@ -12,7 +12,7 @@
 namespace Useless {
     
     // The key to hatchery files
-    const char *__key = "aZkkRimvCgv5a$9!";
+    const char *g_szKey = "aZkkRimvCgv5a$9!";
 
 using namespace std;
 
@@ -26,7 +26,7 @@ static std::string g_Key;
 void Hatchery::SetGlobalKey( const std::string &key )
 {
     g_Key = key;
-    __key = g_Key.c_str();
+    g_szKey = g_Key.c_str();
 }
 
 void Hatchery::SetKey( const std::string &key )
@@ -36,10 +36,10 @@ void Hatchery::SetKey( const std::string &key )
 
 void Hatchery::ResetKey()
 {
-    _key = __key;
+    _key = g_szKey;
 }
 
-Hatchery::Hatchery(): _key( __key )
+Hatchery::Hatchery(): _key( g_szKey )
 {
 }
 

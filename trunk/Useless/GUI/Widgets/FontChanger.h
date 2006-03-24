@@ -26,7 +26,7 @@ namespace Useless {
  *
  *
  */
-class FontChanger : virtual public FontWidget, virtual public LogicWidget
+class USELESS_API FontChanger : virtual public FontWidget, virtual public LogicWidget
 {
 public:
     enum { DEFAULT=DisplayState::NORMAL };

@@ -31,7 +31,7 @@ namespace XMLProgram {
     struct ExecutionState;
 
     // Opaque chunk of code with internal environment
-    struct IChunk
+    struct KOOLIB_API IChunk
     {
         virtual ~IChunk() {}
 
@@ -142,7 +142,7 @@ namespace XMLProgram {
     };
 
     // Block of chunks
-    struct IBlock : virtual IChunk
+    struct KOOLIB_API IBlock : virtual IChunk
     {
         // Insert chunk of code into block.
         virtual void AddChunk( unsigned int name, IChunk *chunk ) = 0;
@@ -158,7 +158,7 @@ namespace XMLProgram {
     };
 
     // FSM block containing states and chunks.
-    struct IFiniteStateMachine : virtual IBlock
+    struct KOOLIB_API IFiniteStateMachine : virtual IBlock
     {
         virtual ExecutionState & EnterState ( const TextUtf8 &name ) = 0;
         virtual ExecutionState & GotoState  ( const TextUtf8 &name ) = 0;
@@ -175,7 +175,7 @@ namespace XMLProgram {
     };
     
     
-    struct BasicExecutionState
+    struct KOOLIB_API BasicExecutionState
     {
         typedef void ResultType;
         
@@ -195,7 +195,7 @@ namespace XMLProgram {
         }
     };
 
-    struct ExecutionState : BasicExecutionState
+    struct KOOLIB_API ExecutionState : BasicExecutionState
     {
         XMLFactory::XMLTagDict< ExecutionState > *_currentDict;
 

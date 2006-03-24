@@ -72,6 +72,13 @@ AdvTextBase::Carrige AdvTextBase::QueryPosition( const Pos &pos )
     case CENTER:
         return FontPainter::QueryPosition( pos - Pos(width/2,0), _line_spacing, CENTER );
     }
+	AdvTextBase::Carrige car;
+    car._letterInText = -1;
+    car._letterInWord = -1;
+    car._wordInText = -1;
+    car._wordInRow = -1;
+    car._row = -1;
+	return car;
 }
 
 

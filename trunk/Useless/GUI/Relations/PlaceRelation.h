@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class PlaceRelation : public Relation
+class USELESS_API PlaceRelation : public Relation
 {
 public:
     PlaceRelation( Widget &widget, const Pos &pos, const Pos &base, const Rect &alignSize = Rect(), const Pos &alignPlace = Pos());

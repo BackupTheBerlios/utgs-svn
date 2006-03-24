@@ -23,7 +23,7 @@ namespace Useless {
  *  Acts like a buffer for Image transfer.
  */
 
-class OGfxBuffer : public OGfxFilter
+class USELESS_API OGfxBuffer : public OGfxFilter
 {
 public:
     virtual void SetSize( int w, int h, int d );

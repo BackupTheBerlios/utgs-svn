@@ -13,7 +13,7 @@ namespace Useless {
  *  Hints compound of skin and aligned text
  *  Uses SmallHint widgets to show hints.
  */
-class Hints : public HintMan
+class USELESS_API Hints : public HintMan
 {
 public:
     Hints( const Font &font, const FrameSkin &skin, int text_alignment=0 );

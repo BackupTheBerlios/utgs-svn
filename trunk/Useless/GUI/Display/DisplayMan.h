@@ -31,7 +31,7 @@ namespace Useless {
 /*! \ingroup Display
  *  Abstract class for display management
  */
-class DisplayMan
+class USELESS_API DisplayMan
 {
 public:
     virtual ~DisplayMan() {}

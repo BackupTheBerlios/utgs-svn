@@ -17,7 +17,7 @@ extern bool g_PaintWidgetBoundaries;
 ///////////////////////////////////////////////////////////////////////////////
 //  INIT Stuff
 //
-int PreInitializer<CompoundWidget>::_counter = 0 ;
+INIT_PREINITIALIZER_ABSTRACT( CompoundWidget, CompoundWidget, USELESS_API );
 MethodPool<CompoundWidget, const Widget::Request > *CompoundWidget::_handlers;
 
 void CompoundWidget::Init()

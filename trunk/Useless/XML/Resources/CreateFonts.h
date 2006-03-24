@@ -8,19 +8,19 @@
 
 namespace Useless {
 
-Resource* CreateFacedFont( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateFacedFont( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_faced_font( "fonts::faced", CreateFacedFont );
 
 
-Resource* CreateAlphaFont( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateAlphaFont( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_alpha_font( "fonts::alpha", CreateAlphaFont );
 
 
-Resource* CreateFontSet( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateFontSet( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_font_set( "fonts::fontset", CreateFontSet );
 
 
-Resource* ResolveFontLink( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* ResolveFontLink( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_resolve_font_link( "fonts::link", ResolveFontLink );
 
 
@@ -42,7 +42,7 @@ inline FontSet& QueryFontSet( const std::string &id )
     return *p_fontset;
 }
 
-bool InsertChildFont( const Font &font, XMLCreatorEnv *env );
+USELESS_RESOURCES_API bool InsertChildFont( const Font &font, XMLCreatorEnv *env );
 
 };//namespace Useless
 #endif//__INCLUDED_CREATE_FONTS_H__

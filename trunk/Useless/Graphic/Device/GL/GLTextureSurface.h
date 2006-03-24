@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-    struct GLTextureSurface : Surface
+    struct USELESS_API GLTextureSurface : Surface
     {
         GLTextureSurface();
         GLTextureSurface( Surf::Properties &properties );

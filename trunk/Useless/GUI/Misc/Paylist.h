@@ -11,7 +11,7 @@ namespace Useless {
 /*! Simplified document type
  *  Each entry is supposed to be separate row.
  */
-class Paylist : public DataStream
+class USELESS_API Paylist : public DataStream
 {
 public:
     Paylist();

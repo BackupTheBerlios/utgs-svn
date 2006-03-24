@@ -11,7 +11,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  \a TableWidget skin.
  */
-class TableSkin : public FrameSkin, public ArraySkin
+class USELESS_API TableSkin : public FrameSkin, public ArraySkin
 {
 public:
     TableSkin() {}

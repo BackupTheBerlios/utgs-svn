@@ -28,16 +28,26 @@ namespace Useless {
     int                             Application::_mouse_cursor_y;
     int                             Application::_cursor_status;
     Timer                           Application::_app_start_time;
-    const TCHAR                    *Application::_wnd_class = _T ("InteractiveVision");
+    const TCHAR                    *Application::_wnd_class = _T ("UTGS.Useless.Window");
     int                             Application::_argc;
     const LPWSTR                   *Application::_argv;
 
-    bool G_EnableDDrawScr = 0;
-    bool G_DisableAltTab = 0;
+    USELESS_API bool G_EnableDDrawScr = 0;
+    USELESS_API bool G_DisableAltTab = 0;
 
-    void Application::Init( HINSTANCE instance )
+    void Application::Init( InitParams *parm )
     {
-        _instance = instance;
+        _instance = parm->hInstance;
+        _app_title = parm->appTitle;
+        if ( parm->iconName )
+            _icon_name = parm->iconName;
+        if ( parm->iconResourceID )
+            _icon_resource_id =parm->iconResourceID;
+        if ( parm->bigIconResourceID )
+            _big_icon_resource_id = parm->bigIconResourceID;
+        if ( parm->windowClassName )
+            _wnd_class = parm->windowClassName;
+        
         _windows = new AllWindows;
         _message_handlers = new MessageHandlers;
 

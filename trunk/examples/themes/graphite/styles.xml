@@ -37,6 +37,64 @@
                 font="graphite.fonts.font_luxi_sans_14.button"
                 focusable="0"
                 />
+            
+            <textfield
+                width="100"
+                height="10"
+                font="graphite.fonts.font_luxi_sans_14.button"
+                skin="graphite.skins.list.set"
+                fixedheight="24"/>
+        </style>
+        
+        <style id="popup_inner">
+            <slider
+                skin="graphite.skins.slider_horizontal.set"
+                size="16"
+                grip_size="128"
+                fixedheight="16"
+                />
+
+            <text
+                align="left"
+                font="graphite.fonts.font_luxi_sans_14_black"
+                />
+
+            <list
+                font="graphite.fonts.font_luxi_sans_14.list"
+                skin="graphite.skins.list.set"
+                shift="20"
+                />
+
+            <frame
+                skin="graphite.skins.frame"
+                />
+
+            <scrollbar
+                skin="graphite.skins.slider_vertical.set"
+                size="32"
+                size_limit="48"
+                />
+
+            <button
+                skin="graphite.skins.button.set"
+                font="graphite.fonts.font_luxi_sans_14.button"
+                focusable="0"
+                />
+        </style>
+
+        
+        <style id="popup">
+            <popup
+                owner="gui"
+                titlebar_skin="graphite.skins.switch.set"
+                titlebar_font="graphite.fonts.font_luxi_sans_14.button"
+                modal="1"
+                />
+
+            <frame
+                skin="graphite.skins.frame_and_shadow"
+                left="8" right="16" top="8" bottom="16"
+                />
         </style>
 
         <style id="window_decorations">

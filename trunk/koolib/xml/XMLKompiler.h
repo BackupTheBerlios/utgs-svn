@@ -25,14 +25,14 @@ namespace XMLProgram {
     
     // Compile xml nodes to list of executable functors.
     // The resultant list is an executable functor.
-    IChunkPtr Compile( Node node, ExecutionState &state );
+    KOOLIB_API IChunkPtr Compile( Node node, ExecutionState &state );
 
     // Compile xml nodes to list of executable functors.
     // The resultant list is expected to be executed to provide a right-value.
-    IChunkPtr CompileRightValue( Node node, ExecutionState &state );
+    KOOLIB_API IChunkPtr CompileRightValue( Node node, ExecutionState &state );
     
     // Create Uncompiled xml function.
-    IChunkPtr NoCompile( Node node, ExecutionState &state );
+    KOOLIB_API IChunkPtr NoCompile( Node node, ExecutionState &state );
 
     //---------------------------------------------------------
     //
@@ -46,7 +46,7 @@ namespace XMLProgram {
 
     namespace CXML {
 
-        struct CXmlErrors
+        struct KOOLIB_API CXmlErrors
         {
             struct ErrorInSourceAtLine : Useless::Error
             {
@@ -85,7 +85,7 @@ namespace XMLProgram {
             }
         };
 
-        struct EvalInNewScope : IChunk
+        struct KOOLIB_API EvalInNewScope : IChunk
         {
             IChunkPtr _lazyValue;
 
@@ -103,7 +103,7 @@ namespace XMLProgram {
         };
 
         template< class _Type >
-            struct ValueConvertion : IChunk
+            struct KOOLIB_API ValueConvertion : IChunk
             {
                 IChunkPtr _lazyValue;
                 unsigned int _typeName;
@@ -142,7 +142,7 @@ namespace XMLProgram {
                 }
             };
 
-        struct ConstantValue : IChunk
+        struct KOOLIB_API ConstantValue : IChunk
         {
             IChunkPtr _constValue;
 
@@ -170,7 +170,7 @@ namespace XMLProgram {
         };
 
         template< class _Type >
-            struct EvaluableValue : IChunk
+            struct KOOLIB_API EvaluableValue : IChunk
             {
                 TextUtf8 _expression;
 
@@ -181,7 +181,7 @@ namespace XMLProgram {
                 bool Execute( Node __unused__, ExecutionState &state );
             };
 
-        struct LazyCall : IChunk
+        struct KOOLIB_API LazyCall : IChunk
         {
             IChunkPtr _pFunc;
             IBlockPtr _pEnv;
@@ -244,7 +244,7 @@ namespace XMLProgram {
             }
         };
 
-        struct LazyZip : IChunk
+        struct KOOLIB_API LazyZip : IChunk
         {
             IChunkPtr _pHead; //< list of nodes, is NOT list of node:head-s
             IChunkPtr _pTail; //< list of ^(list of nodes)^
@@ -331,7 +331,7 @@ namespace XMLProgram {
             }
         };
 
-        struct LazyHead : IChunk
+        struct KOOLIB_API LazyHead : IChunk
         {
             IChunkPtr _pChunk;
             int       _count;
@@ -377,7 +377,7 @@ namespace XMLProgram {
             }
         };
         
-        struct LazyRange : IChunk
+        struct KOOLIB_API LazyRange : IChunk
         {
             int _current;
             int _count;
@@ -413,7 +413,7 @@ namespace XMLProgram {
             }
         };
         
-        struct LazyGetChunk
+        struct KOOLIB_API LazyGetChunk
         {
             LazyGetChunk *_next;
             LazyGetChunk(): _next(0) {}
@@ -422,7 +422,7 @@ namespace XMLProgram {
             virtual IChunkPtr Get( IChunkPtr parent, ExecutionState &state ) = 0;
         };
 
-        struct LazyGetChunkMember : LazyGetChunk 
+        struct KOOLIB_API LazyGetChunkMember : LazyGetChunk 
         {
             TextUtf8        _name;
             unsigned int    _id;
@@ -466,7 +466,7 @@ namespace XMLProgram {
             }
         };
 
-        struct LazyGetChunkInScope : LazyGetChunk
+        struct KOOLIB_API LazyGetChunkInScope : LazyGetChunk
         {
             bool     _noThrow;
             TextUtf8 _name;
@@ -574,7 +574,7 @@ namespace XMLProgram {
         };
 
 
-        struct LET : IChunk, CXmlErrors
+        struct KOOLIB_API LET : IChunk, CXmlErrors
         {
             TextUtf8     _name;
             unsigned int _id;
@@ -628,7 +628,7 @@ namespace XMLProgram {
             }
         };
 
-        struct SET : IChunk, CXmlErrors
+        struct KOOLIB_API SET : IChunk, CXmlErrors
         {
             TextUtf8     _name;
             IChunkPtr    _value;
@@ -681,7 +681,7 @@ namespace XMLProgram {
         };
 
 
-        struct GET : IChunk, CXmlErrors
+        struct KOOLIB_API GET : IChunk, CXmlErrors
         {
             LazyGetChunkInScope _getChunk;
 
@@ -730,7 +730,7 @@ namespace XMLProgram {
             }
         };
 
-        struct LOOKUP : IChunk, CXmlErrors
+        struct KOOLIB_API LOOKUP : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
             LOOKUP() {}
@@ -785,7 +785,7 @@ namespace XMLProgram {
             }
         };
 
-        struct REGISTER : IChunk, CXmlErrors
+        struct KOOLIB_API REGISTER : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
             REGISTER() {}
@@ -853,8 +853,14 @@ namespace XMLProgram {
                 }
             }
         };
+
+        struct IS_EMPTY {};
+        struct IS_NOT_DEFINED {};
+        struct IS_DEFINED_EMPTY {};
+        struct IS_DEFINED_NOT_EMPTY {};
+        struct IS_NOT_DEFINED_OR_EMPTY {};
         
-        struct IS_NOT_EMPTY : IChunk, CXmlErrors
+        struct KOOLIB_API IS_NOT_EMPTY : IChunk, CXmlErrors
         {            
             LazyGetChunkInScope _getChunk;
 
@@ -892,7 +898,7 @@ namespace XMLProgram {
             }
         };
 
-        struct IS_DEFINED : IChunk, CXmlErrors
+        struct KOOLIB_API IS_DEFINED : IChunk, CXmlErrors
         {
             LazyGetChunkInScope _getChunk;
 
@@ -927,7 +933,7 @@ namespace XMLProgram {
             }
         };
 
-        struct TYPE_OF : IChunk, CXmlErrors
+        struct KOOLIB_API TYPE_OF : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
 
@@ -976,12 +982,12 @@ namespace XMLProgram {
         struct TYPE_OF_EMPTY {};
         struct TYPE_OF_LAZY {};
 
-        struct ERROR : IChunk, CXmlErrors
+        struct KOOLIB_API ERROR_CHUNK : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
             
-            ERROR() {}
-            ERROR( IChunk *pChunk ): _pChunk( pChunk )
+            ERROR_CHUNK() {}
+            ERROR_CHUNK( IChunk *pChunk ): _pChunk( pChunk )
             {
             }
 
@@ -1016,7 +1022,7 @@ namespace XMLProgram {
             }
         };
 
-        struct BLOCK : IChunk, CXmlErrors
+        struct KOOLIB_API BLOCK : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
             BLOCK(){}
@@ -1057,7 +1063,7 @@ namespace XMLProgram {
             }
         };
         
-        struct OBJECT : IChunk, CXmlErrors
+        struct KOOLIB_API OBJECT : IChunk, CXmlErrors
         {
             IChunkPtr _pPrivate;
             IChunkPtr _pMethods;
@@ -1127,7 +1133,7 @@ namespace XMLProgram {
         };
 
 
-        struct EXTRACT : IChunk, CXmlErrors
+        struct KOOLIB_API EXTRACT : IChunk, CXmlErrors
         {
             LazyGetChunkInScope _getChunk;
             EXTRACT() {}
@@ -1177,7 +1183,7 @@ namespace XMLProgram {
 
         struct FUNCTION {};
 
-        struct MAP : IChunk, CXmlErrors
+        struct KOOLIB_API MAP : IChunk, CXmlErrors
         {
             TextUtf8  _iterator;
             IChunkPtr _pChunk;
@@ -1255,7 +1261,7 @@ namespace XMLProgram {
             }
         };
 
-        struct FOLD : IChunk, CXmlErrors
+        struct KOOLIB_API FOLD : IChunk, CXmlErrors
         {
             TextUtf8  _iterator;
             TextUtf8  _accum;
@@ -1332,7 +1338,7 @@ namespace XMLProgram {
             }
         };
 
-        struct SEEK : IChunk, CXmlErrors
+        struct KOOLIB_API SEEK : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
 
@@ -1384,7 +1390,7 @@ namespace XMLProgram {
             }
         };
 
-        struct HEAD : IChunk, CXmlErrors
+        struct KOOLIB_API HEAD : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
 
@@ -1430,7 +1436,7 @@ namespace XMLProgram {
             }
         };
 
-        struct RANGE : IChunk, CXmlErrors
+        struct KOOLIB_API RANGE : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
 
@@ -1482,7 +1488,7 @@ namespace XMLProgram {
         };
         
 
-        struct ZIP : IChunk, CXmlErrors
+        struct KOOLIB_API ZIP : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
 
@@ -1547,7 +1553,7 @@ namespace XMLProgram {
             }
         };
 
-        struct CALL : IChunk, CXmlErrors
+        struct KOOLIB_API CALL : IChunk, CXmlErrors
         {
             LazyGetChunkInScope _getChunk;
             IChunkPtr _paramDecl;
@@ -1591,7 +1597,7 @@ namespace XMLProgram {
             }
         };
 
-        struct LAZY_CALL : IChunk, CXmlErrors
+        struct KOOLIB_API LAZY_CALL : IChunk, CXmlErrors
         {
             LazyGetChunkInScope _getChunk;
             IChunkPtr _paramDecl;
@@ -1633,7 +1639,7 @@ namespace XMLProgram {
             }
         };
         
-        struct LIST_NODE : IChunk, CXmlErrors
+        struct KOOLIB_API LIST_NODE : IChunk, CXmlErrors
         {
             IChunkPtr _pHead;
             IChunkPtr _pTail;
@@ -1677,7 +1683,7 @@ namespace XMLProgram {
             }
         };
         
-        struct LISTNODE : IChunk, CXmlErrors
+        struct KOOLIB_API LISTNODE : IChunk, CXmlErrors
         {
             IChunkPtr _pChunk;
             LISTNODE() {}
@@ -1717,7 +1723,7 @@ namespace XMLProgram {
             }
         };
 
-        struct DOIN : IChunk, CXmlErrors
+        struct KOOLIB_API DOIN : IChunk, CXmlErrors
         {
             IChunkPtr _pGetter;
             IChunkPtr _pChunk;
@@ -1778,7 +1784,7 @@ namespace XMLProgram {
         struct FLOAT {};
         struct STRING {};
 
-        struct COPY : IChunk, CXmlErrors
+        struct KOOLIB_API COPY : IChunk, CXmlErrors
         {
             Useless::XMLDocument _nodes;
             COPY(){}
@@ -1806,8 +1812,67 @@ namespace XMLProgram {
         struct STRCMP {};
         struct TYPECMP {};
         struct CAT {};
+
+        template< class _T >
+        struct KOOLIB_API Increase : IChunk, CXmlErrors
+        {
+            TextUtf8     _name;
+            IChunkPtr    _value;
+
+            Increase() {}
+            Increase( const TextUtf8 &name, IChunk *pChunk ): _name( name ), _value( pChunk )
+            {
+            }
+            
+            bool Execute( Node __unused__, ExecutionState &state )
+			{
+                try {
+                    IChunk *pParent = 0;
+                    IChunk *pChunk = XMLProgram::GetChunk( _name, state, &pParent );
+                    if ( !pChunk ) { throw Useless::Error("<inc> Undefined symbol %S", _name.c_str() ); }
+                    if ( !pParent) { throw Useless::Error("<inc> Undefined symbol parent %S", _name.c_str() ); }
+                    SplitNames names = SplitChunkName( _name, state );
+                    while ( !names.second.empty() )
+                    {
+                        names = SplitChunkName( names.second, state );
+                    }
+                    _value->Execute( __unused__, state );
+                    if ( 0 != state.GetResult() )
+                    {
+                        _T in1, in2;
+                        (*pChunk) >> in1;
+                        (*state.GetResult()) >> in2;
+                        pParent->SetChunk( names.first, CreateValue( in1 + in2 ));
+                    }
+                    state.SetResult(0);
+                }
+                catch( Useless::Error &e ) { RaiseError( e ); }
+                return true;
+            }
+
+            bool operator >> ( XMLFactory::AttrUniBase &attr )
+            {
+                if ( attr._name == L"help" )
+                {
+                    attr.str(L"<inc id [select|call]>[<!-- right-value -->]</inc>");
+                    return true;
+                }
+                else if ( attr._name == L"type-name" )
+                {
+                    attr.str(L"instruction-inc");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        };
         
-        struct LESS : IChunk
+        typedef Increase< int > INC;
+        typedef Increase< double > FINC;
+        
+        struct KOOLIB_API LESS : IChunk
         {
             IChunkPtr _value;
             LESS(){}
@@ -1841,7 +1906,7 @@ namespace XMLProgram {
             }
         };
 
-        struct GREATER : IChunk
+        struct KOOLIB_API GREATER : IChunk
         {
             IChunkPtr _value;
             GREATER(){}
@@ -1875,7 +1940,7 @@ namespace XMLProgram {
             }
         };
 
-        struct EQUAL : IChunk
+        struct KOOLIB_API EQUAL : IChunk
         {
             IChunkPtr _value;
             EQUAL(){}
@@ -1909,7 +1974,7 @@ namespace XMLProgram {
             }
         };
 
-        struct NOT : IChunk
+        struct KOOLIB_API NOT : IChunk
         {
             IChunkPtr _value;
             NOT(){}
@@ -1944,7 +2009,7 @@ namespace XMLProgram {
         };
 
         template< class _Type >
-        struct MINUS : IChunk
+        struct KOOLIB_API MINUS : IChunk
         {
             IChunkPtr _value;
             MINUS(){}
@@ -1978,7 +2043,7 @@ namespace XMLProgram {
             }
         };
 
-        struct RECIPROCAL : IChunk
+        struct KOOLIB_API RECIPROCAL : IChunk
         {
             IChunkPtr _value;
             RECIPROCAL(){}
@@ -2012,7 +2077,7 @@ namespace XMLProgram {
             }
         };
 
-        struct IF : IChunk, CXmlErrors
+        struct KOOLIB_API IF : IChunk, CXmlErrors
         {
             IChunkPtr _pCond;
             IChunkPtr _pChunk;
@@ -2061,7 +2126,7 @@ namespace XMLProgram {
             }
         };
 
-        struct CHOOSE : IChunk, CXmlErrors
+        struct KOOLIB_API CHOOSE : IChunk, CXmlErrors
         {
             std::vector< std::pair< IChunkPtr, IChunkPtr > > _options;
             IChunkPtr _otherwise;
@@ -2132,7 +2197,7 @@ namespace XMLProgram {
         };
 
         template< class _Op >
-            struct ValueAccumulator : IChunk, CXmlErrors
+            struct KOOLIB_API ValueAccumulator : IChunk, CXmlErrors
             {
                 typedef typename _Op::Type Type;
                 typedef typename _Op::CType CType;

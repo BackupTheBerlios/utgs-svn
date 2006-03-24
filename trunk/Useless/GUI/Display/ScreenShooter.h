@@ -8,7 +8,7 @@ namespace Useless {
 //REQUIRES
     class Screen;
 
-class ScreenShooter
+class USELESS_API ScreenShooter
 {
 public:    
     ScreenShooter( const Screen      &screen, 

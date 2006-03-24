@@ -1,3 +1,4 @@
+#include "Useless/UselessConfig.h"
 #include "Useless/File/IFile.h"
 #include "Useless/Util/SPointer.h"
 #include "Useless/Util/Storage/MemBlock.h"
@@ -6,7 +7,7 @@
 
 namespace Useless {
 
-class CFileStream : public CAsyncStream
+class USELESS_API CFileStream : public CAsyncStream
 {
 public:
     CFileStream( const SPointer<IFile> &file, int max_buffer_size_in_kB = 256 )

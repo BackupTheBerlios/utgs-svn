@@ -9,12 +9,23 @@ namespace Useless {
 
 template< class char_type1 > struct easy_to_string_t
 {
+	static char_type1 txc( char c )
+	{
+		return (char_type1)c;
+	}
+
+	static char_type1 txwc( wchar_t wc )
+	{
+		return (char_type1)wc;
+	}
+
 	/*! Copy narrow characters to wide string filling higher bits with 0.
 	*/
 	static std::basic_string< char_type1 > apply( const std::basic_string< char > &s )
 	{
 		std::basic_string< char_type1 > result;
-		std::copy( s.begin(), s.end(), std::back_inserter( result ));
+		std::transform( s.begin(), s.end(), std::back_inserter( result )
+			, &easy_to_string_t< char_type1 >::txc);
 		return result;
 	}
 
@@ -23,7 +34,8 @@ template< class char_type1 > struct easy_to_string_t
 	static std::basic_string< char_type1 > apply( const std::basic_string< wchar_t > &s )
 	{
 	    std::basic_string< char_type1 > result;
-	    std::copy( s.begin(), s.end(), std::back_inserter( result ));
+	    std::transform( s.begin(), s.end(), std::back_inserter( result )
+			, &easy_to_string_t< char_type1 >::txwc);
 	    return result;
 	}
 };

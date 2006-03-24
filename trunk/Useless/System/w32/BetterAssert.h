@@ -15,7 +15,7 @@
 
 typedef void(AssertCallbackFunction)(char*);
 
-int __stdcall DiagAssert ( unsigned long dwOverrideOpts,
+int USELESS_API __stdcall DiagAssert ( unsigned long dwOverrideOpts,
                  const char * szMsg,
                  const char * szFile,
                  unsigned long dwLine,

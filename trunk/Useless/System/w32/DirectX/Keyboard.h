@@ -5,7 +5,7 @@
 
 namespace Useless {
     
-class DIKeyboard
+class USELESS_API DIKeyboard
 {
 private:
 

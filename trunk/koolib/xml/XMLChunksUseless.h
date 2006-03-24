@@ -33,9 +33,10 @@
 #endif
 #include "Useless/Graphic/Device/SurfaceExtFun.h"
 
+
 namespace XMLProgram {
 
-    struct PointListProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API PointListProxy : XMLCodeBlock
     {
         Useless::PointList _points;
         PointListProxy( const Useless::PointList &points );
@@ -48,7 +49,7 @@ namespace XMLProgram {
         Useless::Pos At( int index );
     };
     
-    struct RectListProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API RectListProxy : XMLCodeBlock
     {
         Useless::RectList _rects;
         RectListProxy( const Useless::RectList &rectangles );
@@ -63,7 +64,7 @@ namespace XMLProgram {
         IChunkPtr Intersect( const Useless::RectList &rectangles );
     };
 
-    struct ScreenProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API ScreenProxy : XMLCodeBlock
     {
         Useless::SPointer< Useless::Screen > _spScreen;
 
@@ -77,7 +78,7 @@ namespace XMLProgram {
         void      WriteImage( std::string file );
     };
 
-    struct ImageProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API ImageProxy : XMLCodeBlock
     {
         Useless::SPointer< Useless::ImageBase > _spImage;
 
@@ -91,7 +92,7 @@ namespace XMLProgram {
         void      WriteImage( std::string file );
     };
 
-    struct SampleProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API SampleProxy : XMLCodeBlock
     {
         Useless::SPointer< Useless::Sample > _spSample;
 
@@ -101,7 +102,7 @@ namespace XMLProgram {
         float GetDuration();
     };
 
-    struct ChannelProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API ChannelProxy : XMLCodeBlock
     {
         Useless::Channel _channel;
 
@@ -117,7 +118,7 @@ namespace XMLProgram {
     };
 
 #ifdef USELESS_HAS_DSHOW
-    struct DSMediaProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API DSMediaProxy : XMLCodeBlock
     {
         Useless::SPointer< Useless::DSMedia > _spMedia;
 
@@ -131,7 +132,7 @@ namespace XMLProgram {
 #endif
 
 #ifdef USELESS_HAS_VORBIS
-	struct OggVorbisProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API OggVorbisProxy : XMLCodeBlock
     {
         Useless::SPointer< Useless::OggVorbisDecoder > _spOggVorbis;
         Useless::SPointer< Useless::IFile > _file;
@@ -143,7 +144,7 @@ namespace XMLProgram {
     };
 #endif
 
-    struct AdvancedPaint
+    struct KOOLIB_BIND_API AdvancedPaint
     {
         AdvancedPaint( Useless::Painter &painter ) {
             _pScreenSurface = painter.GetPlane()->GetSurface();
@@ -172,7 +173,7 @@ namespace XMLProgram {
     };
 
 
-    struct PainterProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API PainterProxy : XMLCodeBlock
     {
         Useless::Painter   _painter;
 
@@ -201,7 +202,7 @@ namespace XMLProgram {
         IChunkPtr GetClipper( const Useless::Rect &crop );
     };
     
-    struct WidgetPainterProxy : PainterProxy
+    struct KOOLIB_BIND_API WidgetPainterProxy : PainterProxy
     {
         Useless::WidgetPainter   _wpainter;
 
@@ -211,7 +212,7 @@ namespace XMLProgram {
         void RepaintWidget  ();
     };
 
-    struct WidgetProxy: XMLCodeBlock
+    struct KOOLIB_BIND_API WidgetProxy: XMLCodeBlock
     {
         Useless::Widget *_widget;
 
@@ -219,7 +220,7 @@ namespace XMLProgram {
         ~WidgetProxy();
     }; 
     
-    struct ImageWidgetProxy : XMLCodeBlock
+    struct KOOLIB_BIND_API ImageWidgetProxy : XMLCodeBlock
     {
         Useless::ImageWidget *_imgWidget;
 
@@ -230,7 +231,7 @@ namespace XMLProgram {
         void SetSkinByName( std::string name );
     };
 
-    struct LayoutProxy: XMLCodeBlock
+    struct KOOLIB_BIND_API LayoutProxy: XMLCodeBlock
     {
         Useless::LayoutBase *_layout;
         LayoutProxy( Useless::LayoutBase *layout );
@@ -243,7 +244,7 @@ namespace XMLProgram {
 
     };
 
-    struct WorkspaceProxy: XMLCodeBlock
+    struct KOOLIB_BIND_API WorkspaceProxy: XMLCodeBlock
     {
         Useless::Workspace *_workspace;
 
@@ -253,6 +254,23 @@ namespace XMLProgram {
         void SetCursor( std::string name );
     };
 
+    struct SkinProxy : XMLCodeBlock
+    {
+        Useless::VirtualValue< Useless::Skin > m_skin;
+        SkinProxy( const Useless::Skin &skin );
+    };
+    
+    struct FontProxy : XMLCodeBlock
+    {
+        Useless::Font m_font;
+        FontProxy( const Useless::Font &font );
+    };
+
+    struct FontPainterProxy : XMLCodeBlock
+    {
+        Useless::FontPainter m_fontPaint;
+        FontPainterProxy( const Useless::FontPainter &fp );
+    };
 
     /*******************************************************
 
@@ -309,6 +327,30 @@ namespace XMLProgram {
     {
         return new ChannelProxy( channel );
     }
+
+    inline IChunk *make_value_chunk( const Useless::Skin &skin )
+    {
+        return new SkinProxy( skin );
+    }
+    
+    inline IChunk *make_value_chunk( const Useless::SPointer< Useless::Skin > &skin )
+    {
+        return new SkinProxy( *skin );
+    }
+    
+    inline IChunk *make_value_chunk( const Useless::Font &font )
+    {
+        return new FontProxy( font );
+    }
+    
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::StupidVector< int > &vect );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::NormalPixel &pixel );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::FontPainter::Carrige &car );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::TextInfo::Word &word );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::TextInfo::Row &row );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::FontPainter::Status &s );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::FontPainter::Lines &s );
+    KOOLIB_BIND_API IChunk *make_value_chunk( const Useless::FontPainter::Words &s );
 
 
     /**********************************************************************************
@@ -390,6 +432,34 @@ namespace XMLProgram {
             return pRectList->_rects;
         }
     };
+    
+    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::Skin & >
+    {
+        static Useless::Skin & get( const TextAnsi &name, Node node, ExecutionState &state )
+        {
+            IChunkPtr pChunk = GetChunk( name, state );
+            SkinProxy *pConst = dynamic_cast< SkinProxy * >( pChunk.get() );
+            if ( 0 == pConst )
+            {
+                throw Useless::Error("SkinProxy expected");
+            }
+            return pConst->m_skin;
+        }
+    };
+    
+    KOOLIB_SPECIALIZATION struct argument_traits< const Useless::Font & >
+    {
+        static Useless::Font & get( const TextAnsi &name, Node node, ExecutionState &state )
+        {
+            IChunkPtr pChunk = GetChunk( name, state );
+            FontProxy *pConst = dynamic_cast< FontProxy * >( pChunk.get() );
+            if ( 0 == pConst )
+            {
+                throw Useless::Error("FontProxy expected");
+            }
+            return pConst->m_font;
+        }
+    };
 
 
     KOOLIB_SPECIALIZATION struct argument_traits< const Useless::Painter & >
@@ -447,7 +517,7 @@ namespace XMLProgram {
         }
 
     template< class _SignalParametrizer >
-        struct UniversalSlot : SignalFIDChunk 
+        struct KOOLIB_BIND_API UniversalSlot : SignalFIDChunk 
         {
             _SignalParametrizer     _sigParam;
             IChunkPtr               _pChunk;
@@ -541,7 +611,7 @@ namespace XMLProgram {
         };
 
     template< class _SignalParametrizer >
-        struct SignalChunk : XMLCodeBlock
+        struct KOOLIB_BIND_API SignalChunk : XMLCodeBlock
         {
             typedef typename _SignalParametrizer::SigType SigType;
             SigType &_s;

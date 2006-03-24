@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class SmallHint : public AdvTextWidget
+class USELESS_API SmallHint : public AdvTextWidget
 {
 public:
     SmallHint( const Font &font, const Skin &skin, const Text &text, int alignment=0 );

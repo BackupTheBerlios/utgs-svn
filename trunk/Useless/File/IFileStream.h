@@ -4,7 +4,7 @@
 #include "Useless/File/detail/IFileStreamBuffer.h"
 namespace Useless {
 
-    class IFileStream : public std::istream
+    class USELESS_API IFileStream : public std::istream
     {
     public:
         IFileStream( const SPointer<IFile> &file ): _streambuffer(file), std::istream(&_streambuffer)

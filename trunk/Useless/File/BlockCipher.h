@@ -20,7 +20,7 @@ namespace Useless {
 /*! Crypto++ library cipher
  */
 template< class CryptoLib_BlockTransformation >
-struct CryptoLibCipher : public CryptoLib_BlockTransformation
+struct USELESS_API CryptoLibCipher : public CryptoLib_BlockTransformation
 {
     enum { BLOCKSIZE = CryptoLib_BlockTransformation::BLOCKSIZE };
 
@@ -38,7 +38,7 @@ struct CryptoLibCipher : public CryptoLib_BlockTransformation
 /*! XOR cipher
  */
 template< int BlockSize >
-struct XorCipher
+struct USELESS_API XorCipher
 {
     enum { BLOCKSIZE = BlockSize };
 

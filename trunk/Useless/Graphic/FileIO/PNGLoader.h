@@ -22,7 +22,7 @@ namespace Useless {
 /*! \ingroup ImgIO
  *  Loads PNG files.
  */
-class PNGLoader : public ImageLoader
+class USELESS_API PNGLoader : public ImageLoader
 {
 public:
     virtual void Load ( IFile &ifile, OGfxFilter &filter );

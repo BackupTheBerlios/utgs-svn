@@ -26,7 +26,7 @@ namespace Useless {
 //REQUIRED
     class Screen;
 
-class Image : public ImageBase
+class USELESS_API Image : public ImageBase
 {
 public:
     Image();

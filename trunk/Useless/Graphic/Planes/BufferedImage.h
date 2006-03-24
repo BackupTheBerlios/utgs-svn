@@ -23,7 +23,7 @@ namespace Useless {
  *  Loads any image format from disk, and places it onto Surface
  */
 
-class BufferedImage : public Image
+class USELESS_API BufferedImage : public Image
 {
 public:
     BufferedImage();

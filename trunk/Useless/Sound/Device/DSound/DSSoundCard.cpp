@@ -9,20 +9,20 @@
 
 namespace Useless {
 
-int PreInitializer<DSSoundCard>::_counter = 0;
-
-LPDIRECTSOUND8          DSSoundCard::_p_direct_sound = 0;
-LPDIRECTSOUNDBUFFER     DSSoundCard::_p_buffer = 0;
-LPDIRECTSOUND3DLISTENER DSSoundCard::_p_listener = 0;
+INIT_SINGLETON( DirectSound, USELESS_API );
 
 bool IsSoundAvailable()
-    { return !!DSSoundCard::GetDSound(); }
+{
+    return !!DirectSound::Instance().GetDSound();
+}
 
 bool Is3DSoundPrefered()
-    { return !!DSSoundCard::GetListener(); }
+{
+    return !!DirectSound::Instance().GetListener();
+}
 
 
-void DSSoundCard::Init()
+__DirectSound::__DirectSound()
 {
     if ( DirectSoundCreate8( 0, &_p_direct_sound, 0 ) != 0 )
     {
@@ -31,16 +31,20 @@ void DSSoundCard::Init()
     }
 }
 
-void DSSoundCard::Destroy()
+__DirectSound::~__DirectSound()
 {
-    if (_p_direct_sound) { _p_direct_sound->Release(); _p_direct_sound=NULL; }
+    if (_p_direct_sound)
+    {
+        _p_direct_sound->Release();
+        _p_direct_sound=NULL;
+    }
 }
 
 DSSoundCard::DSSoundCard( const Screen &screen, bool use3DProcessing )
 {
-    assert(_p_direct_sound);
+    assert( DirectSound::Instance().GetDSound() );
 
-    DX_TRY( _p_direct_sound->SetCooperativeLevel( _hWnd=screen.GetHandle(), DSSCL_EXCLUSIVE ), 
+    DX_TRY( DirectSound::Instance().GetDSound()->SetCooperativeLevel( _hWnd=screen.GetHandle(), DSSCL_EXCLUSIVE ), 
             Error("Could not connect DSound to Screen") );
 
     DSBUFFERDESC bufferDesc;
@@ -56,18 +60,21 @@ DSSoundCard::DSSoundCard( const Screen &screen, bool use3DProcessing )
     bufferDesc.lpwfxFormat = 0;
     bufferDesc.guid3DAlgorithm = DS3DALG_DEFAULT;
     
-    DX_TRY( _p_direct_sound->CreateSoundBuffer( &bufferDesc, &_p_buffer, 0),
+    DX_TRY( DirectSound::Instance().GetDSound()->CreateSoundBuffer( &bufferDesc, &DirectSound::Instance().GetBuffer(), 0),
             Error("Could not create primary buffer") );
     
     if ( use3DProcessing )
-        { DX_TRY( _p_buffer->QueryInterface( IID_IDirectSound3DListener8, (void**)&_p_listener),
+        { DX_TRY( DirectSound::Instance().GetDSound()->QueryInterface( IID_IDirectSound3DListener8, (void**)&DirectSound::Instance().GetListener()),
             Error("Could not query liestener from primary buffer") ) }
 
 }
 
 DSSoundCard::~DSSoundCard()
 {
-    if (_p_direct_sound) { _p_direct_sound->SetCooperativeLevel( _hWnd, 0 ); }
+    if ( DirectSound::Instance().GetDSound() )
+    {
+        DirectSound::Instance().GetDSound()->SetCooperativeLevel( _hWnd, 0 );
+    }
 }
 
 Channel DSSoundCard::Play( Sample &sample, bool loop, bool pause )

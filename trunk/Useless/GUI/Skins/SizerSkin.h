@@ -12,7 +12,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  \a SizerWidget skin.
  */
-class SizerSkin : public FrameSkin, public ArraySkin
+class USELESS_API SizerSkin : public FrameSkin, public ArraySkin
 {
 public:
     SizerSkin(): _orient(HORIZONTAL) {}

@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class WidgetTableWidget : virtual private HubWidget, virtual public TableWidget
+class USELESS_API WidgetTableWidget : virtual private HubWidget, virtual public TableWidget
 {
 public:
     WidgetTableWidget( const ArraySkin &skin );

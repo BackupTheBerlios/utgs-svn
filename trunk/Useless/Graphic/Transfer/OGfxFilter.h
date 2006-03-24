@@ -21,7 +21,7 @@ namespace Useless {
  *  Abstract destination for image transfer.
  */
 
-class OGfxFilter
+class USELESS_API OGfxFilter
 {
 public:
     OGfxFilter() {}

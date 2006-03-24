@@ -18,9 +18,10 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm1000"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -64,6 +65,7 @@
 			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm800"
 				Optimization="1"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="1"
@@ -72,7 +74,7 @@
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -105,43 +107,109 @@
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="Debug DLL|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="1">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm800"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="TRUE"
+				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="0"
+				WarningLevel="1"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release DLL|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="1"
+			WholeProgramOptimization="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm800"
+				Optimization="1"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="2"
+				OptimizeForProcessor="2"
+				OptimizeForWindowsApplication="TRUE"
+				AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				RuntimeLibrary="2"
+				TreatWChar_tAsBuiltInType="TRUE"
+				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="0"
+				WarningLevel="1"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath="..\..\koolib\SimpleIPC.h">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLChunksGUI.cpp">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLChunksGUI.h">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLChunksGUIa.cpp">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLChunksUseless.cpp">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLChunksUseless.h">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLModuleDynamo.cpp">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLModuleDynamo.h">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLModuleSimpleIPC.cpp">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLModuleUseless.cpp">
-		</File>
-		<File
-			RelativePath="..\..\koolib\xml\XMLModuleUseless.h">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

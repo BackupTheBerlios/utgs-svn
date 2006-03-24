@@ -8,7 +8,7 @@
 namespace Useless {
 
 template< class WidgetType >
-class InFrameWidget : public CompoundWidget
+class USELESS_API InFrameWidget : public CompoundWidget
 {
 public:
     USELESS_SPECIALIZATION InFrameWidget( const Skin &frame_skin, int alignment )

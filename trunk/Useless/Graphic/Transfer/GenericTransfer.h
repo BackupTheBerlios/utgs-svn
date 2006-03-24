@@ -53,7 +53,7 @@ namespace Useless {
  *
  *
  */
-class GenericTransfer : public PixelTransfer
+class USELESS_API GenericTransfer : public PixelTransfer
 {
 public:
     /*! Source and destination data pointers are optional, and

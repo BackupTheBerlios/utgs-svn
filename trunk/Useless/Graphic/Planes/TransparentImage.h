@@ -9,7 +9,7 @@ namespace Useless {
  *  In addition to Image, this class loads any !!! 8bit !!! alpha image format from disk
  *  and places it onto alpha-Surface using Surface::LockAlpha()
  */
-class TransparentImage : public Image
+class USELESS_API TransparentImage : public Image
 {
 public:
                         TransparentImage();

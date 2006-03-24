@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class MarkLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
+class USELESS_API MarkLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
 {
 public:
     MarkLogic();

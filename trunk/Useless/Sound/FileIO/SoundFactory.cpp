@@ -9,7 +9,7 @@
 
 namespace Useless {
 
-INIT_SINGLETON(SoundFactory);
+INIT_SINGLETON( SoundFactory, USELESS_API );
 
 const int MaxHeaderBytes = 256;
 

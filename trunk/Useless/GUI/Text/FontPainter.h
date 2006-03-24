@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-class FontPainter
+class USELESS_API FontPainter
 {
 public:
     FontPainter() {}

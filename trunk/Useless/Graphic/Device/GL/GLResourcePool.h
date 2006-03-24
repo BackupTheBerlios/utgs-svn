@@ -17,7 +17,7 @@ namespace Useless {
 
 /*! OpenGL resources manager
  */
-class GLResourcePool
+class USELESS_API GLResourcePool
 {
 public:
     GLuint AcquireTexture();

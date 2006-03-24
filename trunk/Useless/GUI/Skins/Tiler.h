@@ -8,7 +8,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  Includes image tiling mechanism.
  */
-class Tiler
+class USELESS_API Tiler
 {
 public:
     Tiler( PointList &positions, RectList &rect_list, const Pos &p ): _rect_list(rect_list), _positions(positions), _pos(p) {}

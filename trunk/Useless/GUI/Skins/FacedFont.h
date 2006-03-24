@@ -10,7 +10,7 @@
 
 namespace Useless {
 
-class FacedFont : public FontSkin
+class USELESS_API FacedFont : public FontSkin
 {
 public:
     typedef ImageDotTracer::RefImage RefImage;

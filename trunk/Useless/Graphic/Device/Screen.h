@@ -19,7 +19,7 @@ class ImageBuffer;
  *  \ingroup GfxPlanes
  *  Abstract screen class.
  */
-class Screen : public OGraphics, virtual public Window
+class USELESS_API Screen : public OGraphics, virtual public Window
 {
 public:
     // Destroy screen

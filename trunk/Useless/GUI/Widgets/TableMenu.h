@@ -11,7 +11,7 @@ namespace Useless {
     class TableListStyle;
     class TableListWidget;
 
-class TableMenu : public DropDown, public IWTableList
+class USELESS_API TableMenu : public DropDown, public IWTableList
 {
 public:
     TableMenu( const CaptionStyle &style, IWTableList *p_items, DataConnector *p_data );

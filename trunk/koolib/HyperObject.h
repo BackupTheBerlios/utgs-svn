@@ -22,8 +22,10 @@ last mod: $Id: $
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <sstream>
+#include "koolib/koolibConfig.h"
 
 #   ifndef KOOLIB_NON_CONTRIB
+#   include "Useless/UselessConfig.h"
 #   include "Useless/Error/Error.h"
 #   endif
 
@@ -49,7 +51,7 @@ last mod: $Id: $
  *  }
  *
  */
-struct HyperObject
+struct KOOLIB_API HyperObject
 {
     typedef std::map< std::string, boost::shared_ptr< HyperObject > > Map;
     typedef Map::iterator iterator;

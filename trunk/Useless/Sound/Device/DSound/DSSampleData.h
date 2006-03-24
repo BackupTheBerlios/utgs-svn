@@ -2,17 +2,15 @@
 #define __INCLUDED__USELESS__DSOUND_SAMPLE_DATA_H__
 
 #include "Useless/Sound/Device/SampleData.h"
-#include "DSStructs.h"
 #include "Useless/System/w32/COMObject.h"
-
+#include "DSStructs.h"
 #include <dsound.h>
-#pragma comment (lib,"dsound.lib")
 
 namespace Useless {
 
 /*! Holds sample data with DirectSound SoundBuffer
  */
-class DSSampleData : public SampleData
+class USELESS_API DSSampleData : public SampleData
 {
 public:
     DSSampleData();
@@ -44,12 +42,7 @@ public:
     ---------------------------------------------------------------*/
     LPDIRECTSOUNDBUFFER GetDSBuffer    () const { return _p_sound_buffer; }
     const DSBUFFERDESC& GetDSBufferDesc() const { return _buffer_desc.GetDesc(); }
-    COMObject<IDirectSound3DBuffer> Get3DBuffer  () const
-        {
-            LPDIRECTSOUND3DBUFFER b;
-            _p_sound_buffer->QueryInterface( IID_IDirectSound3DBuffer, (void**)&b);
-            return b;
-        }
+    COMObject<IDirectSound3DBuffer> Get3DBuffer  () const;
 
 
 private:

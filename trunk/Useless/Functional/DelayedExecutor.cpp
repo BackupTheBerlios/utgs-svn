@@ -4,9 +4,7 @@
 
 namespace Useless {
 
-int SingletonKiller<OnTimer>::PostDestr::_counter = 0; 
-
-DelayedExecutor * OnTimer::pInstance = 0;
+INIT_SINGLETON( OnTimer, USELESS_API );
 
 DelayedExecutor::DelayedExecutor()
 {

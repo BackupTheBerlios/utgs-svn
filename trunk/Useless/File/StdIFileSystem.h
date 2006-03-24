@@ -21,7 +21,7 @@
 namespace Useless {
 
 
-class StdIFileSystem : public IFileSystem
+class USELESS_API StdIFileSystem : public IFileSystem
 {
 public:
     StdIFileSystem() {}

@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-    struct GLGarbage
+    struct USELESS_API GLGarbage
     {
         int                         _age;
         const GLTextureSurface     *_surf;
@@ -18,7 +18,7 @@ namespace Useless {
     typedef std::map< const GLTextureSurface *, GLGarbage * > GLSurfTessMap;
     typedef std::list< GLGarbage > GLGarbageCollection;
 
-    struct GLTextureSurfaceAllocator
+    struct USELESS_API GLTextureSurfaceAllocator
     {
         GLSurfTessMap       _glSurfTess;
         GLGarbageCollection _glGarbage;
@@ -38,8 +38,8 @@ namespace Useless {
         static std::set< GLTextureSurfaceAllocator * > s_allocators;
     };
 
-    void GLFreeSurfaceGarbage( GLTextureSurface *s );
-    void GLUpdateMovieSamples( GLTextureSurfaceAllocator *pTexAlloc );
+    USELESS_API void GLFreeSurfaceGarbage( GLTextureSurface *s );
+    USELESS_API void GLUpdateMovieSamples( GLTextureSurfaceAllocator *pTexAlloc );
 
 
 };//Useless

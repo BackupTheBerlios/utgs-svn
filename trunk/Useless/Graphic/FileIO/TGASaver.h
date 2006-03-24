@@ -24,7 +24,7 @@ namespace Useless {
  *  Saves TGA images
  */
 
-class TGASaver : public ImageSaver
+class USELESS_API TGASaver : public ImageSaver
 {
 public:
     virtual void Save( OFile &OFile, IGfxFilter &filter );

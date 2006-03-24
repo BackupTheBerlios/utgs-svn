@@ -17,7 +17,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  A AdvScrollbar Widget. \sa ScrollbarWidget
  */
-class AdvListWidget :private HubWidget, virtual public Widget,
+class USELESS_API AdvListWidget :private HubWidget, virtual public Widget,
                      public IWList, public IWScrollee, public IWActive
 {
 public:

@@ -9,7 +9,7 @@ namespace Useless {
 
 class Surface;
 
-class SurfaceReader : public IGfxFilter
+class USELESS_API SurfaceReader : public IGfxFilter
 {
 public:
     SurfaceReader( const Surface &surface );

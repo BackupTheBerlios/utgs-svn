@@ -24,7 +24,7 @@ namespace Useless {
         StdIFileSystem fs;
         fs.ScanDir( TernaryCall( this, &HatcheryBuilder::AddNode ), in_dir, true );
         SPointer<OFile> sp_data_file = new StdOFile( out_name, true );
-        HatcheryCipher::Out hatch( sp_data_file, __key );
+        HatcheryCipher::Out hatch( sp_data_file, g_szKey );
 
         hatch.Write( __cipherType, 4 );
 

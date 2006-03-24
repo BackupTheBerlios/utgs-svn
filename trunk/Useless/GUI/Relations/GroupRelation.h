@@ -13,7 +13,7 @@ namespace Useless {
  *  only one child to be selected(checked). You can use this to
  *  create radio-group or multi-tab view.
  */
-class GroupRelation : public Relation
+class USELESS_API GroupRelation : public Relation
 {
 public:
     GroupRelation( HubWidget &group);

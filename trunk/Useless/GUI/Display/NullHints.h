@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class NullHints : public HintMan
+class USELESS_API NullHints : public HintMan
 {
 public:
     virtual ~NullHints() {}

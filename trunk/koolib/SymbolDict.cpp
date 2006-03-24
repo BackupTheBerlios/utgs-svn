@@ -19,8 +19,8 @@ last mod: $Id: koolas Exp $
 #include <koolib/SymbolDict.h>
 #include <koolib/FourCC.h>
 
-#ifdef USELESS_HAS_CRYPTOPP 
-#   include <adler32.h>
+#ifdef USELESS_HAS_CRYPTOPP_ADLER32
+#include "Useless/Util/Crypto.h"
 #endif
 
 std::wstring SymbolDict::s_NoSymbol;
@@ -93,8 +93,8 @@ SymbolDict::AddSymbol    ( const std::wstring &name, unsigned int preferedId )
     
     if ( NO_SYMBOL == preferedId )
     {
-#ifdef USELESS_HAS_CRYPTOPP
-        CryptoPP::Adler32().CalculateDigest( (byte*)&preferedId, (byte*)(name.c_str()), sizeof(wchar_t) * name.size() );
+#ifdef USELESS_HAS_CRYPTOPP_ADLER32
+        preferedId = CalculateDigest( name );
 #else
         wchar_t fchars[5] = {0,};
         std::memcpy( fchars, &name[0], std::min( (int)name.size(), (int)4 ));

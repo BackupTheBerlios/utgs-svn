@@ -7,13 +7,14 @@
 // Copyright (c) 1996-2001 Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------------------------
 
+#include "Useless/UselessConfig.h"
 #include "Useless/Util/Math.h"
 
 //
 //  Define an internal filter that wraps the base CBaseReader stuff
 //
 
-class CMemStream : public CAsyncStream
+class USELESS_API CMemStream : public CAsyncStream
 {
 public:
     CMemStream(LPBYTE pbData, LONGLONG llLength, DWORD dwKBPerSec = INFINITE) :

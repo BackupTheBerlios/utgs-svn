@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class DraggerLogic : virtual public ActiveWidget, virtual private LogicWidget
+class USELESS_API DraggerLogic : virtual public ActiveWidget, virtual private LogicWidget
 {
 public:
     DraggerLogic();

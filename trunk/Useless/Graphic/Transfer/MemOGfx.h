@@ -24,7 +24,7 @@ namespace Useless {
  *  Memory image transfer.
  */
 
-class MemOGfx : public OGfxFilter
+class USELESS_API MemOGfx : public OGfxFilter
 {
 public:
     MemOGfx( Types::UBYTE *output_memory, int pitch ): _output_memory(output_memory), _pitch(pitch), _palette_output(0) {}

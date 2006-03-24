@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class SampleWriter : public OSoundInterface
+class USELESS_API SampleWriter : public OSoundInterface
 {
 public:
     SampleWriter( SampleData &sample_data );

@@ -154,10 +154,10 @@ inline bool IsChar( int key_code )
     ( key_code==SPACE );
 }
 
-int GetCode( const std::string &name );
+int USELESS_API GetCode( const std::string &name );
 
 typedef std::map< std::string, int > CodeMap;
-const CodeMap & GetCodeMap();
+USELESS_API const CodeMap & GetCodeMap();
     
 };//namespace Keys
 };//namespace Useless

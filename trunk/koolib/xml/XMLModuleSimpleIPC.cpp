@@ -12,9 +12,9 @@
  ********************************************************************/
 
 #define MEAN_AND_LEAN
-#include <koolib/SimpleIPC.h>
 #include <koolib/xml/XMLModuleBuiltIn.h>
 #include <koolib/xml/XMLChunksMethod.h>
+#include <koolib/SimpleIPC.h>
 
 namespace XMLProgram {
 

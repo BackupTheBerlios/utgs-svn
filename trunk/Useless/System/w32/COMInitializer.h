@@ -6,14 +6,14 @@
 
 namespace Useless {
 
-class COMInitializer
+class USELESS_API COMInitializer
 {
     static void Init()    { CoInitialize(NULL);   }
     static void Destroy() { CoUninitialize(); }
     friend class PreInitializer<COMInitializer>;
 };
 
-static PreInitializer<COMInitializer> init_COM;
+DECLARE_PREINITIALIZER( COMInitializer, COMInitializer, USELESS_API );
 
 };//namespace Useless
 

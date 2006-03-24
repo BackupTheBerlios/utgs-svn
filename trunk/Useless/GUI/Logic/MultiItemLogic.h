@@ -7,7 +7,7 @@ namespace Useless {
 
 /*! Multi Item Logical States Manager
 ---------------------------------------------------------*/
-class MultiItemLogic : virtual public Widget
+class USELESS_API MultiItemLogic : virtual public Widget
 {
 public:
     virtual  int GetState( int item_no )         const = 0;

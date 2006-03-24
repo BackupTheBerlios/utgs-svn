@@ -20,54 +20,54 @@ namespace Useless {
 
 /* Create methods
 ---------------------------------------------------------------------------------------------*/
-Resource* CreateImage( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImage( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_image( "images::image", CreateImage );
 
-Resource* CreateImageCopy( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImageCopy( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_image_copy( "images::copy", CreateImageCopy );
 
-Resource* CreateAnimation( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateAnimation( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_animation( "images::animation", CreateAnimation );
 
-Resource* CreateMapping( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateMapping( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_map( "mappings::map", CreateMapping );
 
-Resource* CreateImageDicer( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImageDicer( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_image_dicer( "skins::dicer", CreateImageDicer );
 
-Resource* CreateBarSkins( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateBarSkins( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_bar_skins( "skins::bars", CreateBarSkins );
 static RegisterXMLCreator reg_create_bar_skin( "skins::bar", CreateBarSkins );
 
-Resource* CreateFrameSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateFrameSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_frame_skin( "skins::frame", CreateFrameSkin );
 
-Resource* CreateParametricSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateParametricSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_param_skin( "skins::parametric", CreateParametricSkin );
 
-Resource* CreateImageSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImageSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_image_skin( "skins::image", CreateImageSkin );
 
-Resource* CreateImageSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateImageSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_image_skins( "skins::images", CreateImageSkin );
 
-Resource* CreateSkinSet( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSkinSet( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_skin_set( "skins::skinset", CreateSkinSet );
 
-Resource* ResolveSkinLink( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* ResolveSkinLink( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_resolve_skin_link( "skins::link", ResolveSkinLink );
 static RegisterXMLCreator reg_resolve_skin_copy( "skins::copy", ResolveSkinLink );
 
-Resource* CreateNullSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateNullSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_null_skin( "skins::null", CreateNullSkin );
 
-Resource* CreateSizerSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSizerSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_sizer_skin( "skins::sizer", CreateSizerSkin );
 
-Resource* CreateTableSkin( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateTableSkin( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_table_skin( "skins::table", CreateTableSkin );
 
-Resource* CreateSkinMixer( XMLIterator i, XMLCreatorEnv *env);
+USELESS_RESOURCES_API Resource* CreateSkinMixer( XMLIterator i, XMLCreatorEnv *env);
 static RegisterXMLCreator reg_create_skin_mixer( "skins::skinmixer", CreateSkinMixer );
 
 
@@ -131,10 +131,10 @@ inline ArraySkin& QueryArraySkin( const std::string &id )
 
 /* Helper methods
 ---------------------------------------------------------------------------------------------*/
-SPointer<ImageBase> MakeImage( const std::string &id );//< create image "image_name(x,y,w,h)" 
+USELESS_RESOURCES_API SPointer<ImageBase> MakeImage( const std::string &id );//< create image "image_name(x,y,w,h)" 
 
-bool InsertChildSkin( const Skin &skin, XMLCreatorEnv *env );
-void SetupSkinAttributes( Skin &skin, const XMLAttributes &attributes);
+USELESS_RESOURCES_API bool InsertChildSkin( const Skin &skin, XMLCreatorEnv *env );
+USELESS_RESOURCES_API void SetupSkinAttributes( Skin &skin, const XMLAttributes &attributes);
 
 };//namespace Useless
 #endif//__INCLUDED_USELESS_CREATE_SKINS_H__

@@ -7,6 +7,13 @@
 #define DX_TRY(c,e) if ( c != 0 ) { /*throw e;*/ APP_WARNING(e,"DSound"); }
 
 namespace Useless {
+    
+COMObject<IDirectSound3DBuffer> DSSampleData::Get3DBuffer  () const
+{
+    LPDIRECTSOUND3DBUFFER b;
+    _p_sound_buffer->QueryInterface( IID_IDirectSound3DBuffer, (void**)&b);
+    return b;
+}
 
 DSSampleData::DSSampleData(): _p_sound_buffer(0)
 {}
@@ -14,7 +21,7 @@ DSSampleData::DSSampleData(): _p_sound_buffer(0)
 DSSampleData::DSSampleData( const Snd::Properties &props )
 {
     _buffer_desc = props;
-    LPDIRECTSOUND8 p_snd = DSSoundCard::GetDSound();
+    LPDIRECTSOUND8 p_snd = DirectSound::Instance().GetDSound();
 
     DX_TRY( p_snd->CreateSoundBuffer( &_buffer_desc.GetDesc(), &_p_sound_buffer, 0 ), 
             Error("Could not create sound buffer") );
@@ -31,7 +38,7 @@ SampleData* DSSampleData::Clone() const
 {
     DSSampleData *p_new = new DSSampleData();
 
-    LPDIRECTSOUND8 p_snd = DSSoundCard::GetDSound();
+    LPDIRECTSOUND8 p_snd = DirectSound::Instance().GetDSound();
 
     DX_TRY( p_snd->DuplicateSoundBuffer( _p_sound_buffer, &p_new->_p_sound_buffer ),
             Error("Could not duplicate sound buffer") );

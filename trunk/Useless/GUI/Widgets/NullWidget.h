@@ -9,7 +9,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Completely Empty Widget.
  */
-class NullWidget : public Widget
+class USELESS_API NullWidget : public Widget
 {
 public:
     NullWidget() : Widget(0) { Widget::_parent=this; }
@@ -45,7 +45,7 @@ public:
     static NullWidget* InstancePtr();
 };
 
-DECLARE_SINGLETON(NullWidget, NullWidgetInstance);
+DECLARE_SINGLETON(NullWidget, NullWidgetInstance, USELESS_API);
 
 inline NullWidget* NullWidget::InstancePtr() { return &NullWidgetInstance::Instance(); }
 

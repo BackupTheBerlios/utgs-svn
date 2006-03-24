@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class Channel
+class USELESS_API Channel
 {
 public:
     Channel() {}

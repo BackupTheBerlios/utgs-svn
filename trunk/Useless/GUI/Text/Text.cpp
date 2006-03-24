@@ -80,14 +80,34 @@ Text& Text::Paste(int pos, const Text &text)
     return *this;
 }
 
+char toChar( UniCode c )
+{
+    return (char)c;
+}
+
 //Conversion to default string types
 std::string Text::GetString() const
 {
     std::string str;
     str.resize( size() );
-    std::copy( begin(), end(), str.begin() );
+    std::transform( begin(), end(), str.begin(), toChar );
     return str;
 }
+
+char toWchar( UniCode c )
+{
+    return (wchar_t)c;
+}
+
+//Conversion to default string types
+std::basic_string<short> Text::GetWString() const
+{
+    std::basic_string<short> str;
+    str.resize( size() );
+    std::transform( begin(), end(), str.begin(), toWchar );
+    return str;
+}
+
 
 
 };//namespace Useless

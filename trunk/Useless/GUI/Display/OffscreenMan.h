@@ -30,7 +30,7 @@ namespace Useless {
 /*! \ingroup gDisplay
  *  Manages Image Buffer
  */
-class OffscreenMan : public DisplayMan
+class USELESS_API OffscreenMan : public DisplayMan
 {
 public:
     OffscreenMan(int w, int h, Screen &screen);

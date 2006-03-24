@@ -18,7 +18,7 @@ namespace Useless {
  *  Don't worry about BufferWidget behavior. In Tie method \a apearee 
  *  may be whatever widget you want.
  */
-class MultiTabRelation : GroupRelation
+class USELESS_API MultiTabRelation : GroupRelation
 {
 public:
     MultiTabRelation( HubWidget &group);

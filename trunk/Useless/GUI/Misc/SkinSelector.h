@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class SkinSelector
+class USELESS_API SkinSelector
 {
 public:
     SkinSelector    () {}

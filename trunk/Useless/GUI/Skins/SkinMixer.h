@@ -7,7 +7,7 @@ namespace Useless {
 
 /*! Creates set of skins, mixing several source skins together 
 --------------------------------------------------------------*/   
-class SkinMixer:  public SkinSet
+class USELESS_API SkinMixer:  public SkinSet
 {
 public:    
 

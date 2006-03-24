@@ -9,8 +9,9 @@
 
 namespace Useless {
 
-    int PreInitializer<ActiveWidget>::_counter = 0 ;
-    MethodPool<ActiveWidget, const Widget::Request > *ActiveWidget::_handlers;
+	INIT_PREINITIALIZER_ABSTRACT( ActiveWidget, ActiveWidget, USELESS_API );
+    
+	MethodPool<ActiveWidget, const Widget::Request > *ActiveWidget::_handlers;
 
     void ActiveWidget::Init()
     {

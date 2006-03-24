@@ -4,7 +4,7 @@
 namespace Useless {
 namespace Snd {
 
-struct Format
+struct USELESS_API Format
 {
     Format();
 
@@ -14,7 +14,7 @@ struct Format
     char bits;        //8 or 16
 };
 
-struct Properties : public Format
+struct USELESS_API Properties : public Format
 {
     Properties();
     Properties( const Format &f );
@@ -36,7 +36,7 @@ struct Properties : public Format
 enum { MIN_VOLUME=-100,  MAX_VOLUME=0 };
 enum { MIN_PAN   = -40,  MAX_PAN  =40 };
 
-struct PlayFX
+struct USELESS_API PlayFX
 {
     PlayFX();
 

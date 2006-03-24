@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  TextEditWidget Widget is a single line editable textfield.
  */
-class TextEditWidget : public ActiveWidget
+class USELESS_API TextEditWidget : public ActiveWidget
 {
 public:
     TextEditWidget( int w, int h, int x, const Font &font,CopyOf<Skin> frame_skin,

@@ -10,7 +10,7 @@
 
 namespace Useless {
 
-bool G_nVidiaViewport = true;
+USELESS_API bool G_nVidiaViewport = true;
 
 
 //

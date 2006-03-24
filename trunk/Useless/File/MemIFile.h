@@ -31,7 +31,7 @@ namespace Useless {
 /*! \class MemIFile
  *  Used as buffer for some load actions
  */
-class MemIFile : public IFile
+class USELESS_API MemIFile : public IFile
 {
 public:
     MemIFile(const MemBlock& data);

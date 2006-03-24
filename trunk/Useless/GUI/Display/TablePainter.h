@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class TablePainter : public DataConnector
+class USELESS_API TablePainter : public DataConnector
 {
 public:
     virtual ~TablePainter() {}

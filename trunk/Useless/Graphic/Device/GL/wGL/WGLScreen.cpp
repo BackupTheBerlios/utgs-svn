@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-    extern bool G_EnableDDrawScr;
+    extern USELESS_API bool G_EnableDDrawScr;
 
     // Used to start fullscreen via DDraw.
     IDirectDraw7 *G_pDDraw = 0;

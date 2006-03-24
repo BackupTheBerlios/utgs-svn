@@ -12,7 +12,7 @@ namespace Useless {
 
         struct Message;
 
-        struct Texture : virtual Dynamo::IInterface
+        struct USELESS_API Texture : virtual Dynamo::IInterface
         {
             enum Color  { /*3, 4, RGB=0x1907, RGBA=0x1908,*/ RGB8=0x8051, RGBA8=0x8058, RGB16=0x8054, RGBA16=0x805B, ALPHA8=0x803C };
             enum Format { RGB=0x1907, RGBA=0x1908, BGR=0x80E0, BGRA=0x80E1, ALPHA=0x1906 };
@@ -37,7 +37,7 @@ namespace Useless {
             virtual int GetHeight() = 0;
         };
 
-        struct Context
+        struct USELESS_API Context
         {
             virtual ~Context()
             {

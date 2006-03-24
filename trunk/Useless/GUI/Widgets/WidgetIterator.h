@@ -11,7 +11,7 @@ namespace Useless {
 
 /*
 ------------------------------------------------------------------------------*/
-class Widget::Iterator
+class USELESS_API Widget::Iterator
 {
 public:
     Iterator() : _widget(NULL) {}

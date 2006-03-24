@@ -1,6 +1,7 @@
 #ifndef __INCLUDED_USELESS_DS_MEDIA_H__
 #define __INCLUDED_USELESS_DS_MEDIA_H__
 
+#include "Useless/UselessConfig.h"
 #include "Useless/System/w32/COMInitializer.h"
 #include "Useless/System/w32/COMObject.h"
 #include "Useless/Movie/DShow/CSurfaceRender.h"
@@ -24,7 +25,7 @@
 
 namespace Useless {
 
-class DSMedia
+class USELESS_API DSMedia
 {
 public:
     enum MediaType { VIDEO=1, AUDIO=2 };

@@ -20,14 +20,14 @@ namespace Useless {
  *  After parsing we get nodes with their attributes.
  *  We can access nodes using begin(), end() or at()
  */
-class XMLParser
+class USELESS_API XMLParser
 {
 public:
     XMLParser();
     XMLParser( const std::string &xml_string, const std::string &source = "< none >" );
     virtual ~XMLParser();
 
-    struct XMLError : public Useless::Error
+    struct USELESS_API XMLError : public Useless::Error
     {
         XMLError( const std::string &source,
                     int lineNo,
@@ -112,7 +112,7 @@ typedef DependencyTree< XMLParentDetector > XMLDependencyTree;
 
 /*! XMLParser enhanced to have nested structure information
  */
-struct XMLDocument : public XMLParser
+struct USELESS_API XMLDocument : public XMLParser
 {
     XMLDocument()
     {
@@ -137,7 +137,7 @@ struct XMLDocument : public XMLParser
 
 /*! Simple iterator to use with XMLParser
  */
-struct XMLIterator
+struct USELESS_API XMLIterator
 {
     XMLIterator(): _xml(0) {}
     XMLIterator( XMLDocument &xml ): _xml(&xml)

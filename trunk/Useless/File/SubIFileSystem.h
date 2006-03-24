@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class SubIFileSystem : public IFileSystem
+class USELESS_API SubIFileSystem : public IFileSystem
 {
 public:
     SubIFileSystem( const SPointer<IFileSystem> &ifs,

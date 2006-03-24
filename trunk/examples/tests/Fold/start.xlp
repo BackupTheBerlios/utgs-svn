@@ -1,7 +1,7 @@
 <xml encoding="utf-8">
     <system>
         <screen id="screen"
-            title="Unit Test: SmartSplit"
+            title="Unit Test: Fold"
             width="800"
             height="600"
             windowed="1"

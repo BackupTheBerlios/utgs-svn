@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-class GDITransfer : public PixelTransfer
+class USELESS_API GDITransfer : public PixelTransfer
 {
 public:
     GDITransfer( HDC hdc, HBITMAP bmp );

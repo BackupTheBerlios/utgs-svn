@@ -57,14 +57,24 @@ namespace GVM {
             glDisable( GL_BLEND );
         }
 
-        void SetOrtho2D( float left, float right, float bottom, float top )
+        void SetOrtho2D( double left, double right, double bottom, double top )
         {
             gluOrtho2D( left, right, bottom, top );
         }
         
-        void SetPerspective( float fov, float aspect, float znear, float zfar )
+        void SetPerspective( double fov, double aspect, double znear, double zfar )
         {
             gluPerspective( fov, aspect, znear, zfar );
+        }
+        
+        void SetFrustum    ( double left, double right, double bottom, double top, double znear, double zfar )
+        {
+            glFrustum( left, right, bottom, top, znear, zfar );
+        }
+        
+        void SetOrtho      ( double left, double right, double bottom, double top, double znear, double zfar )
+        {
+            glOrtho( left, right, bottom, top, znear, zfar );
         }
         
 

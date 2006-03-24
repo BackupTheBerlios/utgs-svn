@@ -7,7 +7,7 @@ namespace Useless {
 
 /*! Holds sample data
  */
-class SampleData
+class USELESS_API SampleData
 {
 public:
     /* SampleData( const Snd::Properties& ); */

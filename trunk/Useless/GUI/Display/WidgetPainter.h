@@ -10,7 +10,7 @@ namespace Useless {
     class DisplayMan;
     class Widget;
 
-class WidgetPainter : public Painter
+class USELESS_API WidgetPainter : public Painter
 {
 public:
     WidgetPainter();

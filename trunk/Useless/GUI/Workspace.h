@@ -24,7 +24,7 @@ namespace Useless{
  *  Workspace is main screen area.
  *  The class manages widgets, poups, menus and hints.
  */
-class Workspace : public Form, public PopupCycler
+class USELESS_API Workspace : public Form, public PopupCycler
 {
 public:
     Workspace( GUIMaster &gui );

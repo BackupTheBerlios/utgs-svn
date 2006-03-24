@@ -14,7 +14,7 @@ struct CaptionStyle;
 /*! \ingroup Widgets
  *  Kind of LogicWidget that paints text over skin.
  */
-class CaptionWidget : virtual public LogicWidget, virtual public IWCaption
+class USELESS_API CaptionWidget : virtual public LogicWidget, virtual public IWCaption
 {
 public:
     enum Alignment{ INNER=0, INNER_LEFT=1, INNER_RIGHT=2, OUTER_LEFT=3, OUTER_RIGHT=4 };

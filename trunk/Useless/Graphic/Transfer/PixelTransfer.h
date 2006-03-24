@@ -15,7 +15,7 @@ class Rect;
  *  \li TRANSFORM - then Transform() method is valid
  *
  */
-class PixelTransfer
+class USELESS_API PixelTransfer
 {
 public:
     virtual ~PixelTransfer() {}

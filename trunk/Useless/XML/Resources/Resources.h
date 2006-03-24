@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <list>
+#include "Useless/UselessConfig.h"
 #include "Useless/TemplateConfig.h"
 #include "Useless/Util/TemplateDefines.h"
 #include "Useless/Util/Singleton.h"
@@ -15,7 +16,7 @@
 namespace Useless {
 
 //! Base class for type detection while convertion
-struct Converter
+struct USELESS_RESOURCES_API Converter
 {
     virtual ~Converter() {}
 };
@@ -53,7 +54,7 @@ template< class _T > struct Converters : virtual Converter {};
 
 /*! Base resource teleport class
  */
-struct Resource
+struct USELESS_RESOURCES_API Resource
 {
     virtual ~Resource() {}
     virtual const char * GetTypeName() = 0;
@@ -164,7 +165,7 @@ struct BadResourceIndexError : Error
         }
 };
 
-class __Resources
+class USELESS_RESOURCES_API __Resources
 {
 public:
     // pair( category, id)
@@ -369,7 +370,7 @@ private:
     ResourceMap _resources;
 };
 
-DECLARE_SINGLETON(__Resources, Resources);
+DECLARE_SINGLETON(__Resources, Resources, USELESS_RESOURCES_API);
 
 
 template< class _Type >

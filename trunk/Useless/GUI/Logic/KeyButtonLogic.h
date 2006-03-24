@@ -12,7 +12,7 @@ namespace Useless {
  *  This logic creates OnPress[0], OnRelease[0] and Click[0] events.
  *  Combine it with any other logic, f.e ButtonLogic
  */
-class KeyButtonLogic : virtual public ActiveWidget, virtual public LogicWidget
+class USELESS_API KeyButtonLogic : virtual public ActiveWidget, virtual public LogicWidget
 {
 public:
     KeyButtonLogic( int key_code=Keys::SPACE );

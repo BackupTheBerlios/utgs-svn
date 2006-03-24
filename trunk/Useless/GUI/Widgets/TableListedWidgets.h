@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class TableListedWidgets : public WidgetTableWidget,public TableListedItems
+class USELESS_API TableListedWidgets : public WidgetTableWidget,public TableListedItems
 {
 public:
     TableListedWidgets( const ArraySkin &table_skin, const SkinMan &state_skins );
@@ -27,7 +27,7 @@ public:
 
 namespace Useless {
 
-class TableList : public TableListedWidgets, public ListLogic
+class USELESS_API TableList : public TableListedWidgets, public ListLogic
 {
 public:
     TableList( const ArraySkin &table_skin, const SkinMan &state_skins );

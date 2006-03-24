@@ -8,7 +8,7 @@ namespace Useless {
 
 /*! MaskedColor is IGraphics which is painted 
  */
-class MaskedColor : public ImageBase
+class USELESS_API MaskedColor : public ImageBase
 {
 public:
     MaskedColor();

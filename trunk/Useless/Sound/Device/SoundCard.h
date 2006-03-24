@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class SoundCard : public MultiChannel
+class USELESS_API SoundCard : public MultiChannel
 {
 public:
     virtual ~SoundCard() {}
@@ -17,8 +17,8 @@ public:
     virtual SampleData* CreateData( Snd::Properties &prop) const = 0;
 };
 
-bool IsSoundAvailable();
-bool Is3DSoundPrefered();
+USELESS_API bool IsSoundAvailable();
+USELESS_API bool Is3DSoundPrefered();
 
 };//namespace Useless
 #endif//__INCLUDED__USELESS_SOUND_CARD_H__

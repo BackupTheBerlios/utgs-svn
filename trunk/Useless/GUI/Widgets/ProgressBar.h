@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class ProgressBar : virtual public ProgressWidget
+class USELESS_API ProgressBar : virtual public ProgressWidget
 {
 public:
     ProgressBar( int range, int size, const Skin &frame, const Skin &interrior, Orientation orient=HORIZONTAL );

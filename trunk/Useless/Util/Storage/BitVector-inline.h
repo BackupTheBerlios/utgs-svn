@@ -34,6 +34,8 @@
 
 
 #pragma warning(disable:4800)   // disable 'forcing value to bool...' warning
+#pragma warning(disable:4018)   // disable '>=: signed/unsigned mismatch' warning
+#pragma warning(disable:4267)   // disable 'convertion size_t to int' warning
 
 
 inline Useless::BitVector::BitVector (const Useless::BitVector &f)
@@ -438,6 +440,10 @@ inline int Useless::BitVector::SeekLeft
         } while (--i >= 0);
         return -1;
     }
+
+#pragma warning(default:4800)   // default 'forcing value to bool...' warning
+#pragma warning(default:4018)   // default '>=: signed/unsigned mismatch' warning
+#pragma warning(default:4267)   // default 'convertion size_t to int' warning
 
 #endif
 

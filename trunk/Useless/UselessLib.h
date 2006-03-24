@@ -1,5 +1,4 @@
-#include "Useless/PlatformConfig.h"
-#include "Useless/LocaleConfig.h"
+#include "Useless/UselessConfig.h"
 
 /* Just check if we've got threads on board
 ------------------------------------------------------------*/
@@ -49,10 +48,13 @@
 #   pragma comment (lib,"d3dx.lib")
 
 #   pragma comment (lib,"dxguid.lib")
+#   pragma comment (lib,"dsound.lib")
 
 #   ifdef USE_WINGDI
 #       pragma comment(lib,"Gdi32.lib")
 #       pragma comment(lib,"Msimg32.lib")
 #   endif
 #endif
+
+
 

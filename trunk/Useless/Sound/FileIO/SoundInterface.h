@@ -12,7 +12,7 @@ enum ChannelType { SINGLE=1, LEFT=2, RIGHT=4, INTERLEAVE=6 };
 
 /*! Abstract class for transfering data to destination class
  */
-class OSoundInterface
+class USELESS_API OSoundInterface
 {
 public:
     virtual ~OSoundInterface() {}
@@ -24,7 +24,7 @@ public:
 
 /*! Abstract class for transfering data from source class
  */
-class ISoundInterface
+class USELESS_API ISoundInterface
 {
 public:
     virtual ~ISoundInterface() {}
@@ -39,13 +39,13 @@ public:
 
 /*! Abstract class for loading sound files
  */
-class SoundLoader
+class USELESS_API SoundLoader
 {
 public:
     virtual ~SoundLoader() {}
 
     virtual void Load( IFile &file, OSoundInterface &sound_dest ) = 0;
-    static  bool Recognize( IFile &file, Snd::Format *format=0 ) {};
+    static  bool Recognize( IFile &file, Snd::Format *format=0 ) { return false; };
 };
 
 //Uses
@@ -53,7 +53,7 @@ public:
 
 /*! Abstract class for saving sound files
  */
-class SoundSaver
+class USELESS_API SoundSaver
 {
 public:
     virtual ~SoundSaver() {}
@@ -66,7 +66,7 @@ public:
 /*----------------------------------------------------------------------------------------------*/
 /* Temporarly W/A
  */
-class SoundInterface : public ISoundInterface, public OSoundInterface
+class USELESS_API SoundInterface : public ISoundInterface, public OSoundInterface
 {
 public:
     virtual ~SoundInterface() {}

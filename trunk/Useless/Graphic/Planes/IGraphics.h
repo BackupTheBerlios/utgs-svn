@@ -31,7 +31,7 @@ class OGraphics;
 /*! \ingroup GfxPlanes
  *  Abstract for source graphics.
  */
-class IGraphics
+class USELESS_API IGraphics
 {
 public:
     virtual ~IGraphics() {}

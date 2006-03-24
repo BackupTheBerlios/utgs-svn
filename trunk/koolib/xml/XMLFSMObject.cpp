@@ -209,7 +209,7 @@ namespace XMLProgram {
 
 
 
-Useless::Resource* CreateRunFSM( Useless::XMLIterator i, Useless::XMLCreatorEnv *env )
+KOOLIB_API Useless::Resource* CreateRunFSM( Useless::XMLIterator i, Useless::XMLCreatorEnv *env )
 {
     XMLFactory::Node _node( i );
 

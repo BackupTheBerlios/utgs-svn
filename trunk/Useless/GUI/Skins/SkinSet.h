@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  Manager holding set of skins.
  */
-class SkinSet : public SkinMan
+class USELESS_API SkinSet : public SkinMan
 {
 public:
     SkinSet();

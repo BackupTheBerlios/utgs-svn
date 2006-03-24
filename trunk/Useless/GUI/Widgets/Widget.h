@@ -44,7 +44,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Base Widget Interface.
  */
-class Widget: virtual public IWidget, public BaseVisitable<>
+class USELESS_API Widget: virtual public IWidget, public BaseVisitable<>
 {
 public:
     Widget();

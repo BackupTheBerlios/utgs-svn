@@ -21,17 +21,17 @@ namespace Useless {
     typedef Surface* (SurfaceCtor)();
     typedef Surface* (SurfaceCtorProp)( const Surf::Properties &);
     
-    extern ScreenCtor *g_CreateScreen[NUM_SCREEN_DRIVERS];
-    extern SurfaceCtor *g_CreateSurface[NUM_SCREEN_DRIVERS];
-    extern SurfaceCtorProp *g_CreateSurfaceProp[NUM_SCREEN_DRIVERS];
+    extern USELESS_API ScreenCtor *g_CreateScreen[NUM_SCREEN_DRIVERS];
+    extern USELESS_API SurfaceCtor *g_CreateSurface[NUM_SCREEN_DRIVERS];
+    extern USELESS_API SurfaceCtorProp *g_CreateSurfaceProp[NUM_SCREEN_DRIVERS];
     
-    extern Screen* CreateScreenByLib( const char *title);
-    extern Surface* CreateSurfaceByLib();
-    extern Surface* CreateSurfaceByLib( const Surf::Properties &);
+    extern USELESS_API Screen* CreateScreenByLib( const char *title);
+    extern USELESS_API Surface* CreateSurfaceByLib();
+    extern USELESS_API Surface* CreateSurfaceByLib( const Surf::Properties &);
 
-    Screen* CreateScreen( const char *title);
-    Surface* CreateSurface();
-    Surface* CreateSurface( const Surf::Properties &);
+    USELESS_API Screen* CreateScreen( const char *title);
+    USELESS_API Surface* CreateSurface();
+    USELESS_API Surface* CreateSurface( const Surf::Properties &);
 
     inline void RegisterScreenDriver( int driver_id,
             ScreenCtor *ptrCtor,
@@ -48,7 +48,7 @@ namespace Useless {
         g_screen_driver = driver_id;
     }
 
-    struct ScreenDriverRegistrator
+    struct USELESS_API ScreenDriverRegistrator
     {
         ScreenDriverRegistrator( int driver_id,
                 ScreenCtor *ptrCtor,

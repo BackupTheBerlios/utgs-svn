@@ -22,7 +22,7 @@ typedef SortedVector< Range > RangeList;
 typedef AssocVector< Range, RangeList > RangesList;
 
 /*! Simple rectangle list*/
-class RectList : public std::vector< Rect >
+class USELESS_API RectList : public std::vector< Rect >
 {
 public:
     RectList() {}

@@ -19,7 +19,7 @@ struct Gap_ {   Gap_( int s=0 ): _s(s) {}   int _s; };
 
 /*! Base for Layouts 
  */
-class LayoutBase
+class USELESS_API LayoutBase
 {
 public:
     virtual ~LayoutBase() {}
@@ -107,7 +107,7 @@ typedef LayoutBase::X_<int,32> PadEnd_;
 
 /* Exp Layout
 -----------------------------------------------------------------*/
-class Layout : public LayoutBase
+class USELESS_API Layout : public LayoutBase
 {
 public:
     Layout();
@@ -196,7 +196,7 @@ private:
 };
 
 
-class HLayout : public Layout
+class USELESS_API HLayout : public Layout
 {
 public:
     HLayout() {}
@@ -210,7 +210,7 @@ protected:
     virtual int  GetSize() ;
 };
 
-class VLayout : public Layout
+class USELESS_API VLayout : public Layout
 {
 public:
     VLayout() {}

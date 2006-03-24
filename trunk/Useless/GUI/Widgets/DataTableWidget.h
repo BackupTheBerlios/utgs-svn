@@ -11,7 +11,7 @@ namespace Useless {
  *  DataTableWidget is kind of TableWidget which uses USER DEFINED DataConnector to paint data
  *  into talbe fields.
  */
-class DataTableWidget : virtual public TableWidget
+class USELESS_API DataTableWidget : virtual public TableWidget
 {
 public:
     DataTableWidget( const ArraySkin &skin  );

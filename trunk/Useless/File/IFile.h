@@ -27,7 +27,7 @@ namespace Useless {
  *
  *  Abstract for class for use by load functions.
  */
-class IFile
+class USELESS_API IFile
 {
 public:
     enum SeekMode { SEEKSET=-1, SEEKCUR, SEEKEND };

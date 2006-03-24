@@ -38,7 +38,7 @@ typedef CTC::Rename<NormalPixel, 108 >   cycle_col_colors;
 
 namespace Useless {
 
-class ParametricSkin : public ArraySkin
+class USELESS_API ParametricSkin : public ArraySkin
 {
 public:
     enum BorderType { BORDER_3D, BORDER_2D, BEVEL_IN, BEVEL_OUT, BEVEL_3D=BEVEL_OUT, NO_BORDER };

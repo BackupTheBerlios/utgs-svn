@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class ImageDotTracer : public ImageDicer
+class USELESS_API ImageDotTracer : public ImageDicer
 {
 public:
     ImageDotTracer(): _max_width(0), _max_height(0) {}
@@ -24,7 +24,10 @@ private:
 public:
     // some global parameters to setup optional positional correction
     // changes occure next time ImageDotTracer is used
-    static int _Dx, _Dy, _Dw, _Dh;
+    static int _Dx;
+	static int _Dy;
+	static int _Dw;
+	static int _Dh;
 };
 
 };//namespace Useless

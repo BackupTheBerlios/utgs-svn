@@ -34,7 +34,7 @@
 
 namespace Useless {
 
-class BitVector
+class USELESS_API BitVector
 {
     public:            
         BitVector() { _bits.resize(1); _bits[0] = 0; }

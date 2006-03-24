@@ -19,7 +19,7 @@ namespace Useless {
  *  of any widget compound menulist. This menulist widget must have: GetText(int) 
  *  method.
  */
-class ComboRelation : public AppearRelation
+class USELESS_API ComboRelation : public AppearRelation
 {
 public:
     /*! \a activator - a widget that activates menu

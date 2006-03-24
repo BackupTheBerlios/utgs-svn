@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-    struct GLContextSurface : GLTextureSurfaceAllocator, GVM::GLContext, Surface
+    struct USELESS_API GLContextSurface : GLTextureSurfaceAllocator, GVM::GLContext, Surface
     {
         GLContextSurface();
         GLContextSurface( Surf::Properties &properties );

@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class LoomWidget : public BridgeWidget
+class USELESS_API LoomWidget : public BridgeWidget
 {
 public:
     enum Technique { SLIDE_DOWN, SLIDE_UP, SLIDE_LEFT, SLIDE_RIGHT };

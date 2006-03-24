@@ -30,7 +30,7 @@ namespace Useless {
  *  Virtual widget, which acts like a hub for any requests.
  *  This widget may contain many other widgets.
  */
-class HubWidget : virtual public CompoundWidget, public IWHub
+class USELESS_API HubWidget : virtual public CompoundWidget, public IWHub
 {
 public:
     HubWidget(int w=0, int h=0);

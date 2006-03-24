@@ -20,7 +20,7 @@
 namespace Useless {
 
 
-class MemBlock
+class USELESS_API MemBlock
 {
 public:
     MemBlock( int size=0 );

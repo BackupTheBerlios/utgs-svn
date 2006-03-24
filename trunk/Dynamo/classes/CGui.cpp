@@ -1,5 +1,7 @@
 #include "Dynamo/classes/CInterfaceProvider.h"
 
+#include "Useless/UselessConfig.h"
+
 #include "Useless/XML/Resources/CreateGUIResources.h"
 
 // used by CActiveWidget hooks

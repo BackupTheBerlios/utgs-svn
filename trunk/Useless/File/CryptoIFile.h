@@ -10,7 +10,7 @@
 namespace Useless {
 
 template< class Cipher, bool PermuteKey=false >
-class CryptoIFile : public IFile
+class USELESS_API CryptoIFile : public IFile
 {
 public:
     enum { BLOCKSIZE = Cipher::BLOCKSIZE };

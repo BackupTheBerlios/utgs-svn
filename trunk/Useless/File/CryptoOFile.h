@@ -1,6 +1,7 @@
 #ifndef __INCLUDED_USELESS_CRYPTO_O_FILE_H__
 #define __INCLUDED_USELESS_CRYPTO_O_FILE_H__
 
+#include "Useless/System/Assert.h"
 #include "Useless/File/OFile.h"
 #include "Useless/Util/SPointer.h"
 
@@ -10,7 +11,7 @@
 namespace Useless {
 
 template< class Cipher, bool PermuteKey=false >
-class CryptoOFile : public OFile
+class USELESS_API CryptoOFile : public OFile
 {
 public:
     enum { BLOCKSIZE = Cipher::BLOCKSIZE };

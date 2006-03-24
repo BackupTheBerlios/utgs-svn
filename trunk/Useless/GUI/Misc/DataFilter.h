@@ -12,7 +12,7 @@ namespace Useless {
  *  It is only a structure, database will know what to do with
  *  concrete instance of it.
  */
-class DataFilter : public BaseVisitable<>
+class USELESS_API DataFilter : public BaseVisitable<>
 {
 public:
     virtual ~DataFilter() {}

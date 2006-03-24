@@ -14,7 +14,7 @@ namespace Useless {
  *  from enviroment. You can make some button show that hub or hide. You may
  *  create multi-tab view using this class.
  */
-class AppearRelation : public Relation
+class USELESS_API AppearRelation : public Relation
 {
 public:
     AppearRelation( Widget &widget, bool input_eager=false, bool use_hard_appear=false);

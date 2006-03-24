@@ -60,8 +60,8 @@ struct __RTTIWarnEnabledAttr
     std::set< std::string > _table;
 };
 
-DECLARE_SINGLETON( __RTTIWarnEnabledAttr, Singleton_RTTIWarnEnabledAttr);
-INIT_SINGLETON( Singleton_RTTIWarnEnabledAttr );
+DECLARE_SINGLETON( __RTTIWarnEnabledAttr, Singleton_RTTIWarnEnabledAttr, USELESS_API);
+INIT_SINGLETON( Singleton_RTTIWarnEnabledAttr, USELESS_API );
 
 bool RTTIWarnEnabledAttr::IsEnabled( const std::type_info &tp, int id )
 {

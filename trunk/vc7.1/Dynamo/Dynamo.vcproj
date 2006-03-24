@@ -19,15 +19,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
-				WarningLevel="3"
+				WarningLevel="1"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
@@ -71,7 +71,7 @@
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
 				RuntimeTypeInfo="TRUE"

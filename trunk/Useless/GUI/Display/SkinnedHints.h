@@ -12,7 +12,7 @@ namespace Useless {
  *  deleting them at hide. Hints are created from
  *  mixed Skins in SkinMixer and text with assigned Font
  */
-class SkinnedHints : public HintMan, public SkinMixer
+class USELESS_API SkinnedHints : public HintMan, public SkinMixer
 {
 public:
     virtual ~SkinnedHints();

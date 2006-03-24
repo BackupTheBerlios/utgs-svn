@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-struct StateFlags
+struct USELESS_API StateFlags
 {
     StateFlags( int s=0L ): _state_flags(s) {}
     
@@ -24,7 +24,7 @@ struct StateFlags
 //--------------------------------------------------------------------------------------
 
 
-struct DisplayState : public StateFlags
+struct USELESS_API DisplayState : public StateFlags
 {
     /* Fundamental display states */
     enum { NORMAL=0, HIGHLIGHTEN=1, SELECTED=2, DISABLED=4, FOCUSSED=8, USER=16 };

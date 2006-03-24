@@ -21,8 +21,8 @@
 #include <algorithm>
 #include <memory>
 
-#include "Useless/TemplateConfig.h"
-#include "Useless/File/Hatchery.h"
+#include "Useless/UselessConfig.h"
+
 #include "Useless/Functional/Functor.h"
 #include "Useless/Functional/PackedFunctor.h"
 #include "Useless/Functional/Holder.h"

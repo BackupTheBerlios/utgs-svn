@@ -4,6 +4,7 @@
 #pragma warning(disable:4786) // debug name turncation
 #pragma warning(disable:4503) // debug name decorated turncation
 
+#include "Useless/UselessConfig.h"
 #include "Useless/Error/Error.h"
 #include "Useless/Util/SPointer.h"
 #include "Useless/XML/XMLParser.h"
@@ -16,7 +17,7 @@
 
 namespace Useless {
 
-struct XMLCreatorEnv : public std::map< std::string, void* >
+struct USELESS_RESOURCES_API XMLCreatorEnv : public std::map< std::string, void* >
 {
     template< class T >
     bool Query( const std::string &attribute, T &ref )
@@ -42,7 +43,7 @@ struct XMLCreatorEnv : public std::map< std::string, void* >
 
 /*! Map of resource creator functors
  */
-class __FromXMLCreators
+class USELESS_RESOURCES_API __FromXMLCreators
 {
 public:
     typedef Resource* (*__Creator)( XMLIterator, XMLCreatorEnv* );
@@ -78,7 +79,7 @@ private:
     CreatorMap _creators;
 };
 
-DECLARE_SINGLETON(__FromXMLCreators, XMLCreators);
+DECLARE_SINGLETON(__FromXMLCreators, XMLCreators, USELESS_RESOURCES_API );
 
 struct RegisterXMLCreator
 {
@@ -99,21 +100,21 @@ typedef Useless::ResourceQuery< Useless::XMLDocument > XMLDocumentResource;
 
 /*! Create resources in given category
  */
-void CategoryFromXML( const std::string &category, XMLIterator i );
+USELESS_RESOURCES_API void CategoryFromXML( const std::string &category, XMLIterator i );
 
 /*! Create child resources
  */
-void ChildsFromXML( XMLIterator i, XMLCreatorEnv *env );
-void SiblingsFromXML( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API void ChildsFromXML( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API void SiblingsFromXML( XMLIterator i, XMLCreatorEnv *env );
 
 /*! Create all resources from XML string
  */
-void CreateFromXML( const std::string &xml_sring, const std::string &source = "< none >" );
+USELESS_RESOURCES_API void CreateFromXML( const std::string &xml_sring, const std::string &source = "< none >" );
 
 /*! Create all resources from XML file
  */
-void CreateFromXMLFile( const std::string &xml_file );
-void CreateFromXMLFile( SPointer< class IFile > fileInput );
+USELESS_RESOURCES_API void CreateFromXMLFile( const std::string &xml_file );
+USELESS_RESOURCES_API void CreateFromXMLFile( SPointer< class IFile > fileInput );
 
 
 };//namespace Useless

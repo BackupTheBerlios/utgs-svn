@@ -23,7 +23,7 @@ namespace Useless {
 /*! \ingroup ImgIO
  *  Saves BMP images
  */
-class BMPSaver : public ImageSaver
+class USELESS_API BMPSaver : public ImageSaver
 {
 public:
     virtual void Save( OFile &OFile, IGfxFilter &filter );

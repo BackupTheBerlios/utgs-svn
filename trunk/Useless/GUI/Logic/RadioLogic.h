@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class RadioLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
+class USELESS_API RadioLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
 {
 public:
     RadioLogic();

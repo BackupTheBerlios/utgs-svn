@@ -8,7 +8,7 @@ namespace Useless {
 //USES
     class TextBarStyle;
 
-class TextBarWidget : public CaptionTrigger
+class USELESS_API TextBarWidget : public CaptionTrigger
 {
 public:
     TextBarWidget( const TextBarStyle &style, const Text &title="...");

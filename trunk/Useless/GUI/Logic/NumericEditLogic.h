@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class NumericEditLogic : virtual public TextEditLogic
+class USELESS_API NumericEditLogic : virtual public TextEditLogic
 {
 public:
     enum Type { INTEGER, FLOAT };

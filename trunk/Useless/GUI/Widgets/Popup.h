@@ -13,7 +13,7 @@ namespace Useless {
  *  Only one popup may be on the top, and active.
  *  Modal popup intercepts input, so only widgets inside it may recieve it.
  */
-class Popup : private HubWidget, public FormWidget, virtual public Widget
+class USELESS_API Popup : private HubWidget, public FormWidget, virtual public Widget
 {
 public:
     Popup( Widget             *content,

@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class FontWidget : virtual public Widget
+class USELESS_API FontWidget : virtual public Widget
 {
 public:
     virtual void SetFont( const Font &font ) = 0;

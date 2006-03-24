@@ -31,8 +31,13 @@ namespace XMLFactory {
             .AddReg< CXML::REGISTER >("register")
             .AddReg< CXML::IS_NOT_EMPTY >("is-not-empty")
             .AddReg< CXML::IS_DEFINED   >("is-defined")
+            .AddReg< CXML::IS_EMPTY     >("is-empty")
+            .AddReg< CXML::IS_NOT_DEFINED   >("is-not-defined")
+            .AddReg< CXML::IS_DEFINED_EMPTY >("is-defined-empty")
+            .AddReg< CXML::IS_DEFINED_NOT_EMPTY >("is-defined-not-empty")
+            .AddReg< CXML::IS_NOT_DEFINED_OR_EMPTY >("is-not-defined-or-empty")
             .AddReg< CXML::TYPE_OF >("type-of")
-            .AddReg< CXML::ERROR >("error")
+            .AddReg< CXML::ERROR_CHUNK >("error")
             .AddReg< CXML::NOCOMPILE >("nocompile")
 
             // functions
@@ -71,6 +76,8 @@ namespace XMLFactory {
             .AddReg< CXML::AND  >("and")
             .AddReg< CXML::OR   >("or")
             .AddReg< CXML::CAT  >("cat")
+            .AddReg< CXML::INC  >("inc")
+            .AddReg< CXML::FINC >("finc")
            
             // comparison 
             .AddReg< CXML::COMPARE  >("compare")
@@ -319,6 +326,20 @@ namespace XMLFactory {
         GetAttr( _id, _node, _state );
         _state.SetResult( HookErrors( _node, new CXML::SET( _id.str(), CompileRightValue( _node, _state ).get() )));
     }
+    
+    LOCAL_TAG_HANDLER( CXML::INC )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        _state.SetResult( HookErrors( _node, new CXML::INC( _id.str(), CompileRightValue( _node, _state ).get() )));
+    }
+    
+    LOCAL_TAG_HANDLER( CXML::FINC )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        _state.SetResult( HookErrors( _node, new CXML::FINC( _id.str(), CompileRightValue( _node, _state ).get() )));
+    }
 
     /*
      * Get EXISTING symbol.
@@ -383,6 +404,67 @@ namespace XMLFactory {
     }
 
     /*
+     * Check if symbol is empty.
+     */
+    LOCAL_TAG_HANDLER( CXML::IS_EMPTY )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        _state.SetResult( HookErrors( _node, new CXML::NOT( new CXML::IS_NOT_EMPTY( _id.str() )) ));
+    }
+    
+    /*
+     * Check if symbol is not defied.
+     */
+    LOCAL_TAG_HANDLER( CXML::IS_NOT_DEFINED )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        _state.SetResult( HookErrors( _node, new CXML::NOT( new CXML::IS_DEFINED( _id.str() )) ));
+    }
+    
+    /*
+     * Check if symbol is defied and is it empty.
+     */
+    LOCAL_TAG_HANDLER( CXML::IS_DEFINED_EMPTY )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        boost::intrusive_ptr< CXML::ValueAccumulator< CXML::OpAND > > adder = new CXML::ValueAccumulator< CXML::OpAND >();
+        adder->Add( new CXML::IS_DEFINED( _id.str() ));
+        adder->Add( new CXML::NOT( new CXML::IS_NOT_EMPTY( _id.str() )));
+        _state.SetResult( HookErrors( _node, adder.get() ));
+    }
+    
+    /*
+     * Check if symbol is defined and not empty.
+     */
+    LOCAL_TAG_HANDLER( CXML::IS_DEFINED_NOT_EMPTY )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        boost::intrusive_ptr< CXML::ValueAccumulator< CXML::OpAND > > adder = new CXML::ValueAccumulator< CXML::OpAND >();
+        adder->Add( new CXML::IS_DEFINED( _id.str() ));
+        adder->Add( new CXML::IS_NOT_EMPTY( _id.str() ));
+        _state.SetResult( HookErrors( _node, adder.get() ));
+    }
+
+    /*
+     * Check if symbol id not defined or is empty.
+     */
+    LOCAL_TAG_HANDLER( CXML::IS_NOT_DEFINED_OR_EMPTY )
+    {
+        Attr< TextUtf8, true, wchar_t > _id(L"id");
+        GetAttr( _id, _node, _state );
+        boost::intrusive_ptr< CXML::ValueAccumulator< CXML::OpOR > > adder = new CXML::ValueAccumulator< CXML::OpOR >();
+        adder->Add( new CXML::NOT( new CXML::IS_DEFINED( _id.str() )));
+        adder->Add( new CXML::NOT( new CXML::IS_NOT_EMPTY( _id.str() )));
+        _state.SetResult( HookErrors( _node, adder.get() ));
+    }
+
+    CXML_COMPARING_HANDLER( CXML::EQUAL_STR, CXML::EQUAL, CXML::OpCOMPARE< TextUtf8 > );
+
+    /*
      * Get FCC type of object
      */
     LOCAL_TAG_HANDLER( CXML::TYPE_OF )
@@ -394,15 +476,15 @@ namespace XMLFactory {
     /*
      * Throw error message.
      */
-    LOCAL_TAG_HANDLER( CXML::ERROR )
+    LOCAL_TAG_HANDLER( CXML::ERROR_CHUNK )
     {
         if ( _node.HasChildren() )
         {
-            _state.SetResult( HookErrors( _node, new CXML::ERROR( Compile( _node, _state ).get() )));
+            _state.SetResult( HookErrors( _node, new CXML::ERROR_CHUNK( Compile( _node, _state ).get() )));
         }
         else
         {
-            _state.SetResult( HookErrors( _node, new CXML::ERROR(
+            _state.SetResult( HookErrors( _node, new CXML::ERROR_CHUNK(
                             new CXML::EvaluableValue< TextUtf8 >( _node->_value )
                             )));
         }

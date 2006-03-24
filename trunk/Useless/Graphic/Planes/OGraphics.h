@@ -32,7 +32,7 @@ namespace Useless {
 /*! \ingroup GfxPlanes
  *  Abstract destination graphics for blits
  */
-class OGraphics
+class USELESS_API OGraphics
 {
 public:
     virtual ~OGraphics() {}

@@ -12,7 +12,7 @@ namespace Useless {
 typedef wchar_t UniCode;
 typedef std::basic_string< UniCode >  UniCodeString;
 
-class Text : public UniCodeString
+class USELESS_API Text : public UniCodeString
 {
 public:
     Text() {}
@@ -92,7 +92,11 @@ template< class T > void Text::MakeText(const T* p)
 template< class T > void Text::MakeFromString( const std::basic_string<T> &s )
 {
     resize( s.size() );
-    std::copy( s.begin(), s.end(), begin() );
+    iterator j = begin();
+    for ( std::basic_string<T>::const_iterator i = s.begin(); i != s.end(); ++i, ++j )
+    {
+        *j = (UniCode)( *i );
+    }
 }
 
 //Safe operator[]
@@ -139,14 +143,6 @@ inline bool Text::operator !=( const Text &data) const
     return std::operator != ( (const UniCodeString&)*this, (const UniCodeString&)data );
 }
 
-//Conversion to default string types
-inline std::basic_string<short> Text::GetWString() const
-{
-    std::basic_string<short> str;
-    str.resize( size() );
-    std::copy( begin(), end(), str.begin() );
-    return str;
-}
 
 };//namespace Useless
 #endif//__INCLUDED_USELESS_TEXT_H__

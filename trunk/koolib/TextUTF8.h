@@ -21,11 +21,13 @@ last mod: $Id: $
 
 #include <string>
 #include <sstream>
+#include <algorithm>
+#include "koolib/koolibConfig.h"
 
 void ReadUtf8( std::wstring &, const std::string & );
 void WriteUtf8( std::string &, const std::wstring & );
 
-struct TextUtf8 : std::wstring
+struct KOOLIB_API TextUtf8 : std::wstring
 {
     typedef wchar_t CharType;
     typedef std::basic_stringstream< CharType > Stream;

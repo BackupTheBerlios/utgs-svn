@@ -14,7 +14,7 @@ namespace Useless {
  *  mount any other IFileSystem. There is default mount function
  *  for hatcheries.
  */
-class VIFS : public IFileSystem
+class USELESS_API VIFS : public IFileSystem
 {
 public:
     /*! Create default StdIFileSystem */
@@ -55,17 +55,17 @@ private:
     MinMax _std_min_max, _htc_min_max, _ref_min_max, _user_min_max;
 };
 
-DECLARE_SINGLETON( VIFS, IFS);
+DECLARE_SINGLETON( VIFS, IFS, USELESS_API );
 
 /*! It is user responsibility to create
  */
-struct IFSAutoMounter
+struct USELESS_API IFSAutoMounter
 {
     static void Init();
     static void Destroy() {}
 };
 
-static PreInitializer<IFSAutoMounter> initialize_ifs_auto_mounter;
+DECLARE_PREINITIALIZER( IFSAutoMounter, IFSAutoMounter, USELESS_API );
 
 };//namespace Useless
 

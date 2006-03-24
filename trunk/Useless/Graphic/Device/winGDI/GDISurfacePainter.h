@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-    class GDISurfacePainter : public SurfacePainter
+    class USELESS_API GDISurfacePainter : public SurfacePainter
     {
     public:
         //-- Put single pixel

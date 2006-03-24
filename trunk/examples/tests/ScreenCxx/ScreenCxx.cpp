@@ -35,7 +35,7 @@ int Main()
     try {
 
         Useless::SPointer< Useless::Screen > l_Screen = Useless::CreateScreen("test002");
-        l_Screen->Open( 640, 480, 16 );
+        l_Screen->Open( 800, 600, 16, 60 );
         
         Useless::Tie2Signal( l_Screen->OnPaint, new Paint( l_Screen.get() ), &Paint::Apply );
         l_Screen->OnPaint.Send();

@@ -33,7 +33,7 @@ namespace Useless {
  *  Acts as source graphics, which can be blited onto some dest graphics,
  *  and also gives interface to draw on it's Surface
  */
-class ImageBuffer : public ImageBase, public OGraphics
+class USELESS_API ImageBuffer : public ImageBase, public OGraphics
 {
 public:
     // Dummy initializer

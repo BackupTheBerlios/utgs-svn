@@ -213,6 +213,7 @@ SkinMixer::GetDimension ( int id, int dimID ) const
         int s_id = it->source_id;
         return SkinSet::GetDimension( s_id, dimID);
     }
+	return 0;
 }
 
 };//namespace Useless

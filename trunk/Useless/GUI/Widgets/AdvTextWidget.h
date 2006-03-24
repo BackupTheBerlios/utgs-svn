@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class AdvTextBase : virtual public FontWidget, private FontPainter
+class USELESS_API AdvTextBase : virtual public FontWidget, private FontPainter
 {
 public:
     enum { LEFT=0, RIGHT=1, CENTER=2 };

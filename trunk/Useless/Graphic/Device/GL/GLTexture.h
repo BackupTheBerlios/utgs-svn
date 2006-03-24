@@ -10,7 +10,7 @@ namespace Useless {
 
 /*! Texture with size: 64x64, 128x128 or 256x256
  */
-class GLTexture : public ReferenceCounter
+class USELESS_API GLTexture : public ReferenceCounter
 {
 public:
     GLTexture( int w, int h );

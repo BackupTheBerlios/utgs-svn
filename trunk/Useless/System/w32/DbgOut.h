@@ -3,7 +3,7 @@
 
 namespace Useless {
 
-void print_dbg( const char *, ...);
+void USELESS_API print_dbg( const char *, ...);
 
 };//namespace Useless
 #endif//__INCLUDED_DEBUG_OUTPUT__

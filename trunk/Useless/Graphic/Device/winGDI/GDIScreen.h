@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class GDIScreen : public Screen
+class USELESS_API GDIScreen : public Screen
 {
 public:
     /* Screen overloads

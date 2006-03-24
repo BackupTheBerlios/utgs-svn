@@ -23,7 +23,7 @@ namespace Useless {
  *  This widget adds additional functionality if derrived from it.
  *  Any input requests will be resent only inside this widget.
  */
-class InterceptorWidget : virtual public CompoundWidget
+class USELESS_API InterceptorWidget : virtual public CompoundWidget
 {
 public:
     InterceptorWidget() {}

@@ -14,7 +14,7 @@ namespace GVM {
 };
 
 /*! ... */
-class Painter
+class USELESS_API Painter
 {
 public:
     Painter();

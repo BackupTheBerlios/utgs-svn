@@ -52,9 +52,9 @@ public:
     }
     
     //! does given cell exist ?
-    bool exists( int n ) const { return ( n>=0 && n<size() ); }
+    bool exists( size_t n ) const { return ( n>=0 && n<size() ); }
     //! what size has given cell after calc_positioins
-    int  get_size( int n ) const
+    size_t get_size( size_t n ) const
     {
         if ( n>=0 ) {
             if ( n+1<size() ) { return at(n+1).position - at(n).position; }
@@ -62,8 +62,8 @@ public:
         } return 0;
     }
 
-    const cell_t& at( int n) const { return operator[](n);}
-    cell_t& at( int n) { return operator[](n);}
+    const cell_t& at( size_t n) const { return operator[](n);}
+    cell_t& at( size_t n) { return operator[](n);}
 
     int get_fit_size() const { return _fit_size.x; }
 

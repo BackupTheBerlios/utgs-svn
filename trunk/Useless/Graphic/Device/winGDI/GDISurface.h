@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-class GDISurface : public Surface
+class USELESS_API GDISurface : public Surface
 {
 public:
     GDISurface();

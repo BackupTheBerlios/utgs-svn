@@ -38,7 +38,7 @@ namespace Useless {
  *
  *  Workspace is entry point for \a Widget's.
  */
-class GUIMaster
+class USELESS_API GUIMaster
 {
 public:
     GUIMaster(Screen &screen, bool dont_attach = false );

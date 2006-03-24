@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-class TableListedItems : virtual public DataTableWidget, virtual public MultiItemLogic
+class USELESS_API TableListedItems : virtual public DataTableWidget, virtual public MultiItemLogic
 {
 public:
              TableListedItems( const ArraySkin &table_skin, const SkinMan &state_skins );

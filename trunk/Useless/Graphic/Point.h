@@ -37,7 +37,7 @@ struct point_traits_fcn
  *  \li Enclose(Rect) - keeps Point inside Rect
  */
 template< class TNUM >
-class Point
+class USELESS_API Point
 {
 public:
     TNUM x,y;

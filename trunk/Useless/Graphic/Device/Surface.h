@@ -38,7 +38,7 @@ namespace Useless {
  *  Class may act in future as facade between User program
  *  and several low level API's
  */
-class Surface
+class USELESS_API Surface
 {
 public:
     Surface();
@@ -123,7 +123,7 @@ public:
 /*\ingroup gGfxAPI
  *  LockableSurface is Surface that might be locked
  */
-class LockableSurface : public Surface
+class USELESS_API LockableSurface : public Surface
 {
 public:
     /////////////////////////////////////

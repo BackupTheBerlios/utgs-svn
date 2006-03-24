@@ -9,7 +9,7 @@ namespace Useless {
  *  Gives placement and dimentions information
  *  Should be instatiated only temporarly (as inline)
  */
-class DT_Inspector :
+class USELESS_API DT_Inspector :
     public Visitor< DataObject >,
     public Visitor< DT_Text >,
     public Visitor< DT_Image >,

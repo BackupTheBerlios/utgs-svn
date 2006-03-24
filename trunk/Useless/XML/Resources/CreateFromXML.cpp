@@ -11,7 +11,7 @@
 
 namespace Useless {
 
-INIT_SINGLETON( XMLCreators );
+INIT_SINGLETON( XMLCreators, USELESS_RESOURCES_API );
 
 std::set< std::string > s_includedFiles;
 

@@ -1,6 +1,7 @@
 #include "koolib/xml/XMLModuleDynamo.h"
 #include "koolib/xml/XMLChunksMethod.h"
 #include "koolib/HyperObject.h"
+#include "Dynamo/classes/CInterfaceProvider.h"
 
 namespace XMLProgram {
     

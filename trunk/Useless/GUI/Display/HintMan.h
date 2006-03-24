@@ -9,7 +9,7 @@ namespace Useless {
 /*! \ingroup gDisplay
  *  HintMan is widget hint manager, used by all ActiveWidgets to show/hide hints.
  */
-class HintMan
+class USELESS_API HintMan
 {
 public:
     virtual ~HintMan() {}

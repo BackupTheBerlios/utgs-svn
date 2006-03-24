@@ -27,7 +27,7 @@ namespace Useless {
 //////////////////////////////////////////////////////////////////////
 //  CLASS: AdvImageBuffer
 //
-class AdvImageBuffer : public ImageBuffer
+class USELESS_API AdvImageBuffer : public ImageBuffer
 {
 public:
     AdvImageBuffer();

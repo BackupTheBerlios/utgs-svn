@@ -20,7 +20,7 @@ namespace Useless {
 /*! \ingroup ImgIO
  *  Abstract source of image transfer.
  */
-class IGfxFilter
+class USELESS_API IGfxFilter
 {
 public:
     IGfxFilter() {}

@@ -7,16 +7,13 @@
 //
 //
 
+#include "Useless/UselessConfig.h"
 #include "Useless/Error/Error.h"
 
 namespace Useless {
 
-    extern void SendErrorText( int priority, const char *module_name, const char *error_text );
-
-    inline void SendError( int priority, const char* module_name, const Error& error )
-    {
-        SendErrorText( priority, module_name, error.GetError());
-    }
+    USELESS_API void SendErrorText( int priority, const char *module_name, const char *error_text );
+	USELESS_API void SendError( int priority, const char* module_name, const Error& error );
 
 };//namespace Useless
 

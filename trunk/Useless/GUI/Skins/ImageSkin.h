@@ -13,7 +13,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  Uses Image as a skin.
  */
-class ImageSkin : public Skin
+class USELESS_API ImageSkin : public Skin
 {
 public:
     typedef CtorWrapper< ImageBase, Image, const char * > RefImage;

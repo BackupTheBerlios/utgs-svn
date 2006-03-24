@@ -37,6 +37,11 @@ void SendErrorText( int priority, const char* module_name, const char *error_tex
     Application::SendErrorText( priority, module_name, error_text);
 }
 
+void SendError( int priority, const char* module_name, const Error& error )
+{
+    SendErrorText( priority, module_name, error.GetError());
+}
+
 /*! Default error handler.
  *  It's "static virtual" method of Application.
  *  You may define your own version of this handler.

@@ -51,7 +51,7 @@ public:
     }
 };
 
-class RTCopyingFactory
+class USELESS_API RTCopyingFactory
 {
 public:
     typedef std::pair< TypeInfo, TypeInfo > __Key;
@@ -86,7 +86,7 @@ private:
     static __Creators *_creators;
 };
 
-static PreInitializer< RTCopyingFactory > __init_rt_copying_factory;
+DECLARE_PREINITIALIZER( RTCopyingFactory, RTCopyingFactory, USELESS_API );
 
 
 

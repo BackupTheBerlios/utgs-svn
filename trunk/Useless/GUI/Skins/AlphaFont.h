@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class AlphaFont : public FacedFont
+class USELESS_API AlphaFont : public FacedFont
 {
 public:
     AlphaFont( const char *alpha_image, const char *font_desc );

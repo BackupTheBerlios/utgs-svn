@@ -7,7 +7,7 @@ namespace Useless {
 /*! \ingroup Skins
  *  A Skin which responds for requests, but doesn't Paint anything.
  */
-class NullSkin : public ArraySkin
+class USELESS_API NullSkin : public ArraySkin
 {
 public:
     NullSkin( int w=0, int h=0 ): _width(w), _height(h) {}

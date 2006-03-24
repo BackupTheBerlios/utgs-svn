@@ -24,7 +24,7 @@ namespace Useless {
 /*! \ingroup gError
  *  Base of any error class
  */
-class Error : public std::exception
+class USELESS_API Error : public std::exception
 {
 public:
 

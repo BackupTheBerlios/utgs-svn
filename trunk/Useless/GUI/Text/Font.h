@@ -11,7 +11,7 @@
 
 namespace Useless {
 
-class Font
+class USELESS_API Font
 {
 public:
     Font(const FontSkin& skin, int spacing=0 );

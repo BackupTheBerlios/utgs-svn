@@ -13,7 +13,7 @@ namespace Useless {
     class SliderStyle;
 
 
-class SliderWidget : private BridgeWidget, virtual public DraggerWidget, virtual public EnumWidget
+class USELESS_API SliderWidget : private BridgeWidget, virtual public DraggerWidget, virtual public EnumWidget
 {
 public:
     enum Images { LANE, LANE_PRESSED, LANEHL, LANEDIS, GRIP, GRIP_PRESSED, GRIPHL, GRIPDIS };

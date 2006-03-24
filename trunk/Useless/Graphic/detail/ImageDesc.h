@@ -13,7 +13,7 @@ namespace Useless {
  *      or if you have 16bpp then ImageFormat::Format(16) = B5G6R5 and so on;
  *  \endverbatim
  */
-class ImageFormat       
+class USELESS_API ImageFormat       
 {
 public:   
     /*! \enum Format

@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class FontSkin
+class USELESS_API FontSkin
 {
 public:
     virtual ~FontSkin() {}

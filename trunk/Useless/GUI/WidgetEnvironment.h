@@ -28,7 +28,7 @@ namespace Useless {
  *  GetEnvironment()->GetTrashCan().Trash(something);
  *
  */
-class WidgetEnvironment
+class USELESS_API WidgetEnvironment
 {
 public:
                  void  SendDirtyOutside( const Rect &rect, Widget *sender) const;

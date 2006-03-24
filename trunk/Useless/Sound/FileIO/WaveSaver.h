@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class WaveSaver
+class USELESS_API WaveSaver
 {
 public:
       void Save( OFile &file, SoundInterface &sound_writer);

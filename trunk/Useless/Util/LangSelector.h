@@ -3,7 +3,7 @@
 
 namespace Useless {
 
-struct __LangSelector
+struct USELESS_API __LangSelector
 {
 public:
     __LangSelector();    
@@ -14,6 +14,6 @@ private:
     std::map< std::string, std::locale > _locales;
 };
 
-DECLARE_SINGLETON( __LangSelector, LangSelector );
+DECLARE_SINGLETON( __LangSelector, LangSelector, USELESS_API );
 
 }; //Useless

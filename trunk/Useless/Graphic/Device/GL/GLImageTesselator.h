@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class GLImageTesselator
+class USELESS_API GLImageTesselator
 {
 public:
     GLImageTesselator( const PixelBuffer &pix_buf );
@@ -74,8 +74,8 @@ private:
     friend struct GLContextSurface;
 };
 
-extern double G_GLTesselatorStartingTexelOffset;
-extern double G_GLTesselatorEndingTexelOffset;
+extern USELESS_API double G_GLTesselatorStartingTexelOffset;
+extern USELESS_API double G_GLTesselatorEndingTexelOffset;
 
 }; //namespace Useless
 #endif//__INCLUDED_USELESS_IMAGE_TESSELATOR_H__

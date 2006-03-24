@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class TabLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
+class USELESS_API TabLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
 {
 public:
     TabLogic();

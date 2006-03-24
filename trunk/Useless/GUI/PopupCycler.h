@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class PopupCycler
+class USELESS_API PopupCycler
 {
 public:
     PopupCycler();

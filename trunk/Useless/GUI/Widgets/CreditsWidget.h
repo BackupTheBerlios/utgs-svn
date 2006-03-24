@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class CreditsWidget : virtual public Widget, public Paylist
+class USELESS_API CreditsWidget : virtual public Widget, public Paylist
 {
 public:
     /*! xml_file - credits script

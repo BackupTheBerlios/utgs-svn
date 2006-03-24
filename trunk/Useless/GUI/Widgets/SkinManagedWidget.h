@@ -10,7 +10,7 @@ namespace Useless {
  *  REMEMBER: 1) You MUST NOT delete your SkinMan!
  *            2) You MUST delete this widget before removing SkinMan!
  */
-class SkinManagedWidget : public Widget
+class USELESS_API SkinManagedWidget : public Widget
 {
 public:
     SkinManagedWidget( int skin_no, SkinMan &skin_manager )

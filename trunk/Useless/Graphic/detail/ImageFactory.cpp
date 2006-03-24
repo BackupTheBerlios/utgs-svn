@@ -20,8 +20,10 @@
 
 namespace Useless {
 
+INIT_PREINITIALIZER(  ImageFactory, ImageFactory, USELESS_API );
+
 ImageFactory::Entries* ImageFactory::_entries = 0;
-int InitImageFactory::_count = 0;
+
 
 void ImageFactory::Register( int id, ImageLoader *(*loader)(), bool (*recognizer)( IFile &, int*,int*,int*) )
 {

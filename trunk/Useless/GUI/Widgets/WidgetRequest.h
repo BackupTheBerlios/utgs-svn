@@ -10,7 +10,7 @@ namespace Useless {
 ///////////////////////////////////////////////////////////////////
 //  Default request
 //
-class Widget::Request
+class USELESS_API Widget::Request
 {
 public:
     Request(): _from(0), _to(0), _tell_childs(1), _tell_parent(0) {}

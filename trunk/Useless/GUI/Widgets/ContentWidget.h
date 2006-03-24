@@ -14,7 +14,7 @@ namespace Useless {
  *  Kind of LogicWidget that paints data object over skin.
  *  May be used as button
  */
-class ContentWidget : virtual public LogicWidget, virtual public IWContent
+class USELESS_API ContentWidget : virtual public LogicWidget, virtual public IWContent
 {
 public:
     ContentWidget( const InternalPointer< DataObject > &content,

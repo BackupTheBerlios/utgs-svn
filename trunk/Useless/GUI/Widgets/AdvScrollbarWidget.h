@@ -13,7 +13,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  A AdvScrollbar Widget. \sa ScrollbarWidget
  */
-class AdvScrollbarWidget: private HubWidget, virtual public Widget, public IWScrollbar
+class USELESS_API AdvScrollbarWidget: private HubWidget, virtual public Widget, public IWScrollbar
 {
 public:
     AdvScrollbarWidget( const ScrollbarStyle &sb_style,

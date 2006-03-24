@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class BaseDualText : virtual public FontWidget
+class USELESS_API BaseDualText : virtual public FontWidget
 {
 public:
     BaseDualText( int width, const Font &font,

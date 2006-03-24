@@ -4,7 +4,7 @@
 #include "Useless/File/StdIFileSystem.h"
 #include "Useless/File/SubIFileSystem.h"
 #include "Useless/File/StdIFile.h"
-#include "Useless/File/Hatchery.h"
+#include "Useless/Util/Crypto.h"
 #include "Useless/Error/IOError.h"
 #include <algorithm>
 #include "Useless/Util/Storage/Independent.h"
@@ -15,9 +15,8 @@ namespace Useless {
 int  G_StdIFileSystemPriority = VIFS::STD;
 bool G_MountStdIFileSystem = true;
 
-INIT_SINGLETON( IFS);
-
-int PreInitializer<IFSAutoMounter>::_counter = 0;
+INIT_SINGLETON( IFS, USELESS_API );
+INIT_PREINITIALIZER( IFSAutoMounter, IFSAutoMounter, USELESS_API );
 
 VIFS::VIFS():
     _std_min_max( STD, STD),
@@ -37,9 +36,7 @@ VIFS::~VIFS()
 
 void VIFS::Mount( const std::string &hatchery_file, const std::string &base, int priority )
 {
-    Hatchery *p = new Hatchery;
-    p->Open( hatchery_file, base);
-    _mounted.Insert( priority, p);
+    _mounted.Insert( priority, OpenHatchery( hatchery_file, base ));
 
     _htc_min_max.first  = SimpleMin( priority, _htc_min_max.first);
     _htc_min_max.second = SimpleMax( priority, _htc_min_max.second);

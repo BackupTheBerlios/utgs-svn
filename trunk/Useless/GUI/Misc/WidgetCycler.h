@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class WidgetCycler
+class USELESS_API WidgetCycler
 {
 public:
     WidgetCycler( Widget *root, WidgetCycler *parent_cycler=NULL );

@@ -5,7 +5,7 @@
 
 namespace Useless {
 
-class VerticalText : public Text
+class USELESS_API VerticalText : public Text
 {
 public:
     VerticalText( const Text &text )

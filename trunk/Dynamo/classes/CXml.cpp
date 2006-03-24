@@ -1,9 +1,10 @@
 #include "Dynamo/classes/CInterfaceProvider.h"
 #include "koolib/HyperObject.h"
-#include "Useless/HatcheryConfig.h"
+#include "Useless/UselessConfig.h"
 #include "Useless/File/StdOFile.h"
 #include "Useless/File/StdIFileSystem.h"
 #include "Useless/File/StdIFile.h"
+#include "Useless/Util/Crypto.h"
 
 namespace Dynamo {
 
@@ -26,7 +27,7 @@ struct CXml : CInterface, virtual IXml
             input = new Useless::StdIFile( _fileName );
             if ( useEncryption )
             {
-                input = new Useless::HatcheryCipher::In( input, Useless::__key );
+                input = Useless::CreateEncryptedIFile( input );
             }
             Useless::__Resources::ResourceMap::iterator it = Useless::Resources::Instance().Find("hyper", xmlId);
             if ( it != Useless::Resources::Instance().End() )
@@ -57,28 +58,16 @@ struct CXml : CInterface, virtual IXml
         tag1.setvalue( tag2.setvalue( tag3 ));
         tag1.setattr("encoding","utf-8");
 
-        Useless::StdOFile oFile( _fileName );
-        Useless::HatcheryCipher::Out encFile( Useless::SPointer< Useless::OFile >( oFile ), Useless::__key );
+        Useless::SPointer< Useless::OFile > oFile = new Useless::StdOFile( _fileName );
 
         std::string s = tag1.to_string();
         
-        if ( !_useEncryption )
+        if ( _useEncryption )
         {
-            oFile.WriteUpto( s.c_str(), s.length() );
+            oFile = Useless::CreateEncryptedOFile( oFile );
+            Useless::AlignForEncryption( s );
         }
-        else
-        {
-            int remainAlgn = s.length() % Useless::HatcheryCipher::BLOCKSIZE;        
-            if ( 0 != remainAlgn )
-            {
-                int toAlign = Useless::HatcheryCipher::BLOCKSIZE - remainAlgn;
-                while ( 0 < toAlign-- )
-                {
-                    s += (char)0x0;
-                }
-            }
-            encFile.Write( s.c_str(), s.length() );
-        }
+        oFile->Write( s.c_str(), s.length() );
     }
 };
 

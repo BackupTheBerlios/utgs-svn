@@ -43,6 +43,7 @@
 ///////////////////////////////////
 // Include error macros
 //--------------------------------
+#include "Useless/Error/Error.h"
 #include "Useless/Error/AppError.h"
 
 #endif//__INCLUDED_USELESS_ERROR_CONFIG_H__

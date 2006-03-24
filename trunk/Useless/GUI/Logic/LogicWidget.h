@@ -8,7 +8,7 @@
 
 namespace Useless {
 
-class LogicWidget : virtual public Widget
+class USELESS_API LogicWidget : virtual public Widget
 {
 public:
     virtual  int  GetState () const = 0;

@@ -19,12 +19,10 @@
 
 #ifdef __USE_RIJNDAEL__
 #   include <rijndael.h> // - CryptoPP library
-#   pragma comment (lib,"cryptlib.lib")
 #endif
 
 #ifdef __USE_BLOWFISH__
 #   include <blowfish.h> // - CryptoPP library
-#   pragma comment (lib,"cryptlib.lib")
 #endif
 
 namespace Useless {
@@ -60,7 +58,7 @@ static const char *__cipherType = "HCXR";
 #endif
 
 // The global key
-extern const char *__key;
+extern USELESS_API const char *g_szKey;
 
 };//namespace Useless
 #endif//__INCLUDED_USELESS_HATCHERY_CONFIG_H__

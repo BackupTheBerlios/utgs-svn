@@ -26,7 +26,7 @@ namespace Useless {
  *
  *  Abstract for class for use by save functions.
  */
-class OFile
+class USELESS_API OFile
 {
 public:
     enum SeekMode { SEEKSET=-1, SEEKCUR, SEEKEND };

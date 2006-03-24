@@ -8,7 +8,7 @@ namespace Useless {
 
 /*! WordSelector finds words inside Text using delivered separators.
  */
-class WordSelector
+class USELESS_API WordSelector
 {
 public:
     WordSelector() {}

@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Base for any widgets, which may contain any other widgets.
  */
-class CompoundWidget: virtual public Widget
+class USELESS_API CompoundWidget: virtual public Widget
 {
 public:
     CompoundWidget();
@@ -86,7 +86,7 @@ private:
 
 };
 
-static PreInitializer<CompoundWidget> __init_compound_widget;
+DECLARE_PREINITIALIZER( CompoundWidget, CompoundWidget, USELESS_API );
 
 };//namespace Useless
 

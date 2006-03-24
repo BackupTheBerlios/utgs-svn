@@ -8,7 +8,7 @@ namespace Useless {
 /*! \ingroup gDisplay
  *  Base for setting mouse cursor shape and behavior.
  */
-class MouseCursor
+class USELESS_API MouseCursor
 {
 public:
     MouseCursor(): _speed(1.0f), _acceleration(0.02f), _limitFlags(0) {}

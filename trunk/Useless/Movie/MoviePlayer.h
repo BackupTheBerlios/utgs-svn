@@ -1,6 +1,7 @@
 #ifndef __INCLUDED_USELESS_MOVIE_PLAYER_H__
 #define __INCLUDED_USELESS_MOVIE_PLAYER_H__
 
+#include "Useless/UselessConfig.h"
 #include "Useless/Movie/DShow/DSMedia.h"
 #include "Useless/Graphic/Device/Screen.h"
 
@@ -9,7 +10,7 @@ namespace Useless {
     /*! Creates DSMedia object, setup additional buffer (for Renderware),
      *  plays until it finishes, or renders single frame.
      */
-    class MoviePlayer
+    class USELESS_API MoviePlayer
     {
     public:
         MoviePlayer();

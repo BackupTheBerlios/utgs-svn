@@ -402,8 +402,10 @@ namespace GVM {
         virtual void SetViewport ( int x, int y, int w, int h ) = 0;
 
         // Camera properties
-        virtual void SetOrtho2D( float left, float right, float bottom, float top ) = 0; 
-        virtual void SetPerspective( float fov, float aspect, float znear, float zfar ) = 0;
+        virtual void SetOrtho2D    ( double left, double right, double bottom, double top ) = 0; 
+        virtual void SetPerspective( double fov, double aspect, double znear, double zfar ) = 0;
+        virtual void SetFrustum    ( double left, double right, double bottom, double top, double znear, double zfar ) = 0;
+        virtual void SetOrtho      ( double left, double right, double bottom, double top, double znear, double zfar ) = 0;
         
         // Dispatch message
         virtual void Invoke( const Message &msg ) = 0;

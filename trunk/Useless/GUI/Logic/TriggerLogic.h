@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class TriggerLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
+class USELESS_API TriggerLogic : virtual public ActiveWidget, virtual public EnumWidget, virtual private LogicWidget
 {
 public:
     TriggerLogic();

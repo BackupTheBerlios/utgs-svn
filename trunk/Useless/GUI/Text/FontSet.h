@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class FontSet
+class USELESS_API FontSet
 {
 public:
               FontSet();

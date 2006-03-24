@@ -23,7 +23,7 @@ namespace Useless {
 /*! \ingroup gError 
  *  File IO specific error
  */
-class IOError : public Error
+class USELESS_API IOError : public Error
 {
 public:
     IOError( const char *e, ... );

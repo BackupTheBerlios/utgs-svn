@@ -6,7 +6,7 @@
 
 namespace Useless {
     
-class DIMouse
+class USELESS_API DIMouse
 {
 private:
     enum { BUFFER_SIZE = 16 };

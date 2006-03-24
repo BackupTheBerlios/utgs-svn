@@ -7,7 +7,7 @@ namespace Useless {
 
 typedef std::map< std::string, XMLAttributes > XMLStyle;
 
-Resource* CreateStyle( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateStyle( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_style( "styles::style", CreateStyle );
 
 

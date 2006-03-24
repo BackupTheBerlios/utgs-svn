@@ -8,7 +8,6 @@
 #include "Useless/GUI/Widgets/Widget.h"
 #include "Useless/GUI/Widgets/ActiveWidget.h"
 #include "Useless/GUI/Widgets/HubWidget.h"
-#include "Useless/TemplateConfig.h"
 
 
 namespace Useless {
@@ -23,8 +22,10 @@ template < class BasicWidgetType, class WidgetExpansionType >
 class TemplateWidget : public BasicWidgetType, virtual public WidgetExpansionType
 {
 public:
-    USELESS_EMPTY_SPECIALIZATION
-        TemplateWidget() {}
+    // There are some problems w/ default ctors when using DLL.
+    // I assume there is no widget w/o parameters in ctor.
+    //USELESS_EMPTY_SPECIALIZATION
+    //    TemplateWidget() {}
     template< class A1 >
         TemplateWidget( const A1 &a1 ): BasicWidgetType( a1 ) {}
     template< class A1, class A2 >
@@ -72,8 +73,8 @@ template < class InactiveWidgetType, const bool OR=true >
 class ActivatedWidget : public InactiveWidgetType, public virtual ActiveWidget
 {
 public:
-    USELESS_EMPTY_SPECIALIZATION
-        ActivatedWidget() {}
+    //USELESS_EMPTY_SPECIALIZATION
+    //    ActivatedWidget() {}
 
     template< class A1 >
         ActivatedWidget( const A1 &a1 ): InactiveWidgetType( a1 ) {}
@@ -107,8 +108,8 @@ template < class WidgetType, const bool IS_ACTIVE=false >
 class ParentWidget : public WidgetType, public virtual HubWidget
 {
 public:
-    USELESS_EMPTY_SPECIALIZATION
-        ParentWidget() {}
+    //USELESS_EMPTY_SPECIALIZATION
+    //    ParentWidget() {}
 
     template< class A1 >
         ParentWidget( const A1 &a1 ): WidgetType( a1 ) {}
@@ -163,8 +164,8 @@ template < class WidgetType >
 class PaintedWidget : public WidgetType
 {
 public:
-    USELESS_EMPTY_SPECIALIZATION
-        PaintedWidget() {}
+    //USELESS_EMPTY_SPECIALIZATION
+    //   PaintedWidget() {}
 
     template< class A1 >
         PaintedWidget( const A1 &a1 ): WidgetType( a1 ) {}
@@ -198,8 +199,8 @@ template< class WidgetA, class WidgetB, const bool OR=true >
 class MergedWidget : virtual public WidgetA, virtual public WidgetB
 {
 public:
-    USELESS_SPECIALIZATION
-        MergedWidget() {}
+    //USELESS_SPECIALIZATION
+    //    MergedWidget() {}
     template< class A1 >
         MergedWidget( const A1 &a1 ): WidgetA( a1 ), WidgetB( a1 ) {}
     template< class A1, class A2 >
@@ -214,8 +215,6 @@ public:
         return true;
     }
 };
-
-#undef USELESS_SPECIALIZATION
 
 };//namespace Useless
 

@@ -10,7 +10,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Virtual widget, which acts like a bridge for any requests.
  */
-class BridgeWidget : virtual public CompoundWidget, public IWBridge
+class USELESS_API BridgeWidget : virtual public CompoundWidget, public IWBridge
 {
 public:
     BridgeWidget(int w=0, int h=0, Widget* widget=NULL);

@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class TextField : virtual public TextEditLogic
+class USELESS_API TextField : virtual public TextEditLogic
 {
 public:
     TextField( int w, int h, const FontSet &fonts, const SkinMan &skins, const Text &text );

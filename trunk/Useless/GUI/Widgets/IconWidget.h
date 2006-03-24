@@ -11,7 +11,7 @@ struct IconStyle;
 /*! \ingroup Widgets
  *  Kind of LogicWidget that paints icon over skin.
  */
-class IconWidget : virtual public LogicWidget
+class USELESS_API IconWidget : virtual public LogicWidget
 {
 public:
     IconWidget(  const SkinMan &frames,

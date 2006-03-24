@@ -1,12 +1,14 @@
 #ifndef __INCLUDED__USELESS_AUDIO_H__
 #define __INCLUDED__USELESS_AUDIO_H__
 
+#include "Useless/UselessConfig.h"
+
 namespace Useless {
 
 /*! Abstract for playing audio paths
  *  Use it to play long sound tracks with compression
  */
-class Audio
+class USELESS_API Audio
 {
 public:
     virtual ~Audio() {}

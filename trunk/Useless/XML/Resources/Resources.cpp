@@ -4,6 +4,6 @@
 
 namespace Useless {
 
-INIT_SINGLETON(Resources);
+INIT_SINGLETON( Resources, USELESS_RESOURCES_API );
 
 };//namespace Useless

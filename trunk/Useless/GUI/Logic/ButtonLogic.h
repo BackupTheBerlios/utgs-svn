@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-class ButtonLogic : virtual public ActiveWidget, virtual private LogicWidget
+class USELESS_API ButtonLogic : virtual public ActiveWidget, virtual private LogicWidget
 {
 public:
     ButtonLogic();

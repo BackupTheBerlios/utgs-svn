@@ -10,7 +10,7 @@ namespace Useless
 /*! Sample is SampleData manager.
  *  Derivates would overload Load() method to supply data.
  */
-class Sample
+class USELESS_API Sample
 {
 public:
     virtual ~Sample() {}

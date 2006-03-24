@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-    class WGLSurface : public GLContextSurface
+    class USELESS_API WGLSurface : public GLContextSurface
     {
         public:
             WGLSurface();

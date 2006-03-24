@@ -54,7 +54,7 @@ typedef std::basic_string<TCHAR> TCHAR_string;
 /*! \ingroup gApplication
  *  Static class. It manages windows, system-events and incoming-errors.
  */
-class Application
+class USELESS_API Application
 {
 public:
     static void SetIdleDT(int dt) { _minimum_idle_dt = dt; }
@@ -89,7 +89,20 @@ private:
 ///////////////////////////////////////////// Win32 specific
 public:
 /*! \section */
-    static void Init( HINSTANCE instance );
+    struct USELESS_API InitParams
+    {
+        HINSTANCE    hInstance;
+        const char * appTitle;
+		const char * iconName;
+        int iconResourceID;
+        int bigIconResourceID;
+        const TCHAR *windowClassName;
+
+        InitParams( HINSTANCE lhInstance, const char *lappTitle )
+            : hInstance( lhInstance ), appTitle( lappTitle ) {}
+    };
+    
+    static void Init( InitParams *parm );
     static void Free();
     static HINSTANCE GetInstance() { return _instance; }
     static const TCHAR* GetClass() { return _wnd_class; }
@@ -121,8 +134,8 @@ private:
     static HINSTANCE   _instance;
     static const char *_app_title;
     static const char *_icon_name;
-    static const int   _icon_resource_id;
-    static const int   _big_icon_resource_id;
+    static int   _icon_resource_id;
+    static int   _big_icon_resource_id;
     static const TCHAR *_wnd_class;
     static int         _mouse_cursor_x;
     static int         _mouse_cursor_y;

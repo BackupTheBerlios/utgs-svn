@@ -16,7 +16,7 @@
 #define __INCLUDED_KOOLIB_XML_MODULE_DYNAMO_H__
 
 #include "koolib/xml/XMLChunksProgram.h"
-#include "Dynamo/classes/CInterfaceProvider.h"
+#include "Dynamo/interfaces.h"
 
 namespace XMLProgram {
     
@@ -33,7 +33,7 @@ namespace XMLProgram {
 
     namespace XML_IMPORT {
 
-        struct DYNAMO : XMLCodeBlock
+        struct KOOLIB_BIND_API DYNAMO : XMLCodeBlock
         {
             Dynamo::Hand< Dynamo::IInterfaceProvider > _provider;
 

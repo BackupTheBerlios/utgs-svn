@@ -9,7 +9,7 @@
 namespace Useless {
 
     namespace {
-        LogError( FILE *fDump )
+        void LogError( FILE *fDump )
         {
             LPVOID lpMsgBuf;
             FormatMessage( 
@@ -116,7 +116,7 @@ namespace Useless {
         return pDoc;
     }
 
-    GDIPrinter::GDIPrinter( const GDIPrinterInfo &info ): m_info( info ), m_hdc(0)
+    GDIPrinter::GDIPrinter( const GDIPrinterInfo &info, int paperSize, int paperOrient ): m_info( info ), m_hdc(0)
     {
         FILE *fDump = fopen("Printers.log", "a+");
         _ftprintf( fDump, _T("[Printer]\n") );
@@ -124,8 +124,9 @@ namespace Useless {
         ::DEVMODE devmode;
         std::memset( &devmode, 0, sizeof( ::DEVMODE ));
         devmode.dmSize = sizeof( ::DEVMODE );
-        devmode.dmFields = DM_PAPERSIZE;
-        devmode.dmPaperSize = DMPAPER_A4;
+        devmode.dmFields = DM_PAPERSIZE | DM_ORIENTATION;
+        devmode.dmPaperSize = paperSize;
+	devmode.dmOrientation = paperOrient;
 
         while( true )
         {
@@ -270,7 +271,7 @@ namespace Useless {
         return s_manager;
     }
 
-    SPointer< GDIPrinter > CreateGDIPrinter()
+    SPointer< GDIPrinter > CreateGDIPrinter( int paperSize, int paperOrient )
     {
         using namespace Useless;
         GDIPrinter *pPrinter = 0;
@@ -287,7 +288,7 @@ namespace Useless {
         prnInfo.m_name = strDefaultPrn.substr(0, comaName);
         prnInfo.m_driver = strDefaultPrn.substr( comaName+1, comaDrv-comaName-1 );
         prnInfo.m_port = strDefaultPrn.substr( comaDrv+1, -1 );
-        pPrinter = new GDIPrinter( prnInfo );
+        pPrinter = new GDIPrinter( prnInfo, paperSize, paperOrient );
         if ( 0 != pPrinter->m_hdc )
         {
             return pPrinter;
@@ -299,7 +300,7 @@ namespace Useless {
         {
             if ( (*it).m_port != _T("MSFAX:") )
             {
-                pPrinter = new GDIPrinter( *it );
+                pPrinter = new GDIPrinter( *it, paperSize, paperOrient );
                 if ( 0 != pPrinter->m_hdc )
                 {
                     break;

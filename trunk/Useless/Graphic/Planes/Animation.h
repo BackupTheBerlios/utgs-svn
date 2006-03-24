@@ -9,7 +9,7 @@ namespace Useless {
     //! Animation is simple set of images.
     //  Use ImageDicer to dice source image into frames, and use it
     //  to create Animation.
-    class Animation : public ImageBase
+    class USELESS_API Animation : public ImageBase
     {
     public:
         Animation( const ImageDicer frames);

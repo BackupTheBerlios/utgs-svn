@@ -15,7 +15,7 @@ namespace Useless {
  *  Compatibility with version 1.0 preserved.
  *  v. 2.0
  */
-class TableListWidget : virtual public TableListedItems, virtual public ListLogic
+class USELESS_API TableListWidget : virtual public TableListedItems, virtual public ListLogic
 {
 public:
     TableListWidget( const ArraySkin &skin, const SkinMan &state_skins );
@@ -35,7 +35,7 @@ public:
 
 /*! Extended table style which holds additional skins for item states
  */
-class TableListStyle : public TableStyle
+class USELESS_API TableListStyle : public TableStyle
 {
 public:
     TableListStyle( const ArraySkin &grid_skin,

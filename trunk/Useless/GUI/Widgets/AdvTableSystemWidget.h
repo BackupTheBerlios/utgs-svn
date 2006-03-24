@@ -32,7 +32,7 @@ struct DF_ShowColumns : DataFilter
     BitVector _columnHidden;
 };
 
-class AdvTableSystemWidget : public TableSystemWidget
+class USELESS_API AdvTableSystemWidget : public TableSystemWidget
 {
 public:
     AdvTableSystemWidget::AdvTableSystemWidget

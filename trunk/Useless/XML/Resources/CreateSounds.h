@@ -6,11 +6,11 @@
 
 namespace Useless {
 
-Resource* CreateSoundCard( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSoundCard( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_soundcard( "system::soundcard", CreateSoundCard );
 
 
-Resource* CreateSample( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreateSample( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_sound( "sounds::sample", CreateSample );
 
 

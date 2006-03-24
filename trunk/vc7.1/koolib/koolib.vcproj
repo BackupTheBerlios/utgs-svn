@@ -20,7 +20,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_STATICLIB;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -72,7 +72,7 @@
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_STATICLIB;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
@@ -100,6 +100,111 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug DLL|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="1">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm1000
+"
+				Optimization="0"
+				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				TreatWChar_tAsBuiltInType="TRUE"
+				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="0"
+				WarningLevel="1"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="../bin/Debug/utgskld.dll"
+				AdditionalLibraryDirectories="../bin/Debug;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
+				ImportLibrary="Debug DLL/koolib.lib"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release DLL|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="1"
+			WholeProgramOptimization="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="1"
+				GlobalOptimizations="TRUE"
+				InlineFunctionExpansion="1"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="2"
+				OptimizeForProcessor="2"
+				OptimizeForWindowsApplication="TRUE"
+				AdditionalIncludeDirectories="../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				RuntimeLibrary="2"
+				TreatWChar_tAsBuiltInType="TRUE"
+				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="0"
+				WarningLevel="1"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="../bin/Release/utgskl.dll"
+				AdditionalLibraryDirectories="../bin/Release;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
+				ImportLibrary="Release DLL/koolib.lib"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
 			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
@@ -152,6 +257,209 @@
 				RelativePath="..\..\koolib\xml\XMLProgram.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="bind"
+			Filter="">
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksGUI.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksGUI.h">
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksGUIa.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksUseless.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksUseless.h">
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksUselessMedia.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="3"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="3"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksUselessPainter.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="3"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="3"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksUselessPch.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="1"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLChunksUselessWidget.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="3"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						UsePrecompiledHeader="3"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLModuleDynamo.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLModuleDynamo.h">
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLModuleUseless.cpp">
+				<FileConfiguration
+					Name="Debug DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;_DEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release DLL|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories="../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;../../koolib/xml"
+						PreprocessorDefinitions="WIN32;NDEBUG;_LIB;KOOLIB_EXPORTS;KOOLIB_BIND_EXPORTS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+						PrecompiledHeaderThrough="XMLChunksUseless.h"
+						PrecompiledHeaderFile="$(IntDir)/XMLChunksUseless.pch"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\koolib\xml\XMLModuleUseless.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\..\koolib\dynamic_cast_call.h">
 		</File>
@@ -183,6 +491,12 @@
 			RelativePath="..\..\koolib\KLRepeat.h">
 		</File>
 		<File
+			RelativePath=".\koolib.rc">
+		</File>
+		<File
+			RelativePath="..\..\koolib\koolibConfig.h">
+		</File>
+		<File
 			RelativePath="..\..\koolib\MVC.h">
 		</File>
 		<File
@@ -193,6 +507,9 @@
 		</File>
 		<File
 			RelativePath="..\..\koolib\Random.h">
+		</File>
+		<File
+			RelativePath=".\resource.h">
 		</File>
 		<File
 			RelativePath="..\..\koolib\StdUtil.h">

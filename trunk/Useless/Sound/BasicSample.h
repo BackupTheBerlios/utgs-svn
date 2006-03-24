@@ -8,7 +8,7 @@ namespace Useless {
 
 /*! BasicSample is a Sample built from given properties
 */
-class BasicSample : public Sample
+class USELESS_API BasicSample : public Sample
 {
 public:
     BasicSample( const Snd::Properties &p );

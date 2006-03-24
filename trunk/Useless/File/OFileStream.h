@@ -4,7 +4,7 @@
 #include "Useless/File/detail/OFileStreamBuffer.h"
 namespace Useless {
 
-    class OFileStream : public std::ostream
+    class USELESS_API OFileStream : public std::ostream
     {
     public:
         OFileStream( const SPointer<OFile> &file ): _streambuffer(file), std::ostream(&_streambuffer)

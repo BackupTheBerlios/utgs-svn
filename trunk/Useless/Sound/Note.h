@@ -7,7 +7,7 @@ namespace Useless {
 
 /*! Calculates play rate for given note_name and sample_rate
  */
-class Note
+class USELESS_API Note
 {
 public:
     enum { C=0, D=2, E=4, F=5, G=7, A=8, H=11, SHARP=1, FLAT=-1, A4=440 };

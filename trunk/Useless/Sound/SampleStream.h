@@ -10,7 +10,7 @@ namespace Useless {
 /*! Sound sample streaming class.
  *  It operates on bytes ( does not look inside sample ).
  */
-struct SampleStream
+struct USELESS_API SampleStream
 {
 public:
     SampleStream(): _sample_data(0), _pos(0) {}

@@ -18,11 +18,12 @@ last mod: $Id: koolas Exp $
 
 #include <string>
 #include <map>
+#include "koolib/koolibConfig.h"
 
 #ifndef __INCLUDED_KOOLIB_SYMBOL_DICT_H__
 #define __INCLUDED_KOOLIB_SYMBOL_DICT_H__
     
-    struct SymbolDict
+    struct KOOLIB_API SymbolDict
     {
         enum { NO_SYMBOL = 0 };
         static std::wstring s_NoSymbol;

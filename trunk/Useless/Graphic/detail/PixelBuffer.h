@@ -8,7 +8,7 @@ namespace Useless {
 
 /*! PixelBuffer uses ImageLoader to load pixels
 */
-class PixelBuffer
+class USELESS_API PixelBuffer
 {
 public:
     PixelBuffer();

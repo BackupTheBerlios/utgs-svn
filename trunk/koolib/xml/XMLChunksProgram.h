@@ -22,7 +22,6 @@
 
 #include "koolib/xml/XMLProgram.h"
 #include "koolib/xml/XMLFactoryUtil.h"
-#include "koolib/FastAllocator.h"
 #include "koolib/SymbolDict.h"
 
 #include "Useless/XML/Resources/CreateFromXML.h"
@@ -37,7 +36,7 @@
 static Useless::RegisterXMLCreator reg_create_programm_fsm(
         "programms::fsm", Useless::CreateXMLDocument );
 
-Useless::Resource* CreateRunFSM( Useless::XMLIterator i, Useless::XMLCreatorEnv *env );
+KOOLIB_API Useless::Resource * CreateRunFSM( Useless::XMLIterator i, Useless::XMLCreatorEnv *env );
 static Useless::RegisterXMLCreator reg_create_run_fsm(
         "programms::run", CreateRunFSM );
 
@@ -78,7 +77,7 @@ namespace XMLProgram {
     using Useless::XMLDocument;
     using Useless::Signal;
 
-    struct FSMStackGuard
+    struct KOOLIB_API FSMStackGuard
     {        
         IFiniteStateMachine *_fsm;
         ExecutionState      *_state;
@@ -396,21 +395,21 @@ namespace XMLProgram {
     }
    
     // Get globals
-    ExecutionState & GetGlobals();
-    void GlobalsAddRef();
-    void GlobalsRemRef();
+    KOOLIB_API ExecutionState & GetGlobals();
+    KOOLIB_API void GlobalsAddRef();
+    KOOLIB_API void GlobalsRemRef();
 
     // Global symbol dictionary
-    SymbolDict & GetGlobalSymbolDict();
+    KOOLIB_API SymbolDict & GetGlobalSymbolDict();
     
     // Convert string to list
-    IChunk *    CreateSequence( const TextUtf8 &text );
+    KOOLIB_API IChunk *    CreateSequence( const TextUtf8 &text );
 
     
     /*! Chunk keeping one value
      */
     template< class _Type >
-        struct XMLValueChunk : IChunk
+        struct KOOLIB_API XMLValueChunk : IChunk
         {
             _Type _value;
 
@@ -526,7 +525,7 @@ namespace XMLProgram {
 
     /*! Chunk of XML code
      */
-    struct XMLCodeChunk : virtual IChunk
+    struct KOOLIB_API XMLCodeChunk : virtual IChunk
     {
         XMLDocument _subDoc;
 
@@ -567,7 +566,7 @@ namespace XMLProgram {
 
     /*! Chunk of signal scope
      */
-    struct SignalFIDChunk : virtual IChunk
+    struct KOOLIB_API SignalFIDChunk : virtual IChunk
     {
         Signal::FuncID _fid;
 
@@ -602,7 +601,7 @@ namespace XMLProgram {
 
     /*! Chunk of XML code connected to signal
      */
-    struct XMLSignalSlot : SignalFIDChunk, XMLCodeChunk
+    struct KOOLIB_API XMLSignalSlot : SignalFIDChunk, XMLCodeChunk
     {
         IFiniteStateMachine *_fsm;
         IBlockPtr            _block;
@@ -664,7 +663,7 @@ namespace XMLProgram {
 
     /*! Block of chunks
      */
-    struct XMLCodeBlock : virtual IBlock, XMLCodeChunk
+    struct KOOLIB_API XMLCodeBlock : virtual IBlock, XMLCodeChunk
     {
         typedef std::multimap< unsigned int, IChunkPtr > ChunkMap;
         ChunkMap _chunks;
@@ -702,7 +701,7 @@ namespace XMLProgram {
 
     /*! Finite state machine from XML
      */
-    struct XMLFiniteStateMachine : virtual IFiniteStateMachine, XMLCodeBlock
+    struct KOOLIB_API XMLFiniteStateMachine : virtual IFiniteStateMachine, XMLCodeBlock
     {
         struct State : ExecutionState
         {
@@ -830,7 +829,7 @@ namespace XMLProgram {
     };
 
     // EvaluateObject
-    IChunkPtr EvaluateObject( Node &node, ExecutionState &state, int flags=0 );
+    KOOLIB_API IChunkPtr EvaluateObject( Node &node, ExecutionState &state, int flags=0 );
 
     enum EvobFlags
     {
@@ -844,21 +843,21 @@ namespace XMLProgram {
     };
 
     // Check if 'pChunk' is 'NULL' or points to 'XMLEmpty'
-    bool      IsEmpty( IChunk *pChunk );
+    KOOLIB_API bool      IsEmpty( IChunk *pChunk );
 
     // Evaluate 'expression' in Reverse Polish Notation
     /*@{*/
-    bool      EvaluateBoolean   ( TextUtf8 expression );
-    int       EvaluateInteger   ( TextUtf8 expression );
-    double    EvaluateFloat     ( TextUtf8 expression );
+    KOOLIB_API bool      EvaluateBoolean   ( TextUtf8 expression );
+    KOOLIB_API int       EvaluateInteger   ( TextUtf8 expression );
+    KOOLIB_API double    EvaluateFloat     ( TextUtf8 expression );
     /*@}*/
 
-    IChunkPtr EvaluateExpression( TextUtf8 expression, ExecutionState &state );
+    KOOLIB_API IChunkPtr EvaluateExpression( TextUtf8 expression, ExecutionState &state );
 
-    TextUtf8  EvaluateString    ( TextUtf8 value, ExecutionState &state );
-    TextUtf8  EvaluateString    ( TextUtf8 value, ExecutionState &state, const TextUtf8 &tag );
-    int       EvaluateString    ( TextUtf8 value, ExecutionState &state, int tag );
-    double    EvaluateString    ( TextUtf8 value, ExecutionState &state, double tag );
+    KOOLIB_API TextUtf8  EvaluateString    ( TextUtf8 value, ExecutionState &state );
+    KOOLIB_API TextUtf8  EvaluateString    ( TextUtf8 value, ExecutionState &state, const TextUtf8 &tag );
+    KOOLIB_API int       EvaluateString    ( TextUtf8 value, ExecutionState &state, int tag );
+    KOOLIB_API double    EvaluateString    ( TextUtf8 value, ExecutionState &state, double tag );
 
     template< class _Other >
         TextUtf8  EvaluateString    ( TextUtf8 value, ExecutionState &state, const _Other &tag )
@@ -866,17 +865,17 @@ namespace XMLProgram {
             return EvaluateString( value, state );
         }
 
-    TextUtf8  EvaluateTextUtf8  ( Node node, ExecutionState &state );
-    int       EvaluateInteger   ( Node node, ExecutionState &state );
-    double    EvaluateFloat     ( Node node, ExecutionState &state );
+    KOOLIB_API TextUtf8  EvaluateTextUtf8  ( Node node, ExecutionState &state );
+    KOOLIB_API int       EvaluateInteger   ( Node node, ExecutionState &state );
+    KOOLIB_API double    EvaluateFloat     ( Node node, ExecutionState &state );
 
-    IChunk* GetChunk( TextUtf8 chunkName, IChunk *pChunk, ExecutionState &state, IChunk **pParent = 0 );
-    IChunk* GetChunk( TextUtf8 chunkName, ExecutionState &state, IChunk **pParent = 0, ExecutionState **pState = 0  );
+    KOOLIB_API IChunk* GetChunk( TextUtf8 chunkName, IChunk *pChunk, ExecutionState &state, IChunk **pParent = 0 );
+    KOOLIB_API IChunk* GetChunk( TextUtf8 chunkName, ExecutionState &state, IChunk **pParent = 0, ExecutionState **pState = 0  );
     
     typedef std::pair< TextUtf8, TextUtf8 > SplitNames;
     /*! Split "name:tail" => ( name, tail )
      */
-    SplitNames SplitChunkName( TextUtf8 fullName, ExecutionState &state );
+    KOOLIB_API SplitNames SplitChunkName( TextUtf8 fullName, ExecutionState &state );
 
     /*! Get value of symbol in given execution scope
      */
@@ -962,7 +961,7 @@ namespace XMLProgram {
     
     /*! Empty
      */
-    struct XMLEmpty : virtual IChunk
+    struct KOOLIB_API XMLEmpty : virtual IChunk
     {
         bool operator >> ( XMLFactory::AttrUniBase &attr )
         {
@@ -989,7 +988,7 @@ namespace XMLProgram {
 
     /*! ListChunk
      */
-    struct XMLListChunk : virtual IChunk
+    struct KOOLIB_API XMLListChunk : virtual IChunk
     {
         IChunkPtr _head;
         IChunkPtr _tail;
@@ -1097,7 +1096,7 @@ namespace XMLProgram {
     
     /*! Curry enabled function chunk
      */
-    struct XMLFunctionChunk : XMLCodeBlock
+    struct KOOLIB_API XMLFunctionChunk : XMLCodeBlock
     {
         std::vector< TextUtf8 > _parameters;
 
@@ -1168,66 +1167,16 @@ namespace XMLProgram {
     
     typedef boost::intrusive_ptr< XMLListChunk > XMLListPtr;
 
-    inline XMLCodeBlock *CreateBlock()
-    {
-        return Memory::FastAllocate< XMLCodeBlock >();
-    }
 
-    inline XMLEmpty *CreateEmpty()
-    {
-        // use only one instance of XMLEmpty in whole world
-        static boost::intrusive_ptr< XMLEmpty > s_Empty;
-        if ( !s_Empty )
-        {
-            s_Empty = new XMLEmpty();
-        }
-        return s_Empty.get();
-        //return Memory::FastAllocate< XMLEmpty >();
-    }
+    KOOLIB_API XMLCodeBlock         *CreateBlock();
+    KOOLIB_API XMLListChunk         *CreateList ( IChunk *pHead, IChunk *pTail );
+    KOOLIB_API XMLEmpty             *CreateEmpty();
+    KOOLIB_API XMLValueChunk< int > *CreateValue( int value );
+    KOOLIB_API XMLValueChunk< double > *CreateValue( double value );
+    KOOLIB_API XMLValueChunk< TextUtf8 > *CreateValue( const TextUtf8 & );
+    KOOLIB_API XMLValueChunk< std::string > *CreateValue( const std::string & );
 
-    template< class _Type > XMLValueChunk< _Type > *CreateValue( const _Type &value )
-    {
-        XMLValueChunk< _Type > *pValue = Memory::FastAllocate< XMLValueChunk< _Type > >();
-        pValue->SetValue( value );
-        return pValue;
-    }
-
-    inline XMLValueChunk< int > *CreateValue( int value )
-    {
-        // use only one instance of 0 and 1
-        static boost::intrusive_ptr< XMLValueChunk< int > > s_Zero, s_One;
-        switch( value )
-        {
-            case 0:
-                if ( !s_Zero )
-                {
-                    s_Zero = new XMLValueChunk< int >( 0 );
-                }
-                return s_Zero.get();
-                
-            case 1:
-                if ( !s_One )
-                {
-                    s_One = new XMLValueChunk< int >( 1 );
-                }
-                return s_One.get();
-                
-            default:
-                XMLValueChunk< int > *pValue = Memory::FastAllocate< XMLValueChunk< int > >();
-                pValue->SetValue( value );
-                return pValue;
-        }
-    }
-
-    inline XMLListChunk *CreateList( IChunk *pHead, IChunk *pTail )
-    {
-        XMLListChunk *pList = Memory::FastAllocate< XMLListChunk >();
-        pList->SetHead( pHead );
-        pList->SetTail( pTail );
-        return pList;
-    }
-
-    struct SubScope : ExecutionState
+    struct KOOLIB_API SubScope : ExecutionState
     {
         boost::intrusive_ptr< XMLCodeBlock > _block;
 
@@ -1281,7 +1230,7 @@ namespace XMLProgram {
     //  </block>
     //          
     //
-    IBlockPtr XMLNodeToBlock( Node node, ExecutionState &state );
+    KOOLIB_API IBlockPtr XMLNodeToBlock( Node node, ExecutionState &state );
         
 
 };//XMLProgram

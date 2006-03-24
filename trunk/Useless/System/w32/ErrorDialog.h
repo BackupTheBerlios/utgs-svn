@@ -22,7 +22,7 @@ namespace Useless {
 /*! \ingroup gApplication
  *  Dialog for display standard Win32 errors.
  */
-class ErrorDialog
+class USELESS_API ErrorDialog
 {
 public:
     ErrorDialog();

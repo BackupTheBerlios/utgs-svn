@@ -13,7 +13,7 @@
 
 namespace Useless {
 
-INIT_SINGLETON( LangSelector );
+INIT_SINGLETON( LangSelector, USELESS_API );
 
 __LangSelector::__LangSelector()
 {

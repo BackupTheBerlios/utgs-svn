@@ -8,7 +8,7 @@ namespace Useless {
 //USES
     class AdvListStyle2;
 
-class ListMenu : public DropDown, public IWList
+class USELESS_API ListMenu : public DropDown, public IWList
 {
 public:
     ListMenu( const CaptionStyle &style, IWList *p_items, bool items_above = false );

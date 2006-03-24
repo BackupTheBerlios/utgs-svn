@@ -19,6 +19,10 @@ namespace Useless {
 
 Workspace::Workspace( GUIMaster &gui )
     : _gui( gui )
+	, _desktop_layer( 0, 0 )
+	, _popups_layer( 0, 0 )
+	, _menus_layer( 0, 0 )
+	, _hints_layer( 0, 0 )
     , _dirty_lock(0)
     , _input_intercepting_layer(0)
     , _refresh_pointer_accepts(0)

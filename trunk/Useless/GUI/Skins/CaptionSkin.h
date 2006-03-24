@@ -7,7 +7,7 @@
 
 namespace Useless {
 
-class CaptionSkin : public Skin
+class USELESS_API CaptionSkin : public Skin
 {
 public:
     CaptionSkin() {}

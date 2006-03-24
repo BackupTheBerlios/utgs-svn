@@ -24,7 +24,7 @@ namespace Useless {
 /*! \ingroup gError 
  *  Used when assertion raises exception
  */
-class AssertError : public Error
+class USELESS_API AssertError : public Error
 {
 public:
     AssertError( const char *cond, const char *file, int line );

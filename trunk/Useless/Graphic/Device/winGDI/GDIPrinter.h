@@ -11,7 +11,7 @@
 
 namespace Useless {
 
-    struct GDIPage
+    struct USELESS_API GDIPage
     {
         GDIPage( ::HDC hdc );
         ~GDIPage();
@@ -22,7 +22,7 @@ namespace Useless {
         ::HDC m_hdc;
     };
 
-    struct GDIDocument
+    struct USELESS_API GDIDocument
     {
         GDIDocument( ::HDC hdc, const std::basic_string< wchar_t > &title );
         ~GDIDocument();
@@ -34,7 +34,7 @@ namespace Useless {
         ::HDC     m_hdc;
     };
 
-    struct GDIPrinterInfo
+    struct USELESS_API GDIPrinterInfo
     {
         std::basic_string< ::TCHAR > m_name;
         std::basic_string< ::TCHAR > m_port;
@@ -42,9 +42,9 @@ namespace Useless {
         bool                         m_local;
     };
 
-    struct GDIPrinter
+    struct USELESS_API GDIPrinter
     {
-        GDIPrinter( const GDIPrinterInfo &info );
+        GDIPrinter( const GDIPrinterInfo &info, int paperSize = DMPAPER_A4, int paperOrient = DMORIENT_PORTRAIT );
         ~GDIPrinter();
 
         ::BOOL OnAbort( int iError );
@@ -64,7 +64,7 @@ namespace Useless {
         float m_sizeInchesY;
     };
 
-    struct GDIPrintManager
+    struct USELESS_API GDIPrintManager
     {
         protected:
             GDIPrintManager();
@@ -75,7 +75,7 @@ namespace Useless {
             std::vector< GDIPrinterInfo >  m_printers;
             std::set< GDIPrinter * >       m_printerInstances;
 
-            friend class GDIPrinter;
+            friend struct GDIPrinter;
             void RegisterGDIPrinter( GDIPrinter *printer );
             void UnregisterGDIPrinter( GDIPrinter *printer );
 
@@ -87,7 +87,7 @@ namespace Useless {
             static GDIPrintManager & Instance();
     };
 
-    SPointer< GDIPrinter > CreateGDIPrinter();
+    USELESS_API SPointer< GDIPrinter > CreateGDIPrinter( int paperSize = DMPAPER_A4, int paperOrient = DMORIENT_PORTRAIT );
 
 };//Useless
 

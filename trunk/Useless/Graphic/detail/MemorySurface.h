@@ -10,7 +10,7 @@ namespace Useless {
 
 /*! Simplified memory surface
  */
-class MemorySurface //simplified
+class USELESS_API MemorySurface //simplified
 {
 public:
     MemorySurface();

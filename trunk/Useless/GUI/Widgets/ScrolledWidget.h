@@ -12,7 +12,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  Virtual widget which may scroll its content in any direction.
  */
-class ScrolledWidget: public BridgeWidget, virtual public ActiveWidget, public IWScrollee
+class USELESS_API ScrolledWidget: public BridgeWidget, virtual public ActiveWidget, public IWScrollee
 {
 public:
     ScrolledWidget(int w=0, int h=0);

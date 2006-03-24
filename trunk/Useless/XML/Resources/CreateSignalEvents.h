@@ -6,7 +6,7 @@
 
 namespace Useless {
 
-Resource* CreatePlaySoundEvent( XMLIterator i, XMLCreatorEnv *env );
+USELESS_RESOURCES_API Resource* CreatePlaySoundEvent( XMLIterator i, XMLCreatorEnv *env );
 static RegisterXMLCreator reg_create_play_sound_event( "events::sound", CreatePlaySoundEvent );
 
 typedef ResourceQuery< SPointer< SignalEvent > > SignalEventResource;

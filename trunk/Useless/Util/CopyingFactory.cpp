@@ -6,7 +6,7 @@ namespace Useless {
 
 RTCopyingFactory::__Creators *RTCopyingFactory::_creators;
 
-int PreInitializer< RTCopyingFactory >::_counter = 0;
+INIT_PREINITIALIZER( RTCopyingFactory, RTCopyingFactory, USELESS_API );
 
 /*! Register copier-creator-function.
  *  Creator-funcion is added to list only if it is not duplicated.

@@ -19,7 +19,7 @@ namespace Useless {
 /*! \ingroup Widgets
  *  A Scrollbar Widget. Orientation is set from Skin::GetDirMask().
  */
-class ScrollbarWidget : private BridgeWidget, virtual public NoKeyButton, public IWScrollbar
+class USELESS_API ScrollbarWidget : private BridgeWidget, virtual public NoKeyButton, public IWScrollbar
 {
 public:
     enum Images { PAGE, PAGE_PRESSED, PAGEHL, PAGEDIS, PAGER, PAGER_PRESSED, PAGERHL, PAGERDIS };

@@ -28,7 +28,7 @@ namespace Useless {
  *
  *  This class uses libstdc++ to access files
  */
-class StdIFile : public IFile
+class USELESS_API StdIFile : public IFile
 {
 public:
     StdIFile( const std::string &name );
