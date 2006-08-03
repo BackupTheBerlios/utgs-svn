@@ -618,6 +618,7 @@ namespace XMLProgram {
                 .def("GetWidget", GetWidget, "name" )
                 .def("GetLayout", GetLayout, "name" )
                 .def("GetWorkspace", GetWorkspace, "name" )
+                .def("RaiseEvent", RaiseEvent, "name", "arg" )
                 .def("CreateFromXMLString", CreateFromXMLString )
                 .def("KillResources", KillResources, "category", "name", "recursive" )
                 ;
@@ -662,6 +663,13 @@ namespace XMLProgram {
         {
             GUIMasterResource resGUI( "system", name );
             return new WorkspaceProxy( &(*resGUI)->GetWorkspace() );
+        }
+            
+        void USELESS_RESOURCES::RaiseEvent( std::string name, std::string arg )
+        {
+            SignalEventResource resEvt( "events", name );
+            Signal sig;
+            (*resEvt)->Raise( &sig, arg );
         }
 
         void USELESS_RESOURCES::CreateFromXMLString( Node __unused__, ExecutionState &state )

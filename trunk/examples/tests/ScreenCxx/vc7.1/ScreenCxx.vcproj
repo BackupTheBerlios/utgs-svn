@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="KooLiXP"
-	ProjectGUID="{9C46330F-F098-4848-B850-B63924EE4ABC}"
+	Name="ScreenCxx"
+	ProjectGUID="{1BEA61A5-A781-47B1-845D-E8613B70DBC2}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -19,28 +19,28 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./;../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;&quot;$(LIBPNG_ROOT)/include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				AdditionalIncludeDirectories="../../../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(DXSDK)/include/&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="TRUE"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="KoolixpPch.h"
-				WarningLevel="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../bin/Debug/KooLiXPd.exe"
+				OutputFile="$(OutDir)/ScreenCxx.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../lib;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(OGGVORBIS_ROOT)/lib&quot;;&quot;$(CRYPTOPP_ROOT)/Debug&quot;;&quot;$(LIBPNG_ROOT)/lib&quot;"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/KooLiXP.pdb"
+				ProgramDatabaseFile="$(OutDir)/ScreenCxx.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -72,14 +72,22 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="./;../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;&quot;$(LIBPNG_ROOT)/include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				Optimization="1"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="2"
+				OmitFramePointers="TRUE"
+				OptimizeForProcessor="2"
+				OptimizeForWindowsApplication="TRUE"
+				AdditionalIncludeDirectories="../../../../;&quot;$(BOOST_ROOT)/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(DXSDK)/include/&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION;USELESS_HAS_LIBPNG"
+				StringPooling="TRUE"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="TRUE"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="KoolixpPch.h"
+				UsePrecompiledHeader="0"
 				WarningLevel="1"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -87,10 +95,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utgsbase.lib utgsres.lib utgskl.lib"
-				OutputFile="../../../bin/KooLiXP.exe"
+				OutputFile="$(OutDir)/ScreenCxx.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../lib;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(OGGVORBIS_ROOT)/lib&quot;;&quot;$(CRYPTOPP_ROOT)/Release&quot;;&quot;$(LIBPNG_ROOT)/lib&quot;"
+				DelayLoadDLLs="vorbis.dll;ogg.dll;dsound.dll;ddraw.dll;zlib1.dll;ws2_32.dll;ws2help.dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -122,40 +130,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\bitmap1.bmp">
-		</File>
-		<File
-			RelativePath=".\icon1.ico">
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\KooLiXP.cpp">
-		</File>
-		<File
-			RelativePath=".\KooLiXP.rc">
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\KoolixpPch.cpp">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\KoolixpPch.h">
-		</File>
-		<File
-			RelativePath=".\resource.h">
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\WinMain.cpp">
+			RelativePath="..\ScreenCxx.cpp">
 		</File>
 	</Files>
 	<Globals>

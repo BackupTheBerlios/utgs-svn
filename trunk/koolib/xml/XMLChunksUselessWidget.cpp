@@ -415,6 +415,15 @@ namespace XMLProgram {
                                 ( "GetCaption", unconst_method_cast( &CaptionWidget::GetCaption ))
                 ;
         }
+        if ( ProgressWidget *c = dynamic_cast< ProgressWidget *>( widget ))
+        {
+            XMLProgram::add_methods_block( "Progress", c, this )
+                .def("Advance", &ProgressWidget::Advance, "delta" )
+                .def("SetAdvance", &ProgressWidget::SetAdvance, "advance" )
+                .def("SetRange", &ProgressWidget::SetRange, "range" )
+                .def("GetSize", unconst_method_cast( &ProgressWidget::GetSize ))
+                ;
+        }
         if ( ScoreRoller *c = dynamic_cast< ScoreRoller *>( widget ))
         {
             XMLProgram::add_methods_block( "ScoreRoller", c, this )

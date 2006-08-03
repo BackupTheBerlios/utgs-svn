@@ -173,13 +173,18 @@ namespace Useless {
         for ( int i=0, I=_tesselRender.size(); i<I; ++i )
         {
             Tessel &t = _tesselAll[ _tesselRender[i] ];
-            t._texture.Use();
-            glBegin( GL_TRIANGLE_STRIP); {
-                glTexCoord2d( t._u1, t._v1); glVertex2d( t._x1, t._y1);
-                glTexCoord2d( t._u1, t._v2); glVertex2d( t._x1, t._y2);
-                glTexCoord2d( t._u2, t._v1); glVertex2d( t._x2, t._y1);
-                glTexCoord2d( t._u2, t._v2); glVertex2d( t._x2, t._y2);
-            } glEnd();
+            if ( t._texture.Use() )
+            {
+                glBegin( GL_TRIANGLE_STRIP); {
+                    glTexCoord2d( t._u1, t._v1); glVertex2d( t._x1, t._y1);
+                    glTexCoord2d( t._u1, t._v2); glVertex2d( t._x1, t._y2);
+                    glTexCoord2d( t._u2, t._v1); glVertex2d( t._x2, t._y1);
+                    glTexCoord2d( t._u2, t._v2); glVertex2d( t._x2, t._y2);
+                } glEnd();
+            }
+			else {
+				bool debugPoint = 0;
+			}
         }
     }
 

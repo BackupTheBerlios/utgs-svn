@@ -36,6 +36,49 @@ IDB_BITMAP1             BITMAP                  "bitmap1.bmp"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EXCEPTION DIALOGEX 0, 0, 407, 272
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "KooLiXP Exception"
+FONT 10, "Courier New", 400, 0, 0xEE
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,165,251,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,350,251,50,14
+    EDITTEXT        IDC_OUTPUT,7,29,393,189,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_OEMCONVERT | ES_READONLY | ES_WANTRETURN | WS_VSCROLL | 
+                    WS_HSCROLL
+    LTEXT           "Write this message into log file ?",IDC_STATIC,115,233,
+                    151,11
+    ICON            IDI_ICON1,IDC_STATIC,7,7,20,20
+    LTEXT           "An exception has occured while KooLiXP program being run:",
+                    IDC_STATIC,31,12,230,11
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_EXCEPTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 400
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 265
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 #endif    // Polish resources
 /////////////////////////////////////////////////////////////////////////////
 

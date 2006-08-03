@@ -17,18 +17,13 @@
 #include <iostream>
 
 namespace Useless {
-    const char * Application::_icon_name = "icon1.ico";
-    const char * Application::_app_title = "KooLiXP";
-    const int    Application::_icon_resource_id = IDI_ICON1;
-    const int    Application::_big_icon_resource_id = IDI_ICON1;
-
-    extern bool G_EnableDDrawScr;
-    extern bool G_DisableAltTab;
-    extern bool G_EnableDebugF11;
-    extern bool G_EnablePrintScr;
-    extern bool G_nVidiaViewport;
-    extern double G_GLTesselatorStartingTexelOffset;
-    extern double G_GLTesselatorEndingTexelOffset;
+    USELESS_API extern bool G_EnableDDrawScr;
+    USELESS_API extern bool G_DisableAltTab;
+    USELESS_API extern bool G_EnableDebugF11;
+    USELESS_API extern bool G_EnablePrintScr;
+    USELESS_API extern bool G_nVidiaViewport;
+    USELESS_API extern double G_GLTesselatorStartingTexelOffset;
+    USELESS_API extern double G_GLTesselatorEndingTexelOffset;
 };
 
 int get_argc()
@@ -43,6 +38,56 @@ std::string get_argv( int i )
     std::copy( wname.begin(), wname.end(), name.begin() );
     return name;
 }
+
+std::string g_ExcptText;
+
+INT_PTR CALLBACK KDialogProc( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam )
+{
+    Useless::Text converted;
+    switch( uMsg )
+    {
+    case WM_INITDIALOG:
+        for ( int i=0; i<g_ExcptText.size(); ++i )
+        {
+            char c = g_ExcptText[i];
+            if ( c == '\n')
+            {
+                converted += '\r';
+                converted += '\n';
+            }
+            else if ( c == '\t' )
+            {
+                converted += ' ';
+                converted += ' ';
+                converted += ' ';
+                converted += ' ';
+            }
+            else {
+                converted += c;
+            }
+        }
+
+        SetDlgItemText( hwndDlg, IDC_OUTPUT, converted.c_str() );
+        break;
+
+    case WM_COMMAND:
+        switch( LOWORD( wParam ))
+        {
+        case IDOK:
+            EndDialog( hwndDlg, IDOK );
+            break;
+        case IDCANCEL:
+            EndDialog( hwndDlg, IDCANCEL );
+            break;
+        };
+        break;
+
+    default:
+	break;
+    };
+    return false;
+}
+
 
 
 struct KooLiXP
@@ -190,71 +235,76 @@ struct KooLiXP
 
     int Run()
     {
-        if ( _helpOnly )
-        {
-            throw _error;
-            return 0;
-        }
-        else
-        {
-            try {
-                if ( !_noSplash )
-                {
-                    Surf::Properties splashProps;
-                    splashProps.width = 320;
-                    splashProps.height = 240;
-                    splashProps.pixelformat = ImageFormat::B8G8R8A8;
-                    _screen = new GDIScreen( Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
-                    int whereX = (::GetSystemMetrics( SM_CXFULLSCREEN ) - splashProps.width)/2;
-                    int whereY = (::GetSystemMetrics( SM_CYFULLSCREEN ) - splashProps.height)/2;
-                    _screen->Reposition( whereX, whereY );
-                    _screen->HideDecorations();
-                    _screen->OpenWindowed( splashProps.width, splashProps.height);
-                    _screen->SetClipper( Rect(splashProps.width, splashProps.height) );
-                    GDISurface splashSurf( splashProps, _screen->GetHandle(), IDB_BITMAP1 );
-                    _screen->GetSurface()->Blit( 0, 0, splashSurf, Rect(splashProps.width, splashProps.height) );
-                    _screen->Swap();
-                }
-
-                Useless::CreateFromXMLFile( _file );
-                
-                if ( !!_screen )
-                {
-                    _screen->Close();
-                }
-                _screen = *Useless::ScreenResource("system", "screen");
-                if ( !_guiScreen.empty() )
-                {
-                    Useless::SetCurrentScreen( Useless::WidgetResource< Useless::Widget >::Query( _guiScreen ));
-                }
-                if ( _snapshotOnly )
-                {
-                    return MakeScreenshot();
-                }
-                else
-                {
-                    return Useless::Application::Run();
-                }
-            }
-            catch ( const std::exception &e )
+        try {
+            if ( _helpOnly )
             {
-                if ( !!_screen )
-                {
-                    _screen->Close();
-                }
-                std::stringstream ss;
-                PutInfo( ss );
-                PutError( ss, e.what() );
-                _helpOnly = true;
-                if ( IDYES == MessageBoxA( NULL
-                            , (ss.str() + "\n\nLog this message ?").c_str()
-                            , (_file + " - Fatal Exception").c_str()
-                            , MB_YESNO | MB_ICONEXCLAMATION | MB_SYSTEMMODAL ))
-                {
-                    throw Useless::Error( ss.str().c_str() );
-                }
-                return -1;
+                throw _error;
+                return 0;
             }
+            else
+            {
+                try {
+                    if ( !_noSplash )
+                    {
+                        Surf::Properties splashProps;
+                        splashProps.width = 320;
+                        splashProps.height = 240;
+                        splashProps.pixelformat = ImageFormat::B8G8R8A8;
+                        _screen = new GDIScreen( Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
+                        int whereX = (::GetSystemMetrics( SM_CXFULLSCREEN ) - splashProps.width)/2;
+                        int whereY = (::GetSystemMetrics( SM_CYFULLSCREEN ) - splashProps.height)/2;
+                        _screen->Reposition( whereX, whereY );
+                        _screen->HideDecorations();
+                        _screen->OpenWindowed( splashProps.width, splashProps.height);
+                        _screen->SetClipper( Rect(splashProps.width, splashProps.height) );
+                        GDISurface splashSurf( splashProps, _screen->GetHandle(), IDB_BITMAP1 );
+                        _screen->GetSurface()->Blit( 0, 0, splashSurf, Rect(splashProps.width, splashProps.height) );
+                        _screen->Swap();
+                    }
+
+                    Useless::CreateFromXMLFile( _file );
+
+                    if ( !!_screen )
+                    {
+                        _screen->Close();
+                    }
+                    _screen = *Useless::ScreenResource("system", "screen");
+                    if ( !_guiScreen.empty() )
+                    {
+                        Useless::SetCurrentScreen( Useless::WidgetResource< Useless::Widget >::Query( _guiScreen ));
+                    }
+                    if ( _snapshotOnly )
+                    {
+                        return MakeScreenshot();
+                    }
+                    else
+                    {
+                        return Useless::Application::Run();
+                    }
+                }
+                catch ( const std::exception &e )
+                {
+                    std::stringstream ss;
+                    PutInfo( ss );
+                    PutError( ss, e.what() );
+					throw Useless::Error( ss.str().c_str() );
+                }
+            }
+        }
+        catch ( const std::exception &e )
+        {
+            if ( !!_screen )
+            {
+                _screen->Close();
+            }
+            g_ExcptText = e.what();
+            int hr = (int)DialogBox( Useless::Application::GetInstance(), MAKEINTRESOURCE( IDD_EXCEPTION ), NULL, KDialogProc );
+
+            if ( IDOK == hr )
+            {
+				throw e;
+            }
+            return -1;
         }
     }
 

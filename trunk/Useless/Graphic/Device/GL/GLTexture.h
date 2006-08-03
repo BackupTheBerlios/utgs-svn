@@ -17,10 +17,7 @@ public:
     GLTexture( int w, int h, int row_length, int fmt, void *data, int level=0, int priority=0 );
     ~GLTexture();
 
-    void Use()
-    {
-        glBindTexture( GL_TEXTURE_2D, _bind_id);
-    }
+    bool Use();
 
     int   GetWidth() const { return _w; }
     int   GetHeight() const { return _h; }
@@ -33,6 +30,7 @@ private:
     int               _w;       // 64, 128 or 256
     int               _h;
     GLint             _bind_id;
+    bool              _empty;
 
 public:
     static GLint _Min_filter;

@@ -145,6 +145,7 @@
 				OutputFile="../bin/Release/utgsbase.dll"
 				AdditionalLibraryDirectories="&quot;$(OGGVORBIS_ROOT)/lib&quot;;&quot;$(LIBPNG_ROOT)/lib&quot;"
 				ModuleDefinitionFile=""
+				GenerateDebugInformation="TRUE"
 				ImportLibrary="Release DLL/UselessDll.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -201,10 +202,6 @@
 				TypeLibraryFile=""
 				GenerateDebugInformation="TRUE"
 				AssemblyDebug="1"
-				GenerateMapFile="TRUE"
-				MapFileName="UselessDll.map"
-				MapExports="TRUE"
-				MapLines="TRUE"
 				ImportLibrary="Debug DLL/UselessDll.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -702,9 +699,6 @@
 					<File
 						RelativePath="..\..\Useless\Graphic\Device\Surface.h">
 					</File>
-					<File
-						RelativePath="..\..\Useless\Graphic\Device\SurfaceExtFun.h">
-					</File>
 					<Filter
 						Name="GL"
 						Filter="">
@@ -752,6 +746,9 @@
 						</File>
 						<File
 							RelativePath="..\..\Useless\Graphic\Device\Gl\GVM_GLContext.h">
+						</File>
+						<File
+							RelativePath="..\..\Useless\Graphic\Device\SurfaceExtFun.h">
 						</File>
 						<Filter
 							Name="wGL"

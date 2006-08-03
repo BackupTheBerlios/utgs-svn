@@ -97,6 +97,8 @@ namespace XMLProgram {
             IChunkPtr GetWidget ( std::string name );
             IChunkPtr GetLayout ( std::string name );
             IChunkPtr GetWorkspace( std::string name );
+            
+            void RaiseEvent( std::string name, std::string arg );
 
             void KillResources  ( std::string category, std::string name, int recursive );
 

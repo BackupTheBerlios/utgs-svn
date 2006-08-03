@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="KooLiXP"
-	ProjectGUID="{9C46330F-F098-4848-B850-B63924EE4ABC}"
+	Name="g25d"
+	ProjectGUID="{D590AACF-6FF5-4E9B-B967-1ECC1EF08754}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -14,34 +14,33 @@
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./;../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;&quot;$(LIBPNG_ROOT)/include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				AdditionalIncludeDirectories="../../../"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GVM1_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="KoolixpPch.h"
-				WarningLevel="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../bin/Debug/KooLiXPd.exe"
+				OutputFile="../g25dd.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../lib;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/KooLiXP.pdb"
+				ProgramDatabaseFile="$(OutDir)/g25d.pdb"
 				SubSystem="2"
+				ImportLibrary="$(OutDir)/g25d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -68,33 +67,31 @@
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="./;../../;&quot;$(OGGVORBIS_ROOT)/include/&quot;;&quot;$(CRYPTOPP_ROOT)/&quot;;&quot;$(BOOST_ROOT)/&quot;;&quot;$(LIBPNG_ROOT)/include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;USELESS_HAS_DSHOW;USELESS_HAS_VORBIS;USELESS_HAS_CRYPTOPP;USELESS_HAS_BOOST_SERIALIZATION"
+				AdditionalIncludeDirectories="../../../"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GVM1_EXPORTS"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="KoolixpPch.h"
-				WarningLevel="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utgsbase.lib utgsres.lib utgskl.lib"
-				OutputFile="../../../bin/KooLiXP.exe"
+				OutputFile="../g25d.dll"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../lib;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/g25d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
@@ -122,40 +119,13 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\bitmap1.bmp">
+			RelativePath="..\src\GLGraphicDevice.h">
 		</File>
 		<File
-			RelativePath=".\icon1.ico">
+			RelativePath="..\src\GVM.h">
 		</File>
 		<File
-			RelativePath="..\..\KooLiXP\KooLiXP.cpp">
-		</File>
-		<File
-			RelativePath=".\KooLiXP.rc">
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\KoolixpPch.cpp">
-			<FileConfiguration
-				Name="Debug|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32">
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\KoolixpPch.h">
-		</File>
-		<File
-			RelativePath=".\resource.h">
-		</File>
-		<File
-			RelativePath="..\..\KooLiXP\WinMain.cpp">
+			RelativePath="..\src\g25d.cpp">
 		</File>
 	</Files>
 	<Globals>

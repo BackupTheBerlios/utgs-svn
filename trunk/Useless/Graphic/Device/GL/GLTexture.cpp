@@ -6,6 +6,8 @@
 #include "Useless/Graphic/Device/GL/GLResourcePool.h"
 #include "Useless/Graphic/detail/PixelBuffer.h"
 #include "Useless/Graphic/Linear.h"
+#include "Useless/Graphic/Pixel/PixelTypes.h"
+#include "Useless/Graphic/Pixel/PixelPtr.h"
 
 namespace Useless {
 
@@ -15,24 +17,45 @@ GLint GLTexture::_Wrap_s=GL_REPEAT;
 GLint GLTexture::_Wrap_t=GL_REPEAT;
 
 GLTexture::GLTexture( int w, int h )
-    :_w(w), _h(h), _bind_id(-1)
+    :_w(w), _h(h), _bind_id(-1), _empty(true)
 {
-    _bind_id=GLResourcePool::Instance().AcquireTexture();
+    _bind_id = GLResourcePool::Instance().AcquireTexture();
 }
 
 GLTexture::GLTexture( int w, int h, int row_length, int fmt, void *data, int level, int priority)
-    :_w(w), _h(h), _bind_id(-1)
+    :_w(w), _h(h), _bind_id(-1), _empty(true)
 {
-    _bind_id=GLResourcePool::Instance().AcquireTexture();
+    _bind_id = GLResourcePool::Instance().AcquireTexture();
     LoadPixels( w, h, row_length, fmt, data, level, priority );
 }
 
 GLTexture::~GLTexture()
 {
-    if ( Unique())
+    if ( Unique() )
     {
-        GLResourcePool::Instance().UnacquireTexture( _bind_id);
+        GLResourcePool::Instance().UnacquireTexture( _bind_id );
     }
+}
+
+template< class PixelType > void ScanForEmptyPixels( const PixelType&, void *data, int pitch, bool *empty, int _w, int _h )
+{
+    GenericPixelPtr< PixelType > ptr( data, pitch );
+    int h =_h;
+    for ( ;h-- ; ptr.Next() )
+    {
+        GenericPixelPtr< PixelType > xptr = ptr;
+        int w =_w;
+        for ( ;w-- ; ++xptr )
+        {
+			unsigned char alpha = xptr.Read().Get().c.a;
+            if ( alpha > 0x4 )
+            {
+                *empty = false;
+                return;
+            }
+        }
+    }
+    *empty = true;
 }
 
 void GLTexture::LoadPixels( int w, int h, int row_length, int fmt, void *data, int level, int priority)
@@ -61,10 +84,33 @@ void GLTexture::LoadPixels( int w, int h, int row_length, int fmt, void *data, i
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _Max_filter);
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _Wrap_s);
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _Wrap_t);
+
+    if ( data )
+    {
+        int pitch = row_length * ImageFormat::GetBpp( ImageFormat::Format( fmt ));
+        __PIXEL_SWITCH( fmt, ScanForEmptyPixels(p, data, pitch, &_empty, w, h), p );
+    }
+    else {
+        _empty = true;
+    }
 }
 
 void GLTexture::LoadSubPixels( int x, int y, int w, int h, int row_length, int fmt, void *data, int level, int priority )
 {
+    if ( !data )
+    {
+        return;
+    }
+    if ( _empty )
+    {
+        int pitch = row_length * ImageFormat::GetBpp( ImageFormat::Format( fmt ));
+        __PIXEL_SWITCH( fmt, ScanForEmptyPixels(p, data, pitch, &_empty, w, h), p );
+        if ( _empty )
+        {
+            return;
+        }
+    }
+    
     glBindTexture( GL_TEXTURE_2D, _bind_id);
   
     glPixelStorei( GL_UNPACK_ROW_LENGTH, row_length);
@@ -88,6 +134,18 @@ void GLTexture::LoadSubPixels( int x, int y, int w, int h, int row_length, int f
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _Max_filter);
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _Wrap_s);
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _Wrap_t);
+}
+
+bool GLTexture::Use()
+{
+    if ( !_empty )
+    {
+        glBindTexture( GL_TEXTURE_2D, _bind_id);
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 }; //namespace Useless

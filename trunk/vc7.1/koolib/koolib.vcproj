@@ -134,6 +134,8 @@
 				Name="VCLinkerTool"
 				OutputFile="../bin/Debug/utgskld.dll"
 				AdditionalLibraryDirectories="../bin/Debug;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
+				GenerateDebugInformation="TRUE"
+				AssemblyDebug="1"
 				ImportLibrary="Debug DLL/koolib.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
