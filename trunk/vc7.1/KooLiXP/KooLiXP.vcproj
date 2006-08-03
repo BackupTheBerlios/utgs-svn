@@ -87,7 +87,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="utgsbase.lib utgsres.lib utgskl.lib"
 				OutputFile="../../../bin/KooLiXP.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../lib;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
