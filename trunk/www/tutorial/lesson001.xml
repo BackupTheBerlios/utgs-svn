@@ -9,11 +9,11 @@
         <toc>
             <link>
                 <title><i>KooLiXP</i> Overview</title>
-                <href>KooLiXPOverview.xml</href>
+                <href>../KooLiXPOverview.xml</href>
             </link>
             <link>
                 <title><i>UTGS</i> Overview</title>
-                <href>utgs.xml</href>
+                <href>../utgs.xml</href>
             </link>
         </toc>
         <chapter>
