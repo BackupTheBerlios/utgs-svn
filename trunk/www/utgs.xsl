@@ -357,7 +357,14 @@
         </xsl:element>
     </xsl:template>
 
-    <xsl:template name="codePartXML" match="code[@lang='xml']/*">
+    <xsl:template match="code[@lang='xml']">
+        <xsl:for-each select="*">
+            <xsl:call-template name="codePartXML"/>
+            <br/>
+        </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template name="codePartXML">
         <code>
             <font color="darkcyan">
                 <b>

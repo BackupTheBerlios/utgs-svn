@@ -7,43 +7,37 @@
         An editable box of text.
     </description>
     <block id="TextField">
+        <signal id="OnCarMove">
+            <type-name>signal( position:int )</type-name>
+            <description>
+                Called when carrige position has changed.
+            </description>
+        </signal>
+        <signal id="OnConfirm">
+            <type-name>signal( text:unicode-string )</type-name>
+            <description>
+                Called when user pressed ENTER key.
+            </description>
+        </signal>
+        <signal id="OnTextChange">
+            <type-name>signal( text:unicode-string )</type-name>
+            <description>
+                Called each time text is changed via SetText or via user input.
+            </description>
+        </signal>
         <chunk id="GetText">
             <type-name>function() -&gt; unicode-string</type-name>
             <defined-symbols/>
+            <description>
+                Get text.
+            </description>
         </chunk>
-        <block id="OnCarMove">
-            <chunk id="Send">
-                <type-name>function( Node, State ) -&gt; void</type-name>
-                <defined-symbols/>
-            </chunk>
-            <chunk id="Tie">
-                <type-name>function( Node, State ) -&gt; void</type-name>
-                <defined-symbols/>
-            </chunk>
-        </block>
-        <block id="OnConfirm">
-            <chunk id="Send">
-                <type-name>function( Node, State ) -&gt; void</type-name>
-                <defined-symbols/>
-            </chunk>
-            <chunk id="Tie">
-                <type-name>function( Node, State ) -&gt; void</type-name>
-                <defined-symbols/>
-            </chunk>
-        </block>
-        <block id="OnTextChange">
-            <chunk id="Send">
-                <type-name>function( Node, State ) -&gt; void</type-name>
-                <defined-symbols/>
-            </chunk>
-            <chunk id="Tie">
-                <type-name>function( Node, State ) -&gt; void</type-name>
-                <defined-symbols/>
-            </chunk>
-        </block>
         <chunk id="SetText">
             <type-name>function( text:unicode-string ) -&gt; void</type-name>
             <defined-symbols/>
+            <description>
+                Set text.
+            </description>
         </chunk>
     </block>
 </xml>

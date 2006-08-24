@@ -10,14 +10,23 @@
         <chunk id="Clear">
             <type-name>function() -&gt; void</type-name>
             <defined-symbols/>
+            <description>
+                Clear text.
+            </description>
         </chunk>
         <chunk id="GetText">
             <type-name>function() -&gt; unicode-string</type-name>
             <defined-symbols/>
+            <description>
+                Get text.
+            </description>
         </chunk>
         <chunk id="SetText">
             <type-name>function( text:unicode-string ) -&gt; void</type-name>
             <defined-symbols/>
+            <description>
+                Set text.
+            </description>
         </chunk>
     </block>
 </xml>
