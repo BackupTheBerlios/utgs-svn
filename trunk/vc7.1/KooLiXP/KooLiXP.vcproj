@@ -87,7 +87,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../../../bin/KooLiXP.exe"
+				OutputFile="../bin/Release/KooLiXP.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../lib;&quot;$(OGGVORBIS_ROOT)/lib&quot;"
 				GenerateDebugInformation="TRUE"

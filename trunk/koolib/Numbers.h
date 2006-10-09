@@ -320,10 +320,10 @@ namespace Numbers {
 
 #ifdef WIN32
     typedef Fixed< 8, __int32 > FPNum32;
-    typedef Fixed< 8, __int64 > FPNum64;
+    typedef Fixed< 16, __int64 > FPNum64;
 #else
     typedef Fixed< 8, int32_t > FPNum32;
-    typedef Fixed< 8, int64_t > FPNum64;
+    typedef Fixed< 16, int64_t > FPNum64;
 #endif
 
     template< class _F > struct PrecissionTraits

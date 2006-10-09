@@ -22,7 +22,11 @@ __LangSelector::__LangSelector()
         "britain_GBR",
         "china_CHN",
         "czech_CZE",
+        "danish_DENMARK",
+        "finnish_FINLAND",
+        "english_UK"
         "england_GBR",
+        "norwegian-bokmal_NORWAY"
         "great britain_GBR",
         "holland_NLD",
         "hong-kong_HKG",
@@ -49,7 +53,11 @@ __LangSelector::__LangSelector()
         {"koi8-r", "us_US.20866"},
         {"cp1251", "us_US.1251"},
         {"big-5", "us_US.950"},
-        {"gbk", "us_US.936"}
+        {"gbk", "us_US.936"},
+        {"danish", "danish_DENMARK"},
+        {"finnish","finnish_FINLAND"},
+        {"english","english_UK"},
+        {"norwegian-bokmal","norwegian-bokmal_NORWAY"}
     };
     int totalCount = sizeof(localeNames)/(2*sizeof(char*));
 
@@ -88,7 +96,15 @@ __LangSelector::operator [] ( const std::string &localeISOName )
     }
     else
     {
-        return std::locale();
+        try {
+            return std::locale( localeISOName.c_str() );
+        }
+        catch(...)
+        {
+            throw Error("Unknown locale '%s'\n"
+                    "Locale name must be formed: language, language_COUNTRY, or language_COUNTRY.codepage"
+                    , localeISOName.c_str() );
+        }
     }
 }
 

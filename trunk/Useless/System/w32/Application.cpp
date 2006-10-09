@@ -101,6 +101,7 @@ namespace Useless {
         if ( _windows ) { delete _windows; }
         if ( _message_handlers ) { delete _message_handlers; }
         GlobalFree( (HGLOBAL)_argv );
+        ::InvalidateRect( NULL, NULL, TRUE );
     }
 
     void Application::Terminate()
@@ -428,8 +429,10 @@ namespace Useless {
 
             case WM_CHAR: //WM_UNICHAR - not defined in 95/98/NT
                 {
-                    assert( wParam < 256 && wParam >= 0 );
-                    int code = _encodingTable[ wParam ];
+                    //assert( wParam < 256 && wParam >= 0 );
+                    //int code = _encodingTable[ wParam ];
+					// characters are already encoded in ucs-2
+					wchar_t code = (wchar_t)wParam;
                     window->OnChar.Send_1( code );
                 }
                 break;

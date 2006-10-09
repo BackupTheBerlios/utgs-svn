@@ -157,6 +157,7 @@ namespace XMLProgram {
                 .def("MakeRGBA", MakeRGBA, "red", "green", "blue", "alpha")
                 .def("GetKeyCode", GetKeyCode, "name")
                 .def("GetKeyName", GetKeyName, "code")
+                .def("SetInputLocale", SetInputLocale, "name")
                 .def("CreatePointList", CreatePointList )
                 .def("CreateRectList", CreateRectList )
                 .def("CreateScreen", CreateScreen )
@@ -222,6 +223,11 @@ namespace XMLProgram {
                 }
             }
             return "NONE";
+        }
+            
+        void USELESS_TK::SetInputLocale( std::string localeName )
+        {
+            Application::SetEncoding( localeName.c_str() );
         }
 
         void USELESS_TK::CreatePointList( Node node, ExecutionState &state )

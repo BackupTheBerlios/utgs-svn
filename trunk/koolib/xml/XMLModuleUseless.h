@@ -52,6 +52,7 @@ namespace XMLProgram {
             int         MakeRGBA( int red, int green, int blue, int alpha );
             int         GetKeyCode( std::string name );
             std::string GetKeyName( int keyCode );
+            void        SetInputLocale( std::string localeName );
             void        CreatePointList ( Node node, ExecutionState &state );
             void        CreateRectList  ( Node node, ExecutionState &state );
             void        CreateScreen    ( Node node, ExecutionState &state );

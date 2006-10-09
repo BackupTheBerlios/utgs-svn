@@ -10,7 +10,7 @@
             <head>
                 <title><xsl:value-of select="title"/></title>
             </head>
-            <body>
+            <body topmargin="0" rightmargin="0" leftmargin="0" bottommargin="0">
                 <xsl:attribute name="background">
                     <xsl:value-of select="$baseurl"/>
                     <xsl:text>utgs-bg.jpg</xsl:text>

@@ -30,8 +30,11 @@ namespace Useless {
 
     /* (1) */
     std::vector< char > g_vGDIPrinterData;
+    std::vector< char > g_vGDIPrinterData2;
+    bool g_bRotate90 = false;
+    bool g_bFlipX = true;
     /* (1) */
-    
+
     GDIPage::GDIPage( ::HDC hdc ): m_hdc( hdc )
     {
         ::StartPage( m_hdc );
@@ -43,20 +46,20 @@ namespace Useless {
 
     void GDIPage::BlitImage( const Rect &onPaper, IGraphics &image )
     {
-		long lRasterCaps = GetDeviceCaps( m_hdc, RASTERCAPS );
-		bool bScaling = lRasterCaps & RC_SCALING;
-		bool bStretchBlt = lRasterCaps & RC_STRETCHBLT;
-		bool bStretchDIB = lRasterCaps & RC_STRETCHDIB;
+        long lRasterCaps = GetDeviceCaps( m_hdc, RASTERCAPS );
+        bool bScaling = lRasterCaps & RC_SCALING;
+        bool bStretchBlt = lRasterCaps & RC_STRETCHBLT;
+        bool bStretchDIB = lRasterCaps & RC_STRETCHDIB;
 
         FILE *fDump = fopen("Printers.log", "a+");
         _ftprintf( fDump, _T("[Printer.Document.Page.BlitImage]\n") );
-		_ftprintf( fDump, _T("Raster Caps: bScaling=%i, bStertchBlt=%i, bStertchDIB=%i\n"),
-			bScaling, bStretchBlt, bStretchDIB );
+        _ftprintf( fDump, _T("Raster Caps: bScaling=%i, bStertchBlt=%i, bStertchDIB=%i\n"),
+                bScaling, bStretchBlt, bStretchDIB );
         fclose( fDump );
 
-		if ( !bStretchDIB )
-			return;
-        
+        if ( !bStretchDIB )
+            return;
+
         const Surface *pS = image.GetSurface();
         if ( !pS )
         {
@@ -73,7 +76,7 @@ namespace Useless {
         int width, height, pixFmt, numColors;
         const void *palette;
         int bytesPerPel = 3;
-        int outPixFmt = ImageFormat::R8G8B8;
+        int outPixFmt = ImageFormat::B8G8R8;
         pT->GetSource( &width, &height, &pixFmt, &palette, &numColors );
         pT->SetDestination( width, height, bytesPerPel * sR.GetW(), outPixFmt );
         pT->Transform();
@@ -94,61 +97,95 @@ namespace Useless {
         bitmap->bmiHeader.biClrImportant = 0;
         pT->Store( bitmap->bmiColors, sR );
 
-        char *linePtr = (char*)bitmap->bmiColors;
-        for ( int y = 0; y < sR.GetH(); ++y )
+        if ( g_bRotate90 )
         {
-            char *pixPtr1 = linePtr;
-            linePtr += bytesPerPel * sR.GetW();
-            char *pixPtr2 = linePtr;
-            for ( int x = 0; x < sR.GetW()/2; ++x )
+            g_vGDIPrinterData2 = g_vGDIPrinterData;
+            ::BITMAPINFO *bitmap2 = (::BITMAPINFO*)(&g_vGDIPrinterData2[0]);
+            std::swap( bitmap2->bmiHeader.biWidth, bitmap2->bmiHeader.biHeight );
+        
+            char *linePtr = (char*)(bitmap->bmiColors);
+            char *linePtr2 = (char*)(bitmap2->bmiColors);
+            int pitch = bitmap->bmiHeader.biWidth * bytesPerPel;
+            int pitch2 = bitmap2->bmiHeader.biWidth * bytesPerPel;
+            for ( int y = 0; y < sR.GetH(); ++y )
             {
-                pixPtr2 -= bytesPerPel;
-                std::swap( *(pixPtr1 + 0), *(pixPtr2 + 2));
-                std::swap( *(pixPtr1 + 1), *(pixPtr2 + 1));
-                std::swap( *(pixPtr1 + 2), *(pixPtr2 + 0));
-                pixPtr1 += bytesPerPel;
+                char *pixPtr = linePtr;
+                char *pixPtr2 = linePtr2;
+                for ( int x = 0; x < sR.GetW(); ++x )
+                {
+                    pixPtr2[0] = pixPtr[0];
+                    pixPtr2[1] = pixPtr[1];
+                    pixPtr2[2] = pixPtr[2];
+                    
+                    pixPtr += bytesPerPel;
+                    pixPtr2 += pitch2;
+                }
+                linePtr += pitch;
+                linePtr2 += bytesPerPel;
+            }
+
+            bitmap = bitmap2;
+        }
+
+        if ( g_bFlipX )
+        {
+            char *linePtr = (char*)bitmap->bmiColors;
+            int pitch = bitmap->bmiHeader.biWidth * bytesPerPel;
+            for ( int y = 0; y < sR.GetH(); ++y )
+            {
+                char *pixPtr1 = linePtr;
+                linePtr += pitch;
+                char *pixPtr2 = linePtr;
+                for ( int x = 0; x < sR.GetW()/2; ++x )
+                {
+                    pixPtr2 -= bytesPerPel;
+                    std::swap( *(pixPtr1 + 0), *(pixPtr2 + 0));
+                    std::swap( *(pixPtr1 + 1), *(pixPtr2 + 1));
+                    std::swap( *(pixPtr1 + 2), *(pixPtr2 + 2));
+                    pixPtr1 += bytesPerPel;
+                }
             }
         }
-    
+
         ::StretchDIBits( m_hdc, onPaper.GetX(), onPaper.GetY(), onPaper.GetW(), onPaper.GetH(),
-            0, 0, bitmap->bmiHeader.biWidth, bitmap->bmiHeader.biHeight, bitmap->bmiColors, bitmap, DIB_RGB_COLORS, SRCCOPY );
+                0, 0, bitmap->bmiHeader.biWidth, bitmap->bmiHeader.biHeight, bitmap->bmiColors, bitmap, DIB_RGB_COLORS, SRCCOPY );
         /* (1) */
 
         /* (2) std::string data;
-        data.resize( sR.GetW() * sR.GetH() * 3 );
-        pT->Store( &data[0], sR );
-        char *linePtr = &data[0];
-        for ( int y = 0; y < sR.GetH(); ++y )
-        {
-            char *pixPtr1 = linePtr;
-            linePtr += bytesPerPel * sR.GetW();
-            char *pixPtr2 = linePtr;
-            for ( int x = 0; x < sR.GetW()/2; ++x )
-            {
-                pixPtr2 -= bytesPerPel;
-                std::swap( *(pixPtr1 + 0), *(pixPtr2 + 2));
-                std::swap( *(pixPtr1 + 1), *(pixPtr2 + 1));
-                std::swap( *(pixPtr1 + 2), *(pixPtr2 + 0));
-                pixPtr1 += bytesPerPel;
-            }
-        }
-        HDC hRoot = GetDC( NULL );
-        HDC hMem = CreateCompatibleDC( hRoot );
-        ReleaseDC( NULL, hRoot );
-        HBITMAP hbm = CreateBitmap( sR.GetW(), sR.GetH(), 1, 24, &data[0] );
-        SelectObject( hMem, hbm );
-        StretchBlt( m_hdc, onPaper.GetX(), onPaper.GetY(), onPaper.GetW(), onPaper.GetH(),
-                hMem, 0, 0, sR.GetW(), sR.GetH(), SRCCOPY );
-		DeleteObject( hbm );
-        DeleteDC( hMem );
-        (2) */
+           data.resize( sR.GetW() * sR.GetH() * 3 );
+           pT->Store( &data[0], sR );
+           char *linePtr = &data[0];
+           for ( int y = 0; y < sR.GetH(); ++y )
+           {
+           char *pixPtr1 = linePtr;
+           linePtr += bytesPerPel * sR.GetW();
+           char *pixPtr2 = linePtr;
+           for ( int x = 0; x < sR.GetW()/2; ++x )
+           {
+           pixPtr2 -= bytesPerPel;
+           std::swap( *(pixPtr1 + 0), *(pixPtr2 + 2));
+           std::swap( *(pixPtr1 + 1), *(pixPtr2 + 1));
+           std::swap( *(pixPtr1 + 2), *(pixPtr2 + 0));
+           pixPtr1 += bytesPerPel;
+           }
+           }
+           HDC hRoot = GetDC( NULL );
+           HDC hMem = CreateCompatibleDC( hRoot );
+           ReleaseDC( NULL, hRoot );
+           HBITMAP hbm = CreateBitmap( sR.GetW(), sR.GetH(), 1, 24, &data[0] );
+           SelectObject( hMem, hbm );
+           StretchBlt( m_hdc, onPaper.GetX(), onPaper.GetY(), onPaper.GetW(), onPaper.GetH(),
+           hMem, 0, 0, sR.GetW(), sR.GetH(), SRCCOPY );
+           DeleteObject( hbm );
+           DeleteDC( hMem );
+           (2) */
     }
 
     void GDIPage::Finish()
     {
         ::EndPage( m_hdc );
     }
-    
+
     GDIDocument::GDIDocument( ::HDC hdc, const std::basic_string< wchar_t > &title ): m_hdc( hdc )
     {
         std::memset( &m_doc, 0, sizeof( ::DOCINFO ));
@@ -172,9 +209,9 @@ namespace Useless {
     void GDIDocument::Print()
     {
         ::EndDoc( m_hdc );
-		Sleep( 0 );
+        Sleep( 0 );
     }
-        
+
     SPointer< GDIDocument > GDIPrinter::CreateGDIDocument( const std::basic_string< wchar_t > &title )
     {
         GDIDocument *pDoc = new GDIDocument( m_hdc, title );
@@ -185,35 +222,41 @@ namespace Useless {
     {
         FILE *fDump = fopen("Printers.log", "a+");
         _ftprintf( fDump, _T("[Printer]\n") );
-        
+
         ::DEVMODE devmode;
         std::memset( &devmode, 0, sizeof( ::DEVMODE ));
         devmode.dmSize = sizeof( ::DEVMODE );
         devmode.dmFields = DM_PAPERSIZE | DM_ORIENTATION;
         devmode.dmPaperSize = paperSize;
-		devmode.dmOrientation = paperOrient;
+        //devmode.dmOrientation = paperOrient;
+        devmode.dmOrientation = DMORIENT_PORTRAIT;
+        g_bRotate90 = ( paperOrient == DMORIENT_LANDSCAPE );
+        g_bFlipX = ( paperOrient != DMORIENT_LANDSCAPE );
 
-        while( true )
-        {
+        do {
 #define USELESS_GDI_PRINTER_CREATE_DC( _Driver, _Name, _Devmode ) \
             _ftprintf( fDump, _T("CreateDC( %s, %s, NULL, %0x )\n"), _Driver, _Name, _Devmode ); \
-            m_hdc = ::CreateDC( _Driver, _Name, NULL, _Devmode ); \
-            if ( !!m_hdc ) { break; } \
-            LogError( fDump );
+                m_hdc = ::CreateDC( _Driver, _Name, NULL, _Devmode ); \
+                if ( !!m_hdc ) { break; } \
+                    LogError( fDump );
 
-			USELESS_GDI_PRINTER_CREATE_DC( _T("WINSPOOL"), m_info.m_name.c_str(), &devmode );
-           
+            USELESS_GDI_PRINTER_CREATE_DC( _T("WINSPOOL"), m_info.m_name.c_str(), &devmode );
+
             USELESS_GDI_PRINTER_CREATE_DC( m_info.m_driver.c_str(), m_info.m_name.c_str(), &devmode );
             USELESS_GDI_PRINTER_CREATE_DC( _T("WINSPOOL"), m_info.m_name.c_str(), &devmode );
             USELESS_GDI_PRINTER_CREATE_DC( NULL, m_info.m_name.c_str(), &devmode );
-            
+
             USELESS_GDI_PRINTER_CREATE_DC( m_info.m_driver.c_str(), m_info.m_name.c_str(), NULL );
             USELESS_GDI_PRINTER_CREATE_DC( _T("WINSPOOL"), m_info.m_name.c_str(), NULL );
             USELESS_GDI_PRINTER_CREATE_DC( NULL, m_info.m_name.c_str(), NULL );
+
+        } while( false );
+
+        if ( m_hdc )
+        {
+            GDIPrintManager::Instance().RegisterGDIPrinter( this );
         }
-        
-        GDIPrintManager::Instance().RegisterGDIPrinter( this );
-        
+
         m_sizeOnPaperX = ::GetDeviceCaps( m_hdc, HORZRES );
         m_sizeOnPaperY = ::GetDeviceCaps( m_hdc, VERTRES );
         m_xLeft = ::GetDeviceCaps( m_hdc, PHYSICALOFFSETX );
@@ -222,7 +265,7 @@ namespace Useless {
         m_inchOnPaperY = ::GetDeviceCaps( m_hdc, LOGPIXELSY );
         m_sizeInchesX = m_sizeOnPaperX / (float)m_inchOnPaperX;
         m_sizeInchesY = m_sizeOnPaperY / (float)m_inchOnPaperY;
-        
+
         _ftprintf( fDump, _T("m_info = {Printer: %s; Port: %s; Driver: %s; Local: %s}\n"),
                 m_info.m_name.c_str(), m_info.m_port.c_str(), m_info.m_driver.c_str(),
                 (m_info.m_local ? _T("TRUE") : _T("FALSE") ));
@@ -235,20 +278,23 @@ namespace Useless {
         _ftprintf( fDump, _T("m_inchOnPaperY = %d\n"), m_inchOnPaperY );
         _ftprintf( fDump, _T("m_sizeInchesX = %f\n"), m_sizeInchesX );
         _ftprintf( fDump, _T("m_sizeInchesY = %f\n"), m_sizeInchesY );
-		_ftprintf( fDump, _T("paperSize = %i\n"), paperSize );
-		_ftprintf( fDump, _T("paperOrient = %i\n"), paperOrient );
-		
-        
+        _ftprintf( fDump, _T("paperSize = %i\n"), paperSize );
+        _ftprintf( fDump, _T("paperOrient = %i\n"), paperOrient );
+
+
         fclose( fDump );
     }
 
     GDIPrinter::~GDIPrinter()
     {
-        GDIPrintManager::Instance().UnregisterGDIPrinter( this );
-        ::DeleteDC( m_hdc );
+        if ( m_hdc )
+        {
+            GDIPrintManager::Instance().UnregisterGDIPrinter( this );
+            ::DeleteDC( m_hdc );
+        }
     }
 
-        
+
     ::BOOL GDIPrinter::OnAbort( int iError )
     {
         return TRUE;
@@ -306,25 +352,25 @@ namespace Useless {
     {
     }
 
-BOOL CALLBACK GAbortProc( HDC hdc, int iError )
-{
-    if ( 0 == iError )
-        return TRUE;
-    else
-        return FALSE;
-}
+    BOOL CALLBACK GAbortProc( HDC hdc, int iError )
+    {
+        if ( 0 == iError )
+            return TRUE;
+        else
+            return FALSE;
+    }
 
 
     ::BOOL GDIPrintManager::AbortProc( ::HDC hdc, int iError )
     {
         /*for ( std::set< GDIPrinter * >::iterator it = GDIPrintManager::Instance().m_printerInstances.begin();
-                it != GDIPrintManager::Instance().m_printerInstances.end(); ++it )
-        {
-            if ( (*it)->m_hdc == hdc )
-            {
-                (*it)->OnAbort( iError );
-            }
-        }*/
+          it != GDIPrintManager::Instance().m_printerInstances.end(); ++it )
+          {
+          if ( (*it)->m_hdc == hdc )
+          {
+          (*it)->OnAbort( iError );
+          }
+          }*/
         if ( 0 == iError )
             return TRUE;
         else

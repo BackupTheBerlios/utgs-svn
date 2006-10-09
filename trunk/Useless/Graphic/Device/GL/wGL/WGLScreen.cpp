@@ -93,53 +93,117 @@ namespace Useless {
         return false;
     }
 
+    struct DispMode
+    {
+        int i,w,h,d,f;
+        
+        static int sw,sh,sd,sf;
+
+        DispMode( int ii, DEVMODE &d ) : i(ii), w( d.dmPelsWidth ), h( d.dmPelsHeight ), d( d.dmBitsPerPel ), f( d.dmDisplayFrequency )
+        {
+        }
+
+        bool operator < ( const DispMode &b ) const
+        {
+            if ( d < 15 )
+            {
+                return false;
+            }
+            else if ( b.d < 15 )
+            {
+                return true;
+            }
+
+            if ( h < sh )
+            {
+                return false;
+            }
+            else if ( b.h < sh )
+            {
+                return true;
+            }
+
+            if ( w < sw )
+            {
+                return false;
+            }
+            else if ( b.w < sw )
+            {
+                return true;
+            }
+            
+            int dw0 = ( w - sw ) * ( w - sw );
+            int dw1 = ( b.w - sw ) * ( b.w - sw );
+            
+            int dh0 = ( h - sh ) * ( h - sh );
+            int dh1 = ( b.h - sh ) * ( b.h - sh );
+            
+            int df0 = ( f - sf ) * ( f - sf );
+            int df1 = ( b.f - sf ) * ( b.f - sf );
+
+            int dd0 = (d - sd) * (d - sd);
+            int dd1 = (b.d - sd) * (b.d - sd);
+
+            if ( dw0 + 4 * dh0 > dw1 + 4 * dh1 )
+            {
+                return false;
+            }
+            else if ( dw0 + 4 * dh0 < dw1 + 4 * dh1 )
+            {
+                return true;
+            }
+
+            if ( dd0 > dd1 )
+            {
+                return false;
+            }
+            else if ( dd0 < dd1 )
+            {
+                return true;
+            }
+            
+            if ( df0 > df1 )
+            {
+                return false;
+            }
+
+            return true;
+        }
+    };
+        
+    int DispMode::sw = 0,DispMode::sh = 0,DispMode::sd = 0,DispMode::sf = 0;
+
     void WGLScreen::InitDevMode( int width, int height, int bpp, float refresh )
     {
         HWND hwnd = Window::GetHandle();
         HDC hdc = GetDC( hwnd );
+
+        DispMode::sw = width;
+        DispMode::sh = height;
+        DispMode::sd = bpp;
+        DispMode::sf = ( refresh > 0 ? refresh : 100 );
         
         memset( &m_devmode, 0L, sizeof(DEVMODE));
         m_devmode.dmSize = sizeof(DEVMODE);
 
-        int maxRefresh = 0;
-        int i,j;
-        for ( i=0,j=-1;; ++i)
-        {
-            if ( !::EnumDisplaySettings( 0, ++i, &m_devmode ))
-            {
-                break;
-            } 
-            // used to allow inspection of DEVMODE members in some hard-to-debug project settings.
-            DbgTrace_DevMode( m_devmode.dmPelsWidth, m_devmode.dmPelsHeight, m_devmode.dmBitsPerPel, m_devmode.dmDisplayFrequency );
+        std::multiset< DispMode > dispModes;
+        int j = -1;
             
-            if ( m_devmode.dmBitsPerPel >= bpp && m_devmode.dmPelsWidth==width && m_devmode.dmPelsHeight==height )
-            {
-                if ( refresh > 0.0 )
-                {
-                    // we select mode where dmDisplayFrequency value is closest to desired refresh rate.
-                    float d1 = m_devmode.dmDisplayFrequency - refresh;
-                    float d2 = maxRefresh - refresh;
-                    d1 = (d1 < 0 ? -d1 : d1);
-                    d2 = (d2 < 0 ? -d2 : d2);
-
-                    if ( d1 < d2 )
-                    {
-                        j = i;
-                        maxRefresh = m_devmode.dmDisplayFrequency;
-                    }
-                }
-                else
-                {
-                    // use devmode with maximum refresh not greater than 100Hz.
-                    // using 100Hz barrier we may help to avoid situations where user doesn't have correct system display settings.
-                    if ( m_devmode.dmDisplayFrequency > maxRefresh && (m_devmode.dmDisplayFrequency <= 100 ))
-                    {
-                        maxRefresh = m_devmode.dmDisplayFrequency;
-                        j=i;
-                    }
-                }
-            }
+        for ( int i=0; ::EnumDisplaySettings( 0, i, &m_devmode ); ++i )
+        {
+            dispModes.insert( DispMode( i, m_devmode ));
+            j = dispModes.begin()->i;
         }
+
+        FILE *fDump = fopen("DisplayModes.log", "a+");
+        fprintf( fDump, "[DisplayModes]\n" );
+        fprintf( fDump, "Requested Mode: %i x %i x %i bpp x %i Hz\n", DispMode::sw, DispMode::sh, DispMode::sd, DispMode::sf );
+        for ( std::multiset< DispMode >::iterator it = dispModes.begin(); it != dispModes.end(); ++it )
+        {
+            fprintf( fDump, "Mode[0x%08x]: %i x %i x %i bpp x %i Hz\n", it->i, it->w, it->h, it->d, it->f );
+        }
+        fprintf( fDump, "---\n" );
+
         if ( -1 == j )
         {
             throw Error("InitDevMode: Cannot find mode: %i x %i x %i : %f Hz.", width, height, bpp, refresh );
@@ -183,7 +247,7 @@ namespace Useless {
                 case DISP_CHANGE_RESTART: WGLERR("DISP_CHANGE_RESTART"); break;
                 default: WGLERR("Unknown reason."); break;
             };
-			Window::Show();
+	    Window::Show();
         }
     }
 

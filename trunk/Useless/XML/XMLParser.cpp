@@ -260,7 +260,7 @@ namespace Useless {
                 // set locale
                 if ( 0 == parent_id && "xml" == tagName && "encoding" == attrName )
                 {
-                    _locale = LangSelector::Instance()[ attrName ];
+                    _locale = LangSelector::Instance()[ attrValue ];
                 }
             }// if-else
             tagAttributes[ attrName ] = attrValue;

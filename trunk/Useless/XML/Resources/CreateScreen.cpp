@@ -42,10 +42,21 @@ Resource* CreateScreen( XMLIterator i, XMLCreatorEnv *env )
         p_screen->SetParent( p_parent.get() );
     }
 
-    if (!windowed)
-        p_screen->Open( width, height, bpp, refresh );
+    if ( !windowed )
+    {
+        try {
+            p_screen->Open( width, height, bpp, refresh );
+        }
+        catch( ... ) {
+            // nie uda³o siê otworzyæ fullscreen'a, spróbuj otworzyæ w oknie
+            p_screen->OpenWindowed( width, height );
+            p_screen->AllowSizing( false );
+        }
+    }
     else
+    {
         p_screen->OpenWindowed( width, height );
+    }
 
     if (!sys_cursor)
         p_screen->HideCursor();
