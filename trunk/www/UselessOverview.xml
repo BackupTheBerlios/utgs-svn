@@ -26,84 +26,72 @@
             <name>Overview</name>
             <body>
                 <p>
-                    <i>UTGS</i> library is compound of <i>Useless, KooLib &amp; Dynamo</i> sub-libraries. <i>Useless</i> is main sub-library, while
-                    others are built on top of it. <i>Useless</i> library provides wide variety of components. There are several concepts:
+                    <i>Useless</i> library is the root component of <i>UTGS</i> project, and contains following modules:
                     <ul>
-                        <li><n>Useless.File</n><d>file access components: IFile, OFile, IFileStream, IFileSystem, VIFS.</d></li>
-                        <li><n>Useless.Graphic</n><d>components related to graphics.</d></li>
-                        <li><n>Useless.Sound</n><d>components related to sound.</d></li>
-                        <li><n>Useless.GUI</n><d>components related to graphic user interface.</d></li>
-                        <li><n>Useless.Movie</n><d>components related to audio &amp; video streaming.</d></li>
-                        <li><n>Useless.XML</n><d>components related to XML: XMLParser, Resources.</d></li>
-                    </ul>
-                    <i>Useless.Graphic</i> components are divided into such groups:
-                    <ul>
-                        <li><n>Useless.Graphic.Device</n><d>device dependent image components: Surface, Screen.</d></li>
-                        <li><n>Useless.Graphic.Planes</n><d>device independent image components: IGraphics, OGraphics.</d></li>
-                        <li><n>Useless.Graphic.Transfer</n><d>abstract pixel copying components: PixelTransfer.</d></li>
-                        <li><n>Useless.Graphic.Pixel</n><d>utility pixel traits components: PixelType*, CopyPixels, Dither, GenericPixelPtr.</d></li>
-                        <li><n>Useless.Graphic.FileIO</n><d>image (de)serialization components: ImageLoader, ImageSaver.</d></li>
-                    </ul>
-                    <i>Useless.Sound</i> components are divided into such groups:
-                    <ul>
-                        <li><n>Useless.Sound</n><d>device independent sound components: Sample, Channel.</d></li>
-                        <li><n>Useless.Sound.Device</n><d>device dependent sound components: SoundCard, SampleData.</d></li>
-                        <li><n>Useless.Sound.FileIO</n><d>wave (de)serialization components: WaveLoader, WaveSaver.</d></li>
-                    </ul>
-                    <i>Useless.GUI</i> components are divided into such groups:
-                    <ul>
-                        <li><n>Useless.GUI.Display</n><d>GUI display control components: DisplayMan, HintMan, WidgetPainter, TablePainter, MouseCursor.</d></li>
-                        <li><n>Useless.GUI.Logic</n><d>widget behavior components: LogicWidget, MultiItemLogic, TextEditLogic.</d></li>
-                        <li><n>Useless.GUI.Skins</n><d>widget appearance components: Skin, SkinMan, ArraySkin, FontSkin.</d></li>
-                        <li><n>Useless.GUI.Text</n><d>components related to text &amp; font.</d></li>
-                        <li><n>Useless.GUI.Relations</n><d>components for making relations between widgets.</d></li>
-                        <li><n>Useless.GUI.Widgets</n><d>widget components.</d></li>
+                        <li><n>Useless/File</n><d>File access components &amp; virtual filesystem.</d></li>
+                        <li><n>Useless/Graphic</n><d>Graphics</d></li>
+                        <li><n>Useless/Sound</n><d>Sound components</d></li>
+                        <li><n>Useless/GUI</n><d>Powerful GUI components</d></li>
+                        <li><n>Useless/Movie</n><d>Audio &amp; video streaming.</d></li>
+                        <li><n>Useless/XML</n><d>XML parser &amp; resources factory.</d></li>
                     </ul>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Useless.File</i></title>
+            <title><i>Useless/File</i></title>
             <name>File</name>
             <body>
                 <p>
-                    The module defines interfaces:
+                    File access components &amp; virtual filesystem.
                     <ul>
-                        <li><n>Useless.IFile</n><d>file for reading.</d></li>
-                        <li><n>Useless.OFile</n><d>file for writting.</d></li>
-                        <li><n>Useless.IFileStream</n><d>input file stream compilant with <i>std::istream</i>. Works good with <i>std::getline()</i>, and also works nicely with <i>operator &lt;&lt;</i>.</d></li>
-                        <li><n>Useless.IFileSystem</n><d>factory component creating file interfaces.</d></li>
+                        <li><n>IFile</n><d>Read mode interface.</d></li>
+                        <li><n>OFile</n><d>Write mode interface.</d></li>
+                        <li><n>IFileStream</n><d>An implementation of <i>std::istream</i> interface.
+                                <br/>Works properly with <i>std::getline()</i>, and <i>operator &lt;&lt;</i>.</d></li>
+                        <li><n>IFileSystem</n><d>Read-only file system interface.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.IFile</i> has following implementations:
+                <p><i>IFile</i> implementations:
                     <ul>
-                        <li><n>Useless.StdIFile</n><d>standard file component using <i>fopen()</i>.</d></li>
-                        <li><n>Useless.CryptoIFile</n><d>proxy component to other file, providing encryption.</d></li>
-                        <li><n>Useless.MemIFile</n><d>file kept in memory.</d></li>
-                        <li><n>Useless.SubIFile</n><d>proxy component to some part of other file. <b>NOT thread safe</b>.</d></li>
-                        <li><n>Useless.HatchedIFile</n><d>proxy component to file packed in <i>Hatchery</i>. <b>NOT thread safe</b>.</d></li>
+                        <li><n>StdIFile</n><d>File opened by <i>fopen()</i>.</d></li>
+                        <li><n>MemIFile</n><d>File in memory.</d></li>
+                        <li><n>CryptoIFile</n><d>Encrypted file.</d></li>
+                        <li><n>SubIFile</n><d>Portion of a file.</d></li>
+                        <li><n>HatchedIFile</n><d>File from <i>Hatchery</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.OFile</i> has following implementations:
+                <p><i>OFile</i> implementations:
                     <ul>
-                        <li><n>Useless.StdOFile</n><d>standard file component using <i>fopen()</i>.</d></li>
-                        <li><n>Useless.CryptoOFile</n><d>proxy component to other file, providing encryption.</d></li>
-                        <li><n>Useless.MemOFile</n><d>file kept in memory.</d></li>
+                        <li><n>StdOFile</n><d>File created by <i>fopen()</i>.</d></li>
+                        <li><n>MemOFile</n><d>File in memory.</d></li>
+                        <li><n>CryptoOFile</n><d>Encrypted file.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.IFileSystem</i> has following implementations:
+                <p><i>IFileSystem</i> implementations:
                     <ul>
-                        <li><n>Useless.StdIFileSystem</n><d>factory component creating <i>Useless.StdIFile</i> components.</d></li>
-                        <li><n>Useless.Hatchery</n><d>factory component creating <i>Useless.HatchedIFile</i> components.</d></li>
-                        <li><n>Useless.VIFS.Instance()</n><d>singleton factory capable of mounting <i>Useless.IFileSystem</i> components.</d></li>
+                        <li><n>StdIFileSystem</n><d>Standard file system.</d></li>
+                        <li><n>Hatchery</n><d>File system in file.</d></li>
+                        <li><n>VIFS</n><d>Virtual file system.</d></li>
                     </ul>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Useless.Graphic</i></title>
+            <title><i>Useless/Graphic</i></title>
             <name>Graphic</name>
             <body>
+                <p>Graphics.</p>
+                <p>
+                    <i>Graphic</i> components are divided into such groups:
+                    <ul>
+                        <li><n>Useless/Graphic/Device</n><d>Device dependent image components.</d></li>
+                        <li><n>Useless/Graphic/Planes</n><d>Device independent image components.</d></li>
+                        <li><n>Useless/Graphic/Transfer</n><d>Methods of transfering pixels.</d></li>
+                        <li><n>Useless/Graphic/Pixel</n><d>Methods operating directly on pixels.</d></li>
+                        <li><n>Useless/Graphic/FileIO</n><d>Image serialization &amp; deserialization.</d></li>
+                    </ul>
+                </p>
                 <p>
                     <link>
                         <title>The example of usage (in C++ and KooLiXP).</title>
@@ -111,318 +99,341 @@
                     </link>
                     The example demonstrates how to use components: <i>Screen</i>, <i>Image</i> and <i>ImageBuffer</i>.
                 </p>
-                <p>The module defines interfaces:
+                <p>Following interfaces are defined:
                     <ul>
-                        <li><n>Useless.IGraphics</n><d>device independent blit source.</d></li>
-                        <li><n>Useless.OGraphics</n><d>device independent blit target.</d></li>
-                        <li><n>Useless.Screen</n><d>blit device attached to system window.</d></li>
-                        <li><n>Useless.Surface</n><d>device dependent pixel storage.</d></li>
-                        <li><n>Useless.Painter</n><d>device independent painter.</d></li>
-                        <li><n>Useless.SurfacePainter</n><d>device dependent painter.</d></li>
-                        <li><n>Useless.PixelTransfer</n><d>component providing means to copy pixels to/from <i>Useless.Surface</i>.</d></li>
-                        <li><n>Useless.ImageLoader</n><d>component providing means to fetch pixels from <i>Useless.IFile</i>.</d></li>
-                        <li><n>Useless.ImageSaver</n><d>component providing means to store pixels into <i>Useless.OFile</i>.</d></li>
+                        <li><n>IGraphics</n><d>Device independent source image.</d></li>
+                        <li><n>OGraphics</n><d>Device independent target surface.</d></li>
+                        <li><n>Painter</n><d>Device independent painter.</d></li>
+
+                        <li><n>Screen</n><d>Hardware graphics device.</d></li>
+                        <li><n>Surface</n><d>Device dependent surface.</d></li>
+                        <li><n>SurfacePainter</n><d>Device dependent painter.</d></li>
+
+                        <li><n>PixelTransfer</n><d>Method of transfering pixels.
+                                <br/>May support read to buffer and write from buffer operations.</d></li>
+
+                        <li><n>ImageLoader</n><d>Loads image pixels from <i>IFile</i>.</d></li>
+                        <li><n>ImageSaver</n><d>Stores image pixels into <i>OFile</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.IGraphics</i> has following implementations:
+                <p><i>IGraphics</i> has following implementations:
                     <ul>
-                        <li><n>Useless.Image</n><d>component loads pixels from file ignoring any alpha information.</d></li>
-                        <li><n>Useless.TransparentImage</n><d>component loads color-pixels from one file and alpha-pixels from another file.  Both first and second files may be the same.</d></li>
-                        <li><n>Useless.Animation</n><d>component usefull for static animations.
+                        <li><n>Image</n><d>component loads pixels from file ignoring any alpha information.</d></li>
+                        <li><n>TransparentImage</n><d>component loads color-pixels from one file and alpha-pixels from another file.  Both first and second files may be the same.</d></li>
+                        <li><n>Animation</n><d>component usefull for static animations.
                                 All subsequent frames must: be of same size, lay in one image, and be placed one after another horizontally in correct order.</d></li>
-                        <li><n>Useless.ImageBuffer</n><d>component which may be the blit target and blit source.
-                                You may first blit some images or do some painting on it, and then blit it to other Useless.OGraphics.</d></li>
+                        <li><n>ImageBuffer</n><d>component which may be the blit target and blit source.
+                                You may first blit some images or do some painting on it, and then blit it to other OGraphics.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.OGraphics</i> has folowing implementations:
+                <p><i>OGraphics</i> has folowing implementations:
                     <ul>
-                        <li><n>Useless.Screen</n><d>blit target bound to system window.</d></li>
-                        <li><n>Useless.ImageBuffer</n><d>component which may be the blit target and blit source.
-                                You may first blit some images or do some painting on it, and then blit it to other Useless.OGraphics.</d></li>
+                        <li><n>Screen</n><d>blit target bound to system window.</d></li>
+                        <li><n>ImageBuffer</n><d>component which may be the blit target and blit source.
+                                You may first blit some images or do some painting on it, and then blit it to other OGraphics.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.PixelTransfer</i> has following implementations:
+                <p><i>PixelTransfer</i> has following implementations:
                     <ul>
-                        <li><n>Useless.GenericPixelTransfer</n><d>component applies convertions between several pixel formats, with or witout dithering.</d></li>
-                        <li><n>Useless.GDITransfer</n><d>component optimized for device <i>Useless.Graphic.Device.winGDI</i>.</d></li>
+                        <li><n>GenericPixelTransfer</n><d>component applies convertions between several pixel formats, with or witout dithering.</d></li>
+                        <li><n>GDITransfer</n><d>component optimized for device <i>Graphic.Device.winGDI</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.ImageLoader</i> has following implementations:
+                <p><i>ImageLoader</i> has following implementations:
                     <ul>
-                        <li><n>Useless.BMPLoader</n><d>loads window bitmap.</d></li>
-                        <li><n>Useless.TGALoader</n><d>loads truevision image.</d></li>
-                        <li><n>Useless.PNGLoader</n><d>loads PNG image. <b>Requires libPNG and ZLib</b></d></li>
+                        <li><n>BMPLoader</n><d>loads window bitmap.</d></li>
+                        <li><n>TGALoader</n><d>loads truevision image.</d></li>
+                        <li><n>PNGLoader</n><d>loads PNG image. <b>Requires libPNG and ZLib</b></d></li>
                     </ul>
                 </p>
-                <p><i>Useless.ImageSaver</i> has following implementations:
+                <p><i>ImageSaver</i> has following implementations:
                     <ul>
-                        <li><n>Useless.BMPSaver</n><d>writes window bitmap.</d></li>
-                        <li><n>Useless.TGASaver</n><d>writes truevision image.</d></li>
+                        <li><n>BMPSaver</n><d>writes window bitmap.</d></li>
+                        <li><n>TGASaver</n><d>writes truevision image.</d></li>
                     </ul>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Useless.Sound</i></title>
+            <title><i>Useless/Sound</i></title>
             <name>Sound</name>
             <body>
                 <p>
+                    <i>Sound</i> components are divided into such groups:
+                    <ul>
+                        <li><n>Useless/Sound</n><d>Device independent sound components.</d></li>
+                        <li><n>Useless/Sound/Device</n><d>Device dependent sound components.</d></li>
+                        <li><n>Useless/Sound/FileIO</n><d>Sample serialization &amp; deserialization.</d></li>
+                    </ul>
+                </p>
+                <p>
                     The module defines interfaces:
                     <ul>
-                        <li><n>Useless.Sample</n><d>device independent sound buffer.</d></li>
-                        <li><n>Useless.SampleData</n><d>device dependent sound sample storage.</d></li>
-                        <li><n>Useless.SoundCard</n><d>sound device.</d></li>
-                        <li><n>Useless.Channel</n><d>sound playback control.</d></li>
-                        <li><n>Useless.MultiChannel</n><d>sound channel manager.</d></li>
-                        <li><n>Useless.Note</n><d>note frequency calculator.</d></li>
-                        <li><n>Useless.SoundLoader</n><d>component providing means to fetch samples from <i>Useless.IFile</i>.</d></li>
-                        <li><n>Useless.SoundSaver</n><d>component providing means to store samples into <i>Useless.OFile</i>.</d></li>
+                        <li><n>Sample</n><d>device independent sound buffer.</d></li>
+                        <li><n>SampleData</n><d>device dependent sound sample storage.</d></li>
+                        <li><n>SoundCard</n><d>sound device.</d></li>
+                        <li><n>Channel</n><d>sound playback control.</d></li>
+                        <li><n>MultiChannel</n><d>sound channel manager.</d></li>
+                        <li><n>Note</n><d>note frequency calculator.</d></li>
+                        <li><n>SoundLoader</n><d>component providing means to fetch samples from <i>IFile</i>.</d></li>
+                        <li><n>SoundSaver</n><d>component providing means to store samples into <i>OFile</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.Sample</i> has following implementations:
+                <p><i>Sample</i> has following implementations:
                     <ul>
-                        <li><n>Useless.SampleFile</n><d>load sound file data into sound sample storage.</d></li>
-                        <li><n>Useless.BasicSample</n><d>just a sound buffer.</d></li>
+                        <li><n>SampleFile</n><d>load sound file data into sound sample storage.</d></li>
+                        <li><n>BasicSample</n><d>just a sound buffer.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.SoundLoader</i> has following implementations:
+                <p><i>SoundLoader</i> has following implementations:
                     <ul>
-                        <li><n>Useless.WaveLoader</n><d>loads wav files into sound sample storage.</d></li>
+                        <li><n>WaveLoader</n><d>loads wav files into sound sample storage.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.SoundSaver</i> has following implementations:
+                <p><i>SoundSaver</i> has following implementations:
                     <ul>
-                        <li><n>Useless.WaveSaver</n><d>writes sound sample data into wav files.</d></li>
+                        <li><n>WaveSaver</n><d>writes sound sample data into wav files.</d></li>
                     </ul>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Useless.GUI</i></title>
+            <title><i>Useless/GUI</i></title>
             <name>GUI</name>
             <body>
+                <p>
+                    <i>GUI</i> components are divided into such groups:
+                    <ul>
+                        <li><n>Useless/GUI/Widgets</n><d>GUI elements.</d></li>
+                        <li><n>Useless/GUI/Skins</n><d>Appearance of widgets.</d></li>
+                        <li><n>Useless/GUI/Text</n><d>Fonts, text formatting &amp; line wrapping.</d></li>
+                        <li><n>Useless/GUI/Display</n><d>Display &amp; pointer management.</d></li>
+                        <li><n>Useless/GUI/Logic</n><d>Behaviour of widgets.</d></li>
+                        <li><n>Useless/GUI/Relations</n><d>Smart links between widegets.</d></li>
+                    </ul>
+                </p>
                 <p>The module defines interafaces:
                     <p>
                         General:
                         <ul>
-                            <li><n>Useless.Widget</n><d>elemenary GUI element. Widgets form tree relationship.  Each children widget is clipped by its parent to assigned area (i.e. <i>Useless.FrameWidget</i> assigns its children his own area belittled by border margins, however <i>Useless.WidgetTableWidget</i> assigns each child only the area inside table cell assigned to that child).</d></li>
-                            <li><n>Useless.Workspace</n><d>the root of GUI, and kind of <i>Useless.Form</i>.  It contains 4 layers: desktop, popups, menus, and hints.</d></li>
-                            <li><n>Useless.WidgetEnvironment</n><d>each <i>Useless.Widget</i> knows one environment, where it may access <i>Useless.Screen</i>, <i>Useless.Workspace</i> and <i>Useless.Form</i>.</d></li>
-                            <li><n>Useless.WidgetIterator</n><d>component is created by each <i>Useless.Widget</i> to iterate among all its children.</d></li>
-                            <li><n>Useless.GUIMaster</n><d>links <i>Useless.Screen</i> &amp; <i>Useless.Workspace</i>.</d></li>
-                            <li><n>Useless.DisplayMan</n><d>component that controls proper GUI display.  It refreshes dirty regions &amp; redirects user input to GUI.</d></li>
-                            <li><n>Useless.Form</n><d>component that manages keyboard focus. Forms buid tree relationship.</d></li>
-                            <li><n>Useless.HintMan</n><d>component that summons GUI hints.</d></li>
-                            <li><n>Useless.WidgetPainter</n><d>a painter that keeps additional information about widget being painted.</d></li>
-                            <li><n>Useless.TablePainter</n><d>a painter used to repaint table cells with data.</d></li>
-                            <li><n>Useless.MouseCursor</n><d>component that controls graphic shape of a pointer, and pointer move limits.</d></li>
+                            <li><n>Widget</n><d>elemenary GUI element. Widgets form tree relationship.  Each children widget is clipped by its parent to assigned area (i.e. <i>FrameWidget</i> assigns its children his own area belittled by border margins, however <i>WidgetTableWidget</i> assigns each child only the area inside table cell assigned to that child).</d></li>
+                            <li><n>Workspace</n><d>the root of GUI, and kind of <i>Form</i>.  It contains 4 layers: desktop, popups, menus, and hints.</d></li>
+                            <li><n>WidgetEnvironment</n><d>each <i>Widget</i> knows one environment, where it may access <i>Screen</i>, <i>Workspace</i> and <i>Form</i>.</d></li>
+                            <li><n>WidgetIterator</n><d>component is created by each <i>Widget</i> to iterate among all its children.</d></li>
+                            <li><n>GUIMaster</n><d>links <i>Screen</i> &amp; <i>Workspace</i>.</d></li>
+                            <li><n>DisplayMan</n><d>component that controls proper GUI display.  It refreshes dirty regions &amp; redirects user input to GUI.</d></li>
+                            <li><n>Form</n><d>component that manages keyboard focus. Forms buid tree relationship.</d></li>
+                            <li><n>HintMan</n><d>component that summons GUI hints.</d></li>
+                            <li><n>WidgetPainter</n><d>a painter that keeps additional information about widget being painted.</d></li>
+                            <li><n>TablePainter</n><d>a painter used to repaint table cells with data.</d></li>
+                            <li><n>MouseCursor</n><d>component that controls graphic shape of a pointer, and pointer move limits.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widget Categories:
                         <ul>
-                            <li><n>Useless.CompoundWidget</n><d>a widget that has children.</d></li>
-                            <li><n>Useless.ActiveWidget</n><d>a widget that translates input events into plenty signals (i.e. <i>OnClick</i>, <i>OnKeyPress</i>).</d></li>
-                            <li><n>Useless.EnumWidget</n><d>a widget that allows selection of one item. Selected item is identified by index number.</d></li>
+                            <li><n>CompoundWidget</n><d>a widget that has children.</d></li>
+                            <li><n>ActiveWidget</n><d>a widget that translates input events into plenty signals (i.e. <i>OnClick</i>, <i>OnKeyPress</i>).</d></li>
+                            <li><n>EnumWidget</n><d>a widget that allows selection of one item. Selected item is identified by index number.</d></li>
                         </ul>
                     </p>
                     <p>
                         Behavior:
                         <ul>
-                            <li><n>Useless.LogicWidget</n><d>abstract utility class, used to separate widget's appearance from behavior.</d></li>
-                            <li><n>Useless.MultiItemLogic</n><d>abstract utility class, used to separate widget's appearance from behavior.  It concerns widgets with several items, such as list or table.</d></li>
-                            <li><n>Useless.TextEditLogic</n><d>abstract utility class, used to separate widget's appearance from behavior.  It concerns widgets with text input, such as <i>Useless.TextField</i>.</d></li>
+                            <li><n>LogicWidget</n><d>abstract utility class, used to separate widget's appearance from behavior.</d></li>
+                            <li><n>MultiItemLogic</n><d>abstract utility class, used to separate widget's appearance from behavior.  It concerns widgets with several items, such as list or table.</d></li>
+                            <li><n>TextEditLogic</n><d>abstract utility class, used to separate widget's appearance from behavior.  It concerns widgets with text input, such as <i>TextField</i>.</d></li>
                         </ul>
                     </p>
                     <p>
                         Appearance:
                         <ul>
-                            <li><n>Useless.Skin</n><d>abstract thing that may be painted using <i>Useless.Painter</i>.  It is used to set widget's appearance. Treat this component just like it was some kind of generated image.</d></li>
-                            <li><n>Useless.SkinMan</n><d>abstract <q>container</q> for <i>Useless.Skin</i> components.  It doesn't have to be the real container (i.e. <i>Useless.SkinMixer</i> isn't).  It just have to act like it was him.</d></li>
-                            <li><n>Useless.ArraySkin</n><d>abstract kind of <i>Useless.Skin</i> component with feature of painting lines among subsequent rows, and lines among subsequent columns.</d></li>
-                            <li><n>Useless.FontSkin</n><d>component defining the appearance &amp; metrics of font.</d></li>
+                            <li><n>Skin</n><d>abstract thing that may be painted using <i>Painter</i>.  It is used to set widget's appearance. Treat this component just like it was some kind of generated image.</d></li>
+                            <li><n>SkinMan</n><d>abstract <q>container</q> for <i>Skin</i> components.  It doesn't have to be the real container (i.e. <i>SkinMixer</i> isn't).  It just have to act like it was him.</d></li>
+                            <li><n>ArraySkin</n><d>abstract kind of <i>Skin</i> component with feature of painting lines among subsequent rows, and lines among subsequent columns.</d></li>
+                            <li><n>FontSkin</n><d>component defining the appearance &amp; metrics of font.</d></li>
                         </ul>
                     </p>
                     <p>
                         Text:
                         <ul>
-                            <li><n>Useless.Text</n><d>a kind of <i>std::basic_string&lt; wchar_t &gt;</i> with additional formatting features.</d></li>
-                            <li><n>Useless.Font</n><d>component defining font. It is a handle for <i>Useless.FontSkin</i>.</d></li>
+                            <li><n>Text</n><d>a kind of <i>std::basic_string&lt; wchar_t &gt;</i> with additional formatting features.</d></li>
+                            <li><n>Font</n><d>component defining font. It is a handle for <i>FontSkin</i>.</d></li>
                         </ul>
                     </p>
                 </p>
-                <p><i>Useless.DisplayMan</i> has following implementations:
+                <p><i>DisplayMan</i> has following implementations:
                     <ul>
-                        <li><n>ScreenMan</n><d>paints widgets on <i>Useless.Screen</i>.</d></li>
-                        <li><n>OffscreenMan</n><d>paints widgets on <i>Useless.ImageBuffer</i>.</d></li>
+                        <li><n>ScreenMan</n><d>paints widgets on <i>Screen</i>.</d></li>
+                        <li><n>OffscreenMan</n><d>paints widgets on <i>ImageBuffer</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.HintMan</i> has following implementations:
+                <p><i>HintMan</i> has following implementations:
                     <ul>
                         <li><n>Hints</n><d>simple hints (default choice). A frame with text inside.</d></li>
                         <li><n>SkinnedHints</n><d>advanced hints.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.MouseCursor</i> has following implementations:
+                <p><i>MouseCursor</i> has following implementations:
                     <ul>
-                        <li><n>Useless.ImageCursor</n><d>use <i>Useless.IGraphics</i> as shape of pointer.</d></li>
+                        <li><n>ImageCursor</n><d>use <i>IGraphics</i> as shape of pointer.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.Skin</i> has following implementations:
+                <p><i>Skin</i> has following implementations:
                     <ul>
-                        <li><n>Useless.ImageSkin</n><d>stretched image.</d></li>
-                        <li><n>Useless.BarSkinner</n><d>image repeated several times in one direction. Source image is tossed into 4 sub-images, to obtain head, center, diamond and tail.</d></li>
-                        <li><n>Useless.FrameSkin</n><d>image repeated several times in both directions. Source image is tossed into 9 sub-images, to obtain 4 corrners, 4 borders and center.</d></li>
-                        <li><n>Useless.CaptionSkin</n><d>draw text with font.</d></li>
-                        <li><n>Useless.NullSkin</n><d>nop skin.</d></li>
-                        <li><n>Useless.ParametricSkin</n><d>kind of algorithmic <i>Useless.ArraySkin</i> with plenty of parameters.  This skin is painted from lines and recatangles.</d></li>
-                        <li><n>Useless.SizerSkin</n><d>kind of <i>Useless.ArraySkin</i>, painted via image repetition technique.  Source image is tossed into 12 sub-images, to obtain 4 borders, 4 corrners, 3 parts of cell division line.</d></li>
-                        <li><n>Useless.TableSkin</n><d>kind of <i>Useless.ArraySkin</i>, painted via image repetition technique.  Source image is tossed into 16 sub-images, to obtain 4 borders, 4 corrners, 3 parts of column division line, 3 parts of row division line.</d></li>
+                        <li><n>ImageSkin</n><d>stretched image.</d></li>
+                        <li><n>BarSkinner</n><d>image repeated several times in one direction. Source image is tossed into 4 sub-images, to obtain head, center, diamond and tail.</d></li>
+                        <li><n>FrameSkin</n><d>image repeated several times in both directions. Source image is tossed into 9 sub-images, to obtain 4 corrners, 4 borders and center.</d></li>
+                        <li><n>CaptionSkin</n><d>draw text with font.</d></li>
+                        <li><n>NullSkin</n><d>nop skin.</d></li>
+                        <li><n>ParametricSkin</n><d>kind of algorithmic <i>ArraySkin</i> with plenty of parameters.  This skin is painted from lines and recatangles.</d></li>
+                        <li><n>SizerSkin</n><d>kind of <i>ArraySkin</i>, painted via image repetition technique.  Source image is tossed into 12 sub-images, to obtain 4 borders, 4 corrners, 3 parts of cell division line.</d></li>
+                        <li><n>TableSkin</n><d>kind of <i>ArraySkin</i>, painted via image repetition technique.  Source image is tossed into 16 sub-images, to obtain 4 borders, 4 corrners, 3 parts of column division line, 3 parts of row division line.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.SkinMan</i> has following implementations:
+                <p><i>SkinMan</i> has following implementations:
                     <ul>
-                        <li><n>Useless.ImageDicer</n><d>toss image into many sub-images following rows and columns count.</d></li>
-                        <li><n>Useless.ImageDotTracer</n><d>toss image into many sub-images following special pixel marks.</d></li>
-                        <li><n>Useless.SkinSet</n><d>real container for <i>Useless.Skin</i> components.</d></li>
-                        <li><n>Useless.SkinMixer</n><d>skin manager that combines multiple source skins into several virtual skins.</d></li>
+                        <li><n>ImageDicer</n><d>toss image into many sub-images following rows and columns count.</d></li>
+                        <li><n>ImageDotTracer</n><d>toss image into many sub-images following special pixel marks.</d></li>
+                        <li><n>SkinSet</n><d>real container for <i>Skin</i> components.</d></li>
+                        <li><n>SkinMixer</n><d>skin manager that combines multiple source skins into several virtual skins.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.FontSkin</i> has following implementations:
+                <p><i>FontSkin</i> has following implementations:
                     <ul>
-                        <li><n>Useless.FacedFont</n><d>cut letters from image.  This skin is painted as is on source image. No scalling is applied.</d></li>
-                        <li><n>Useless.AlphaFont</n><d>cut letters from image alpha channel.  This skin is capable of colouring. No scalling is applied.</d></li>
+                        <li><n>FacedFont</n><d>cut letters from image.  This skin is painted as is on source image. No scalling is applied.</d></li>
+                        <li><n>AlphaFont</n><d>cut letters from image alpha channel.  This skin is capable of colouring. No scalling is applied.</d></li>
                     </ul>
                 </p>
-                <p><i>Useless.Widget</i> has following implementations:
+                <p><i>Widget</i> has following implementations:
                     <p>Active widgets with <b>graphics</b>:
                         <ul>
-                            <li><n>Useless.ButtonWidget</n><d>graphic <b>button</b> without caption. An active widget with bound graphic representation.</d></li>
-                            <li><n>Useless.DraggerWidget</n><d>kind of graphic button. Use for elements that <b>may be dragged</b>, like grip in slider or scrollbar.</d></li>
-                            <li><n>Useless.MarkWidget</n><d>kind of graphic button. Use for <b>checkmarks</b>.</d></li>
-                            <li><n>Useless.RadioWidget</n><d>kind of graphic button. Use for <b>radio</b> buttons.</d></li>
-                            <li><n>Useless.SwitchWidget</n><d>kind of graphic button. Use for buttons that remains in pressed/released state.</d></li>
-                            <li><n>Useless.TabWidget</n><d>kind of graphic button. Use for <b>tab</b> activators.</d></li>
-                            <li><n>Useless.TriggerWidget</n><d>graphic button. Use for elements like titlebars.</d></li>
-                            <li><n>Useless.IconButton</n><d>graphic button with <b>icon</b>.</d></li>
+                            <li><n>ButtonWidget</n><d>graphic <b>button</b> without caption. An active widget with bound graphic representation.</d></li>
+                            <li><n>DraggerWidget</n><d>kind of graphic button. Use for elements that <b>may be dragged</b>, like grip in slider or scrollbar.</d></li>
+                            <li><n>MarkWidget</n><d>kind of graphic button. Use for <b>checkmarks</b>.</d></li>
+                            <li><n>RadioWidget</n><d>kind of graphic button. Use for <b>radio</b> buttons.</d></li>
+                            <li><n>SwitchWidget</n><d>kind of graphic button. Use for buttons that remains in pressed/released state.</d></li>
+                            <li><n>TabWidget</n><d>kind of graphic button. Use for <b>tab</b> activators.</d></li>
+                            <li><n>TriggerWidget</n><d>graphic button. Use for elements like titlebars.</d></li>
+                            <li><n>IconButton</n><d>graphic button with <b>icon</b>.</d></li>
                         </ul>
                     </p>
                     <p>
                         Active widgets with <b>caption</b>:
                         <ul>
-                            <li><n>Useless.CaptionButton</n><d>click-button with graphic box and caption.  It works like a mouse button.</d></li>
-                            <li><n>Useless.CaptionMark</n><d>check-button with graphic box and caption.  Check-button may be checked and unchecked.  Use it for checkmarks.</d></li>
-                            <li><n>Useless.CaptionRadio</n><d>radio-button with graphic box and caption.  Radio-button once marked may not be unmarked.  Use it for radio-buttons.</d></li>
-                            <li><n>Useless.CaptionSwitch</n><d>switch-button with graphic box and caption.  Like check-button with sight difference in behavior.  Use it for buttons that remain pressed.</d></li>
-                            <li><n>Useless.CaptionTab</n><d>tab-button with graphic box and caption.  Like radio-button with slight difference in behavior.  Use it for tab activators.</d></li>
-                            <li><n>Useless.CaptionTriger</n><d>trigger-button with graphic box and caption.  Like radio-button with slight difference in behavior.  Use it for popup titlebars.</d></li>
+                            <li><n>CaptionButton</n><d>click-button with graphic box and caption.  It works like a mouse button.</d></li>
+                            <li><n>CaptionMark</n><d>check-button with graphic box and caption.  Check-button may be checked and unchecked.  Use it for checkmarks.</d></li>
+                            <li><n>CaptionRadio</n><d>radio-button with graphic box and caption.  Radio-button once marked may not be unmarked.  Use it for radio-buttons.</d></li>
+                            <li><n>CaptionSwitch</n><d>switch-button with graphic box and caption.  Like check-button with sight difference in behavior.  Use it for buttons that remain pressed.</d></li>
+                            <li><n>CaptionTab</n><d>tab-button with graphic box and caption.  Like radio-button with slight difference in behavior.  Use it for tab activators.</d></li>
+                            <li><n>CaptionTriger</n><d>trigger-button with graphic box and caption.  Like radio-button with slight difference in behavior.  Use it for popup titlebars.</d></li>
                         </ul>
                     </p>
                     <p>
                         Active widgets with selectable <b>items</b>:
                         <ul>
-                            <li><n>Useless.ListWidget</n><d>widget with several text items listed one below other.</d></li>
-                            <li><n>Useless.AdvListWidget</n><d>widget compound of <b>list, frame and scrollbar</b>.</d></li>
-                            <li><n>Useless.MenuWidget</n><d>a list in frame that may appear in workspace's menus layer.</d></li>
-                            <li><n>Useless.TableList</n><d>a table with one selectable row. It may also contain one widget per each cell.</d></li>
+                            <li><n>ListWidget</n><d>widget with several text items listed one below other.</d></li>
+                            <li><n>AdvListWidget</n><d>widget compound of <b>list, frame and scrollbar</b>.</d></li>
+                            <li><n>MenuWidget</n><d>a list in frame that may appear in workspace's menus layer.</d></li>
+                            <li><n>TableList</n><d>a table with one selectable row. It may also contain one widget per each cell.</d></li>
                         </ul>
                         <ul>
-                            <li><n>Useless.DropDown</n><d>drop-down-button. It is bound to a list or a table.  When pressed shows bound widget and after user changes selected item, the content of drop-down-button is updated.</d></li>
-                            <li><n>Useless.ListMenu</n><d>a kind of <i>Useless.DropDown</i> with bound list.</d></li>
-                            <li><n>Useless.TableMenu</n><d>a kind of <i>Useless.DropDown</i> with bound table, with one selectable row.</d></li>
+                            <li><n>DropDown</n><d>drop-down-button. It is bound to a list or a table.  When pressed shows bound widget and after user changes selected item, the content of drop-down-button is updated.</d></li>
+                            <li><n>ListMenu</n><d>a kind of <i>DropDown</i> with bound list.</d></li>
+                            <li><n>TableMenu</n><d>a kind of <i>DropDown</i> with bound table, with one selectable row.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widgets with <b>table</b> look:
                         <ul>
-                            <li><n>Useless.TableWidget</n><d>widget that paints just a table.</d></li>
-                            <li><n>Useless.WidgetTableWidget</n><d>a table that may contain one widget per each cell.</d></li>
-                            <li><n>Useless.DataTableWidget</n><d>widget connecting table with data source.</d></li>
-                            <li><n>Useless.TableSystemWidget</n><d>widget compound of table, column headers, and scrollbars.</d></li>
-                            <li><n>Useless.AdvTableSystemWidget</n><d>widget compound of <b>table, column headers, and scrollbars</b>.  Columns and column headers are set automatically.</d></li>
+                            <li><n>TableWidget</n><d>widget that paints just a table.</d></li>
+                            <li><n>WidgetTableWidget</n><d>a table that may contain one widget per each cell.</d></li>
+                            <li><n>DataTableWidget</n><d>widget connecting table with data source.</d></li>
+                            <li><n>TableSystemWidget</n><d>widget compound of table, column headers, and scrollbars.</d></li>
+                            <li><n>AdvTableSystemWidget</n><d>widget compound of <b>table, column headers, and scrollbars</b>.  Columns and column headers are set automatically.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widgets that <b>scroll</b> widgets:
                         <ul>
-                            <li><n>Useless.AdvScrollbarWidget</n><d>widget compound of <i>Useless.ScrollbarWidget</i> and scroll buttons.</d></li>
-                            <li><n>Useless.ScrollbarWidget</n><d>controls <i>Useless.ScrolledWidget</i>. Size of grip is proportional to viewed part. Supports mouse-wheel.</d></li>
-                            <li><n>Useless.ScrolledWidget</n><d>view pane. It controls which rectangular portion of bound widget is visible.</d></li>
+                            <li><n>AdvScrollbarWidget</n><d>widget compound of <i>ScrollbarWidget</i> and scroll buttons.</d></li>
+                            <li><n>ScrollbarWidget</n><d>controls <i>ScrolledWidget</i>. Size of grip is proportional to viewed part. Supports mouse-wheel.</d></li>
+                            <li><n>ScrolledWidget</n><d>view pane. It controls which rectangular portion of bound widget is visible.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widgets with <b>text</b>:
                         <ul>
-                            <li><n>Useless.TextWidget</n><d><b>single line</b> label. Size of this widget is defined by font height and text length.</d></li>
-                            <li><n>Useless.AdvTextWidget</n><d>widget that paints aligned text. It has ability to <b>wrap lines</b>. Height of this widget is defiend by text height.</d></li>
-                            <li><n>Useless.CreditsWidget</n><d><b>credits</b> scroller.</d></li>
-                            <li><n>Useless.DualTextWidget</n><d>widget that paints 2 texts separated by several <q>.</q> characters. Usefull for <b>highscores</b>.</d></li>
+                            <li><n>TextWidget</n><d><b>single line</b> label. Size of this widget is defined by font height and text length.</d></li>
+                            <li><n>AdvTextWidget</n><d>widget that paints aligned text. It has ability to <b>wrap lines</b>. Height of this widget is defiend by text height.</d></li>
+                            <li><n>CreditsWidget</n><d><b>credits</b> scroller.</d></li>
+                            <li><n>DualTextWidget</n><d>widget that paints 2 texts separated by several <q>.</q> characters. Usefull for <b>highscores</b>.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widgets with text <b>input</b>:
                         <ul>
-                            <li><n>Useless.TextField</n><d>the single line input field.</d></li>
-                            <li><n>Useless.NumericField</n><d>an input field allowing number input only.</d></li>
+                            <li><n>TextField</n><d>the single line input field.</d></li>
+                            <li><n>NumericField</n><d>an input field allowing number input only.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widget <b>containers</b>:
                         <ul>
-                            <li><n>Useless.HubWidget</n><d>widget containing widgets.</d></li>
-                            <li><n>Useless.FrameWidget</n><d>a special case of <i>Useless.HubWidget</i> with skin.</d></li>
+                            <li><n>HubWidget</n><d>widget containing widgets.</d></li>
+                            <li><n>FrameWidget</n><d>a special case of <i>HubWidget</i> with skin.</d></li>
                         </ul>
                     </p>
                     <p>
                         Other widgets:
                         <ul>
-                            <li><n>Useless.ActiveAreaWidget</n><d>widget derives signals from <i>Useless.ActiveWidget</i> and adds <i>OnPaint</i> signal.  Use it to create custom widget at runtime.</d></li>
-                            <li><n>Useless.ImageWidget</n><d>just an image.</d></li>
-                            <li><n>Useless.GraphWidget</n><d>widget that plots data graph.</d></li>
-                            <li><n>Useless.LoomWidget</n><d>widget that pulls open bound widget.</d></li>
-                            <li><n>Useless.ProgressBar</n><d>2 skins, one used for backdrop frame, and other as progress indicator.</d></li>
-                            <li><n>Useless.SliderWidget</n><d>widget used to adjust value in discrete range. Grip has fixed size.</d></li>
-                            <li><n>Useless.Popup</n><d>special widget with titlebar and bound content. It appers in workspace's popups layer.</d></li>
+                            <li><n>ActiveAreaWidget</n><d>widget derives signals from <i>ActiveWidget</i> and adds <i>OnPaint</i> signal.  Use it to create custom widget at runtime.</d></li>
+                            <li><n>ImageWidget</n><d>just an image.</d></li>
+                            <li><n>GraphWidget</n><d>widget that plots data graph.</d></li>
+                            <li><n>LoomWidget</n><d>widget that pulls open bound widget.</d></li>
+                            <li><n>ProgressBar</n><d>2 skins, one used for backdrop frame, and other as progress indicator.</d></li>
+                            <li><n>SliderWidget</n><d>widget used to adjust value in discrete range. Grip has fixed size.</d></li>
+                            <li><n>Popup</n><d>special widget with titlebar and bound content. It appers in workspace's popups layer.</d></li>
                         </ul>
                     </p>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Useless.Movie</i></title>
+            <title><i>Useless/Movie</i></title>
             <name>Movie</name>
             <body>
                 <p>The module defines components:
                     <ul>
-                        <li><n>Useless.DSMedia</n><d>play movie using Microsoft Direct Show filters. Image is rendered onto <i>Useless.Surface</i>, and sound is rednered via <i>Useless.SoundCard</i>.</d></li>
-                        <li><n>Useless.OggVorbisDecoder</n><d>play Ogg/Vorbis streams from <i>Useless.IFile</i>, thru <i>Useless.SoundCard</i>.</d></li>
-                        <li><n>Useless.MoviePlayer</n><d>high-level fullscreen movie player.</d></li>
+                        <li><n>DSMedia</n><d>play movie using Microsoft Direct Show filters. Image is rendered onto <i>Surface</i>, and sound is rednered via <i>SoundCard</i>.</d></li>
+                        <li><n>OggVorbisDecoder</n><d>play Ogg/Vorbis streams from <i>IFile</i>, thru <i>SoundCard</i>.</d></li>
+                        <li><n>MoviePlayer</n><d>high-level fullscreen movie player.</d></li>
                     </ul>
                 </p>
             </body>
         </chapter>
         <chapter>
-            <title><i>Useless.XML</i></title>
+            <title><i>Useless/XML</i></title>
             <name>XML</name>
             <body>
                 <p>The module defines components:
                     <ul>
-                        <li><n>Useless.CreateFromXML()</n><d>global XML factory function. It will parse XML string, and apply deep scan function on resultant XML tree, which fires functions registered by node names.</d></li>
-                        <li><n>Useless.CreateFromXMLFile()</n><d>global XML factory function. First it reads whole file to memory, and then works same as <i>Useless.CreateFromXML()</i>.</d></li>
-                        <li><n>Useless.RegisterXMLCreator</n><d>class used to register supplied function automatically via inclusion of header file.</d></li>
-                        <li><n>Useless.ResourceQuery&lt; _Type &gt;</n><d>class used to obtain resource of given type <i>_Type</i>.</d></li>
-                        <li><n>Useless.WidgetResource&lt; _Type &gt;</n><d>class used to obtain resource of given <b>widget</b> type <i>_Type</i>.</d></li>
-                        <li><n>Useless.ImageResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.ImageBase &gt;</i>.</d></li>
-                        <li><n>Useless.SkinResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.Skin &gt;</i>.</d></li>
-                        <li><n>Useless.SkinManResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.SkinMan &gt;</i>.</d></li>
-                        <li><n>Useless.FontResource</n><d>class used to obtain resource of type <i>Useless.Font</i>.</d></li>
-                        <li><n>Useless.FontSetResource</n><d>class used to obtain resource of type <i>Useless.FontSet</i>.</d></li>
-                        <li><n>Useless.SoundCardResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.SoundCard &gt;</i>.</d></li>
-                        <li><n>Useless.SampleResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.Sample &gt;</i>.</d></li>
-                        <li><n>Useless.ScreenResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.Screen&gt;</i>.</d></li>
-                        <li><n>Useless.GUIMasterResource</n><d>class used to obtain resource of type <i>Useless.SPointer&lt; Useless.GUIMaster &gt;</i>.</d></li>
-                        <li><n>Useless.MakeText</n><d>class used to get text. It tries to get <i>Useless.Text</i> from resources. In case of failure name of text is used instead of real resource.</d></li>
-                        <li><n>Useless.MakeImage</n><d>class used to get image. It tries to get <i>Useless.SPointer&lt; Useless.ImageBase &gt;</i> from resources. In case of failure new image is being created and added to resources, and then used instead of real resource. This function also gives possibility to create new image from rectangular part of the existing one (i.e. <code lang="cpp"><s>Useless::MakeImage</s><o>(</o><v>"myImage(48,48,100,32)"</v><o>)</o>;</code>).</d></li>
+                        <li><n>CreateFromXML()</n><d>global XML factory function. It will parse XML string, and apply deep scan function on resultant XML tree, which fires functions registered by node names.</d></li>
+                        <li><n>CreateFromXMLFile()</n><d>global XML factory function. First it reads whole file to memory, and then works same as <i>CreateFromXML()</i>.</d></li>
+                        <li><n>RegisterXMLCreator</n><d>class used to register supplied function automatically via inclusion of header file.</d></li>
+                        <li><n>ResourceQuery&lt; _Type &gt;</n><d>class used to obtain resource of given type <i>_Type</i>.</d></li>
+                        <li><n>WidgetResource&lt; _Type &gt;</n><d>class used to obtain resource of given <b>widget</b> type <i>_Type</i>.</d></li>
+                        <li><n>ImageResource</n><d>class used to obtain resource of type <i>SPointer&lt; ImageBase &gt;</i>.</d></li>
+                        <li><n>SkinResource</n><d>class used to obtain resource of type <i>SPointer&lt; Skin &gt;</i>.</d></li>
+                        <li><n>SkinManResource</n><d>class used to obtain resource of type <i>SPointer&lt; SkinMan &gt;</i>.</d></li>
+                        <li><n>FontResource</n><d>class used to obtain resource of type <i>Font</i>.</d></li>
+                        <li><n>FontSetResource</n><d>class used to obtain resource of type <i>FontSet</i>.</d></li>
+                        <li><n>SoundCardResource</n><d>class used to obtain resource of type <i>SPointer&lt; SoundCard &gt;</i>.</d></li>
+                        <li><n>SampleResource</n><d>class used to obtain resource of type <i>SPointer&lt; Sample &gt;</i>.</d></li>
+                        <li><n>ScreenResource</n><d>class used to obtain resource of type <i>SPointer&lt; Screen&gt;</i>.</d></li>
+                        <li><n>GUIMasterResource</n><d>class used to obtain resource of type <i>SPointer&lt; GUIMaster &gt;</i>.</d></li>
+                        <li><n>MakeText</n><d>class used to get text. It tries to get <i>Text</i> from resources. In case of failure name of text is used instead of real resource.</d></li>
+                        <li><n>MakeImage</n><d>class used to get image. It tries to get <i>SPointer&lt; ImageBase &gt;</i> from resources. In case of failure new image is being created and added to resources, and then used instead of real resource. This function also gives possibility to create new image from rectangular part of the existing one (i.e. <code lang="cpp"><s>Useless::MakeImage</s><o>(</o><v>"myImage(48,48,100,32)"</v><o>)</o>;</code>).</d></li>
                     </ul>
                 </p>
             </body>
