@@ -8,10 +8,6 @@
     <chapters>
         <toc>
             <link>
-                <title><i>UTGS</i> - Library of Libraries - All Documentation</title>
-                <href>utgs.xml</href>
-            </link>
-            <link>
                 <title><i>KooLiXP</i> - Language Overview</title>
                 <href>KooLiXPOverview.xml</href>
             </link>

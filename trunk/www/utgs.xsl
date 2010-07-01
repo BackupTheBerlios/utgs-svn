@@ -27,12 +27,14 @@
                             <table width="128px"/>
                         </td>
                         <td valign="middle" width="99%">
+                            <a href="index.html">
                             <xsl:element name="img">
                                 <xsl:attribute name="src">
                                     <xsl:value-of select="$baseurl"/>
                                     <xsl:text>utgslogo.png</xsl:text>
                                 </xsl:attribute>
                             </xsl:element>
+                        </a>
                         </td>
                     </tr>
                     <tr>
@@ -42,7 +44,7 @@
                     </tr>
                 </table>
                 
-                <table width="80%" align="center" cellspacing="0" cellpadding="0">
+                <table width="1024" align="center" cellspacing="0" cellpadding="0">
                     <tr height="10px"/>
                     <tr height="2px">
                         <td bgcolor="black"/>
@@ -62,8 +64,8 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <h3>Table Of Contents.</h3>
-                                        <p>On <a href="#">this</a> page:
+                                        <h3>Table Of Contents</h3>
+                                        <p>
                                             <ul>
                                                 <xsl:for-each select="chapters/chapter">
                                                     <xsl:variable name="chapterNo">
@@ -85,7 +87,8 @@
                                             </ul>
                                         </p>
                                         <xsl:if test="chapters/toc">
-                                            <p>Other pages:
+                                            <p>
+                                                Other pages:
                                                 <ul>
                                                     <xsl:for-each select="chapters/toc/*">
                                                         <li>
@@ -105,7 +108,7 @@
                                 <tr height="64px"/>
                                 <tr>
                                     <td align="right" valign="bottom" width="99%">
-                                        See <a href="http://utgs.berlios.de">UTGS Home Page</a>.<br/>
+                                        Go to <a href="http://utgs.berlios.de">Home Page</a>.<br/>
                                         See <a href="../COPYING">COPYING</a> for license information.<br/>
                                         Copyright (c) 2005, Radoslaw Kolasinski (<a href="mailto:koolas@gmail.com">koolas@gmail.com</a>) All rights reserved.<br/>
                                     </td>
@@ -178,7 +181,7 @@
                 <xsl:value-of select="$baseurl"/>
                 <xsl:text>utgs-bg1.jpg</xsl:text>
             </xsl:attribute>
-            <tr height="96px">
+            <tr height="72px">
                 <td bgcolor="#dc8f3c" width="80%">
                     <xsl:attribute name="background">
                         <xsl:value-of select="$baseurl"/>
@@ -200,7 +203,7 @@
                         </xsl:element>
                     </xsl:element>
                 </td>
-                <td width="46px">
+                <td width="34px">
                     <xsl:attribute name="background">
                         <xsl:value-of select="$baseurl"/>
                         <xsl:text>utgschapter.jpg</xsl:text>
@@ -326,7 +329,7 @@
                             <tr height="5px"/>
                             <tr>
                                 <td width="5px"/>
-                                <td><xsl:apply-templates/></td>
+                                <td align="left"><xsl:apply-templates/></td>
                                 <td width="5px"/>
                             </tr>
                             <tr height="5px"/>
@@ -473,21 +476,21 @@
     </xsl:template>
 
     <xsl:template match="code[@lang='cpp']/s">
-        <font color="blue">
+        <span style="color: blue; font-weight: bold;">
             <xsl:apply-templates/>
-        </font>
+        </span>
     </xsl:template>
     
     <xsl:template match="code[@lang='cpp']/v">
-        <font color="magenta">
+        <span style="color: red; font-weight: bold;">
             <xsl:apply-templates/>
-        </font>
+        </span>
     </xsl:template>
     
     <xsl:template match="code[@lang='cpp']/o">
-        <font color="black">
+        <span style="color: darkblue; font-weight: bold;">
             <xsl:apply-templates/>
-        </font>
+        </span>
     </xsl:template>
 
     <xsl:template match="pre">

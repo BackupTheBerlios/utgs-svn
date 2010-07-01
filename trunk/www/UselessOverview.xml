@@ -13,10 +13,6 @@
     <chapters>
         <toc>
             <link>
-                <title><i>UTGS</i> - Library of Libraries - All Documentation</title>
-                <href>utgs.xml</href>
-            </link>
-            <link>
                 <title><i>Useless.Graphic </i> - Examples</title>
                 <href>UselessGraphicExample.xml</href>
             </link>
@@ -26,7 +22,7 @@
             <name>Overview</name>
             <body>
                 <p>
-                    <i>Useless</i> library is the root component of <i>UTGS</i> project, and contains following modules:
+                    <i>Useless</i> C++ library.
                     <ul>
                         <li><n>Useless/File</n><d>File access components &amp; virtual filesystem.</d></li>
                         <li><n>Useless/Graphic</n><d>Graphics</d></li>
@@ -81,9 +77,13 @@
             <title><i>Useless/Graphic</i></title>
             <name>Graphic</name>
             <body>
-                <p>Graphics.</p>
                 <p>
-                    <i>Graphic</i> components are divided into such groups:
+                    Graphic components.
+                    <br/>
+                    <link>
+                        <title>Example usage</title>
+                        <href>UselessGraphicExample.xml</href>
+                    </link>
                     <ul>
                         <li><n>Useless/Graphic/Device</n><d>Device dependent image components.</d></li>
                         <li><n>Useless/Graphic/Planes</n><d>Device independent image components.</d></li>
@@ -92,18 +92,11 @@
                         <li><n>Useless/Graphic/FileIO</n><d>Image serialization &amp; deserialization.</d></li>
                     </ul>
                 </p>
-                <p>
-                    <link>
-                        <title>The example of usage (in C++ and KooLiXP).</title>
-                        <href>UselessGraphicExample.xml</href>
-                    </link>
-                    The example demonstrates how to use components: <i>Screen</i>, <i>Image</i> and <i>ImageBuffer</i>.
-                </p>
-                <p>Following interfaces are defined:
+                <p>Interfaces:
                     <ul>
-                        <li><n>IGraphics</n><d>Device independent source image.</d></li>
-                        <li><n>OGraphics</n><d>Device independent target surface.</d></li>
-                        <li><n>Painter</n><d>Device independent painter.</d></li>
+                        <li><n>IGraphics</n><d>Source image abstraction.</d></li>
+                        <li><n>OGraphics</n><d>Target surface abstraction.</d></li>
+                        <li><n>Painter</n><d>Painter abstraction.</d></li>
 
                         <li><n>Screen</n><d>Hardware graphics device.</d></li>
                         <li><n>Surface</n><d>Device dependent surface.</d></li>
@@ -116,40 +109,38 @@
                         <li><n>ImageSaver</n><d>Stores image pixels into <i>OFile</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>IGraphics</i> has following implementations:
+                <p><i>IGraphics</i> implementations:
                     <ul>
-                        <li><n>Image</n><d>component loads pixels from file ignoring any alpha information.</d></li>
-                        <li><n>TransparentImage</n><d>component loads color-pixels from one file and alpha-pixels from another file.  Both first and second files may be the same.</d></li>
-                        <li><n>Animation</n><d>component usefull for static animations.
-                                All subsequent frames must: be of same size, lay in one image, and be placed one after another horizontally in correct order.</d></li>
-                        <li><n>ImageBuffer</n><d>component which may be the blit target and blit source.
-                                You may first blit some images or do some painting on it, and then blit it to other OGraphics.</d></li>
+                        <li><n>Image</n><d>An image.</d></li>
+                        <li><n>TransparentImage</n><d>An image with attached transparency mask.</d></li>
+                        <li><n>Animation</n><d>Static animation created from film strip image.</d></li>
+                        <li><n>ImageBuffer</n><d>An image buffer. Can act as image source and also as target surface.</d></li>
                     </ul>
                 </p>
-                <p><i>OGraphics</i> has folowing implementations:
+                <p><i>OGraphics</i> implementations:
                     <ul>
-                        <li><n>Screen</n><d>blit target bound to system window.</d></li>
-                        <li><n>ImageBuffer</n><d>component which may be the blit target and blit source.
-                                You may first blit some images or do some painting on it, and then blit it to other OGraphics.</d></li>
+                        <li><n>Screen</n><d>Graphic device (normally represented by window).</d></li>
+                        <li><n>ImageBuffer</n><d>An image buffer. Can act as image source and also as target surface.</d></li>
                     </ul>
                 </p>
-                <p><i>PixelTransfer</i> has following implementations:
+                <p><i>PixelTransfer</i> implementations:
                     <ul>
-                        <li><n>GenericPixelTransfer</n><d>component applies convertions between several pixel formats, with or witout dithering.</d></li>
-                        <li><n>GDITransfer</n><d>component optimized for device <i>Graphic.Device.winGDI</i>.</d></li>
+                        <li><n>GenericTransfer</n><d>Pixel transfer method.
+                                <br/>Performs convertion between pixel formats, including dithering.</d></li>
+                        <li><n>GDITransfer</n><d>Component optimized for Windows GDI device.</d></li>
                     </ul>
                 </p>
-                <p><i>ImageLoader</i> has following implementations:
+                <p><i>ImageLoader</i> implementations:
                     <ul>
-                        <li><n>BMPLoader</n><d>loads window bitmap.</d></li>
-                        <li><n>TGALoader</n><d>loads truevision image.</d></li>
-                        <li><n>PNGLoader</n><d>loads PNG image. <b>Requires libPNG and ZLib</b></d></li>
+                        <li><n>BMPLoader</n><d>Can read BMP files.</d></li>
+                        <li><n>TGALoader</n><d>Can read TGA files.</d></li>
+                        <li><n>PNGLoader</n><d>Can read PNG files (requires libPNG and ZLib).</d></li>
                     </ul>
                 </p>
-                <p><i>ImageSaver</i> has following implementations:
+                <p><i>ImageSaver</i> implementations:
                     <ul>
-                        <li><n>BMPSaver</n><d>writes window bitmap.</d></li>
-                        <li><n>TGASaver</n><d>writes truevision image.</d></li>
+                        <li><n>BMPSaver</n><d>Can store image in BMP file.</d></li>
+                        <li><n>TGASaver</n><d>Can store image in TGA file.</d></li>
                     </ul>
                 </p>
             </body>
@@ -159,40 +150,40 @@
             <name>Sound</name>
             <body>
                 <p>
-                    <i>Sound</i> components are divided into such groups:
+                    Sound components.
                     <ul>
-                        <li><n>Useless/Sound</n><d>Device independent sound components.</d></li>
+                        <li><n>Useless/Sound/</n><d>Device independent sound components.</d></li>
                         <li><n>Useless/Sound/Device</n><d>Device dependent sound components.</d></li>
                         <li><n>Useless/Sound/FileIO</n><d>Sample serialization &amp; deserialization.</d></li>
                     </ul>
                 </p>
                 <p>
-                    The module defines interfaces:
+                    Interfaces:
                     <ul>
-                        <li><n>Sample</n><d>device independent sound buffer.</d></li>
-                        <li><n>SampleData</n><d>device dependent sound sample storage.</d></li>
-                        <li><n>SoundCard</n><d>sound device.</d></li>
-                        <li><n>Channel</n><d>sound playback control.</d></li>
-                        <li><n>MultiChannel</n><d>sound channel manager.</d></li>
-                        <li><n>Note</n><d>note frequency calculator.</d></li>
-                        <li><n>SoundLoader</n><d>component providing means to fetch samples from <i>IFile</i>.</d></li>
-                        <li><n>SoundSaver</n><d>component providing means to store samples into <i>OFile</i>.</d></li>
+                        <li><n>Sample</n><d>Sound buffer abstraction.</d></li>
+                        <li><n>SampleData</n><d>Device dependent sound buffer.</d></li>
+                        <li><n>SoundCard</n><d>Sound device.</d></li>
+                        <li><n>Channel</n><d>Playback channel.</d></li>
+                        <li><n>MultiChannel</n><d>Multi channel manager.</d></li>
+                        <li><n>Note</n><d>Note frequency calculator.</d></li>
+                        <li><n>SoundLoader</n><d>Loads sound samples from.<i>IFile</i>.</d></li>
+                        <li><n>SoundSaver</n><d>Stores sound samples into.<i>OFile</i>.</d></li>
                     </ul>
                 </p>
-                <p><i>Sample</i> has following implementations:
+                <p><i>Sample</i> implementations:
                     <ul>
-                        <li><n>SampleFile</n><d>load sound file data into sound sample storage.</d></li>
-                        <li><n>BasicSample</n><d>just a sound buffer.</d></li>
+                        <li><n>SampleFile</n><d>Sound buffer initialized with data from file.</d></li>
+                        <li><n>BasicSample</n><d>Empty sound buffer.</d></li>
                     </ul>
                 </p>
-                <p><i>SoundLoader</i> has following implementations:
+                <p><i>SoundLoader</i> implementations:
                     <ul>
-                        <li><n>WaveLoader</n><d>loads wav files into sound sample storage.</d></li>
+                        <li><n>WaveLoader</n><d>Can load WAV files.</d></li>
                     </ul>
                 </p>
-                <p><i>SoundSaver</i> has following implementations:
+                <p><i>SoundSaver</i> implementations:
                     <ul>
-                        <li><n>WaveSaver</n><d>writes sound sample data into wav files.</d></li>
+                        <li><n>WaveSaver</n><d>Can store sound data in WAV file.</d></li>
                     </ul>
                 </p>
             </body>
@@ -202,7 +193,7 @@
             <name>GUI</name>
             <body>
                 <p>
-                    <i>GUI</i> components are divided into such groups:
+                    GUI components.
                     <ul>
                         <li><n>Useless/GUI/Widgets</n><d>GUI elements.</d></li>
                         <li><n>Useless/GUI/Skins</n><d>Appearance of widgets.</d></li>
@@ -216,96 +207,102 @@
                     <p>
                         General:
                         <ul>
-                            <li><n>Widget</n><d>elemenary GUI element. Widgets form tree relationship.  Each children widget is clipped by its parent to assigned area (i.e. <i>FrameWidget</i> assigns its children his own area belittled by border margins, however <i>WidgetTableWidget</i> assigns each child only the area inside table cell assigned to that child).</d></li>
-                            <li><n>Workspace</n><d>the root of GUI, and kind of <i>Form</i>.  It contains 4 layers: desktop, popups, menus, and hints.</d></li>
-                            <li><n>WidgetEnvironment</n><d>each <i>Widget</i> knows one environment, where it may access <i>Screen</i>, <i>Workspace</i> and <i>Form</i>.</d></li>
-                            <li><n>WidgetIterator</n><d>component is created by each <i>Widget</i> to iterate among all its children.</d></li>
-                            <li><n>GUIMaster</n><d>links <i>Screen</i> &amp; <i>Workspace</i>.</d></li>
-                            <li><n>DisplayMan</n><d>component that controls proper GUI display.  It refreshes dirty regions &amp; redirects user input to GUI.</d></li>
-                            <li><n>Form</n><d>component that manages keyboard focus. Forms buid tree relationship.</d></li>
-                            <li><n>HintMan</n><d>component that summons GUI hints.</d></li>
-                            <li><n>WidgetPainter</n><d>a painter that keeps additional information about widget being painted.</d></li>
-                            <li><n>TablePainter</n><d>a painter used to repaint table cells with data.</d></li>
-                            <li><n>MouseCursor</n><d>component that controls graphic shape of a pointer, and pointer move limits.</d></li>
+                            <li><n>Widget</n><d>GUI brick. Widgets are composite. Visible children area is clipped by parent.</d></li>
+                            <li><n>WidgetIterator</n><d>Allows iteration over all children of a widget.</d></li>
+                            <li><n>Workspace</n><d>Main point of access to GUI elements.</d></li>
+                            <li><n>DisplayMan</n><d>Controls proper GUI display.
+                                    <br/>Manages dirty regions &amp; redirects user input to <i>Workspace</i>.</d></li>
+                            <li><n>GUIMaster</n><d>Connects <i>DisplayMan</i> with <i>Workspace</i>.</d></li>
+                            <li><n>Form</n><d>Manages keyboard focus. Forms are composite.</d></li>
+                            <li><n>HintMan</n><d>Manages summoning of hint balloons.</d></li>
+                            <li><n>WidgetEnvironment</n><d>Set of information attached to every widget.</d></li>
+                            <li><n>WidgetPainter</n><d>Painter used by widget to paint it-self.</d></li>
+                            <li><n>TablePainter</n><d>Painter used to repaint table cells.</d></li>
+                            <li><n>MouseCursor</n><d>Mouse pointer shape and move limits.</d></li>
                         </ul>
                     </p>
                     <p>
                         Widget Categories:
                         <ul>
-                            <li><n>CompoundWidget</n><d>a widget that has children.</d></li>
-                            <li><n>ActiveWidget</n><d>a widget that translates input events into plenty signals (i.e. <i>OnClick</i>, <i>OnKeyPress</i>).</d></li>
-                            <li><n>EnumWidget</n><d>a widget that allows selection of one item. Selected item is identified by index number.</d></li>
+                            <li><n>CompoundWidget</n><d>Container widget.</d></li>
+                            <li><n>ActiveWidget</n><d>Analyses input events and raises signals (i.e. <i>OnClick</i>).</d></li>
+                            <li><n>EnumWidget</n><d>Widget with one item selected out of few.</d></li>
                         </ul>
                     </p>
                     <p>
                         Behavior:
                         <ul>
-                            <li><n>LogicWidget</n><d>abstract utility class, used to separate widget's appearance from behavior.</d></li>
-                            <li><n>MultiItemLogic</n><d>abstract utility class, used to separate widget's appearance from behavior.  It concerns widgets with several items, such as list or table.</d></li>
-                            <li><n>TextEditLogic</n><d>abstract utility class, used to separate widget's appearance from behavior.  It concerns widgets with text input, such as <i>TextField</i>.</d></li>
+                            <li><n>LogicWidget</n><d>Base state machine for widgets.</d></li>
+                            <li><n>MultiItemLogic</n><d>State machine for widget with multiple items.</d></li>
+                            <li><n>TextEditLogic</n><d>Text editing.</d></li>
                         </ul>
                     </p>
                     <p>
                         Appearance:
                         <ul>
-                            <li><n>Skin</n><d>abstract thing that may be painted using <i>Painter</i>.  It is used to set widget's appearance. Treat this component just like it was some kind of generated image.</d></li>
-                            <li><n>SkinMan</n><d>abstract <q>container</q> for <i>Skin</i> components.  It doesn't have to be the real container (i.e. <i>SkinMixer</i> isn't).  It just have to act like it was him.</d></li>
-                            <li><n>ArraySkin</n><d>abstract kind of <i>Skin</i> component with feature of painting lines among subsequent rows, and lines among subsequent columns.</d></li>
-                            <li><n>FontSkin</n><d>component defining the appearance &amp; metrics of font.</d></li>
+                            <li><n>Skin</n><d>Abstract widget appearance.</d></li>
+                            <li><n>SkinMan</n><d>Abstact set of widget appearances.</d></li>
+                            <li><n>ArraySkin</n><d>Abstract table appearance.</d></li>
+                            <li><n>FontSkin</n><d>Abstract font appearance &amp; glyph metrics.</d></li>
                         </ul>
                     </p>
                     <p>
                         Text:
                         <ul>
-                            <li><n>Text</n><d>a kind of <i>std::basic_string&lt; wchar_t &gt;</i> with additional formatting features.</d></li>
-                            <li><n>Font</n><d>component defining font. It is a handle for <i>FontSkin</i>.</d></li>
+                            <li><n>Text</n><d>Extended <i>std::basic_string</i> with additional features.</d></li>
+                            <li><n>Font</n><d>Font abstraction.</d></li>
                         </ul>
                     </p>
                 </p>
-                <p><i>DisplayMan</i> has following implementations:
+                <p><i>DisplayMan</i> implementations:
                     <ul>
-                        <li><n>ScreenMan</n><d>paints widgets on <i>Screen</i>.</d></li>
-                        <li><n>OffscreenMan</n><d>paints widgets on <i>ImageBuffer</i>.</d></li>
+                        <li><n>ScreenMan</n><d>Paints widgets on screen.</d></li>
+                        <li><n>OffscreenMan</n><d>Paints widgets on image buffer.</d></li>
                     </ul>
                 </p>
-                <p><i>HintMan</i> has following implementations:
+                <p><i>HintMan</i> implementations:
                     <ul>
-                        <li><n>Hints</n><d>simple hints (default choice). A frame with text inside.</d></li>
-                        <li><n>SkinnedHints</n><d>advanced hints.</d></li>
+                        <li><n>Hints</n><d>Shows hints with standard appearance.</d></li>
+                        <li><n>SkinnedHints</n><d>Shows hints with custom appearance.</d></li>
                     </ul>
                 </p>
-                <p><i>MouseCursor</i> has following implementations:
+                <p><i>MouseCursor</i> implementations:
                     <ul>
-                        <li><n>ImageCursor</n><d>use <i>IGraphics</i> as shape of pointer.</d></li>
+                        <li><n>ImageCursor</n><d>Uses image for shape of a pointer.</d></li>
                     </ul>
                 </p>
-                <p><i>Skin</i> has following implementations:
+                <p><i>Skin</i> implementations:
                     <ul>
-                        <li><n>ImageSkin</n><d>stretched image.</d></li>
-                        <li><n>BarSkinner</n><d>image repeated several times in one direction. Source image is tossed into 4 sub-images, to obtain head, center, diamond and tail.</d></li>
-                        <li><n>FrameSkin</n><d>image repeated several times in both directions. Source image is tossed into 9 sub-images, to obtain 4 corrners, 4 borders and center.</d></li>
-                        <li><n>CaptionSkin</n><d>draw text with font.</d></li>
-                        <li><n>NullSkin</n><d>nop skin.</d></li>
-                        <li><n>ParametricSkin</n><d>kind of algorithmic <i>ArraySkin</i> with plenty of parameters.  This skin is painted from lines and recatangles.</d></li>
-                        <li><n>SizerSkin</n><d>kind of <i>ArraySkin</i>, painted via image repetition technique.  Source image is tossed into 12 sub-images, to obtain 4 borders, 4 corrners, 3 parts of cell division line.</d></li>
-                        <li><n>TableSkin</n><d>kind of <i>ArraySkin</i>, painted via image repetition technique.  Source image is tossed into 16 sub-images, to obtain 4 borders, 4 corrners, 3 parts of column division line, 3 parts of row division line.</d></li>
+                        <li><n>ImageSkin</n><d>Stretches image.</d></li>
+                        <li><n>BarSkinner</n><d>Image is repeated several times in one direction.
+                                <br/>Image boundaries are preserved (not repeated).</d></li>
+                        <li><n>FrameSkin</n><d>Image is repeated several times in two directions.
+                                <br/>Image boundaries are preserved (not repeated).</d></li>
+                        <li><n>SizerSkin</n><d>Image is repeated several times in two directions.
+                                <br/>Image boundaries and separator are preserved (not repeated).</d></li>
+                        <li><n>TableSkin</n><d>Image is repeated several times in two directions.
+                                <br/>Image boundaries and separators are preserved (not repeated).</d></li>
+                        <li><n>CaptionSkin</n><d>Image created by rendering text using given font.</d></li>
+                        <li><n>NullSkin</n><d>No skin at all.</d></li>
+                        <li><n>ParametricSkin</n><d>Skin with plenty of parameters.
+                                <br/>This skin is made of lines and recatangles.</d></li>
                     </ul>
                 </p>
-                <p><i>SkinMan</i> has following implementations:
+                <p><i>SkinMan</i> implementations:
                     <ul>
-                        <li><n>ImageDicer</n><d>toss image into many sub-images following rows and columns count.</d></li>
-                        <li><n>ImageDotTracer</n><d>toss image into many sub-images following special pixel marks.</d></li>
-                        <li><n>SkinSet</n><d>real container for <i>Skin</i> components.</d></li>
-                        <li><n>SkinMixer</n><d>skin manager that combines multiple source skins into several virtual skins.</d></li>
+                        <li><n>ImageDicer</n><d>Divides image into sub-images using number of rows and columns.</d></li>
+                        <li><n>ImageDotTracer</n><d>Divides image into sub-images using pixel marks in chosen color.</d></li>
+                        <li><n>SkinSet</n><d>Collection of skins.</d></li>
+                        <li><n>SkinMixer</n><d>Collection of skins capable of generating new look by mixing skins together.</d></li>
                     </ul>
                 </p>
-                <p><i>FontSkin</i> has following implementations:
+                <p><i>FontSkin</i> implementations:
                     <ul>
-                        <li><n>FacedFont</n><d>cut letters from image.  This skin is painted as is on source image. No scalling is applied.</d></li>
-                        <li><n>AlphaFont</n><d>cut letters from image alpha channel.  This skin is capable of colouring. No scalling is applied.</d></li>
+                        <li><n>FacedFont</n><d>Cuts out letters from image. Is painted using its original colors.</d></li>
+                        <li><n>AlphaFont</n><d>Cuts out letters from mask image. Is painted by filling mask with solid color.</d></li>
                     </ul>
                 </p>
-                <p><i>Widget</i> has following implementations:
+                <p><i>Widget</i> implementations:
                     <p>Active widgets with <b>graphics</b>:
                         <ul>
                             <li><n>ButtonWidget</n><d>graphic <b>button</b> without caption. An active widget with bound graphic representation.</d></li>
@@ -403,12 +400,15 @@
             <title><i>Useless/Movie</i></title>
             <name>Movie</name>
             <body>
-                <p>The module defines components:
+                <p>Movie components.
                     <ul>
-                        <li><n>DSMedia</n><d>play movie using Microsoft Direct Show filters. Image is rendered onto <i>Surface</i>, and sound is rednered via <i>SoundCard</i>.</d></li>
-                        <li><n>OggVorbisDecoder</n><d>play Ogg/Vorbis streams from <i>IFile</i>, thru <i>SoundCard</i>.</d></li>
-                        <li><n>MoviePlayer</n><d>high-level fullscreen movie player.</d></li>
+                        <li><n>DSMedia</n><d>Plays movie using Microsoft Direct Show filters.</d></li>
+                        <li><n>OggVorbisDecoder</n><d>Plays Ogg/Vorbis streams.</d></li>
+                        <li><n>MoviePlayer</n><d>High-level fullscreen player.</d></li>
                     </ul>
+                    Decoders are fed with data received thru <i>IFile</i> interface, and
+                    decoded output is rendered thru <i>Surface</i> and <i>SampleData</i> interfaces.
+                    This way we can have movies in widgets, or even on textures.
                 </p>
             </body>
         </chapter>
@@ -416,24 +416,25 @@
             <title><i>Useless/XML</i></title>
             <name>XML</name>
             <body>
-                <p>The module defines components:
+                <p>XML components.
                     <ul>
-                        <li><n>CreateFromXML()</n><d>global XML factory function. It will parse XML string, and apply deep scan function on resultant XML tree, which fires functions registered by node names.</d></li>
-                        <li><n>CreateFromXMLFile()</n><d>global XML factory function. First it reads whole file to memory, and then works same as <i>CreateFromXML()</i>.</d></li>
-                        <li><n>RegisterXMLCreator</n><d>class used to register supplied function automatically via inclusion of header file.</d></li>
-                        <li><n>ResourceQuery&lt; _Type &gt;</n><d>class used to obtain resource of given type <i>_Type</i>.</d></li>
-                        <li><n>WidgetResource&lt; _Type &gt;</n><d>class used to obtain resource of given <b>widget</b> type <i>_Type</i>.</d></li>
-                        <li><n>ImageResource</n><d>class used to obtain resource of type <i>SPointer&lt; ImageBase &gt;</i>.</d></li>
-                        <li><n>SkinResource</n><d>class used to obtain resource of type <i>SPointer&lt; Skin &gt;</i>.</d></li>
-                        <li><n>SkinManResource</n><d>class used to obtain resource of type <i>SPointer&lt; SkinMan &gt;</i>.</d></li>
-                        <li><n>FontResource</n><d>class used to obtain resource of type <i>Font</i>.</d></li>
-                        <li><n>FontSetResource</n><d>class used to obtain resource of type <i>FontSet</i>.</d></li>
-                        <li><n>SoundCardResource</n><d>class used to obtain resource of type <i>SPointer&lt; SoundCard &gt;</i>.</d></li>
-                        <li><n>SampleResource</n><d>class used to obtain resource of type <i>SPointer&lt; Sample &gt;</i>.</d></li>
-                        <li><n>ScreenResource</n><d>class used to obtain resource of type <i>SPointer&lt; Screen&gt;</i>.</d></li>
-                        <li><n>GUIMasterResource</n><d>class used to obtain resource of type <i>SPointer&lt; GUIMaster &gt;</i>.</d></li>
-                        <li><n>MakeText</n><d>class used to get text. It tries to get <i>Text</i> from resources. In case of failure name of text is used instead of real resource.</d></li>
-                        <li><n>MakeImage</n><d>class used to get image. It tries to get <i>SPointer&lt; ImageBase &gt;</i> from resources. In case of failure new image is being created and added to resources, and then used instead of real resource. This function also gives possibility to create new image from rectangular part of the existing one (i.e. <code lang="cpp"><s>Useless::MakeImage</s><o>(</o><v>"myImage(48,48,100,32)"</v><o>)</o>;</code>).</d></li>
+                        <li><n>CreateFromXML()</n><d>Creates resources described in XML string.</d></li>
+                        <li><n>CreateFromXMLFile()</n><d>Creates resources described in XML file.</d></li>
+                        <li><n>RegisterXMLCreator</n><d>Registers factory function for XML node.
+                                <br/>Function is used to create resource from XML node.</d></li>
+                        <li><n>ResourceQuery&lt; _Type &gt;</n><d>Allows getting regular resource of given <i>_Type</i>.</d></li>
+                        <li><n>WidgetResource&lt; _Type &gt;</n><d>Allows getting widget resource of given <i>_Type</i>.</d></li>
+                        <li><n>ImageResource</n><d>Allows getting image resource.</d></li>
+                        <li><n>SkinResource</n><d>Allows gettting skin resource.</d></li>
+                        <li><n>SkinManResource</n><d>Allows getting set-of-skins resource.</d></li>
+                        <li><n>FontResource</n><d>Allows getting font resource.</d></li>
+                        <li><n>FontSetResource</n><d>Allows getting set-of-fonts resource.</d></li>
+                        <li><n>SoundCardResource</n><d>Allows getting sound device resource.</d></li>
+                        <li><n>SampleResource</n><d>Allows getting sound buffer resource.</d></li>
+                        <li><n>ScreenResource</n><d>Allows getting graphic device resource.</d></li>
+                        <li><n>GUIMasterResource</n><d>Allows getting gui manager resource.</d></li>
+                        <li><n>MakeText</n><d>Gets localized text resource.</d></li>
+                        <li><n>MakeImage</n><d>Gets image resource, or creates sub-image from image resource.</d></li>
                     </ul>
                 </p>
             </body>
