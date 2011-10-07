@@ -4,6 +4,8 @@
 
 namespace Useless {
 
+#pragma warning(disable:4355)
+
 ListedTextItems::ListedTextItems( const FontSet &fonts, const SkinMan &skins, int shift ):
     _skins( this, skins), _fonts(fonts), _shift(shift)
 {

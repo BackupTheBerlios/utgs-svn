@@ -9,7 +9,6 @@
 #include <zmouse.h>
 
 #include <d3d9.h>
-#include <ddraw.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

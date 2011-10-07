@@ -19,6 +19,8 @@
 #   define USELESS_CONSTRUCTOR_SPECIALIZATION
 #   define USELESS_TYPENAME typename
 #   define USELESS_STRUCT struct
+#else
+#   error You must define in the project one of: TEMPLATES_GCC29, TEMPLATES_MSVC70, TEMPLATES_MSVC100!!!
 
 #endif
 

@@ -4,7 +4,10 @@
 #include "Useless/File/CryptoIFile.h"
 #include "Useless/File/CryptoOFile.h"
 #include "Useless/File/Hatchery.h"
-#include <adler32.h>
+
+#ifdef USELESS_HAS_CRYPTOPP
+#   include <adler32.h>
+#endif
 
 namespace Useless {
 
@@ -29,13 +32,15 @@ namespace Useless {
         return htc;
     }
     
+#ifdef USELESS_HAS_CRYPTOPP
     int CalculateDigest ( const void *d, size_t s )
     {
         int out;
         CryptoPP::Adler32().CalculateDigest( (byte*)&out, (byte*)d, s );
         return out;
     }
-    
+#endif
+
     void AlignForEncryption  ( std::string &d, char c )
     {
         int remainAlgn = d.length() % HatcheryCipher::BLOCKSIZE;        

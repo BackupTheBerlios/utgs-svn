@@ -2104,7 +2104,8 @@ HRESULT CImagePalette::MakeIdentityPalette(PALETTEENTRY *pEntry,INT iColours, LP
     // I am not sure what will be in the flags fields for the system entries
 
     UINT Result = GetSystemPaletteEntries(hdc,0,PalLoCount,SystemEntries);
-    for (UINT Count = 0;Count < Result;Count++) {
+    UINT Count;
+    for (Count = 0;Count < Result;Count++) {
         if (SystemEntries[Count].peRed != pEntry[Count].peRed ||
                 SystemEntries[Count].peGreen != pEntry[Count].peGreen ||
                     SystemEntries[Count].peBlue != pEntry[Count].peBlue) {

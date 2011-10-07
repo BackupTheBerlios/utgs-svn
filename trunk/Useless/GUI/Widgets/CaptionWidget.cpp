@@ -4,6 +4,8 @@
 
 namespace Useless {
 
+#pragma warning (disable:4355)
+
 CaptionWidget::CaptionWidget( const Text    &caption, 
                               const SkinMan &skins, 
                               const FontSet &fonts,

@@ -9,7 +9,7 @@
 #   define __USE_RIJNDAEL__
 //#define __USE_BLOWFISH__
 #else
-#pragma message("Get CryptoPP library and set USELESS_HAS_CRYPTOPP");
+#pragma message("Get CryptoPP library and set USELESS_HAS_CRYPTOPP")
 #   define __USE_XOR__
 #endif
 #define __ENCRYPT_DATA__

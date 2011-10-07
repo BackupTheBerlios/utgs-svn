@@ -208,9 +208,9 @@ namespace XMLProgram {
             ;
 
         add_methods( this )
-            .def("IsFinished", &DSMedia::IsFinished )
-            .def("GetImage", &DSMedia::GetImage )
-            .def("SetVolume", &DSMedia::SetVolume, "volume" )
+            .def("IsFinished", &DSMediaProxy::IsFinished )
+            .def("GetImage", &DSMediaProxy::GetImage )
+            .def("SetVolume", &DSMediaProxy::SetVolume, "volume" )
             ;
     }
 

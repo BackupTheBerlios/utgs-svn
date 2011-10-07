@@ -31,11 +31,16 @@ int get_argc()
     return Useless::Application::GetArgC();
 }
 
+char op_convert(wchar_t w)
+{
+    return (char)w;
+}
+
 std::string get_argv( int i )
 {
     std::wstring wname( Useless::Application::GetArgV()[i] );
     std::string name( wname.size(), 0 );
-    std::copy( wname.begin(), wname.end(), name.begin() );
+    std::transform( wname.begin(), wname.end(), name.begin(), &op_convert );
     return name;
 }
 

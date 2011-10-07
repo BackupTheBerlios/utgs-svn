@@ -4,8 +4,6 @@
 #include "Useless/Graphic/Device/Screen.h"
 #include "Useless/Graphic/Device/GL/wGL/WGLSurface.h"
 
-#pragma comment (lib,"ddraw.lib")
-
 namespace Useless {
 
     class USELESS_API WGLScreen : public Screen

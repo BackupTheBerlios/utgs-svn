@@ -7,11 +7,6 @@
 
 namespace Useless {
 
-    extern USELESS_API bool G_EnableDDrawScr;
-
-    // Used to start fullscreen via DDraw.
-    IDirectDraw7 *G_pDDraw = 0;
-
     WGLScreen::WGLScreen( const char *title): Window( title ), m_active( false )
     {
 
@@ -45,21 +40,13 @@ namespace Useless {
 
         SetWindowLong( hwnd, GWL_STYLE, WS_POPUP);
 
-        if ( !G_EnableDDrawScr )
-        {
-            InitDevMode( width, height, bpp, refresh );
-            _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );
+        InitDevMode( width, height, bpp, refresh );
+        _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );
             
-            // Signals below are used only in GDI fullscreen.
-            // They are not available under DDraw fullscreen.
-            Tie2Signal( OnActivate, this, &WGLScreen::SlotFullscreenActive );
-            Tie2Signal( OnDeactivate, this, &WGLScreen::SlotFullscreenInactive );
-        }
-        else
-        {
-            InitDDraw( width, height, bpp, refresh );
-			_glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );    
-        }
+        // Signals below are used only in GDI fullscreen.
+        // They are not available under DDraw fullscreen.
+        Tie2Signal( OnActivate, this, &WGLScreen::SlotFullscreenActive );
+        Tie2Signal( OnDeactivate, this, &WGLScreen::SlotFullscreenInactive );
         
         _glContextSurface->GetProperties( &m_prop );
 
@@ -213,17 +200,6 @@ namespace Useless {
         m_devmode.dmFields |= DM_DISPLAYFREQUENCY;
     }
 
-    void WGLScreen::InitDDraw( int width, int height, int bpp, float refresh )
-    {
-        HWND hwnd = Window::GetHandle();
-        HDC hdc = GetDC( hwnd );
-        
-        DirectDrawCreateEx( NULL, (void**)&G_pDDraw, IID_IDirectDraw7, NULL);
-        SetWindowLong( hwnd, GWL_STYLE, WS_POPUP);
-        G_pDDraw->SetCooperativeLevel( hwnd, DDSCL_EXCLUSIVE|DDSCL_FULLSCREEN);
-        G_pDDraw->SetDisplayMode( width, height, bpp, refresh, 0);
-    }
-
     void WGLScreen::SlotFullscreenActive()
     {
         if ( m_active )
@@ -231,7 +207,7 @@ namespace Useless {
             return;
         }
         m_active = true;
-        if ( !m_windowed && !G_EnableDDrawScr )
+        if ( !m_windowed )
         {
             Window::Resize( m_prop.width, m_prop.height );
             Window::Reposition( 0, 0);
@@ -258,7 +234,7 @@ namespace Useless {
             return;
         }
         m_active = false;
-        if ( !m_windowed && !G_EnableDDrawScr )
+        if ( !m_windowed )
         {
             Minimize();
             ::ChangeDisplaySettingsEx( NULL, NULL, NULL, 0, NULL );
@@ -281,12 +257,6 @@ namespace Useless {
             HDC hdc = _glContextSurface->_devContext;
             _glContextSurface.Reset();
             ::ReleaseDC( GetHandle(), hdc );
-        }
-
-        if ( 0 != G_pDDraw )
-        {
-            G_pDDraw->Release();
-            G_pDDraw = 0;
         }
     }
 

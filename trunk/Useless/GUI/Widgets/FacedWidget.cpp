@@ -4,6 +4,8 @@
 
 namespace Useless {
 
+#pragma warning(disable:4355)
+
 FacedWidget::FacedWidget( const SkinMan &skinman ): _skin_manager( this, skinman )
 {
     SetDimensions( _skin_manager.GetWidth(), _skin_manager.GetHeight() );

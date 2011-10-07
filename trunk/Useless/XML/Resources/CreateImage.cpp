@@ -163,6 +163,8 @@ namespace Useless {
                 SPointer< IGraphics > spImage = QueryImage( img + '[' + from_integer< char >(i) + ']' ).Copy( rect );
                 Resources::Instance().Insert( "images", id, new AnyResource< SPointer< ImageBase > >( dynamic_cast< ImageBase *>( spImage.Release() )));
             }
+
+            return NULL;
         }
         else
         {

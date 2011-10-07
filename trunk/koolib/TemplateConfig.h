@@ -19,7 +19,9 @@
 #   define KOOLIB_CONSTRUCTOR_SPECIALIZATION
 #   define KOOLIB_TYPENAME typename
 #   define KOOLIB_STRUCT struct
-
+#else
+#   error You must define in the project one of: TEMPLATES_GCC29, TEMPLATES_MSVC70, TEMPLATES_MSVC100!!!
+#
 #endif
 
 

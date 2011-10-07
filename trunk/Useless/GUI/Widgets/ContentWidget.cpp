@@ -9,6 +9,8 @@
 
 namespace Useless {
 
+#pragma warning (disable:4355)
+
 ContentWidget::ContentWidget( const InternalPointer< DataObject > &content,
                               const SkinMan &skins,
                               const FontSet &fonts,

@@ -186,11 +186,18 @@ namespace Useless {
         ::EndPage( m_hdc );
     }
 
+    TCHAR op_convert(wchar_t w)
+    {
+        return (TCHAR)w;
+    }
+
     GDIDocument::GDIDocument( ::HDC hdc, const std::basic_string< wchar_t > &title ): m_hdc( hdc )
     {
+        std::basic_string<TCHAR> title_str;
+        std::transform(title.begin(), title.end(), std::back_inserter(title_str), &op_convert);
         std::memset( &m_doc, 0, sizeof( ::DOCINFO ));
         m_doc.cbSize = sizeof( ::DOCINFO );
-        m_doc.lpszDocName = title.c_str();
+        m_doc.lpszDocName = title_str.c_str();
         m_doc.lpszOutput = NULL;
         m_doc.lpszDatatype = NULL;
         m_doc.fwType = 0;

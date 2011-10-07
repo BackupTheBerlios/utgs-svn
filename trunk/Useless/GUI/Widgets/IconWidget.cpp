@@ -4,6 +4,8 @@
 
 namespace Useless {
 
+#pragma warning (disable:4355)
+
 IconWidget::IconWidget( const SkinMan &skins,
                         const SkinMan &icons,
                         int   distance  ):

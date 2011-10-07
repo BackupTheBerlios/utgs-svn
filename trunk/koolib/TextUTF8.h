@@ -99,10 +99,15 @@ struct TextAnsi : std::wstring
     
     operator std::string() const { return as_string(); }
 
+    static char op_convert(wchar_t w)
+    {
+        return (char)w;
+    }
+
     std::string as_string() const
     {
         std::string value;
-        std::copy( begin(), end(), std::inserter( value, value.end()));
+        std::transform( begin(), end(), std::inserter( value, value.end()), &op_convert);
         return value;
     }
 

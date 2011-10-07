@@ -56,6 +56,11 @@ bool StdIFileSystem::IsDir( const std::string &name )
     return (buf.st_mode & _S_IFDIR);
 }
 
+char op_convert(TCHAR tc)
+{
+    return (char)tc;
+}
+
 void StdIFileSystem::ScanDir( ScanCBType cb, const std::string &name, bool recursive )
 {
     std::string findname;
@@ -83,8 +88,8 @@ void StdIFileSystem::ScanDir( ScanCBType cb, const std::string &name, bool recur
 			size_t nameLen = strlen(finddata.cFileName);
 #endif
             std::string foundname;
-            std::copy( findName, findName+nameLen,
-                     std::back_inserter(foundname));
+            std::transform( findName, findName+nameLen,
+                     std::back_inserter(foundname), &op_convert);
             
             if((foundname!=".") && (foundname!=".."))
             {

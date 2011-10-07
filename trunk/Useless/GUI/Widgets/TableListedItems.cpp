@@ -4,6 +4,8 @@
 
 namespace Useless {
 
+#pragma warning(disable:4355)
+
 TableListedItems::TableListedItems(const ArraySkin &table_skin, const SkinMan &state_skins)
     : TableWidget(table_skin), DataTableWidget(table_skin), _skins(this, state_skins)
 {

@@ -45,6 +45,8 @@ namespace {
 
 namespace Useless
 {
+#pragma warning(disable:4355)
+
     AdvTableSystemWidget::AdvTableSystemWidget
 
         ( const SkinMan             * content_button_skins,
