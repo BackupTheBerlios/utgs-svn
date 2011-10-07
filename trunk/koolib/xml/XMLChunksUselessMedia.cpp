@@ -1,4 +1,4 @@
-#include <XMLChunksUseless.h>
+#include "XMLChunksUseless.h"
 
 #include <koolib/xml/XMLKompiler.h> //used for faster symbol access
 #include <koolib/xml/XMLChunksUseless.h>
@@ -31,15 +31,15 @@ namespace XMLProgram {
             ;
 
         add_methods( this )
-            .def("QueryPixelColor", QueryPixelColor, "x", "y" )
-            .def("CreateSubImage", CreateSubImage, "area" )
-            .def("WriteImage", WriteImage, "file" )
+            .def("QueryPixelColor", &ImageProxy::QueryPixelColor, "x", "y" )
+            .def("CreateSubImage", &ImageProxy::CreateSubImage, "area" )
+            .def("WriteImage", &ImageProxy::WriteImage, "file" )
             ;
 
         if ( dynamic_cast< OGraphics *>( spImage.get() ))
         {
             add_methods( this )
-                .def("CreatePainter", CreatePainter )
+                .def("CreatePainter", &ImageProxy::CreatePainter )
                 ;
         }
     }
@@ -116,7 +116,7 @@ namespace XMLProgram {
     SampleProxy::SampleProxy( Useless::SPointer< Useless::Sample > spSample ): _spSample( spSample )
     {
         add_methods( this )
-            .def("GetDuration", GetDuration )
+            .def("GetDuration", &SampleProxy::GetDuration )
             ;
     }
 
@@ -141,12 +141,12 @@ namespace XMLProgram {
     ChannelProxy::ChannelProxy( const Useless::Channel &channel ): _channel( channel )
     {
         add_methods( this )
-            .def("Play", Play)
-            .def("LoopPlay", LoopPlay)
-            .def("Stop", Stop)
-            .def("SetVolume", SetVolume, "volume")
-            .def("SetPan", SetPan, "pan")
-            .def("IsPlaying", IsPlaying )
+            .def("Play", &ChannelProxy::Play)
+            .def("LoopPlay", &ChannelProxy::LoopPlay)
+            .def("Stop", &ChannelProxy::Stop)
+            .def("SetVolume", &ChannelProxy::SetVolume, "volume")
+            .def("SetPan", &ChannelProxy::SetPan, "pan")
+            .def("IsPlaying", &ChannelProxy::IsPlaying )
             ;
     }
 
@@ -208,9 +208,9 @@ namespace XMLProgram {
             ;
 
         add_methods( this )
-            .def("IsFinished", IsFinished )
-            .def("GetImage", GetImage )
-            .def("SetVolume", SetVolume, "volume" )
+            .def("IsFinished", &DSMedia::IsFinished )
+            .def("GetImage", &DSMedia::GetImage )
+            .def("SetVolume", &DSMedia::SetVolume, "volume" )
             ;
     }
 
@@ -255,7 +255,7 @@ namespace XMLProgram {
             ;
 
         add_methods( this )
-            .def("GetChannel", GetChannel )
+            .def("GetChannel", &OggVorbisProxy::GetChannel )
             ;
     }
 

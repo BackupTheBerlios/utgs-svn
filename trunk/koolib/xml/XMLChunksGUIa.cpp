@@ -94,7 +94,7 @@ namespace XMLProgram {
                 , const _SignalParametrizer &para )
             : _parametrizer( para ), XMLCodeChunk( node ), _fsm( fsm )
         {
-            _fid = signal.TieVoid( this, _Execute );
+            _fid = signal.TieVoid( this, &XMLSignalSlot2::_Execute );
         }
 
         void _Execute()

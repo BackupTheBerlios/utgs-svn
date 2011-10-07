@@ -53,7 +53,7 @@ namespace XMLProgram {
                 ;
 
             add_methods( this )
-                .def("BlitImage", BlitImage )
+                .def("BlitImage", &GDIPageProxy::BlitImage )
                 ;
         }
         
@@ -86,7 +86,7 @@ namespace XMLProgram {
                 ;
 
             add_methods( this )
-                .def("CreatePage", CreatePage )
+                .def("CreatePage", &GDIDocumentProxy::CreatePage )
                 ;
         }
 
@@ -103,7 +103,7 @@ namespace XMLProgram {
         GDIPrinterProxy( SPointer< GDIPrinter > p ): m_printer( p )
         {
             add_methods( this )
-                .def("CreateDocument", CreateDocument, "title" )
+                .def("CreateDocument", &GDIPrinterProxy::CreateDocument, "title" )
                 .add("sizeOnPaperX", make_value_chunk( m_printer->m_sizeOnPaperX ))
                 .add("sizeOnPaperY", make_value_chunk( m_printer->m_sizeOnPaperY ))
                 .add("xLeft", make_value_chunk( m_printer->m_xLeft ))
@@ -151,33 +151,33 @@ namespace XMLProgram {
             }
 
             add_methods( this )
-                .def("CirclePoint", CirclePoint, "i", "n", "start", "quaterArea")
-                .def("GetColorByName", GetColorByName, "name")
-                .def("MakeRGB", MakeRGB, "red", "green", "blue")
-                .def("MakeRGBA", MakeRGBA, "red", "green", "blue", "alpha")
-                .def("GetKeyCode", GetKeyCode, "name")
-                .def("GetKeyName", GetKeyName, "code")
-                .def("SetInputLocale", SetInputLocale, "name")
-                .def("CreatePointList", CreatePointList )
-                .def("CreateRectList", CreateRectList )
-                .def("CreateScreen", CreateScreen )
-                .def("CreatePrinter", CreatePrinter )
-                .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
-                .def("CreateImage", CreateImage )
-                .def("CreateSample", CreateSample, "file" )
-                .def("CreateChannel", CreateChannel )
-                .def("CreateOggVorbis", CreateOggVorbis, "file")
-                .def("CreateVideo", CreateVideo, "file")
-                .def("CreateMovie", CreateMovie, "file")
-                .def("CreateMovie2", CreateMovie2, "file", "audio")
-                .def("CreateFontPainter", CreateFontPainter )
-                .def("IsDir", IsDir, "path")
-                .def("FileExists", FileExists, "path")
-                .def("ListFiles", ListFiles, "path")
-                .def("ReadFile", ReadFile )
-                .def("WriteFile", WriteFile )
-                .def("ToXMLString", ToXMLString )
-                .def("FromXMLString", FromXMLString )
+                .def("CirclePoint", &USELESS_TK::CirclePoint, "i", "n", "start", "quaterArea")
+                .def("GetColorByName", &USELESS_TK::GetColorByName, "name")
+                .def("MakeRGB", &USELESS_TK::MakeRGB, "red", "green", "blue")
+                .def("MakeRGBA", &USELESS_TK::MakeRGBA, "red", "green", "blue", "alpha")
+                .def("GetKeyCode", &USELESS_TK::GetKeyCode, "name")
+                .def("GetKeyName", &USELESS_TK::GetKeyName, "code")
+                .def("SetInputLocale", &USELESS_TK::SetInputLocale, "name")
+                .def("CreatePointList", &USELESS_TK::CreatePointList )
+                .def("CreateRectList", &USELESS_TK::CreateRectList )
+                .def("CreateScreen", &USELESS_TK::CreateScreen )
+                .def("CreatePrinter", &USELESS_TK::CreatePrinter )
+                .def("CreateImageBuffer", &USELESS_TK::CreateImageBuffer, "width", "height")
+                .def("CreateImage", &USELESS_TK::CreateImage )
+                .def("CreateSample", &USELESS_TK::CreateSample, "file" )
+                .def("CreateChannel", &USELESS_TK::CreateChannel )
+                .def("CreateOggVorbis", &USELESS_TK::CreateOggVorbis, "file")
+                .def("CreateVideo", &USELESS_TK::CreateVideo, "file")
+                .def("CreateMovie", &USELESS_TK::CreateMovie, "file")
+                .def("CreateMovie2", &USELESS_TK::CreateMovie2, "file", "audio")
+                .def("CreateFontPainter", &USELESS_TK::CreateFontPainter )
+                .def("IsDir", &USELESS_TK::IsDir, "path")
+                .def("FileExists", &USELESS_TK::FileExists, "path")
+                .def("ListFiles", &USELESS_TK::ListFiles, "path")
+                .def("ReadFile", &USELESS_TK::ReadFile )
+                .def("WriteFile", &USELESS_TK::WriteFile )
+                .def("ToXMLString", &USELESS_TK::ToXMLString )
+                .def("FromXMLString", &USELESS_TK::FromXMLString )
                 ;
         }
 
@@ -616,17 +616,17 @@ namespace XMLProgram {
         USELESS_RESOURCES::USELESS_RESOURCES( Node node, ExecutionState &state )
         {
             add_methods( this )
-                .def("GetScreen", GetScreen, "name" )
-                .def("GetImage", GetImage, "name" )
-                .def("GetSample", GetSample, "name" )
-                .def("GetFont", GetFont, "name" )
-                .def("GetSkin", GetSkin, "name" )
-                .def("GetWidget", GetWidget, "name" )
-                .def("GetLayout", GetLayout, "name" )
-                .def("GetWorkspace", GetWorkspace, "name" )
-                .def("RaiseEvent", RaiseEvent, "name", "arg" )
-                .def("CreateFromXMLString", CreateFromXMLString )
-                .def("KillResources", KillResources, "category", "name", "recursive" )
+                .def("GetScreen", &USELESS_RESOURCES::GetScreen, "name" )
+                .def("GetImage", &USELESS_RESOURCES::GetImage, "name" )
+                .def("GetSample", &USELESS_RESOURCES::GetSample, "name" )
+                .def("GetFont", &USELESS_RESOURCES::GetFont, "name" )
+                .def("GetSkin", &USELESS_RESOURCES::GetSkin, "name" )
+                .def("GetWidget", &USELESS_RESOURCES::GetWidget, "name" )
+                .def("GetLayout", &USELESS_RESOURCES::GetLayout, "name" )
+                .def("GetWorkspace", &USELESS_RESOURCES::GetWorkspace, "name" )
+                .def("RaiseEvent", &USELESS_RESOURCES::RaiseEvent, "name", "arg" )
+                .def("CreateFromXMLString", &USELESS_RESOURCES::CreateFromXMLString )
+                .def("KillResources", &USELESS_RESOURCES::KillResources, "category", "name", "recursive" )
                 ;
         }
 

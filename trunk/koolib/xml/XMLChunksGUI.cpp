@@ -390,7 +390,7 @@ namespace XMLFactory {
                             , new SignalFIDChunk(
                                 Tie2Signal( button->OnClick[0]
                                     , guiOpenDialogLeave
-                                    , GuiOpenDialog_Leave::OnSignalBegin ) ));
+                                    , &GuiOpenDialog_Leave::OnSignalBegin ) ));
                 }
                 catch( Useless::Error &e )
                 {
@@ -467,7 +467,7 @@ namespace XMLFactory {
                         , new SignalFIDChunk(
                             Tie2Signal( button->OnClick[0]
                                 , guiOpenDialogLeave
-                                , GuiOpenDialog_Leave::OnSignalFinish ) ));
+                                , &GuiOpenDialog_Leave::OnSignalFinish ) ));
             }
         }
        
@@ -479,7 +479,7 @@ namespace XMLFactory {
                 , new SignalFIDChunk(
                     Tie2Signal( popup->OnVisible
                         , guiOpenDialogLeave
-                        , GuiOpenDialog_Leave::OnVisibility ) ));
+                        , &GuiOpenDialog_Leave::OnVisibility ) ));
 
 
         // Show dialog :-)

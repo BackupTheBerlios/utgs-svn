@@ -98,8 +98,12 @@ namespace Useless {
             }
         }
     }
+};//Useless
 
 #else
+
+namespace Useless {
+
     //TODO: Get Boost.Serialization.Utf8 library and set USELESS_HAS_BOOST_SERIALIZATION flag.
 
     void ReadUtf8( std::wstring &wstr, const std::string &strIn )
@@ -113,7 +117,7 @@ namespace Useless {
         std::copy( wstr.begin(), wstr.end(), std::inserter( strOut, strOut.end()));
     }
 
+};//Useless
 #endif
 
     
-};//Useless

@@ -364,10 +364,10 @@ namespace Dynamo {
             if ( !_phPaint.get() )
             {
                 if ( _prArea ) { 
-                    _sidPaint = Useless::Tie2Signal( _prArea->OnPaint, this, Repaint );
+                    _sidPaint = Useless::Tie2Signal( _prArea->OnPaint, this, &CWidget::Repaint );
                 }
                 if ( _prCompound ) {
-                    _sidPaint = Useless::Tie2Signal( _prCompound->OnPaint, this, Repaint );
+                    _sidPaint = Useless::Tie2Signal( _prCompound->OnPaint, this, &CWidget::Repaint );
                 }
             }
             _phPaint = hook;

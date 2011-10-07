@@ -42,13 +42,13 @@ namespace XMLProgram {
 
         XMLFSMObject()
         {
-            _scope.add( Tie2Signal( Application::OnUpdate, this, OnAppUpdate ));
-            _scope.add( Tie2Signal( Application::OnIdle, this, OnAppIdle ));
+            _scope.add( Tie2Signal( Application::OnUpdate, this, &XMLFSMObject::OnAppUpdate ));
+            _scope.add( Tie2Signal( Application::OnIdle, this, &XMLFSMObject::OnAppIdle ));
 
             add_methods_block( "__application__", this, this )
-                .def("Terminate", Terminate)
-                .def("SetEncoding", SetEncoding, "name")
-                .def("SetIdleDT", SetIdleDT, "timeDelta")
+                .def("Terminate", &XMLFSMObject::Terminate)
+                .def("SetEncoding", &XMLFSMObject::SetEncoding, "name")
+                .def("SetIdleDT", &XMLFSMObject::SetIdleDT, "timeDelta")
                 ;
 
             Window &wnd = **ScreenResource("system","screen");
@@ -67,13 +67,13 @@ namespace XMLProgram {
                 .def("AllowCursorWrapping", &Window::AllowCursorWrapping, "allow" )
                 ;
 
-            _scope.add( Tie2Signal( wnd.OnIdle, this, OnWindowIdle ));
-            _scope.add( Tie2Signal( wnd.OnActivate, this, OnWindowActivate ));
-            _scope.add( Tie2Signal( wnd.OnDeactivate, this, OnWindowDeactivate ));
-            _scope.add( Tie2Signal( wnd.OnKeyPress, this, OnWindowKeyPress ));
-            _scope.add( Tie2Signal( wnd.OnKeyRelease, this, OnWindowKeyRelease ));
-            _scope.add( Tie2Signal( wnd.OnMouseWheel, this, OnWindowMouseWheel ));
-            _scope.add( Tie2Signal( wnd.OnResize, this, OnWindowResize ));
+            _scope.add( Tie2Signal( wnd.OnIdle, this, &XMLFSMObject::OnWindowIdle ));
+            _scope.add( Tie2Signal( wnd.OnActivate, this, &XMLFSMObject::OnWindowActivate ));
+            _scope.add( Tie2Signal( wnd.OnDeactivate, this, &XMLFSMObject::OnWindowDeactivate ));
+            _scope.add( Tie2Signal( wnd.OnKeyPress, this, &XMLFSMObject::OnWindowKeyPress ));
+            _scope.add( Tie2Signal( wnd.OnKeyRelease, this, &XMLFSMObject::OnWindowKeyRelease ));
+            _scope.add( Tie2Signal( wnd.OnMouseWheel, this, &XMLFSMObject::OnWindowMouseWheel ));
+            _scope.add( Tie2Signal( wnd.OnResize, this, &XMLFSMObject::OnWindowResize ));
         }
 
         ~XMLFSMObject()

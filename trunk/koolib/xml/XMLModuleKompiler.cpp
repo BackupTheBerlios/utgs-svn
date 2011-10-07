@@ -29,10 +29,10 @@ namespace XMLProgram {
             KOMPILER()
             {
                 add_methods( this )
-                    .def("CompileString", CompileString)
-                    .def("CompileFile", CompileFile)
-                    .def("RunString", RunString)
-                    .def("RunFile", RunFile)
+                    .def("CompileString", &KOMPILER::CompileString)
+                    .def("CompileFile", &KOMPILER::CompileFile)
+                    .def("RunString", &KOMPILER::RunString)
+                    .def("RunFile", &KOMPILER::RunFile)
                     ;
             }
 

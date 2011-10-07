@@ -20,11 +20,11 @@ namespace XMLProgram {
     PointListProxy::PointListProxy( const Useless::PointList &points ): _points( points )
     {
         add_methods( this )
-            .def("AddPoint", AddPoint, "pos")
-            .def("SetPoint", SetPoint, "index", "pos")
-            .def("Size", Size)
-            .def("Empty", Empty)
-            .def("At", At, "index")
+            .def("AddPoint", &PointListProxy::AddPoint, "pos")
+            .def("SetPoint", &PointListProxy::SetPoint, "index", "pos")
+            .def("Size", &PointListProxy::Size)
+            .def("Empty", &PointListProxy::Empty)
+            .def("At", &PointListProxy::At, "index")
             ;
     }
 
@@ -75,12 +75,12 @@ namespace XMLProgram {
     RectListProxy::RectListProxy( const Useless::RectList &rects ): _rects( rects )
     {
         add_methods( this )
-            .def("AddRect", AddRect, "rect")
-            .def("SetRect", SetRect, "index", "rect")
-            .def("Size", Size)
-            .def("Empty", Empty)
-            .def("At", At, "index")
-            .def("Intersect", Intersect, "region")
+            .def("AddRect", &RectListProxy::AddRect, "rect")
+            .def("SetRect", &RectListProxy::SetRect, "index", "rect")
+            .def("Size", &RectListProxy::Size)
+            .def("Empty", &RectListProxy::Empty)
+            .def("At", &RectListProxy::At, "index")
+            .def("Intersect", &RectListProxy::Intersect, "region")
             ;
     }
 
@@ -193,11 +193,11 @@ namespace XMLProgram {
             ;
 
         add_methods( this )
-            .def("CreateImageBuffer", CreateImageBuffer, "width", "height")
-            .def("CreateSubImage", CreateSubImage, "area" )
-            .def("CreatePainter", CreatePainter )
-            .def("GetClipper", GetClipper, "crop" )
-            .def("WriteImage", WriteImage, "file" )
+            .def("CreateImageBuffer", &ScreenProxy::CreateImageBuffer, "width", "height")
+            .def("CreateSubImage", &ScreenProxy::CreateSubImage, "area" )
+            .def("CreatePainter", &ScreenProxy::CreatePainter )
+            .def("GetClipper", &ScreenProxy::GetClipper, "crop" )
+            .def("WriteImage", &ScreenProxy::WriteImage, "file" )
             ;
     }
 

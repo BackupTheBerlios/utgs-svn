@@ -610,7 +610,7 @@ namespace XMLProgram {
             : XMLCodeChunk( node )
             {
                 _fsm = state._currentFSM;
-                _fid = signal.TieVoid( this, _Execute );
+				_fid = signal.TieVoid( this, &XMLProgram::XMLSignalSlot::_Execute );
                 _block = pBlock;
             }
 

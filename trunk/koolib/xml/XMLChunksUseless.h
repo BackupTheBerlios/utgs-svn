@@ -526,7 +526,7 @@ namespace XMLProgram {
             UniversalSlot( const _SignalParametrizer &sigParam, IChunk *pChunk, ExecutionState &state )
                 : _sigParam( sigParam ), _pChunk( pChunk ), _fsm( state._currentFSM )
                 {
-                    _fid = _sigParam._pSignal->TieVoid( this, DoExecute );
+                    _fid = _sigParam._pSignal->TieVoid( this, &UniversalSlot::DoExecute );
                 }
 
             ~UniversalSlot()
@@ -619,8 +619,8 @@ namespace XMLProgram {
             SignalChunk( SigType &s ): _s(s)
             {
                 add_methods( this )
-                    .def("Tie", Tie )
-                    .def("Send", Send )
+                    .def("Tie", &SignalChunk::Tie )
+                    .def("Send", &SignalChunk::Send )
                     ;
             }
 

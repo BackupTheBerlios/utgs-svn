@@ -145,7 +145,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
     Useless::Error ErrorLogInit("Start");
 
-    Useless::Application::Init( hInstance );
+	Useless::Application::InitParams initParams(hInstance, "Test Application");
+
+    Useless::Application::Init(&initParams);
 
     int r = 0;
     try {

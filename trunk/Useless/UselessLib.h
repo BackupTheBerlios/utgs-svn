@@ -44,8 +44,8 @@
 #   pragma comment (lib,"odbc32.lib")
 #   pragma comment (lib,"odbccp32.lib")
 
-#   pragma comment (lib,"d3d8.lib")
-#   pragma comment (lib,"d3dx.lib")
+#   pragma comment (lib,"d3d9.lib")
+#   pragma comment (lib,"d3dx9.lib")
 
 #   pragma comment (lib,"dxguid.lib")
 #   pragma comment (lib,"dsound.lib")

@@ -27,13 +27,13 @@ void DrawLine( PixelPtr pix_ptr,
         Point<float> p2 = pos2;
 
         std::vector< Edge::PointType > vcs;
-        vcs.push_back( p1 - p);
-        vcs.push_back( p2 - p);
+        vcs.push_back(Edge::PointType(p1 - p));
+        vcs.push_back(Edge::PointType(p2 - p));
 
         p.x += (p.x>0)? 0.5 : -0.5;
         p.y += (p.y>0)? 0.5 : -0.5;
-        vcs.push_back( p2 + p);
-        vcs.push_back( p1 + p);
+        vcs.push_back(Edge::PointType(p2 + p));
+        vcs.push_back(Edge::PointType(p1 + p));
     
         PaintPoly( pix_ptr, cRGB, vcs );
     }
@@ -69,16 +69,16 @@ void DrawLine( PixelPtr pix_ptr,
             p*=(float)(((float)line_width)/2.0);
             p/=l;
 
-            if ( vcs.empty() ) { vcs.push_back( p1 - p); }
+            if ( vcs.empty() ) { vcs.push_back(Edge::PointType(p1 - p)); }
             *vcs.rbegin() = (*vcs.rbegin() + (p1 - p))/2.0f;
-            vcs.push_back( p2 - p);
+            vcs.push_back(Edge::PointType(p2 - p));
 
             p.x += (p.x>0)? 0.5 : -0.5;
             p.y += (p.y>0)? 0.5 : -0.5;
 
-            if ( vcs_e.empty() ) { vcs_e.push_back( p1 + p); }
+            if ( vcs_e.empty() ) { vcs_e.push_back(Edge::PointType(p1 + p)); }
             *vcs_e.rbegin() = (*vcs_e.rbegin() + (p1 + p))/2.0f;
-            vcs_e.push_back( p2 + p);
+            vcs_e.push_back(Edge::PointType(p2 + p));
         }
         std::copy( vcs_e.rbegin(), vcs_e.rend(), std::back_inserter(vcs) );
         assert( vcs.size()%2 == 0 );

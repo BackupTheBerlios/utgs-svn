@@ -8,7 +8,7 @@
 #include <winuser.h>
 #include <zmouse.h>
 
-#include <d3d.h>
+#include <d3d9.h>
 #include <ddraw.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -20,6 +20,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <iterator>
 
 #include "Useless/UselessConfig.h"
 

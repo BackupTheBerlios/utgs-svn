@@ -19,22 +19,22 @@ namespace XMLProgram {
             MATH()
             {
                 add_methods( this )
-                    .def("sin", sin, "x")
-                    .def("cos", cos, "x")
-                    .def("asin", asin, "x")
-                    .def("acos", acos, "x")
-                    .def("atan2", atan2, "x", "y")
-                    .def("fmin", fmin, "a", "b")
-                    .def("fmax", fmax, "a", "b")
-                    .def("min", min, "a", "b")
-                    .def("max", max, "a", "b")
-                    .def("ceil", ceil, "x")
-                    .def("floor", floor, "x")
-                    .def("mod", mod, "x", "n")
-                    .def("log", log, "a", "x")
-                    .def("exp", exp, "a", "x")
-                    .def("sign", sign, "x")
-                    .def("abs", abs, "x")
+                    .def("sin", &MATH::sin, "x")
+                    .def("cos", &MATH::cos, "x")
+                    .def("asin", &MATH::asin, "x")
+                    .def("acos", &MATH::acos, "x")
+                    .def("atan2", &MATH::atan2, "x", "y")
+                    .def("fmin", &MATH::fmin, "a", "b")
+                    .def("fmax", &MATH::fmax, "a", "b")
+                    .def("min", &MATH::min, "a", "b")
+                    .def("max", &MATH::max, "a", "b")
+                    .def("ceil", &MATH::ceil, "x")
+                    .def("floor", &MATH::floor, "x")
+                    .def("mod", &MATH::mod, "x", "n")
+                    .def("log", &MATH::log, "a", "x")
+                    .def("exp", &MATH::exp, "a", "x")
+                    .def("sign", &MATH::sign, "x")
+                    .def("abs", &MATH::abs, "x")
                     .add("PI", CreateValue( M_PI ))
                     .add("PI2", CreateValue( M_PI/2.0 ))
                     .add("PI4", CreateValue( M_PI/4.0 ))
@@ -86,9 +86,9 @@ namespace XMLProgram {
             RANDOM()
             {
                 add_methods( this )
-                    .def("SampleRange", SampleRange, "first", "last" )
-                    .def("Sample", Sample )
-                    .def("Shuffle", Shuffle )
+                    .def("SampleRange", &RANDOM::SampleRange, "first", "last" )
+                    .def("Sample", &RANDOM::Sample )
+                    .def("Shuffle", &RANDOM::Shuffle )
                     ;
             }
 
@@ -145,12 +145,12 @@ namespace XMLProgram {
             LIST()
             {
                 add_methods( this )
-                    .def("Size", Size )
-                    .def("At", At )
-                    .def("Sort", Sort )
-                    .def("Reverse", Reverse )
-                    .def("Last", Last )
-                    .def("LinkLast", LinkLast )
+                    .def("Size", &LIST::Size )
+                    .def("At", &LIST::At )
+                    .def("Sort", &LIST::Sort )
+                    .def("Reverse", &LIST::Reverse )
+                    .def("Last", &LIST::Last )
+                    .def("LinkLast", &LIST::LinkLast )
                     ;
             }
 
@@ -308,8 +308,8 @@ namespace XMLProgram {
                     .add("NL", CreateValue( TextUtf8(L"\n") ))
                     .add("CR", CreateValue( TextUtf8(L"\r") ))
                     .add("TS", CreateValue( TextUtf8(L"\t") ))
-                    .def_remap_1< int, TextUtf8 >("ToInteger", ToInteger, "char")
-                    .def("FromInteger", FromInteger, "index")
+                    .def_remap_1< int, TextUtf8 >("ToInteger", &CHARACTER::ToInteger, "char")
+                    .def("FromInteger", &CHARACTER::FromInteger, "index")
                     ;
             }
 
@@ -330,13 +330,13 @@ namespace XMLProgram {
             STRING()
             {
                 add_methods( this )
-                    .def_remap_1< int, TextUtf8 >("Length", Length, "text" )
-                    .def_remap_2< TextUtf8, TextUtf8, int >("At", At, "text", "index" )
-                    .def("Cat", Cat )
-                    .def("SmartSplit", SmartSplit )
-                    .def("find", find, "text", "pattern", "pos")
-                    .def("rfind", rfind, "text", "pattern", "pos")
-                    .def("substr", substr, "text", "start", "end")
+                    .def_remap_1< int, TextUtf8 >("Length", &STRING::Length, "text" )
+                    .def_remap_2< TextUtf8, TextUtf8, int >("At", &STRING::At, "text", "index" )
+                    .def("Cat", &STRING::Cat )
+                    .def("SmartSplit", &STRING::SmartSplit )
+                    .def("find", &STRING::find, "text", "pattern", "pos")
+                    .def("rfind", &STRING::rfind, "text", "pattern", "pos")
+                    .def("substr", &STRING::substr, "text", "start", "end")
                     ;
             }
 

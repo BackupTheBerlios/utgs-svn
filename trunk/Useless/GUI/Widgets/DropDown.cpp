@@ -31,7 +31,7 @@ void DropDown::Tie2Signals( IWEnum *p_list )
     _p_list = p_list;
     Tie2Signal( OnClick[0], this, &DropDown::Drop );
     Tie2Signal( OnCatch[0], this, &DropDown::DragDrop );
-    Tie2Signal( _p_list->Atom().OnVisible, this, MenuVisible );
+    Tie2Signal( _p_list->Atom().OnVisible, this, &DropDown::MenuVisible );
     Enumerator().OnChange.TieUnary
         ( this,
           &DropDown::SetContent,
@@ -93,7 +93,7 @@ void DropDown::Drop()
     int minimal_size = button_height * 5;
 
     /*-- show menu, that selected item covers button */
-    static amigaMenu = false;
+    static bool amigaMenu = false;
     if ( amigaMenu )
     {
         SetMenuHeight( minimal_size );
@@ -128,7 +128,7 @@ void DropDown::DragDrop()
 {
     Drop();
     static Pos where(0,0);
-    static jumpToSelected = false;
+    static bool jumpToSelected = false;
     int previous = Enumerator().GetSelected();
     if ( jumpToSelected )
     {

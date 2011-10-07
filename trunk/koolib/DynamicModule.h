@@ -20,6 +20,7 @@ last mod: $Id: $
 #define __INCLUDED_KOOLIB_DYNAMIC_MODULE_H__
 
 #include <string>
+#include <iterator>
 #include <Useless/Error/ErrorMessage.h>
 
 template< class _Module >

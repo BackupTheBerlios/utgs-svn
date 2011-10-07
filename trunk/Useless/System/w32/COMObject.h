@@ -23,7 +23,7 @@ template < class COMT > struct COMObject
     }
 
     /*! Add new reference to existing COMObject */
-    template<>
+    USELESS_CONSTRUCTOR_SPECIALIZATION
     COMObject( const COMObject &c )
     { 
         _ptr = c._ptr;
@@ -77,7 +77,7 @@ template < class COMT > struct COMObject
     }
 
     /*! Switch reference to other existing COM object */
-    template<>
+	USELESS_CONSTRUCTOR_SPECIALIZATION
     COMObject<COMT>& operator =( const COMObject<COMT> &c )
     {
         Release();

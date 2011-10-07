@@ -20,6 +20,7 @@
 #include <map>
 #include <windows.h>
 #include <string>
+#include <iterator>
 #include <algorithm>
 
 #include "Useless/Functional/Signal.h"

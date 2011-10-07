@@ -22,6 +22,7 @@ last mod: $Id: $
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <iterator>
 #include "koolib/koolibConfig.h"
 
 void ReadUtf8( std::wstring &, const std::string & );

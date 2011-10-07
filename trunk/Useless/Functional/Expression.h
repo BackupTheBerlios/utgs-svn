@@ -13,7 +13,7 @@ struct Evaluator
 {
     typedef T type;
     typedef A arg_type;
-    typedef UPType upper_type;
+    //typedef UPType upper_type;
 
     //-- type operator ()( const arg_type &a ) const; USER function
 };
@@ -25,7 +25,7 @@ struct Accumulator
 {
     typedef T type;
     typedef A arg_type;
-    typedef UPType upper_type;
+    //typedef UPType upper_type;
 
     type operator ()() { return _x; }
     //-- bool operator +=( arg_type a ); USER function tells if evaluation should continue
@@ -37,7 +37,7 @@ struct Accumulator
 /* Expression binary unit
 ------------------------------------------------------*/
 template< class LHS, class RHS, class Accum, class A >
-struct BinaryNode : public Evaluator< typename Accum::arg_type, A, USELESS_STRUCT BinaryNode >
+struct BinaryNode : public Evaluator< typename Accum::arg_type, A, USELESS_STRUCT BinaryNode<LHS, RHS, Accum, A> >
 {
     typedef LHS lhs_t;
     typedef RHS rhs_t;
@@ -124,7 +124,7 @@ struct Accum_NOT : public Accumulator< bool, bool, Accum_NOT >
 /* Dummy no operation node
 ---------------------------------------------------------*/
 template< class T, class A >
-struct NopNode : public Evaluator< T, A, USELESS_STRUCT NopNode >
+struct NopNode : public Evaluator< T, A, USELESS_STRUCT NopNode<T, A> >
 {
     type operator ()( const arg_type &a ) const { return type(); }
 };

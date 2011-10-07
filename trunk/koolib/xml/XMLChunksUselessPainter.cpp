@@ -1,4 +1,4 @@
-#include <XMLChunksUseless.h>
+#include "XMLChunksUseless.h"
 
 #include <koolib/xml/XMLKompiler.h> //used for faster symbol access
 #include <koolib/xml/XMLChunksUseless.h>
@@ -22,7 +22,7 @@ namespace XMLProgram {
     WidgetPainterProxy::WidgetPainterProxy( const WidgetPainter &painter ): _wpainter( painter ), PainterProxy( painter )
     {
         add_methods( this )
-            .def("RepaintWidget", RepaintWidget)
+            .def("RepaintWidget", &WidgetPainterProxy::RepaintWidget)
             ;
     }
 
@@ -44,23 +44,23 @@ namespace XMLProgram {
     PainterProxy::PainterProxy( const Painter &painter ):_painter( painter )
     {
         add_methods( this )
-            .def("Blit", Blit)
-            .def("FastBlit", FastBlit)
-            .def("FastDrawPolygon", FastDrawPolygon )
-            .def("FastMultiBlit", FastMultiBlit )
-            .def("FastFillRect", FastFillRect )
-            .def("FastDrawRect", FastDrawRect )
-            .def("FastDrawLine", FastDrawLine )
-            .def("FillRect", FillRect)
-            .def("DrawRect", DrawRect)
-            .def("DrawLine", DrawLine)
-            .def("DrawPolygon", DrawPolygon)
-            .def("MultiBlit", MultiBlit)
-            .def("SubCanvasPaint", SubCanvasPaint)
-            .def("GetClipper", GetClipper, "crop" )
-            .def("GetOffset", GetOffset )
-            .def("Clear", Clear, "color" )
-            .def("Intersect", Intersect, "crop" )
+            .def("Blit", &PainterProxy::Blit)
+            .def("FastBlit", &PainterProxy::FastBlit)
+            .def("FastDrawPolygon", &PainterProxy::FastDrawPolygon )
+            .def("FastMultiBlit", &PainterProxy::FastMultiBlit )
+            .def("FastFillRect", &PainterProxy::FastFillRect )
+            .def("FastDrawRect", &PainterProxy::FastDrawRect )
+            .def("FastDrawLine", &PainterProxy::FastDrawLine )
+            .def("FillRect", &PainterProxy::FillRect)
+            .def("DrawRect", &PainterProxy::DrawRect)
+            .def("DrawLine", &PainterProxy::DrawLine)
+            .def("DrawPolygon", &PainterProxy::DrawPolygon)
+            .def("MultiBlit", &PainterProxy::MultiBlit)
+            .def("SubCanvasPaint", &PainterProxy::SubCanvasPaint)
+            .def("GetClipper", &PainterProxy::GetClipper, "crop" )
+            .def("GetOffset", &PainterProxy::GetOffset )
+            .def("Clear", &PainterProxy::Clear, "color" )
+            .def("Intersect", &PainterProxy::Intersect, "crop" )
             ;
     }
 

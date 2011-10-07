@@ -141,7 +141,7 @@ public:
     //! Relatively adjust z-index.
     void Dive           ( int dz );
     //! Resize widget to fit alignment constrains.
-    void AlignSize      ( const Rect &offsetAndSize, const Pos &placement = Pos(0,0));
+	void AlignSize      ( const Rect &offsetAndSize, const Pos &placement = Pos(0,0));
     //@}
 
     ////////////////////////////////////////////////////////////////////

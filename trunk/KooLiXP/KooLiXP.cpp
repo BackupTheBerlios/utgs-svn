@@ -106,7 +106,7 @@ struct KooLiXP
         , _noSplash( false )
         {
             XMLProgram::GlobalsAddRef();
-            Application::SetIdleDT(5);
+            Useless::Application::SetIdleDT(5);
 
             for ( int i=1, I=get_argc(); i < I; ++i )
             {
@@ -154,8 +154,8 @@ struct KooLiXP
                     }
                     else if ( get_argv(i) == "--texel-offsets" )
                     {
-                        G_GLTesselatorStartingTexelOffset = Useless::to_real( get_argv(++i));
-                        G_GLTesselatorEndingTexelOffset = Useless::to_real( get_argv(++i));
+                        Useless::G_GLTesselatorStartingTexelOffset = Useless::to_real( get_argv(++i));
+                        Useless::G_GLTesselatorEndingTexelOffset = Useless::to_real( get_argv(++i));
                     }
                     else if ( get_argv(i) == "--help" )
                     {
@@ -246,19 +246,19 @@ struct KooLiXP
                 try {
                     if ( !_noSplash )
                     {
-                        Surf::Properties splashProps;
+                        Useless::Surf::Properties splashProps;
                         splashProps.width = 320;
                         splashProps.height = 240;
-                        splashProps.pixelformat = ImageFormat::B8G8R8A8;
-                        _screen = new GDIScreen( Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
+                        splashProps.pixelformat = Useless::ImageFormat::B8G8R8A8;
+                        _screen = new Useless::GDIScreen( Useless::Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
                         int whereX = (::GetSystemMetrics( SM_CXFULLSCREEN ) - splashProps.width)/2;
                         int whereY = (::GetSystemMetrics( SM_CYFULLSCREEN ) - splashProps.height)/2;
                         _screen->Reposition( whereX, whereY );
                         _screen->HideDecorations();
                         _screen->OpenWindowed( splashProps.width, splashProps.height);
-                        _screen->SetClipper( Rect(splashProps.width, splashProps.height) );
-                        GDISurface splashSurf( splashProps, _screen->GetHandle(), IDB_BITMAP1 );
-                        _screen->GetSurface()->Blit( 0, 0, splashSurf, Rect(splashProps.width, splashProps.height) );
+                        _screen->SetClipper( Useless::Rect(splashProps.width, splashProps.height) );
+                        Useless::GDISurface splashSurf( splashProps, _screen->GetHandle(), IDB_BITMAP1 );
+                        _screen->GetSurface()->Blit( 0, 0, splashSurf, Useless::Rect(splashProps.width, splashProps.height) );
                         _screen->Swap();
                     }
 

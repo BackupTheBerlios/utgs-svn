@@ -63,7 +63,7 @@ namespace Useless {
         
         _glContextSurface->GetProperties( &m_prop );
 
-        Tie2Signal( OnResize, this, SlotResize );
+        Tie2Signal( OnResize, this, &WGLScreen::SlotResize );
         Window::Show();
     }
 
@@ -85,7 +85,7 @@ namespace Useless {
         
         _glContextSurface.Reset( new WGLSurface( hdc, m_prop ) );
         
-        Tie2Signal( OnResize, this, SlotResize );
+        Tie2Signal( OnResize, this, &WGLScreen::SlotResize );
     }
 
     bool DbgTrace_DevMode( int w, int h, int bpp, int f )

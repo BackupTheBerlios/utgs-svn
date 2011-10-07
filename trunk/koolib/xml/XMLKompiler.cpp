@@ -462,8 +462,6 @@ namespace XMLFactory {
         _state.SetResult( HookErrors( _node, adder.get() ));
     }
 
-    CXML_COMPARING_HANDLER( CXML::EQUAL_STR, CXML::EQUAL, CXML::OpCOMPARE< TextUtf8 > );
-
     /*
      * Get FCC type of object
      */
