@@ -1,0 +1,16 @@
+#ifndef __INCLUDED_KOOLIB_TEMPLATE_CONFIG_H__
+#define __INCLUDED_KOOLIB_TEMPLATE_CONFIG_H__
+
+#ifdef WIN32
+#   define KOOLIB_EMPTY_SPECIALIZATION
+#   define KOOLIB_SPECIALIZATION template<>
+#   define KOOLIB_TYPENAME typename
+#   define KOOLIB_STRUCT
+#else
+#   define KOOLIB_EMPTY_SPECIALIZATION
+#   define KOOLIB_SPECIALIZATION
+#   define KOOLIB_TYPENAME typename
+#   define KOOLIB_STRUCT struct
+#endif
+
+#endif//__INCLUDED_KOOLIB_TEMPLATE_CONFIG_H__
