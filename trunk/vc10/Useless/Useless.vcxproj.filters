@@ -1679,12 +1679,6 @@
     <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\WGLSurface.cpp">
       <Filter>Useless\Graphic\Device\GL\wGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\factory\CreateScreenByLib.cpp">
-      <Filter>Useless\Graphic\Device\GL\wGL\factory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\factory\CreateSurfaceByLib.cpp">
-      <Filter>Useless\Graphic\Device\GL\wGL\factory</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\factory\CreateWGLScreen.cpp">
       <Filter>Useless\Graphic\Device\GL\wGL\factory</Filter>
     </ClCompile>
@@ -2633,12 +2627,6 @@
     <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateGDIScreen.cpp">
       <Filter>Useless\Graphic\Device\winGDI\factory</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateScreenByLib.cpp">
-      <Filter>Useless\Graphic\Device\winGDI\factory</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateSurfaceByLib.cpp">
-      <Filter>Useless\Graphic\Device\winGDI\factory</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Useless\Util\Crypto.cpp">
       <Filter>Useless\Util</Filter>
     </ClCompile>
@@ -2647,6 +2635,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Useless\Util\UTF8.cpp">
       <Filter>Useless\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Useless\Graphic\Device\GL\wGL\factory\CreateWGLScreenByLib.cpp">
+      <Filter>Useless\Graphic\Device\GL\wGL\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Useless\Graphic\Device\GL\wGL\factory\CreateWGLSurfaceByLib.cpp">
+      <Filter>Useless\Graphic\Device\GL\wGL\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateGDIScreenByLib.cpp">
+      <Filter>Useless\Graphic\Device\winGDI\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateGDISurfaceByLib.cpp">
+      <Filter>Useless\Graphic\Device\winGDI\factory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

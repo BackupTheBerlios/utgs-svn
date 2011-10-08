@@ -1,5 +1,9 @@
 #include "UselessPch.h"
 
+#ifdef USELESS_DEFAULT_SCREEN_GDI
+
+#pragma message("Default Screen will be GDI")
+
 #include "Useless/Graphic/Device/winGDI/GDIScreen.h"
 
 namespace Useless {
@@ -15,3 +19,5 @@ namespace Useless {
     }
 
 };//namespace Useless
+
+#endif

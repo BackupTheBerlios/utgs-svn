@@ -71,7 +71,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>../../;$(BOOST_ROOT)/;$(CRYPTOPP_ROOT)/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../;$(BOOST_ROOT)/;$(CRYPTOPP_ROOT)/;$(OGGVORBIS_ROOT)/include/;$(DXSDK)/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>UTGS_STATIC_MSVC10;WIN32;NDEBUG;_LIB</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

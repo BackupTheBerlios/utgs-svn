@@ -24,6 +24,11 @@ namespace Useless {
     USELESS_API extern double G_GLTesselatorEndingTexelOffset;
 };
 
+void report(const char *text)
+{
+    OutputDebugStringA(text);
+}
+
 int get_argc()
 {
     return Useless::Application::GetArgC();
@@ -303,7 +308,7 @@ struct KooLiXP
                 _screen->Close();
             }
             g_ExcptText = e.what();
-            OutputDebugStringA(g_ExcptText.c_str());
+            report(g_ExcptText.c_str());
 
             // FIXME Visual Studio Express does not allow resource editing
             // int hr = (int)DialogBox(Useless::Application::GetInstance(), MAKEINTRESOURCE( IDD_EXCEPTION ), NULL, KDialogProc );

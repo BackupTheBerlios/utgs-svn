@@ -69,7 +69,7 @@
  %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../;$(BOOST_ROOT)/;$(CRYPTOPP_ROOT)/;$(OGGVORBIS_ROOT)/include/;$(DXSDK)/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../;$(BOOST_ROOT)/;$(CRYPTOPP_ROOT)../../;$(BOOST_ROOT)/;$(CRYPTOPP_ROOT)/;$(OGGVORBIS_ROOT)/include/;$(DXSDK)/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>UTGS_STATIC_MSVC10;WIN32;NDEBUG;_LIB</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -534,9 +534,11 @@
     <ClInclude Include="..\..\Useless\Xml\Resources\SignalMap.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Useless\Graphic\Device\GL\wGL\factory\CreateWGLScreenByLib.cpp" />
+    <ClCompile Include="..\..\Useless\Graphic\Device\GL\wGL\factory\CreateWGLSurfaceByLib.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateGDIScreen.cpp" />
-    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateScreenByLib.cpp" />
-    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateSurfaceByLib.cpp" />
+    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateGDIScreenByLib.cpp" />
+    <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\factory\CreateGDISurfaceByLib.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\GDIScreen.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\GDISurface.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\winGDI\GDITransfer.cpp" />
@@ -625,8 +627,6 @@
     <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\WGLExtensions.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\WGLScreen.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\WGLSurface.cpp" />
-    <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\factory\CreateScreenByLib.cpp" />
-    <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\factory\CreateSurfaceByLib.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\Device\Gl\wGL\factory\CreateWGLScreen.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\FileIO\BMPLoader.cpp" />
     <ClCompile Include="..\..\Useless\Graphic\FileIO\BMPSaver.cpp" />
