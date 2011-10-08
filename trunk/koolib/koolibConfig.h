@@ -1,6 +1,8 @@
 #ifndef __INCLUDED_KOOLIB_CONFIG_H__
 #define __INCLUDED_KOOLIB_CONFIG_H__
 
+#include "utgs-config.h"
+
 #ifndef KOOLIB_STATICLIB
 #   ifdef KOOLIB_EXPORTS
 #       define KOOLIB_API __declspec(dllexport)

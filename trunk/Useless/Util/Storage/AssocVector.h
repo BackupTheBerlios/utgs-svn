@@ -166,22 +166,34 @@ public:
 
     ConstIterator ConstBegin() const
     {
-        return ( ConstVectorIterator( (__ConstPair*)(&*_data.begin()), _data.size() ) );
+        return (_data.empty() ? 
+                ConstVectorIterator(NULL,0) :
+                ConstVectorIterator( (__ConstPair*)(&_data[0]), _data.size() )
+                );
     }
 
     ConstIterator ConstEnd() const
     {
-        return ( ConstVectorIterator( (__ConstPair*)(&*_data.begin()), _data.size() )+=_data.size() );
+        return (_data.empty() ? 
+                ConstVectorIterator(NULL,0) :
+                ConstVectorIterator( (__ConstPair*)(&_data[0]), _data.size() ) += _data.size()
+                );
     }
 
     Iterator Begin()
     {
-        return ( VectorIterator( (__AssocPair*)(&*_data.begin()), _data.size() ) );
+        return (_data.empty() ? 
+                VectorIterator(NULL, 0) :
+                VectorIterator( (__AssocPair*)(&_data[0]), _data.size() )
+               );
     }
 
     Iterator End()
     {
-        return ( VectorIterator( (__AssocPair*)(&*_data.begin()), _data.size() )+=_data.size() );
+        return (_data.empty() ? 
+                VectorIterator(NULL, 0) :
+                VectorIterator( (__AssocPair*)(&_data[0]), _data.size() ) += _data.size()
+                );
     }
     ///////////////////////////////////////////////////////////////////////////////////////
 

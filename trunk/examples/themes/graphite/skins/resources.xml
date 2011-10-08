@@ -90,7 +90,7 @@
         
         <bars id="graphite.skins.grip_horizontal.set" img="graphite.skins.grip_horizontal" mapping="graphite.skins.grip" rows="3" columns="1" cut="40,72,90" orientation="horizontal"/>
 
-        <bar id="graphite.skins.line_vertical" img="graphite.skins.line_vertical" cut="32,96,96" orientation="horizontal"/>
+        <bar id="graphite.skins.line_vertical" img="graphite.skins.line_vertical" cut="32,96,96" orientation="vertical"/>
         <bar id="graphite.skins.line_horizontal" img="graphite.skins.line_horizontal" cut="32,96,96" orientation="horizontal"/>
     </skins>
 </xml>

@@ -1,0 +1,45 @@
+This is HOWTO build UTGS library on Windows
+
+Current version builds with Visual Studio 2010.
+
+
+Prerequisites
+=============
+
+
+    BOOST library
+    -------------
+
+        - Download BOOST library from http://www.boost.org/
+        - You don't need to build it
+        - Set environement variable BOOST_ROOT (e.g BOOST_ROOT = C:\Dev\boost_1_47_0\)
+
+
+    CRYPTO++ library
+    ----------------
+
+        - Download CRYPTO++ library from http://www.cryptopp.com/
+        - Do not build CRYPTO++
+        - If you have UTGS in folder C:\Dev\utgs then extract CRYPTO++ to C:\Dev\CryptoPP
+            (This is important as UTGS solution for VC10 contains CRYPTO++ project file)
+        - Set environment variable CRYPTOPP_ROOT (e.g. CRYPTOPP_ROOT = C:\Dev\CryptoPP\)
+
+
+    OGG/VORBIS library
+    ------------------
+
+        - Download vorbis-sdk-1.0rc2.zip from http://developer.berlios.de/project/showfiles.php?group_id=3883
+        - Set environment variable OGGVORBIS_ROOT (e.g. OGGVORBIS_ROOT = C:\Dev\vorbis-sdk-1.0rc2\sdk)
+
+
+    LIBPNG/ZLIB library
+    -------------------
+
+        - Download GnuWin32.rar from http://developer.berlios.de/project/showfiles.php?group_id=3883
+        - Set environment variable LIBPNG_ROOT (e.g. C:\Dev\GnuWin32)
+
+
+Building
+========
+
+    

@@ -1,5 +1,3 @@
-#include "KoolixpPch.h"
-
 #include "Useless/UselessLib.h"
 #include "Useless/System/Application.h"
 #include "Useless/GUI/Display/ScreenShooter.h"
@@ -72,7 +70,8 @@ INT_PTR CALLBACK KDialogProc( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
             }
         }
 
-        SetDlgItemText( hwndDlg, IDC_OUTPUT, converted.c_str() );
+        // FIXME
+        //SetDlgItemText( hwndDlg, /*IDC_OUTPUT*/ 0, converted.c_str() );
         break;
 
     case WM_COMMAND:
@@ -249,23 +248,24 @@ struct KooLiXP
             else
             {
                 try {
-                    if ( !_noSplash )
-                    {
-                        Useless::Surf::Properties splashProps;
-                        splashProps.width = 320;
-                        splashProps.height = 240;
-                        splashProps.pixelformat = Useless::ImageFormat::B8G8R8A8;
-                        _screen = new Useless::GDIScreen( Useless::Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
-                        int whereX = (::GetSystemMetrics( SM_CXFULLSCREEN ) - splashProps.width)/2;
-                        int whereY = (::GetSystemMetrics( SM_CYFULLSCREEN ) - splashProps.height)/2;
-                        _screen->Reposition( whereX, whereY );
-                        _screen->HideDecorations();
-                        _screen->OpenWindowed( splashProps.width, splashProps.height);
-                        _screen->SetClipper( Useless::Rect(splashProps.width, splashProps.height) );
-                        Useless::GDISurface splashSurf( splashProps, _screen->GetHandle(), IDB_BITMAP1 );
-                        _screen->GetSurface()->Blit( 0, 0, splashSurf, Useless::Rect(splashProps.width, splashProps.height) );
-                        _screen->Swap();
-                    }
+                    // FIXME (Visual Studio Express does not support Resource Editing
+                    //if ( !_noSplash )
+                    //{
+                    //    Useless::Surf::Properties splashProps;
+                    //    splashProps.width = 320;
+                    //    splashProps.height = 240;
+                    //    splashProps.pixelformat = Useless::ImageFormat::B8G8R8A8;
+                    //    _screen = new Useless::GDIScreen( Useless::Error("KooLiXP: Starting %s, Please wait...", _file.c_str()).GetError() );
+                    //    int whereX = (::GetSystemMetrics( SM_CXFULLSCREEN ) - splashProps.width)/2;
+                    //    int whereY = (::GetSystemMetrics( SM_CYFULLSCREEN ) - splashProps.height)/2;
+                    //    _screen->Reposition( whereX, whereY );
+                    //    _screen->HideDecorations();
+                    //    _screen->OpenWindowed( splashProps.width, splashProps.height);
+                    //    _screen->SetClipper( Useless::Rect(splashProps.width, splashProps.height) );
+                    //    Useless::GDISurface splashSurf( splashProps, _screen->GetHandle(), 0/*IDB_BITMAP1*/ );
+                    //    _screen->GetSurface()->Blit( 0, 0, splashSurf, Useless::Rect(splashProps.width, splashProps.height) );
+                    //    _screen->Swap();
+                    //}
 
                     Useless::CreateFromXMLFile( _file );
 
@@ -303,12 +303,14 @@ struct KooLiXP
                 _screen->Close();
             }
             g_ExcptText = e.what();
-            int hr = (int)DialogBox( Useless::Application::GetInstance(), MAKEINTRESOURCE( IDD_EXCEPTION ), NULL, KDialogProc );
+            OutputDebugStringA(g_ExcptText.c_str());
 
-            if ( IDOK == hr )
-            {
-				throw e;
-            }
+            // FIXME Visual Studio Express does not allow resource editing
+            // int hr = (int)DialogBox(Useless::Application::GetInstance(), MAKEINTRESOURCE( IDD_EXCEPTION ), NULL, KDialogProc );
+    //        if ( IDOK == hr )
+    //        {
+				//throw e;
+    //        }
             return -1;
         }
     }
@@ -321,7 +323,7 @@ struct KooLiXP
 
     void PutInfo( std::ostream &out )
     {
-        out << "KooLAS XML Instruction Processor - copyright 2005 (c), Radoslaw Kolasinski (koolas@gmail.com)" << std::endl;
+        out << "KooLiXP Runner (http://utgs.berlios.de)" << std::endl;
         out << std::endl;
     }
 

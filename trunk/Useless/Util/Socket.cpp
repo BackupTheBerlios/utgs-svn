@@ -16,13 +16,16 @@
     CryptoPP <http://www.eskimo.com/~weidai/cryptlib.html>
 
  ********************************************************************/
+#include "UselessPch.h"
+
 
 #ifndef __INCLUDED_KOOLIB_SIMPLE_IPC_H__
 #define __INCLUDED_KOOLIB_SIMPLE_IPC_H__
 
+
 #ifndef USELESS_HAS_CRYPTOPP
-#   error "In order to use SimpleIPC, get CryptoPP library, and set USELESS_HAS_CRYPTOPP flag"
-#endif
+#pragma message("In order to use SimpleIPC, get CryptoPP library, and set USELESS_HAS_CRYPTOPP flag")
+#else
 
 #include <dll.h> // - CryptoPP library
 #include <socketft.h> // defined in CryptoPP library
@@ -146,4 +149,5 @@ namespace SimpleIPC
     };
 };
 
+#endif
 #endif

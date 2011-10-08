@@ -145,6 +145,7 @@ struct USELESS_API XMLIterator
         XMLDependencyTree::Range rg = _xml->_deps.Root();
         _it = rg.first;
         _it_end = rg.second;
+        Update();
     }
 
     XMLIterator& operator++()
@@ -154,7 +155,8 @@ struct USELESS_API XMLIterator
 
     XMLIterator& Step()
     {
-        ++_it; return *this;
+        ++_it;
+        return Update();
     }
 
     XMLIterator& StepInto()
@@ -163,7 +165,7 @@ struct USELESS_API XMLIterator
         XMLDependencyTree::Range rg =  _xml->_deps.ChildsOf( *_it);
         _it = rg.first;
         _it_end = rg.second;
-        return *this;
+        return Update();
     }
 
     bool HasChildren() const
@@ -189,7 +191,7 @@ struct USELESS_API XMLIterator
     XMLIterator& Advance( int numSiblings )
     {
         std::advance( _it, numSiblings );
-        return (*this);
+        return Update();
     }
 
     const XMLParser::Node& operator * () const
@@ -204,8 +206,7 @@ struct USELESS_API XMLIterator
 
     const XMLParser::Node& Node() const
     {
-        assert(!!_xml);
-        return _xml->at( *_it );
+        return (*_node);
     }
 
     bool operator !()
@@ -215,9 +216,19 @@ struct USELESS_API XMLIterator
 
     XMLParser::Nodes SubTree();
 
-    XMLDependencyTree::Iterator _it;
-    XMLDependencyTree::Iterator _it_end;
-    XMLDocument *_xml;
+protected:
+    XMLDependencyTree::Iterator  _it;
+    XMLDependencyTree::Iterator  _it_end;
+    XMLDocument                 *_xml;
+    const XMLParser::Node       *_node;
+
+    XMLIterator& Update()
+    {
+        assert(!!_xml);
+        _node = (_it != _it_end ? &(_xml->at(*_it)) : NULL);
+        return (*this);
+    }
+
 };
 
 inline XMLIterator XMLDocument::Root()

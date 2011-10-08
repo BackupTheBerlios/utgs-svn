@@ -26,19 +26,19 @@ void BarSkinner::BarDice(const Rect& boundry, Orientation orient, int x1, int x2
     {
         int x[5] = { 0, x1, x2, x3, boundry.GetW() };
         int y[2] = { 0, boundry.GetH() };
-        rect_list.Insert(HEAD   , Rect( x[0], y[0], x[1]-x[0], y[1]-y[0] ) + p0);
-        rect_list.Insert(BODY   , Rect( x[1], y[0], x[2]-x[1], y[1]-y[0] ) + p0);
-        rect_list.Insert(HANDLE , Rect( x[2], y[0], x[3]-x[2], y[1]-y[0] ) + p0);
-        rect_list.Insert(TAIL   , Rect( x[3], y[0], x[4]-x[3], y[1]-y[0] ) + p0);
+        rect_list.Insert(HEAD   , CheckedRect( x[0], y[0], x[1]-x[0], y[1]-y[0] ) + p0);
+        rect_list.Insert(BODY   , CheckedRect( x[1], y[0], x[2]-x[1], y[1]-y[0] ) + p0);
+        rect_list.Insert(HANDLE , CheckedRect( x[2], y[0], x[3]-x[2], y[1]-y[0] ) + p0);
+        rect_list.Insert(TAIL   , CheckedRect( x[3], y[0], x[4]-x[3], y[1]-y[0] ) + p0);
     }
     else if (orient==VERTICAL)
     {
         int x[2] = { 0, boundry.GetW() };
         int y[5] = { 0, x1, x2, x3, boundry.GetH() };
-        rect_list.Insert(HEAD   , Rect( x[0], y[0], x[1]-x[0], y[1]-y[0] ) + p0);
-        rect_list.Insert(BODY   , Rect( x[0], y[1], x[1]-x[0], y[2]-y[1] ) + p0);
-        rect_list.Insert(HANDLE , Rect( x[0], y[2], x[1]-x[0], y[3]-y[2] ) + p0);
-        rect_list.Insert(TAIL   , Rect( x[0], y[3], x[1]-x[0], y[4]-y[3] ) + p0);
+        rect_list.Insert(HEAD   , CheckedRect( x[0], y[0], x[1]-x[0], y[1]-y[0] ) + p0);
+        rect_list.Insert(BODY   , CheckedRect( x[0], y[1], x[1]-x[0], y[2]-y[1] ) + p0);
+        rect_list.Insert(HANDLE , CheckedRect( x[0], y[2], x[1]-x[0], y[3]-y[2] ) + p0);
+        rect_list.Insert(TAIL   , CheckedRect( x[0], y[3], x[1]-x[0], y[4]-y[3] ) + p0);
     }
     else
         throw Error("BarSkinner::BarDice(): Orientation can only be HORIZONTAL or VERTICAL");

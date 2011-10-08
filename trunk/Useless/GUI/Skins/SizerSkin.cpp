@@ -27,20 +27,20 @@ void SizerSkin::SizerDice( const Rect &bound, Orientation orient, int x1, int x2
         int x[5] = { 0, x1, x2, x3, bound.GetW() };
         int y[4] = { 0, y1, y2, bound.GetH() };
         
-        assoc_rects.Insert( TOP+HEAD, Rect( x[0], y[0], x[1]-x[0], y[1]-y[0]) +p0);
-        assoc_rects.Insert( TOP+BODY, Rect( x[1], y[0], x[2]-x[1], y[1]-y[0]) +p0);
-        assoc_rects.Insert( TOP+TAIL, Rect( x[3], y[0], x[4]-x[3], y[1]-y[0]) +p0);
+        assoc_rects.Insert( TOP+HEAD, CheckedRect( x[0], y[0], x[1]-x[0], y[1]-y[0]) +p0);
+        assoc_rects.Insert( TOP+BODY, CheckedRect( x[1], y[0], x[2]-x[1], y[1]-y[0]) +p0);
+        assoc_rects.Insert( TOP+TAIL, CheckedRect( x[3], y[0], x[4]-x[3], y[1]-y[0]) +p0);
 
-        assoc_rects.Insert( MIDDLE+HEAD, Rect( x[0], y[1], x[1]-x[0], y[2]-y[1]) +p0);
-        assoc_rects.Insert( MIDDLE+TAIL, Rect( x[3], y[1], x[4]-x[3], y[2]-y[1]) +p0);
+        assoc_rects.Insert( MIDDLE+HEAD, CheckedRect( x[0], y[1], x[1]-x[0], y[2]-y[1]) +p0);
+        assoc_rects.Insert( MIDDLE+TAIL, CheckedRect( x[3], y[1], x[4]-x[3], y[2]-y[1]) +p0);
 
-        assoc_rects.Insert( BOTTOM+HEAD, Rect(x[0], y[2], x[1]-x[0], y[3]-y[2]) +p0);
-        assoc_rects.Insert( BOTTOM+BODY, Rect(x[1], y[2], x[2]-x[1], y[3]-y[2]) +p0);
-        assoc_rects.Insert( BOTTOM+TAIL, Rect(x[3], y[2], x[4]-x[3], y[3]-y[2]) +p0);
+        assoc_rects.Insert( BOTTOM+HEAD, CheckedRect(x[0], y[2], x[1]-x[0], y[3]-y[2]) +p0);
+        assoc_rects.Insert( BOTTOM+BODY, CheckedRect(x[1], y[2], x[2]-x[1], y[3]-y[2]) +p0);
+        assoc_rects.Insert( BOTTOM+TAIL, CheckedRect(x[3], y[2], x[4]-x[3], y[3]-y[2]) +p0);
 
-        assoc_rects.Insert( HEAD+DIV , Rect( x[2], y[0], x[3]-x[2], y[1]-y[0]) +p0);
-        assoc_rects.Insert( BODY+DIV , Rect( x[2], y[1], x[3]-x[2], y[2]-y[1]) +p0);
-        assoc_rects.Insert( TAIL+DIV , Rect( x[2], y[2], x[3]-x[2], y[3]-y[2]) +p0);
+        assoc_rects.Insert( HEAD+DIV , CheckedRect( x[2], y[0], x[3]-x[2], y[1]-y[0]) +p0);
+        assoc_rects.Insert( BODY+DIV , CheckedRect( x[2], y[1], x[3]-x[2], y[2]-y[1]) +p0);
+        assoc_rects.Insert( TAIL+DIV , CheckedRect( x[2], y[2], x[3]-x[2], y[3]-y[2]) +p0);
 
         if (!noinner) assoc_rects.Insert( MIDDLE+BODY, Rect( x[1], y[1], x[2]-x[1], y[2]-y[1]) +p0);
         Skin::SetDirMask( Pos(1,0) );

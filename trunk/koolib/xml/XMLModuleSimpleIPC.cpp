@@ -11,6 +11,10 @@
  *                                                                  *
  ********************************************************************/
 
+#ifndef USELESS_HAS_CRYPTOPP
+#pragma message("In order to use SimpleIPC, get CryptoPP library, and set USELESS_HAS_CRYPTOPP flag")
+#else
+
 #define MEAN_AND_LEAN
 #include <koolib/xml/XMLModuleBuiltIn.h>
 #include <koolib/xml/XMLChunksMethod.h>
@@ -72,3 +76,5 @@ namespace XMLFactory {
 DEFINE_MODULE_IMPORT( XML_IMPORT::SIMPLE_IPC );
 
 };//XMLFactory
+
+#endif

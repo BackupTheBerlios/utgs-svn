@@ -23,7 +23,7 @@ last mod: $Id: koolas Exp $
 #include "Useless/Util/Crypto.h"
 #endif
 
-std::wstring SymbolDict::s_NoSymbol;
+KOOLIB_API std::wstring SymbolDict::s_NoSymbol;
 
 SymbolDict::SymbolDict()
 {

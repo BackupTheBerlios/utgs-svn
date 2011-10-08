@@ -286,30 +286,35 @@ std::pair<int, int> match_parenthess(
 /*! Finds in string escaped character codes and converts them to chars
  */
 template< class char_type >
-std::basic_string< char_type > to_chars( const std::basic_string< char_type > &s )
-{
-    const char_type *i = &*s.begin(), *i2=&*s.end();
-    std::basic_string< char_type > str;
-    while( i != i2 )
+    std::basic_string< char_type > to_chars( const std::basic_string< char_type > &s )
     {
-        if( (*i) == '\\' ) 
+        std::basic_string< char_type > str;
+
+        typedef std::basic_string< char_type >::const_iterator const_iterator;
+        const_iterator i = s.begin();
+        const_iterator iEnd = s.end();
+
+        while (i != iEnd)
         {
-            ++i;
-            std::string sub="\\";
-            for( int count = 0; (*i) >= '0' && (*i) <= '9' && i!=i2 /*&& count<3*/; count++ ) 
-            { 
-                sub += (*i);
+            if (*i == '\\') 
+            {
+                ++i;
+                std::string sub="\\";
+                for (int count = 0;  (i != iEnd) && (*i >= '0') && (*i <= '9'); ++count) 
+                { 
+                    sub += (*i);
+                    ++i;
+                }
+                str += (sub.empty() ? (*i) : to_char(sub));
+            }
+            else
+            {
+                str += (*i);
                 ++i;
             }
-            str += ( sub.size()>0 ? to_char( sub ) : (*i) );
         }
-        else
-        {
-            str += (*i);
-            ++i;
-        }
+        return str;
     }
-    return str;
-}
+
 };//namespace Useless
 #endif //__INCLUDED_USELESS_STR_CONV_H__

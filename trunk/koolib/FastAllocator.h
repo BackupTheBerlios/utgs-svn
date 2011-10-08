@@ -115,7 +115,7 @@ namespace Memory {
 #ifdef NDEBUG
         return FastAllocator< FastObject< _Type > >::Instance().GetNew();
 #else
-#pragma warning("Debug version does NOT use FastAllocator (some performance problems)")
+#pragma message("warning: Debug version does NOT use FastAllocator (some performance problems)")
         return new _Type();
 #endif
     }

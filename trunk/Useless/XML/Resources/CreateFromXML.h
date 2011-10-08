@@ -55,7 +55,8 @@ public:
         CreatorMap::iterator k = _creators.find( category +"::"+ (*i)._name );
         if ( k!=_creators.end() )
         {
-            return (*(*k).second)(i, env); //< Evaluate creation
+            __Creator &pfnCreate = (*k).second;
+            return (*pfnCreate)(i, env);
         }
         else
         {

@@ -29,8 +29,19 @@ Resource* CreateTableSkin( XMLIterator i, XMLCreatorEnv *env )
 
     // get boundary rect
     cut_str = "0,0,0,0";
-    try_attribute( (*i)._attributes, "boundry", &cut_str );
-    std::vector<int> boundry=to_integer_vector(cut_str);
+    std::vector<int> boundry;
+
+    if (try_attribute( (*i)._attributes, "boundry", &cut_str ))
+    {
+        boundry = to_integer_vector(cut_str);
+    }
+    else
+    {
+        boundry .push_back(0);
+        boundry .push_back(0);
+        boundry .push_back(sp_image->GetWidth());
+        boundry .push_back(sp_image->GetHeight());
+    }
 
     // get inner hilite rect
     cut_str = "0,0,0,0";

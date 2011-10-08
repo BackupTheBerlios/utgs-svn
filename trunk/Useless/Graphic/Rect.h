@@ -15,8 +15,9 @@
 **      KooLAS (koolas@iavision.com)
 */
 
-#include "Useless/Graphic/Point.h"
 #include "Useless/System/Assert.h"
+#include "Useless/Error/Error.h"
+#include "Useless/Graphic/Point.h"
 
 
 namespace Useless
@@ -187,6 +188,21 @@ inline Rect::Rect( const Pos &p1, const Pos &p2)
     h = d.y;
 }
 
+inline Rect CheckedRect( int ix, int iy, int iw, int ih )
+{
+    if (iw < 0)
+    {
+        throw Error("CheckedRect width cannot be negative");
+    }
+    else if (ih < 0)
+    {
+        throw Error("CheckedRect height cannot be negative");
+    }
+    else
+    {
+        return Rect(ix, iy, iw, ih);
+    }
+}
 
 #pragma warning(disable:4067)
 #undef MIN;

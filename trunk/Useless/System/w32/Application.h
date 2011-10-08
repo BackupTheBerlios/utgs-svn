@@ -100,7 +100,12 @@ public:
         const TCHAR *windowClassName;
 
         InitParams( HINSTANCE lhInstance, const char *lappTitle )
-            : hInstance( lhInstance ), appTitle( lappTitle ) {}
+            : hInstance( lhInstance ), appTitle( lappTitle ),
+		    iconName(NULL),
+            iconResourceID(0),
+            bigIconResourceID(0),
+            windowClassName(NULL)
+        {}
     };
     
     static void Init( InitParams *parm );
