@@ -181,7 +181,7 @@
                 <xsl:value-of select="$baseurl"/>
                 <xsl:text>utgs-bg1.jpg</xsl:text>
             </xsl:attribute>
-            <tr height="72px">
+            <tr height="48px">
                 <td bgcolor="#dc8f3c" width="80%">
                     <xsl:attribute name="background">
                         <xsl:value-of select="$baseurl"/>
@@ -203,7 +203,7 @@
                         </xsl:element>
                     </xsl:element>
                 </td>
-                <td width="34px">
+                <td width="22px">
                     <xsl:attribute name="background">
                         <xsl:value-of select="$baseurl"/>
                         <xsl:text>utgschapter.jpg</xsl:text>
