@@ -12,6 +12,31 @@
             <string>Y:/</string>
             <string>Z:/</string>
         </list>
+        <list id="SupportedExtensions">
+            <string>.avi</string>
+            <string>.mpg</string>
+        </list>
+        <function id="CheckExtension">
+            <fold iterator="iter" accumulator="accum">
+                <false id="accum"/>
+                <let id="list" select="SupportedExtensions"/>
+                <function id="func">
+                    <or>
+                        <get id="accum"/>
+                        <less>
+                            <compare>
+                                <integer value="-1"/>
+                                <apply select="String:rfind">
+                                    <let id="text" select="fileName"/>
+                                    <let id="pattern" select="iter"/>
+                                    <integer id="pos" value="-1"/>
+                                </apply>
+                            </compare>
+                        </less>
+                    </or>
+                </function>
+            </fold>
+        </function>
         <function id="UpdateList">
             <apply select="uiList:List:ClearEntries"/>
             <apply select="uiList1:List:ClearEntries"/>
@@ -59,16 +84,7 @@
                                 <get id="accum"/>
                             </when>
                             <when>
-                                <less>
-                                    <compare>
-                                        <integer value="-1"/>
-                                        <apply select="String:rfind">
-                                            <let id="text" select="fileName"/>
-                                            <string id="pattern" value=".avi"/>
-                                            <integer id="pos" value="-1"/>
-                                        </apply>
-                                    </compare>
-                                </less>
+                                <apply select="CheckExtension"/>
                                 <apply select="uiList1:List:Insert">
                                     <string id="text">$(fileName)</string>
                                 </apply>

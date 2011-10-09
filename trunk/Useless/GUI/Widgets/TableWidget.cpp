@@ -114,8 +114,8 @@ int TableWidget::GetColumnWidth( int column ) const
 StupidVector<Belt> TableWidget::GetColumns() const
 {
     StupidVector<Belt> out;
-    const cell_t *p = &*_columns.begin();
-    const cell_t *q = &*_columns.end();
+    const cell_t *p = _columns.empty()? NULL : &*_columns.begin();
+    const cell_t *q = p + _columns.size();
     for ( int i=0; p!=q; ++p, ++i )
     {
         Belt b;
@@ -130,8 +130,8 @@ StupidVector<Belt> TableWidget::GetColumns() const
 StupidVector<Belt> TableWidget::GetRows() const
 {
     StupidVector<Belt> out;
-    const cell_t *p = &*_rows.begin();
-    const cell_t *q = &*_rows.end();
+    const cell_t *p = _rows.empty() ? NULL : &*_rows.begin();
+    const cell_t *q = p + _rows.size();
     for ( int i=0; p!=q; ++p, ++i )
     {
         Belt b;
@@ -174,15 +174,15 @@ void TableWidget::UpdateTable()
     SortedVector<int> xdividers;
     SortedVector<int> ydividers;
     
-    const cell_t *p = &*_columns.begin();
-    const cell_t *q = &*_columns.end();
+    const cell_t *p = _columns.empty() ? NULL : &*_columns.begin();
+    const cell_t *q = p + _columns.size();
     if (p!=q) while( ++p!=q )
     {
         xdividers.Insert( p->position + _frame_left );
     }
 
-    p = &*_rows.begin();
-    q = &*_rows.end();
+    p = _rows.empty() ? NULL : &*_rows.begin();
+    q = p + _rows.size();
     if (p!=q) while( ++p!=q )
     {
         ydividers.Insert( p->position + _frame_top );

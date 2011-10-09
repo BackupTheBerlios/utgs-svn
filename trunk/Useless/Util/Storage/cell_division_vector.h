@@ -45,10 +45,19 @@ public:
         const_iterator p =
          std::lower_bound( begin(), end(), cell_pos(left), less_equal_position() );
 
+        if (p == end())
+        {
+            return std::make_pair(p,p);
+        }
+        else if (p != begin())
+        {
+            --p;
+        }
+
         const_iterator q =
          std::lower_bound( begin(), end(), cell_pos(right), less_position() );
 
-        return std::make_pair(--p, q);
+        return std::make_pair(p, q);
     }
     
     //! does given cell exist ?

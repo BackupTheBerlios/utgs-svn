@@ -8,12 +8,17 @@ namespace Useless {
 
     void OGraphics::SetConstantAlpha( int alpha )
     {
-        GetSurface()->SetConstantAlpha( alpha );
+        Surface *s = GetSurface();
+        if (!!s)
+        {
+            s->SetConstantAlpha( alpha );
+        }
     }
 
     int  OGraphics::GetConstantAlpha() const
     {
-        return GetSurface()->GetConstantAlpha();
+        const Surface *s = GetSurface();
+        return !s ? 0 : s->GetConstantAlpha();
     }
 
 

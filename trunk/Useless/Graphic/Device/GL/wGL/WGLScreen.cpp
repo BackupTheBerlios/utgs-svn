@@ -243,7 +243,7 @@ namespace Useless {
             
     void WGLScreen::SlotResize( int w, int h )
     {
-        if ( w > 0 && h > 0 )
+        if (!!_glContextSurface && ( w > 0 && h > 0 ))
         {
             _glContextSurface->SetSize( w, h );
             _glContextSurface->GetProperties( &m_prop );
@@ -262,7 +262,7 @@ namespace Useless {
 
     void WGLScreen::Swap()
     {
-        if ( m_windowed || m_active )
+        if (!!_glContextSurface && ( m_windowed || m_active ))
         {
             SwapBuffers( _glContextSurface->_devContext );
             _glContextSurface->GLFreeGarbage();
@@ -272,7 +272,7 @@ namespace Useless {
 
     void WGLScreen::Copy()
     {
-        if ( m_windowed || m_active )
+        if (!!_glContextSurface && ( m_windowed || m_active ))
         {
             SwapBuffers( _glContextSurface->_devContext );
         }
@@ -285,7 +285,7 @@ namespace Useless {
 
     void WGLScreen::Clear( NormalPixel color, const Useless::Rect &area )
     {
-        if ( m_windowed || m_active )
+        if (!!_glContextSurface && ( m_windowed || m_active ))
         {
             _glContextSurface->Clear( color.u, area );
         }
@@ -293,7 +293,7 @@ namespace Useless {
 
     void WGLScreen::SetClipper( const RectList &rect_list )
     {
-        if ( m_windowed || m_active )
+        if (!!_glContextSurface && (m_windowed || m_active ))
         {
             _glContextSurface->SetClipper( rect_list );
         }
@@ -301,7 +301,7 @@ namespace Useless {
 
     RectList WGLScreen::GetClipper( const Rect &crop ) const
     {
-        if ( m_windowed || m_active )
+        if (!!_glContextSurface && ( m_windowed || m_active ))
         {
             return _glContextSurface->GetClipper( crop);
         }
