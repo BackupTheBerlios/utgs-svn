@@ -1,3 +1,4 @@
+#include "utgs-config.h"
 #include "GVM.h"
 #include "GLGraphicDevice.h"
 #include "Dynamo/interfaces.h"
@@ -76,11 +77,11 @@ struct GraphicVirtualMachine1 : CInterface
         m_desktop = m_gui->GetWidget("gui.desktop");
         m_area1 =   m_gui->GetWidget("gui.desktop.minimap");
         m_area2 =   m_gui->GetWidget("gui.desktop.area");
-        m_area1 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, PaintArea1 ));
-        m_area2 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, PaintArea2 ));
-        scope   ->  AddMethod("Tick", make_hook_mp< IXmlHook, IXmlScope * >( this, Tick ));
-        scope   ->  AddMethod("ChangeCameraAngle", make_hook_mp< IXmlHook, IXmlScope * >( this, ChangeCameraAngle ));
-        scope   ->  AddMethod("ChangeCameraFOV", make_hook_mp< IXmlHook, IXmlScope * >( this, ChangeCameraFOV ));
+        m_area1 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, &GraphicVirtualMachine1::PaintArea1 ));
+        m_area2 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, &GraphicVirtualMachine1::PaintArea2 ));
+        scope   ->  AddMethod("Tick", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::Tick ));
+        scope   ->  AddMethod("ChangeCameraAngle", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::ChangeCameraAngle ));
+        scope   ->  AddMethod("ChangeCameraFOV", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::ChangeCameraFOV ));
         m_angle1 = 0;
         m_angle2 = 0;
         m_camAngle = 35.0;
@@ -104,14 +105,14 @@ struct GraphicVirtualMachine1 : CInterface
         m_normals[6] = P3f(0.77,0.77,0.77);
         m_normals[7] = P3f(0.77,0.77,-0.77);
 
-        m_colors[0] = P4f(1,0,0,1);
-        m_colors[1] = P4f(1,1,0,1);
-        m_colors[2] = P4f(0,1,0,1);
+        m_colors[0] = P4f(0,0,1,1);
+        m_colors[1] = P4f(0,0,1,1);
+        m_colors[2] = P4f(0,0,1,1);
         m_colors[3] = P4f(0,0,1,1);
-        m_colors[4] = P4f(1,0,0,1);
-        m_colors[5] = P4f(1,1,0,1);
-        m_colors[6] = P4f(0,1,0,1);
-        m_colors[7] = P4f(0,0,1,1);
+        m_colors[4] = P4f(0,1,1,1);
+        m_colors[5] = P4f(0,1,1,1);
+        m_colors[6] = P4f(0,1,1,1);
+        m_colors[7] = P4f(0,1,1,1);
 
         m_faces[0] = P4u(0,1,3,2);
         m_faces[1] = P4u(4,5,7,6);
@@ -126,10 +127,15 @@ struct GraphicVirtualMachine1 : CInterface
                 ScaleMsg( P3f( 0.5, 0.5, 0.5 )) +
                 TranslateMsg( P3f(-0.5, -0.5, -0.5) ) +
                 
-                VertexArrayMsg( m_vertices, 8 ) + EnableClientStateMsg( VERTEX_ARRAY ) +
-                NormalArrayMsg( m_normals, 8 ) + EnableClientStateMsg( NORMAL_ARRAY ) +
-                IndexArrayMsg( m_faces[0], 24 ) + EnableClientStateMsg( INDEX_ARRAY ) +
-                ColorArrayMsg( m_colors, 8 ) +
+                VertexArrayMsg( m_vertices, 8 ) +
+                EnableClientStateMsg( VERTEX_ARRAY ) +
+
+                NormalArrayMsg( m_normals, 8 ) +
+                EnableClientStateMsg( NORMAL_ARRAY ) +
+
+                IndexArrayMsg( m_faces[0], 24 ) +
+                EnableClientStateMsg( INDEX_ARRAY ) +
+
 
                 EnableMsg( COLOR_MATERIAL ) +
                 MaterialMsg( FRONT_AND_BACK, SHININESS, 0.0 ) +
@@ -139,9 +145,11 @@ struct GraphicVirtualMachine1 : CInterface
                     SaveMsg( COLOR_MATERIAL_MODE ) +
                     SaveMaterialMsg( FRONT_AND_BACK, SHININESS ) +
 
+                    ColorArrayMsg( m_colors, 8 ) +
                     EnableClientStateMsg( COLOR_ARRAY ) +
-                    ColorMaterialMsg( FRONT_AND_BACK, SPECULAR ) +
-                    MaterialMsg( FRONT_AND_BACK, SHININESS, 1.0 ) +
+
+                    //ColorMaterialMsg( FRONT_AND_BACK, DIFFUSE ) +
+                    MaterialMsg( FRONT_AND_BACK, SHININESS, 0.1 ) +
 
                     DrawElementsMsg( TRIANGLE_STRIP, 0, 4 ) +
                     DrawElementsMsg( TRIANGLE_STRIP, 4, 4 )
@@ -150,11 +158,18 @@ struct GraphicVirtualMachine1 : CInterface
                 BlockMsg(
                     SaveMsg( BLEND ) + SaveMsg( BLEND_FUNC ) +
                     EnableMsg( BLEND ) + BlendFuncMsg( ONE, ONE_MINUS_SRC_ALPHA ) +
+                    
+                    ColorMsg( P4f( 1.0, 0.8, 0.0, 0.5 )) +
+                    DrawElementsMsg( TRIANGLE_STRIP, 8, 4 ) +
 
-                    ColorMsg( P4f( 0.5, 0.0, 0.0, 0.25 )) + DrawElementsMsg( TRIANGLE_STRIP, 8, 4 ) +
-                    ColorMsg( P4f( 0.5, 0.5, 0.0, 0.25 )) + DrawElementsMsg( TRIANGLE_STRIP, 12, 4 ) +
-                    ColorMsg( P4f( 0.0, 0.5, 0.0, 0.25 )) + DrawElementsMsg( TRIANGLE_STRIP, 16, 4 ) +
-                    ColorMsg( P4f( 0.0, 0.0, 0.5, 0.25 )) + DrawElementsMsg( TRIANGLE_STRIP, 20, 4 )
+                    ColorMsg( P4f( 1.0, 0.0, 0.8, 0.5 )) +
+                    DrawElementsMsg( TRIANGLE_STRIP, 12, 4 ) +
+
+                    ColorMsg( P4f( 0.0, 1.0, 0.8, 0.5 )) +
+                    DrawElementsMsg( TRIANGLE_STRIP, 16, 4 ) +
+
+                    ColorMsg( P4f( 0.8, 0.0, 1.0, 0.5 )) +
+                    DrawElementsMsg( TRIANGLE_STRIP, 20, 4 )
                     )
                 );
     }
@@ -189,17 +204,17 @@ struct GraphicVirtualMachine1 : CInterface
         gl.SetPerspective( m_camFov, ((float)rcArea2.m_w)/(float)rcArea2.m_h, 0.01, 1000.0);
         gl.Invoke(
                 LightMsg( LIGHT0, POSITION, P4f(0,0,0,1)) +
-                LightMsg( LIGHT0, DIFFUSE, P4f(1,1,1,1)) +
-                LightMsg( LIGHT0, SPECULAR, P4f(0.4,0.4,0.4,1)) +
+                LightMsg( LIGHT0, DIFFUSE, P4f(0.7,0.7,0.7,1)) +
+                LightMsg( LIGHT0, SPECULAR, P4f(0.1,0.1,0.1,1)) +
                 LightMsg( LIGHT0, CONSTANT_ATTENUATION, 0 ) +
                 LightMsg( LIGHT0, LINEAR_ATTENUATION, 0 ) +
-                LightMsg( LIGHT0, QUADRATIC_ATTENUATION, 2 ) +
+                LightMsg( LIGHT0, QUADRATIC_ATTENUATION, 1 ) +
                 LightMsg( LIGHT0, SPOT_CUTOFF, 180 ) +
                 LightModelMsg( LIGHT_MODEL_TWO_SIDE, 0 ) +
                 LightModelMsg( LIGHT_MODEL_LOCAL_VIEWER, 1 ) +
                 EnableMsg( LIGHTING ) +
                 EnableMsg( LIGHT0 ) +
-                TranslateMsg( P3f(0,0,-100.0/m_camFov)) +
+                TranslateMsg( P3f(0,0,-67.0/m_camFov)) +
                 RotateMsg( m_camAngle, P3f(1,0,0)) +
                 RotateMsg( m_angle2, P3f(0,1,0)) +
                 LightMsg( LIGHT0, POSITION, P4f(0,1,0,1)) +

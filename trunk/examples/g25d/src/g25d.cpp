@@ -1,3 +1,4 @@
+#include "utgs-config.h"
 #include "GVM.h"
 #include "GLGraphicDevice.h"
 #include "Dynamo/interfaces.h"
@@ -186,12 +187,12 @@ struct GraphicVirtualMachine1 : CInterface
         m_desktop = m_gui->GetWidget("gui.desktop");
         m_area1 =   m_gui->GetWidget("gui.desktop.minimap");
         m_area2 =   m_gui->GetWidget("gui.desktop.area");
-        m_area1 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, PaintArea1 ));
-        m_area2 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, PaintArea2 ));
-        scope   ->  AddMethod("Tick", make_hook_mp< IXmlHook, IXmlScope * >( this, Tick ));
-        scope   ->  AddMethod("ChangeCameraHead", make_hook_mp< IXmlHook, IXmlScope * >( this, ChangeCameraHead ));
-        scope   ->  AddMethod("ChangeCameraPitch", make_hook_mp< IXmlHook, IXmlScope * >( this, ChangeCameraPitch ));
-        scope   ->  AddMethod("ChangeCameraFOV", make_hook_mp< IXmlHook, IXmlScope * >( this, ChangeCameraFOV ));
+        m_area1 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, &GraphicVirtualMachine1::PaintArea1 ));
+        m_area2 ->  SetHook_Paint( make_hook_mp< IHook_Paint, IPaint * >( this, &GraphicVirtualMachine1::PaintArea2 ));
+        scope   ->  AddMethod("Tick", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::Tick ));
+        scope   ->  AddMethod("ChangeCameraHead", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::ChangeCameraHead ));
+        scope   ->  AddMethod("ChangeCameraPitch", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::ChangeCameraPitch ));
+        scope   ->  AddMethod("ChangeCameraFOV", make_hook_mp< IXmlHook, IXmlScope * >( this, &GraphicVirtualMachine1::ChangeCameraFOV ));
 
         m_texture[0] = new Texture( m_graphix, "Room1/00.png");
         m_texture[1] = new Texture( m_graphix, "Room1/01.png");
@@ -206,10 +207,10 @@ struct GraphicVirtualMachine1 : CInterface
         m_camPitch = 0.0;
         m_camFov = 90.0;
 
-        m_vertices[0] = P3f(-1,-2,0);
-        m_vertices[1] = P3f( 1,-2,0);
-        m_vertices[2] = P3f(-1, 2,0);
-        m_vertices[3] = P3f( 1, 2,0);
+        m_vertices[0] = P3f(-1,-1,0);
+        m_vertices[1] = P3f( 1,-1,0);
+        m_vertices[2] = P3f(-1, 1,0);
+        m_vertices[3] = P3f( 1, 1,0);
 
         m_uvcoords[0] = P2f(0,1);
         m_uvcoords[1] = P2f(1,1);

@@ -107,22 +107,22 @@ public:
 
     ConstIterator ConstBegin() const
     {
-        return ConstIterator( (ConstT*)&*begin(), size() );
+        return empty() ? ConstIterator(NULL,0) : ConstIterator( (ConstT*)&*begin(), size() );
     }
 
     ConstIterator ConstEnd() const
     {
-        return ConstIterator( (ConstT*)&*begin(), size() )+=size();
+        return empty() ? ConstIterator(NULL,0) : ConstIterator( (ConstT*)&*begin(), size() ) += size();
     }
 
     Iterator Begin()
     {
-        return Iterator( (T*)&*begin(), size() );
+        return empty() ? Iterator(NULL,0) : Iterator( (T*)&*begin(), size() );
     }
 
     Iterator End()
     {
-        return Iterator( (T*)&*begin(), size() )+=size();
+        return empty() ? Iterator(NULL,0) : Iterator( (T*)&*begin(), size() ) += size();
     }
 
 

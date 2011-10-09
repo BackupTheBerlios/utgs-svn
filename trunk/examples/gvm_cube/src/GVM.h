@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <vector>
+#include <iterator>
 #include "Useless/Graphic/Linear.h"
 
 namespace GVM {

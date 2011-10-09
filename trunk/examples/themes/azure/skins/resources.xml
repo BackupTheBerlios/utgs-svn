@@ -90,7 +90,7 @@
         
         <bars id="azure.skins.grip_horizontal.set" img="azure.skins.grip_horizontal" mapping="azure.skins.grip" rows="3" columns="1" cut="40,72,90" orientation="horizontal"/>
 
-        <bar id="azure.skins.line_vertical" img="azure.skins.line_vertical" cut="32,96,96" orientation="horizontal"/>
+        <bar id="azure.skins.line_vertical" img="azure.skins.line_vertical" cut="32,96,96" orientation="vertical"/>
         <bar id="azure.skins.line_horizontal" img="azure.skins.line_horizontal" cut="32,96,96" orientation="horizontal"/>
     </skins>
 </xml>

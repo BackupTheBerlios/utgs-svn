@@ -3,7 +3,7 @@
         <dir path="../themes" point="themes" priority="1000"/>
     </filesystems>
 
-    <include src="themes/azure/styles.xml"/>
+    <include src="themes/graphite/styles.xml"/>
 
     <system>
         <screen title="KooLiXP Program"
@@ -29,7 +29,8 @@
                     <hub layout="horizontal" minsize="140">
                         <button id="QUIT" focusable="0" minsize="60" accel_key="Q">Quit!</button>
                         <gap size="5px"/>
-                        <button id="KILL" focusable="0" minsize="60" accel_key="R" >Kill!</button>
+                        <button id="STOP" focusable="0" minsize="60" accel_key="R" >Stop!</button>
+                        <button id="RESTART" focusable="0" minsize="60" accel_key="R" >Retart!</button>
                     </hub>
                     <gap/>
                 </hub>
@@ -54,13 +55,11 @@
                 <empty/>
             </let>
 
-            <gui-event signal="onclick" source="gui.desktop.KILL">
-                <set id="module">
-                    <empty/>
-                </set>
-                <set id="module">
-                    <call id="Dynamo:LoadModule" name="gvm1d.dll"/>
-                </set>
+            <gui-event signal="onclick" source="gui.desktop.STOP">
+                <goto id="stopped_state"/>
+            </gui-event>
+            
+            <gui-event signal="onclick" source="gui.desktop.RESTART">
                 <goto id="running_module"/>
             </gui-event>
             
@@ -68,8 +67,29 @@
                 <call id="__application__:Terminate"/>
             </gui-event>
 
+            <state id="stopped_state">
+            </state>
+
             <state id="running_module">
                 <compile run="1">
+                    <set id="module">
+                        <apply select="Dynamo:LoadModule">
+                            <choose id="name">
+                                <when>
+                                    <is-defined id="argv:debug"/>
+                                    <string>gvm1d.dll</string>
+                                </when>
+                                <otherwise>
+                                    <string>gvm1.dll</string>
+                                </otherwise>
+                            </choose>
+                        </apply>
+                    </set>
+                    <function id="OnLeave">
+                        <set id="module">
+                            <empty/>
+                        </set>
+                    </function>
                     <function id="OnAppIdle" parameters="timeDelta">
                         <apply select="module:Tick"/>
                     </function>
@@ -102,6 +122,7 @@
                 </compile>
             </state>
 
+            <goto id="running_module"/>
         </fsm>
         <run fsm="main" object="main"/>
     </programms>

@@ -2,12 +2,10 @@
     <system>
         <screen title="2.5-D Graphics"
             id="screen"
-            x="0"
-            y="0"
-            width="1024"
-            height="768"
+            width="800"
+            height="600"
             bpp="32"
-            windowed="0"
+            windowed="1"
             sys_cursor="1"
             />
         <gui id="gui" screen="screen"/>
@@ -44,9 +42,19 @@
             <let id="Dynamo">
                 <import id="Dynamo"/>
             </let>
-            <let id="module">
-                <call id="Dynamo:LoadModule" name="g25d.dll"/>
-            </let>
+            <compile run="1">
+                <apply id="module" select="Dynamo:LoadModule">
+                    <choose id="name">
+                        <when>
+                            <is-defined id="argv:debug"/>
+                            <string>g25dd.dll</string>
+                        </when>
+                        <otherwise>
+                            <string>g25d.dll</string>
+                        </otherwise>
+                    </choose>
+                </apply>
+            </compile>
 
             <gui-event signal="onclick" source="gui.desktop.QUIT">
                 <call id="__application__:Terminate"/>

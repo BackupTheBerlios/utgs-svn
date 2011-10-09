@@ -12,6 +12,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "strmbase", "strmbase\strmba
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dynamo", "Dynamo\Dynamo.vcxproj", "{A4B1BE6D-AABD-4569-BBEB-2B8E24076BC5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "g25d", "..\examples\g25d\vc10\g25d.vcxproj", "{D590AACF-6FF5-4E9B-B967-1ECC1EF08754}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BEA61A5-A781-47B1-845D-E8617B70DBC2} = {1BEA61A5-A781-47B1-845D-E8617B70DBC2}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gvm1", "..\examples\gvm_cube\vc10\gvm1.vcxproj", "{D590AACF-6FF5-4E9B-B967-1ECC1EF08753}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BEA61A5-A781-47B1-845D-E8617B70DBC2} = {1BEA61A5-A781-47B1-845D-E8617B70DBC2}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -42,6 +52,14 @@ Global
 		{A4B1BE6D-AABD-4569-BBEB-2B8E24076BC5}.Debug|Win32.Build.0 = Debug|Win32
 		{A4B1BE6D-AABD-4569-BBEB-2B8E24076BC5}.Release|Win32.ActiveCfg = Release|Win32
 		{A4B1BE6D-AABD-4569-BBEB-2B8E24076BC5}.Release|Win32.Build.0 = Release|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08754}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08754}.Debug|Win32.Build.0 = Debug|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08754}.Release|Win32.ActiveCfg = Release|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08754}.Release|Win32.Build.0 = Release|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08753}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08753}.Debug|Win32.Build.0 = Debug|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08753}.Release|Win32.ActiveCfg = Release|Win32
+		{D590AACF-6FF5-4E9B-B967-1ECC1EF08753}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

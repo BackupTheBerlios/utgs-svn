@@ -2,6 +2,7 @@
 #define __INCLUDED_GVM_MESSAGE_H__
 
 #include <assert.h>
+#include <iterator>
 #include <vector>
 #include "Useless/Graphic/Linear.h"
 
