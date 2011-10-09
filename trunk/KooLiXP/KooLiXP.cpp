@@ -310,6 +310,8 @@ struct KooLiXP
             g_ExcptText = e.what();
             report(g_ExcptText.c_str());
 
+            MessageBoxA(NULL, g_ExcptText.c_str(), "Problem occured", MB_OK);
+
             // FIXME Visual Studio Express does not allow resource editing
             // int hr = (int)DialogBox(Useless::Application::GetInstance(), MAKEINTRESOURCE( IDD_EXCEPTION ), NULL, KDialogProc );
     //        if ( IDOK == hr )
@@ -328,7 +330,7 @@ struct KooLiXP
 
     void PutInfo( std::ostream &out )
     {
-        out << "KooLiXP Runner (http://utgs.berlios.de)" << std::endl;
+        out << "KooLiXP Runner" << std::endl;
         out << std::endl;
     }
 
