@@ -75,7 +75,7 @@ double manifoldFunction(double x, double y)
 
 void manifold(Mesh<Vertex3d> &mesh)
 {
-    const int N = 11;
+    const int N = 7;
     const int M = N - 1;
     const double L = ((double)N) / 2.0;
 
@@ -174,12 +174,20 @@ Raytracer::Raytracer(): texture(0)
     
     std::shared_ptr<SphereGeometry3d> geom4(new SphereGeometry3d(0.25));
     geom4->setColor(GAL::P4d(1.0, 0.8, 0.0, 1.0));
+    
+    //
+    // Cylinder
+    //
+    
+    std::shared_ptr<CylinderGeometry3d> geom6(new CylinderGeometry3d(0.4, GAL::P3d(0.4,2,-0.5)));
+    geom6->setColor(GAL::P4d(0.9, 0.9, 0.9, 1.0));
 
     clump->addGeometry(geom1);
     clump->addGeometry(geom2);
     clump->addGeometry(geom3);
     clump->addGeometry(geom4);
     clump->addGeometry(geom5);
+    clump->addGeometry(geom6);
 
     geom1->setTranslation(GAL::P3d(-1,-1,0));
     geom2->setTranslation(GAL::P3d(0,1,0));
@@ -191,6 +199,9 @@ Raytracer::Raytracer(): texture(0)
     
     geom5->setTranslation(GAL::P3d(0,1,-3));
     geom5->setLocalTransform(GAL::EulerRotationY(10.0), 0);
+
+    geom6->setTranslation(GAL::P3d(-1.4,0.6,0.4));
+    geom6->setLocalTransform(GAL::EulerRotationX(60.0), 0);
 
     scene.addClump(clump);
 

@@ -109,7 +109,7 @@ template<class _NumericType>
             NumericType t = GAL::ChooseNearestPositiveRoot(solution);
             if (t < 0)
             {
-                // sphere is behind or we're inside of it
+                // sphere is behind
                 return false;
             }
 
@@ -127,6 +127,48 @@ template<class _NumericType>
 
 typedef SphereGeometry<float>  SphereGeometry3f;
 typedef SphereGeometry<double> SphereGeometry3d;
+
+
+template<class _NumericType>
+    class CylinderGeometry : public Geometry<_NumericType>
+    {
+    public:
+        CylinderGeometry(NumericType radius, const PointType &height): mRadius(radius), mHeight(height)
+        {
+        }
+
+    protected:
+        bool doIntersectRay(const RayType &ray, IntersectionPointType &out)
+        {
+            GAL_imp::Solution<NumericType,2> solution;
+
+            if (!GAL::IntersectRayCylinder(ray, mRadius, mHeight, solution))
+            {
+                return false;
+            }
+
+            NumericType t = GAL::ChooseNearestPositiveRoot(solution);
+            if (t < 0)
+            {
+                // Cylinder is behind
+                return false;
+            }
+
+            out.distance = t;
+            out.position = ray.start + ray.direction * t;
+            out.normal = GAL::ProjectToPlane(mHeight, out.position);
+            out.tangent = GAL::Orthogonal(out.normal);
+
+            return true;
+        }
+
+    private:
+        NumericType mRadius;
+        PointType   mHeight;
+    };
+
+typedef CylinderGeometry<float>  CylinderGeometry3f;
+typedef CylinderGeometry<double> CylinderGeometry3d;
 
 
 template<class _VertexType, class _IndexType = int>

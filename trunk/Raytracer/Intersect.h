@@ -77,16 +77,31 @@ namespace GAL {
             N sqrtDelta = sqrt(_B2 - _4AC);
             N recip2A = 1 / (2*A);
 
-            if (B < 0)
-            {
-                solution.x[0] = (-sqrtDelta - B) * recip2A;
-                solution.x[1] = ( sqrtDelta - B) * recip2A;
+            // Always: 0 < sqrtDelta, hence always: x[0] < x[1]
+            solution.x[0] = (-sqrtDelta - B) * recip2A;
+            solution.x[1] = ( sqrtDelta - B) * recip2A;
+
+            return true;
+        }
+
+    template<class N, int I>
+        bool IntersectRayPlane(
+            const GAL_imp::Ray<N,I>     &ray,
+            const GAL_imp::Point<N,I>   &normal,
+            N                           &solution)
+        {
+            N recipSqrNormal = 1/GAL::Dot(normal, normal);
+
+            N von = GAL::Dot(normal, ray.direction);
+            if (0 == von)
+            {  
+                // Ray is parallel
+                return false;
             }
-            else
-            {
-                solution.x[0] = (-sqrtDelta - B) * recip2A;
-                solution.x[1] = ( sqrtDelta - B) * recip2A;
-            }
+
+            N uon = GAL::Dot(normal, ray.start);
+
+            solution = - uon / von;
 
             return true;
         }
@@ -121,6 +136,78 @@ namespace GAL {
             N c = Dot(ray.start, ray.start) - (sphereRadius * sphereRadius);
 
             return SolveQuadratic(a, b, c, solution);
+        }
+
+    template<class N, int I>
+        bool IntersectRayInfiniteCylinder(
+            const GAL_imp::Ray<N,I>    &ray,
+            N                           cylinderRadius,
+            const GAL_imp::Point<N,I>  &cylinderAxis,
+            GAL_imp::Solution<N,2>     &solution)
+        {
+            N sqrAxis = GAL::Dot(cylinderAxis, cylinderAxis);
+            N recipSqrAxis = 1 / sqrAxis;
+
+            N von = GAL::Dot(cylinderAxis, ray.direction);
+            if (0 == von)
+            {
+                // ray is parallel to axis
+                return false;
+            }
+            N uon = GAL::Dot(cylinderAxis, ray.start);
+            
+            GAL_imp::Point<N,I> planarRayDirection = ray.direction - cylinderAxis * (von * recipSqrAxis);
+            GAL_imp::Point<N,I> planarRayStart     = ray.start - cylinderAxis * (uon * recipSqrAxis);
+
+            N a = GAL::Dot(planarRayDirection, planarRayDirection);
+            N b = 2 * GAL::Dot(planarRayStart, planarRayDirection);
+            N c = GAL::Dot(planarRayStart,planarRayStart) - (cylinderRadius * cylinderRadius);
+
+            return SolveQuadratic(a, b, c, solution);
+        }
+
+    template<class N, int I>
+        bool IntersectRayCylinder(
+            const GAL_imp::Ray<N,I>    &ray,
+            N                           cylinderRadius,
+            const GAL_imp::Point<N,I>  &cylinderHeight,
+            GAL_imp::Solution<N,2>     &solution)
+        {
+            if (!IntersectRayInfiniteCylinder(ray, cylinderRadius, cylinderHeight, solution))
+            {
+                return false;
+            }
+
+            bool rv = false;
+
+            for (int i = 0; i != 2; ++i)
+            {
+                GAL_imp::Point<N,I> p(ray.start + ray.direction * solution.x[i]);
+                
+                if (GAL::Dot(p, cylinderHeight) < 0)
+                {
+                    if (!IntersectRayPlane(ray, cylinderHeight, solution.x[i]))
+                    {
+                        solution.x[i] = -1;
+                    }
+                }
+                else if (0 < GAL::Dot(p - cylinderHeight, cylinderHeight))
+                {
+                    GAL_imp::Ray<N,I> ray2;
+                    ray2.start = ray.start - cylinderHeight;
+                    ray2.direction = ray.direction;
+
+                    if (!IntersectRayPlane(ray2, cylinderHeight, solution.x[i]))
+                    {
+                        solution.x[i] = -1;
+                    }
+                }
+                else {
+                    rv = true;
+                }
+            }
+
+            return rv;
         }
 
     //

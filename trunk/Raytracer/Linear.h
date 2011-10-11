@@ -738,6 +738,60 @@ namespace GAL {
             return direction - normal * 2 * Dot(normal, direction);
         }
 
+    // 
+    // Both normal and direction MUST be unit length vectors
+    //
+    // Reflection is defined as follows:
+    //
+    //  I'' = I - 2*(N.I/N.N)*N;
+    //
+    // NOTE recipSqrNormal = 1/N.N
+    //
+    template< class N, int I >
+        GAL_imp::Point<N,I> Reflect(
+            const GAL_imp::Point<N,I> &normal,
+            const GAL_imp::Point<N,I> &direction,
+            N                          recipSqrNormal)
+        {
+            N k = 2 * GAL::Dot(normal, direction) * recipSqrNormal;
+            return direction - (normal * k);
+        }
+
+    //
+    // Project point onto plane
+    //
+    // I'' = I - (N.I/N.N)*N
+    //
+    // NOTE recipSqrNormal = 1/N.N
+    //
+    template<class N, int I>
+        GAL_imp::Point<N,I> ProjectToPlane(const GAL_imp::Point<N,I> &normal, const GAL_imp::Point<N,I> &point, N recipSqrNormal)
+        {
+            N k = GAL::Dot(point,normal) * recipSqrNormal;
+            return point - (normal * k);
+        }
+
+    template<class N, int I>
+        GAL_imp::Point<N,I> ProjectToPlane(const GAL_imp::Point<N,I> &normal, const GAL_imp::Point<N,I> &point)
+        {
+            N recipSqrNormal = 1/GAL::Dot(normal, normal);
+            N k = GAL::Dot(point,normal) * recipSqrNormal;
+            return point - (normal * k);
+        }
+    //
+    // Project point onto vector
+    //
+    // I'' = (N.I/N.N)*N
+    //
+    // NOTE recipSqrNormal = 1/N.N
+    //
+    template<class N, int I>
+        GAL_imp::Point<N,I> Project(const GAL_imp::Point<N,I> &normal, const GAL_imp::Point<N,I> &point, N recipSqrNormal)
+        {
+            N k = GAL::Dot(point,normal) * recipSqrNormal;
+            return normal * k;
+        }
+
     template<class N>
         GAL_imp::Point<N,3> Orthogonal(const GAL_imp::Point<N,3> &vec)
         {
